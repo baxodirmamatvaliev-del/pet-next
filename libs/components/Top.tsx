@@ -1,3 +1,4 @@
+import { FormEvent, useRef } from 'react';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
@@ -7,12 +8,17 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { Box, IconButton, InputAdornment, OutlinedInput, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
 import { GET_MY_CART } from '../../apollo/user/query';
 import { T } from '../types/common';
 
 const Top = () => {
+	const router = useRouter();
+
+	/** STATES **/
+	const searchInputRef = useRef<HTMLInputElement>(null);
 	const user = useReactiveVar(userVar);
 	const cartCount = useReactiveVar(cartCountVar);
 
@@ -26,6 +32,18 @@ const Top = () => {
 		},
 	});
 
+	/** HANDLERS **/
+	const searchHandler = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		const text = searchInputRef.current?.value.trim() ?? '';
+		void router.push({
+			pathname: '/product',
+			query: text ? { text } : {},
+		});
+	};
+
+	/** RENDER **/
 	return (
 		<Stack component="header" className="site-header">
 			<Stack direction="row" className="announcement">
@@ -42,16 +60,24 @@ const Top = () => {
 						<Typography component="small">Korea</Typography>
 					</Stack>
 				</Stack>
-				<OutlinedInput
-					className="header-search"
-					type="search"
-					placeholder="Search for products, brands, and more..."
-					endAdornment={(
-						<InputAdornment position="end">
-							<SearchRoundedIcon />
-						</InputAdornment>
-					)}
-				/>
+				<Box component="form" className="header-search-form" onSubmit={searchHandler}>
+					<OutlinedInput
+						key={typeof router.query.text === 'string' ? router.query.text : 'empty-search'}
+						className="header-search"
+						type="search"
+						inputRef={searchInputRef}
+						defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
+						placeholder="Search products..."
+						inputProps={{ 'aria-label': 'Search products' }}
+						endAdornment={(
+							<InputAdornment position="end">
+								<IconButton type="submit" edge="end" aria-label="Submit search">
+									<SearchRoundedIcon />
+								</IconButton>
+							</InputAdornment>
+						)}
+					/>
+				</Box>
 				<Stack direction="row" component="nav" className="header-actions" aria-label="Account navigation">
 					<Stack component={Link} href="/favorites" aria-label="Favorites">
 						<FavoriteBorderRoundedIcon />

@@ -61,25 +61,32 @@
 	}
 }
 
-.header-search {
-	height: 46px;
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	padding: 0 16px;
-	border: 1px solid $border;
-	border-radius: 10px;
-	background: #fbfaf7;
-	color: $muted;
-	.MuiOutlinedInput-notchedOutline {
-		border: 0;
-	}
-	input {
+.header-search-form {
+	width: 100%;
+	.header-search {
 		width: 100%;
-		border: 0;
-		outline: 0;
-		background: transparent;
-		color: $ink;
+		height: 46px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 0 16px;
+		border: 1px solid $border;
+		border-radius: 10px;
+		background: #fbfaf7;
+		color: $muted;
+		.MuiOutlinedInput-notchedOutline {
+			border: 0;
+		}
+		input {
+			width: 100%;
+			border: 0;
+			outline: 0;
+			background: transparent;
+			color: $ink;
+		}
+		.MuiIconButton-root {
+			color: $muted;
+		}
 	}
 }
 

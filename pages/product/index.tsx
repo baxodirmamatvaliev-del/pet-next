@@ -45,13 +45,17 @@ const ProductList = (props: ProductListProps) => {
 
 		const category = Object.values(ProductCategory).find((item) => item === router.query.category);
 		const sort = typeof router.query.sort === 'string' ? router.query.sort : initialInput.sort;
+		const text = typeof router.query.text === 'string' ? router.query.text.trim() : '';
 
 		return {
 			...initialInput,
 			sort,
-			search: category ? { categoryList: [category] } : {},
+			search: {
+				categoryList: category ? [category] : undefined,
+				text: text || undefined,
+			},
 		};
-	}, [initialInput, router.query.category, router.query.input, router.query.sort]);
+	}, [initialInput, router.query.category, router.query.input, router.query.sort, router.query.text]);
 
 	/** APOLLO REQUESTS **/
 	const {
@@ -112,6 +116,7 @@ const ProductList = (props: ProductListProps) => {
 
 			<Box className="product-catalog">
 				<Filter
+					key={searchFilter.search.text ?? 'empty-search'}
 					searchFilter={searchFilter}
 					updateSearchFilter={updateSearchFilterHandler}
 					initialInput={initialInput}
