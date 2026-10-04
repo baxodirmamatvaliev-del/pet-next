@@ -1,0 +1,40 @@
+@media (max-width: 760px) {
+	.checkout-page {
+		padding-block: 28px 45px;
+		.checkout-page__heading h1 {
+			font-size: 30px;
+		}
+		.checkout-state {
+			min-height: 340px;
+			padding-inline: 24px;
+		}
+		.checkout-content {
+			grid-template-columns: 1fr;
+			gap: 24px;
+		}
+		.checkout-section {
+			padding: 20px;
+			.checkout-fields {
+				grid-template-columns: 1fr;
+				.checkout-fields__wide {
+					grid-column: auto;
+				}
+			}
+			.payment-methods {
+				.MuiRadioGroup-root {
+					grid-template-columns: 1fr;
+				}
+			}
+		}
+		.checkout-summary {
+			position: static;
+		}
+		.checkout-success {
+			min-height: 400px;
+			padding: 28px 20px;
+			h2 {
+				font-size: 26px;
+			}
+		}
+	}
+}

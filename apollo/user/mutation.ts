@@ -173,3 +173,57 @@ export const CLEAR_CART = gql`
 		}
 	}
 `;
+
+/**************************
+ *          ORDER         *
+ *************************/
+
+export const CREATE_ORDER = gql`
+	mutation CreateOrder($input: CreateOrderInput!) {
+		createOrder(input: $input) {
+			_id
+			memberId
+			orderStatus
+			orderItems {
+				productId
+				sku
+				productName
+				productImage
+				quantity
+				unitPrice
+				subtotal
+			}
+			totalAmount
+			recipientName
+			recipientPhone
+			deliveryAddress
+			deliveryNote
+			cancelledAt
+			shippedAt
+			deliveredAt
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+/**************************
+ *         PAYMENT        *
+ *************************/
+
+export const CREATE_PAYMENT = gql`
+	mutation CreatePayment($input: CreatePaymentInput!) {
+		createPayment(input: $input) {
+			_id
+			memberId
+			orderId
+			paymentMethod
+			paymentStatus
+			paymentAmount
+			confirmedAt
+			cancelledAt
+			createdAt
+			updatedAt
+		}
+	}
+`;
