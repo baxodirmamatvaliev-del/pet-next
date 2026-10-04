@@ -18,7 +18,7 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 			<>
 				<Head>
 					<title>PetNest Korea — Everything they love</title>
-					<meta name="description" content="Premium accessories and essentials for happy dogs and cats." />
+					<meta name="title" content="PetNest Korea — Everything they love" />
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
 				</Head>
 

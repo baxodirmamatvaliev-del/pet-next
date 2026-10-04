@@ -18,7 +18,7 @@ const withLayoutFull = <P extends object>(Component: React.ComponentType<P>) => 
 			<>
 				<Head>
 					<title>Product Detail | PetNest Korea</title>
-					<meta name="description" content="Product details, variants and delivery information." />
+					<meta name="title" content="Product Detail | PetNest Korea" />
 				</Head>
 
 				<Stack id="pc-wrap">

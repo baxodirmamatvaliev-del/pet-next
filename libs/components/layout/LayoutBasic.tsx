@@ -18,7 +18,7 @@ const withLayoutBasic = <P extends object>(Component: React.ComponentType<P>) =>
 			<>
 				<Head>
 					<title>Shop | PetNest Korea</title>
-					<meta name="description" content="Shop products for happy dogs and cats." />
+					<meta name="title" content="Shop | PetNest Korea" />
 				</Head>
 
 				<Stack id="pc-wrap">
