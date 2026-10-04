@@ -1,0 +1,52 @@
+@media (max-width: 760px) {
+	.product-card {
+		.product-card__favorite {
+			top: 8px;
+			right: 8px;
+		}
+	}
+	.product-list-page {
+		padding-top: 28px;
+		.product-list-page__heading {
+			align-items: flex-start;
+			gap: 20px;
+			h1 {
+				font-size: 28px;
+			}
+			label span {
+				display: none;
+			}
+			select {
+				max-width: 135px;
+			}
+		}
+		.product-catalog {
+			grid-template-columns: 1fr;
+			gap: 26px;
+		}
+		.product-filter {
+			padding-right: 0;
+			border-right: 0;
+			.product-filter__group {
+				.MuiFormLabel-root {
+					margin-bottom: 12px;
+				}
+				.MuiFormGroup-root {
+					flex-direction: row;
+					gap: 9px;
+				}
+				.MuiFormControlLabel-root {
+					padding: 2px 9px 2px 5px;
+					border: 1px solid #e7e5df;
+					border-radius: 22px;
+				}
+			}
+		}
+		.product-results {
+			.product-results__grid {
+				grid-template-columns: 1fr 1fr;
+				gap: 26px 12px;
+			}
+		}
+	}
+}

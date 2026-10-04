@@ -1,0 +1,164 @@
+@use '../../variables' as *;
+
+.product-card {
+	position: relative;
+	min-width: 0;
+	.product-card__image {
+		position: relative;
+		aspect-ratio: 1 / 1;
+		display: block;
+		overflow: hidden;
+		border-radius: 15px;
+		background: #f6f4ef;
+		img {
+			object-fit: cover;
+			transition: transform 180ms ease;
+		}
+		&:hover img {
+			transform: scale(1.03);
+		}
+	}
+	.product-card__favorite {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		z-index: 1;
+		width: 36px;
+		height: 36px;
+		display: grid;
+		place-items: center;
+		border-radius: 50%;
+		background: rgb(255 255 255 / 88%);
+		color: $primary;
+		cursor: pointer;
+		svg {
+			font-size: 20px;
+		}
+	}
+	.product-card__content {
+		padding: 15px 3px 0;
+		gap: 0;
+		h3 {
+			overflow: hidden;
+			font-size: 15px;
+			font-weight: 700;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		strong {
+			display: block;
+			margin-top: 9px;
+			font-size: 15px;
+		}
+		p {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 12px;
+			span {
+				color: #f2a900;
+			}
+		}
+	}
+}
+
+.product-list-page {
+	padding-block: 42px 20px;
+	.product-list-page__heading {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		padding-bottom: 28px;
+		border-bottom: 1px solid $border;
+		p {
+			margin-bottom: 12px;
+			color: $muted;
+			font-size: 12px;
+		}
+		h1 {
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 38px;
+		}
+		label {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			span {
+				color: $muted;
+				font-size: 12px;
+			}
+			select {
+				height: 42px;
+				padding: 0 34px 0 13px;
+				border: 1px solid $border;
+				border-radius: 8px;
+				background: #ffffff;
+				color: $ink;
+			}
+		}
+	}
+	.product-catalog {
+		display: grid;
+		grid-template-columns: 220px 1fr;
+		gap: 34px;
+		padding-top: 30px;
+	}
+	.product-filter {
+		padding-right: 28px;
+		border-right: 1px solid $border;
+		.product-filter__search {
+			.MuiOutlinedInput-root {
+				height: 42px;
+				font-size: 13px;
+			}
+			.MuiIconButton-root {
+				color: $primary;
+				svg {
+					font-size: 20px;
+				}
+			}
+		}
+		.product-filter__group {
+			margin-top: 28px;
+			.MuiFormLabel-root {
+				margin-bottom: 15px;
+				color: $ink;
+				font-size: 14px;
+				font-weight: 800;
+			}
+			.MuiFormControlLabel-root {
+				margin: 0;
+				color: $muted;
+				.MuiCheckbox-root {
+					padding: 5px 8px 5px 0;
+				}
+				.MuiFormControlLabel-label {
+					font-size: 13px;
+				}
+			}
+		}
+	}
+	.product-results {
+		.product-results__count {
+			margin-bottom: 18px;
+			color: $muted;
+			font-size: 12px;
+		}
+		.product-results__grid {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 34px 18px;
+		}
+		.product-results__message {
+			min-height: 360px;
+			display: grid;
+			place-items: center;
+			border: 1px dashed $border;
+			border-radius: 15px;
+			color: $muted;
+			font-size: 14px;
+			&.product-results__message--error {
+				color: $secondary;
+			}
+		}
+	}
+}

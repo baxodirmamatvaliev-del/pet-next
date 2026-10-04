@@ -1,4 +1,6 @@
 @use './reset';
 @use './pc/general' as pc;
 @use './pc/homepage/homepage';
+@use './pc/product/product';
 @use './mobile/general' as mobile;
+@use './mobile/product' as mobile-product;
