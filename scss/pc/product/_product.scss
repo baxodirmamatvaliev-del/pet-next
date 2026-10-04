@@ -311,6 +311,33 @@
 				font-size: 12px;
 			}
 		}
+		.product-detail__cart-action {
+			width: 100%;
+			gap: 12px;
+			margin-top: 24px;
+			.product-detail__quantity {
+				align-items: center;
+				justify-content: space-between;
+				min-width: 126px;
+				border: 1px solid $border;
+				border-radius: 9px;
+				.MuiIconButton-root {
+					border-radius: 8px;
+				}
+				p {
+					min-width: 24px;
+					text-align: center;
+					font-weight: 700;
+				}
+			}
+			> .MuiButton-root {
+				flex: 1;
+				min-height: 48px;
+				border-radius: 9px;
+				font-size: 13px;
+				font-weight: 700;
+			}
+		}
 		.product-detail__description {
 			width: 100%;
 			margin-top: 28px;

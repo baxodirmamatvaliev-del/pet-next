@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { Alert, Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { Alert, Box, Button, CircularProgress, IconButton, Stack, Typography } from '@mui/material';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { userVar } from '../../apollo/store';
+import { ADD_TO_CART } from '../../apollo/user/mutation';
 import { GET_PRODUCT } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import { REACT_APP_API_URL } from '../../libs/config';
+import { Message } from '../../libs/enums/common.enum';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { AddToCartInput } from '../../libs/types/cart/cart.input';
 import { T } from '../../libs/types/common';
 import { Product } from '../../libs/types/product/product';
 import { formatterStr } from '../../libs/utils';
@@ -24,8 +32,11 @@ const ProductDetail: NextPage = () => {
 	const [product, setProduct] = useState<Product | null>(null);
 	const [slideImage, setSlideImage] = useState('');
 	const [selectedSku, setSelectedSku] = useState('');
+	const [quantity, setQuantity] = useState(1);
+	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
+	const [addToCart, { loading: addToCartLoading }] = useMutation(ADD_TO_CART);
 	const {
 		loading: getProductLoading,
 		error: getProductError,
@@ -49,11 +60,40 @@ const ProductDetail: NextPage = () => {
 
 	const variantSelectHandler = (sku: string) => {
 		setSelectedSku(sku);
+		setQuantity(1);
+	};
+
+	const decreaseQuantityHandler = () => {
+		if (quantity > 1) setQuantity(quantity - 1);
+	};
+
+	const increaseQuantityHandler = (stock: number) => {
+		if (quantity < stock) setQuantity(quantity + 1);
+	};
+
+	const addToCartHandler = async () => {
+		try {
+			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+			if (!product || !activeVariant?.sku) return;
+
+			const input: AddToCartInput = {
+				productId: product._id,
+				sku: activeVariant.sku,
+				quantity,
+			};
+
+			await addToCart({ variables: { input } });
+			await sweetTopSmallSuccessAlert('Added to cart', 800);
+		} catch (err) {
+			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
+			await sweetMixinErrorAlert(message);
+		}
 	};
 
 	/** COMPUTED VALUES **/
 	const activeVariant = product?.productVariants.find((variant) => variant.sku === selectedSku)
 		?? product?.productVariants[0];
+	const isOutOfStock = !activeVariant || activeVariant.stock < 1;
 	const imagePath = slideImage
 		? `${REACT_APP_API_URL}/${slideImage}`
 		: '/img/banner/home-hero.png';
@@ -149,6 +189,34 @@ const ProductDetail: NextPage = () => {
 						</Stack>
 						<Typography>{activeVariant?.stock ?? 0} items in stock</Typography>
 					</Box>
+
+					<Stack direction="row" className="product-detail__cart-action">
+						<Stack direction="row" className="product-detail__quantity">
+							<IconButton
+								onClick={decreaseQuantityHandler}
+								disabled={quantity === 1 || isOutOfStock}
+								aria-label="Decrease quantity"
+							>
+								<RemoveRoundedIcon />
+							</IconButton>
+							<Typography>{quantity}</Typography>
+							<IconButton
+								onClick={() => increaseQuantityHandler(activeVariant?.stock ?? 0)}
+								disabled={quantity >= (activeVariant?.stock ?? 0)}
+								aria-label="Increase quantity"
+							>
+								<AddRoundedIcon />
+							</IconButton>
+						</Stack>
+						<Button
+							variant="contained"
+							startIcon={<ShoppingBagOutlinedIcon />}
+							onClick={addToCartHandler}
+							disabled={isOutOfStock || addToCartLoading}
+						>
+							{addToCartLoading ? 'Adding...' : 'Add to cart'}
+						</Button>
+					</Stack>
 
 					{product.productDesc && (
 						<Box className="product-detail__description">

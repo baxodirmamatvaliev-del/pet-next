@@ -81,6 +81,15 @@
 			h1 {
 				font-size: 30px;
 			}
+			.product-detail__cart-action {
+				flex-direction: column;
+				.product-detail__quantity {
+					width: 100%;
+				}
+				> .MuiButton-root {
+					width: 100%;
+				}
+			}
 		}
 	}
 }
