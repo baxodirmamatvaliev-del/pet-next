@@ -1,6 +1,7 @@
 import React from 'react';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
+import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import { useReactiveVar } from '@apollo/client';
@@ -36,6 +37,14 @@ const MyMenu = () => {
 
 			<Typography className="my-menu__label">MY ACCOUNT</Typography>
 			<List disablePadding>
+				<ListItemButton
+					component={Link}
+					href="/mypage?category=myProfile"
+					className={category === 'myProfile' ? 'active' : ''}
+				>
+					<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
+					<ListItemText primary="My Profile" />
+				</ListItemButton>
 				<ListItemButton
 					component={Link}
 					href="/mypage?category=myOrders"

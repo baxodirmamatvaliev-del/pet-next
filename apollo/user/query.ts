@@ -1,6 +1,40 @@
 import { gql } from '@apollo/client';
 
 /**************************
+ *         MEMBER         *
+ *************************/
+
+export const GET_MEMBER = gql`
+	query GetMember($memberId: String!) {
+		getMember(memberId: $memberId) {
+			_id
+			memberNick
+			memberPhone
+			memberType
+			memberStatus
+			memberAuthType
+			memberFullName
+			memberImage
+			memberAddress
+			memberDesc
+			memberPets
+			memberArticles
+			memberFollowers
+			memberFollowings
+			memberPoints
+			memberLikes
+			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+/**************************
  *         PRODUCT        *
  *************************/
 

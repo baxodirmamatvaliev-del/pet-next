@@ -7,6 +7,8 @@ import { Product, Products } from './product/product';
 export interface T {
 	signup?: Member;
 	login?: AuthPayload;
+	getMember?: Member;
+	updateMember?: Member;
 	getProduct?: Product;
 	getProducts?: Products;
 	getMyCart?: Cart;

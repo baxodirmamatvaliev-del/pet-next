@@ -46,6 +46,30 @@
 				gap: 12px;
 			}
 		}
+		.my-profile {
+			.my-profile__heading h1 {
+				font-size: 27px;
+			}
+			.profile-form {
+				.profile-photo {
+					align-items: flex-start;
+					padding: 18px;
+					.MuiAvatar-root {
+						width: 70px;
+						height: 70px;
+					}
+				}
+				.profile-fields {
+					grid-template-columns: 1fr;
+					.profile-fields__wide {
+						grid-column: auto;
+					}
+				}
+				> .MuiButton-root {
+					width: 100%;
+				}
+			}
+		}
 		.order-card {
 			.order-card__header {
 				align-items: flex-start;

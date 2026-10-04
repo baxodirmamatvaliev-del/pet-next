@@ -70,6 +70,37 @@ export const LOGIN = gql`
 	}
 `;
 
+export const UPDATE_MEMBER = gql`
+	mutation UpdateMember($input: MemberUpdateInput!) {
+		updateMember(input: $input) {
+			_id
+			memberNick
+			memberPhone
+			memberType
+			memberStatus
+			memberAuthType
+			memberFullName
+			memberImage
+			memberAddress
+			memberDesc
+			memberPets
+			memberArticles
+			memberFollowers
+			memberFollowings
+			memberPoints
+			memberLikes
+			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
+			createdAt
+			updatedAt
+			accessToken
+		}
+	}
+`;
+
 /**************************
  *          CART          *
  *************************/
