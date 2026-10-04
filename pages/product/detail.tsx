@@ -12,7 +12,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { userVar } from '../../apollo/store';
+import { cartCountVar, userVar } from '../../apollo/store';
 import { ADD_TO_CART } from '../../apollo/user/mutation';
 import { GET_PRODUCT } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
@@ -36,7 +36,11 @@ const ProductDetail: NextPage = () => {
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
-	const [addToCart, { loading: addToCartLoading }] = useMutation(ADD_TO_CART);
+	const [addToCart, { loading: addToCartLoading }] = useMutation(ADD_TO_CART, {
+		onCompleted: (data: T) => {
+			if (data?.addToCart) cartCountVar(data.addToCart.totalQuantity);
+		},
+	});
 	const {
 		loading: getProductLoading,
 		error: getProductError,

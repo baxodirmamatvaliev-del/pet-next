@@ -1,0 +1,168 @@
+@use '../../variables' as *;
+
+.cart-page {
+	padding-block: 42px 70px;
+	.cart-page__heading {
+		align-items: flex-end;
+		justify-content: space-between;
+		padding-bottom: 28px;
+		border-bottom: 1px solid $border;
+		p {
+			margin-bottom: 12px;
+			color: $muted;
+			font-size: 12px;
+		}
+		h1 {
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 38px;
+		}
+		> .MuiButton-root {
+			color: $muted;
+			font-size: 12px;
+		}
+	}
+	.cart-state {
+		min-height: 420px;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		> svg {
+			color: $primary;
+			font-size: 58px;
+		}
+		h2 {
+			margin-top: 18px;
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 28px;
+		}
+		p {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 13px;
+		}
+		.MuiButton-root {
+			margin-top: 24px;
+			padding-inline: 28px;
+		}
+	}
+	.cart-content {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 340px;
+		align-items: start;
+		gap: 36px;
+		padding-top: 30px;
+	}
+	.cart-items {
+		gap: 14px;
+	}
+	.cart-item {
+		position: relative;
+		display: grid;
+		grid-template-columns: 118px minmax(160px, 1fr) 126px 130px 40px;
+		align-items: center;
+		gap: 20px;
+		padding: 14px;
+		border: 1px solid $border;
+		border-radius: 14px;
+		background: #ffffff;
+		.cart-item__image {
+			position: relative;
+			width: 118px;
+			aspect-ratio: 1 / 1;
+			overflow: hidden;
+			border-radius: 10px;
+			background: #f6f4ef;
+			img {
+				object-fit: cover;
+			}
+		}
+		.cart-item__info {
+			align-items: flex-start;
+			gap: 8px;
+			> a {
+				font-size: 15px;
+				font-weight: 800;
+				&:hover {
+					color: $primary;
+				}
+			}
+			> p {
+				color: $muted;
+				font-size: 12px;
+			}
+			.MuiChip-root {
+				height: 23px;
+				font-size: 10px;
+			}
+		}
+		.cart-item__quantity {
+			align-items: center;
+			justify-content: space-between;
+			border: 1px solid $border;
+			border-radius: 9px;
+			.MuiIconButton-root {
+				padding: 8px;
+				border-radius: 8px;
+				svg {
+					font-size: 18px;
+				}
+			}
+			p {
+				min-width: 24px;
+				text-align: center;
+				font-size: 13px;
+				font-weight: 700;
+			}
+		}
+		.cart-item__price {
+			align-items: flex-end;
+			strong {
+				font-size: 15px;
+			}
+			p {
+				margin-top: 5px;
+				color: $muted;
+				font-size: 11px;
+			}
+		}
+		.cart-item__remove {
+			color: $muted;
+		}
+	}
+	.cart-summary {
+		position: sticky;
+		top: 20px;
+		gap: 17px;
+		padding: 26px;
+		border: 1px solid $border;
+		border-radius: 14px;
+		background: $cream;
+		h2 {
+			margin-bottom: 7px;
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 23px;
+		}
+		> .MuiStack-root {
+			justify-content: space-between;
+			p {
+				font-size: 13px;
+			}
+		}
+		.cart-summary__free {
+			color: $primary;
+			font-weight: 700;
+		}
+		.cart-summary__total p {
+			font-size: 17px;
+			font-weight: 800;
+		}
+		.MuiAlert-root {
+			font-size: 11px;
+		}
+		.MuiButton-root {
+			min-height: 46px;
+			font-size: 12px;
+			font-weight: 700;
+		}
+	}
+}

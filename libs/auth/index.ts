@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 
 import { initializeApollo } from '../../apollo/client';
-import { userVar } from '../../apollo/store';
+import { cartCountVar, userVar } from '../../apollo/store';
 import { LOGIN, SIGN_UP } from '../../apollo/user/mutation';
 import { Message } from '../enums/common.enum';
 import { T } from '../types/common';
@@ -96,6 +96,7 @@ export const updateStorage = ({ jwtToken }: { jwtToken: string }) => {
 export function logOut() {
 	window.localStorage.removeItem('accessToken');
 	window.localStorage.setItem('logout', Date.now().toString());
+	cartCountVar(0);
 	userVar(null);
 	window.location.reload();
 }

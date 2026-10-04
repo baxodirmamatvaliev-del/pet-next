@@ -4,14 +4,27 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { useReactiveVar } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import { Box, IconButton, InputAdornment, OutlinedInput, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 
-import { userVar } from '../../apollo/store';
+import { cartCountVar, userVar } from '../../apollo/store';
+import { GET_MY_CART } from '../../apollo/user/query';
+import { T } from '../types/common';
 
 const Top = () => {
 	const user = useReactiveVar(userVar);
+	const cartCount = useReactiveVar(cartCountVar);
+
+	/** APOLLO REQUESTS **/
+	useQuery(GET_MY_CART, {
+		fetchPolicy: 'cache-and-network',
+		skip: !user?.sub,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getMyCart) cartCountVar(data.getMyCart.totalQuantity);
+		},
+	});
 
 	return (
 		<Stack component="header" className="site-header">
@@ -51,7 +64,7 @@ const Top = () => {
 					<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
 						<LocalMallOutlinedIcon />
 						<Typography component="span">Cart</Typography>
-						<Typography component="b">0</Typography>
+						<Typography component="b">{cartCount}</Typography>
 					</Stack>
 				</Stack>
 				<IconButton className="mobile-menu" aria-label="Open menu">

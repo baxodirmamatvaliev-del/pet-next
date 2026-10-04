@@ -1,7 +1,7 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 
 const Document = () => (
-	<Html lang="en">
+	<Html lang="en" data-scroll-behavior="smooth">
 		<Head>
 			<meta name="robots" content="index,follow" />
 			<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />

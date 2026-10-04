@@ -1,3 +1,4 @@
+import { Cart } from './cart/cart';
 import { AuthPayload, Member } from './member/member';
 import { Product, Products } from './product/product';
 
@@ -6,4 +7,9 @@ export interface T {
 	login?: AuthPayload;
 	getProduct?: Product;
 	getProducts?: Products;
+	getMyCart?: Cart;
+	addToCart?: Cart;
+	updateCartItem?: Cart;
+	removeCartItem?: Cart;
+	clearCart?: Cart;
 }

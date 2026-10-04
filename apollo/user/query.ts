@@ -64,3 +64,37 @@ export const GET_PRODUCTS = gql`
 		}
 	}
 `;
+
+/**************************
+ *          CART          *
+ *************************/
+
+export const GET_MY_CART = gql`
+	query GetMyCart {
+		getMyCart {
+			memberId
+			cartItems {
+				productId
+				sku
+				quantity
+				productData {
+					_id
+					productName
+					productImages
+					productVariants {
+						sku
+						color
+						size
+						price
+						stock
+					}
+				}
+				unitPrice
+				subtotal
+				available
+			}
+			totalQuantity
+			totalAmount
+		}
+	}
+`;
