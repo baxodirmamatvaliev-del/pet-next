@@ -1,22 +1,31 @@
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 
 const Hero = () => (
-	<section className="home-hero container">
-		<div className="home-hero__content">
-			<span className="eyebrow">For happy dogs and cats</span>
-			<h1>Everything<br />they love</h1>
-			<p>Premium accessories and essentials for healthier, happier days together.</p>
-			<div className="home-hero__actions">
-				<Link href="/product?category=DOG" className="button button--primary">
+	<Stack component="section" className="home-hero container">
+		<Stack className="home-hero__content">
+			<Typography component="span" className="eyebrow">
+				For happy dogs and cats
+			</Typography>
+			<Typography component="h1">
+				Everything
+				<br />
+				they love
+			</Typography>
+			<Typography>
+				Premium accessories and essentials for healthier, happier days together.
+			</Typography>
+			<Box className="home-hero__actions">
+				<Button component={Link} href="/product?category=DOG" className="button button--primary">
 					Shop Dogs <ArrowForwardRoundedIcon />
-				</Link>
-				<Link href="/product?category=CAT" className="button button--secondary">
+				</Button>
+				<Button component={Link} href="/product?category=CAT" className="button button--secondary">
 					Shop Cats <ArrowForwardRoundedIcon />
-				</Link>
-			</div>
-		</div>
-	</section>
+				</Button>
+			</Box>
+		</Stack>
+	</Stack>
 );
 
 export default Hero;

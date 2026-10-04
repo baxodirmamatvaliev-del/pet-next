@@ -27,7 +27,11 @@ export interface Product {
 	updatedAt: Date;
 }
 
+export interface TotalCounter {
+	total: number;
+}
+
 export interface Products {
 	list: Product[];
-	metaCounter: Array<{ total: number }>;
+	metaCounter: TotalCounter[];
 }

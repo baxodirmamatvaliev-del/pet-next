@@ -14,15 +14,16 @@ import { REACT_APP_API_GRAPHQL_URL } from '../libs/config';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createApolloClient() {
-	const authLink = new ApolloLink((operation, forward) => {
-		const token = getJwtToken();
+function getHeaders() {
+	const token = getJwtToken();
 
+	return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+function createIsomorphicLink() {
+	const authLink = new ApolloLink((operation, forward) => {
 		operation.setContext(({ headers = {} }) => ({
-			headers: {
-				...headers,
-				...(token ? { Authorization: `Bearer ${token}` } : {}),
-			},
+			headers: { ...headers, ...getHeaders() },
 		}));
 
 		return forward(operation);
@@ -40,9 +41,13 @@ function createApolloClient() {
 		uri: REACT_APP_API_GRAPHQL_URL,
 	});
 
+	return from([errorLink, authLink, uploadLink]);
+}
+
+function createApolloClient() {
 	return new ApolloClient({
 		ssrMode: typeof window === 'undefined',
-		link: from([errorLink, authLink, uploadLink]),
+		link: createIsomorphicLink(),
 		cache: new InMemoryCache(),
 	});
 }

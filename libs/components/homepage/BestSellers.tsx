@@ -1,57 +1,75 @@
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { Box, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 
 import { GET_PRODUCTS } from '../../../apollo/user/query';
 import { Direction } from '../../enums/common.enum';
+import { T } from '../../types/common';
+import { Product } from '../../types/product/product';
 import { ProductsInquiry } from '../../types/product/product.input';
-import { Products } from '../../types/product/product';
 import ProductCard from '../product/ProductCard';
 
-interface GetProductsData {
-	getProducts: Products;
+interface BestSellersProps {
+	initialInput?: ProductsInquiry;
 }
 
-const input: ProductsInquiry = {
-	page: 1,
-	limit: 5,
-	sort: 'productSold',
-	direction: Direction.DESC,
-	search: {},
+const BestSellers = (props: BestSellersProps) => {
+	const { initialInput = BestSellers.defaultProps.initialInput } = props;
+
+	/** STATES **/
+	const [products, setProducts] = useState<Product[]>([]);
+
+	/** APOLLO REQUESTS **/
+	const {
+		loading: getProductsLoading,
+		error: getProductsError,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getProducts?.list) setProducts(data.getProducts.list);
+		},
+	});
+
+	/** RENDER **/
+	return (
+		<Stack component="section" className="best-sellers container">
+			<Stack direction="row" className="section-heading">
+				<Box>
+					<Typography component="span">Customer favorites</Typography>
+					<Typography component="h2">Best Sellers</Typography>
+				</Box>
+				<Stack direction="row" component={Link} href="/product?sort=productSold">
+					View all <ArrowForwardRoundedIcon />
+				</Stack>
+			</Stack>
+
+			{getProductsLoading && !products.length ? (
+				<Typography className="product-message">Loading products...</Typography>
+			) : getProductsError ? (
+				<Typography className="product-message product-message--error">Products could not be loaded.</Typography>
+			) : products.length ? (
+				<Box className="product-grid">
+					{products.map((product) => <ProductCard product={product} key={product._id} />)}
+				</Box>
+			) : (
+				<Typography className="product-message">No products available yet.</Typography>
+			)}
+		</Stack>
+	);
 };
 
-const BestSellers = () => {
-	const { data, loading, error } = useQuery<GetProductsData, { input: ProductsInquiry }>(GET_PRODUCTS, {
-		variables: { input },
-		fetchPolicy: 'cache-and-network',
-	});
-	const products = data?.getProducts.list ?? [];
-
-	return (
-		<section className="best-sellers container">
-			<div className="section-heading">
-				<div>
-					<span>Customer favorites</span>
-					<h2>Best Sellers</h2>
-				</div>
-				<Link href="/product?sort=productSold">
-					View all <ArrowForwardRoundedIcon />
-				</Link>
-			</div>
-
-			{loading && !products.length ? (
-				<p className="product-message">Loading products...</p>
-			) : error ? (
-				<p className="product-message product-message--error">Products could not be loaded.</p>
-			) : products.length ? (
-				<div className="product-grid">
-					{products.map((product) => <ProductCard product={product} key={product._id} />)}
-				</div>
-			) : (
-				<p className="product-message">No products available yet.</p>
-			)}
-		</section>
-	);
+BestSellers.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 5,
+		sort: 'productSold',
+		direction: Direction.DESC,
+		search: {},
+	},
 };
 
 export default BestSellers;

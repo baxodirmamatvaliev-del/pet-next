@@ -1,6 +1,8 @@
+import { FormEvent, useState } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {
 	Box,
+	Button,
 	Checkbox,
 	FormControl,
 	FormControlLabel,
@@ -10,14 +12,14 @@ import {
 	InputAdornment,
 	TextField,
 } from '@mui/material';
-import { FormEvent, useState } from 'react';
 
 import { ProductCategory, ProductType } from '../../enums/product.enum';
 import { ProductsInquiry } from '../../types/product/product.input';
 
-interface FilterProps {
-	search: ProductsInquiry['search'];
-	onChange: (search: ProductsInquiry['search']) => void;
+interface FilterType {
+	searchFilter: ProductsInquiry;
+	updateSearchFilter: (input: ProductsInquiry) => void;
+	initialInput: ProductsInquiry;
 }
 
 const categoryOptions = [
@@ -34,35 +36,65 @@ const typeOptions = [
 	{ label: 'Other', value: ProductType.OTHER },
 ];
 
-const Filter = ({ search, onChange }: FilterProps) => {
-	const [searchText, setSearchText] = useState(search.text ?? '');
+const Filter = (props: FilterType) => {
+	const { searchFilter, updateSearchFilter, initialInput } = props;
 
-	const toggleCategory = (category: ProductCategory) => {
-		const categoryList = search.categoryList ?? [];
+	/** STATES **/
+	const [searchText, setSearchText] = useState(searchFilter.search.text ?? '');
+
+	/** HANDLERS **/
+	const categorySelectHandler = (category: ProductCategory) => {
+		const categoryList = searchFilter.search.categoryList ?? [];
 		const nextCategories = categoryList.includes(category)
 			? categoryList.filter((item) => item !== category)
 			: [...categoryList, category];
 
-		onChange({ ...search, categoryList: nextCategories.length ? nextCategories : undefined });
+		updateSearchFilter({
+			...searchFilter,
+			page: 1,
+			search: {
+				...searchFilter.search,
+				categoryList: nextCategories.length ? nextCategories : undefined,
+			},
+		});
 	};
 
-	const toggleType = (type: ProductType) => {
-		const typeList = search.typeList ?? [];
+	const typeSelectHandler = (type: ProductType) => {
+		const typeList = searchFilter.search.typeList ?? [];
 		const nextTypes = typeList.includes(type)
 			? typeList.filter((item) => item !== type)
 			: [...typeList, type];
 
-		onChange({ ...search, typeList: nextTypes.length ? nextTypes : undefined });
+		updateSearchFilter({
+			...searchFilter,
+			page: 1,
+			search: {
+				...searchFilter.search,
+				typeList: nextTypes.length ? nextTypes : undefined,
+			},
+		});
 	};
 
-	const submitSearch = (event: FormEvent<HTMLFormElement>) => {
+	const searchHandler = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		onChange({ ...search, text: searchText.trim() || undefined });
+		updateSearchFilter({
+			...searchFilter,
+			page: 1,
+			search: {
+				...searchFilter.search,
+				text: searchText.trim() || undefined,
+			},
+		});
+	};
+
+	const resetFilterHandler = () => {
+		setSearchText('');
+		updateSearchFilter(initialInput);
 	};
 
 	return (
 		<Box component="aside" className="product-filter">
-			<Box component="form" className="product-filter__search" onSubmit={submitSearch}>
+			<Box component="form" className="product-filter__search" onSubmit={searchHandler}>
 				<TextField
 					fullWidth
 					size="small"
@@ -92,11 +124,13 @@ const Filter = ({ search, onChange }: FilterProps) => {
 						<FormControlLabel
 							key={value}
 							label={label}
-							control={<Checkbox
-								size="small"
-							checked={search.categoryList?.includes(value) ?? false}
-							onChange={() => toggleCategory(value)}
-							/>}
+							control={(
+								<Checkbox
+									size="small"
+									checked={searchFilter.search.categoryList?.includes(value) ?? false}
+									onChange={() => categorySelectHandler(value)}
+								/>
+							)}
 						/>
 					))}
 				</FormGroup>
@@ -109,15 +143,21 @@ const Filter = ({ search, onChange }: FilterProps) => {
 						<FormControlLabel
 							key={value}
 							label={label}
-							control={<Checkbox
-								size="small"
-							checked={search.typeList?.includes(value) ?? false}
-							onChange={() => toggleType(value)}
-							/>}
+							control={(
+								<Checkbox
+									size="small"
+									checked={searchFilter.search.typeList?.includes(value) ?? false}
+									onChange={() => typeSelectHandler(value)}
+								/>
+							)}
 						/>
 					))}
 				</FormGroup>
 			</FormControl>
+
+			<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>
+				Reset filters
+			</Button>
 		</Box>
 	);
 };

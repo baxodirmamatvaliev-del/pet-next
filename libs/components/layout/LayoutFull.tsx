@@ -6,8 +6,8 @@ import { getJwtToken, updateUserInfo } from '../../auth';
 import Footer from '../Footer';
 import Top from '../Top';
 
-const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => {
-	return function LayoutHome(props: P) {
+const withLayoutFull = <P extends object>(Component: React.ComponentType<P>) => {
+	return function LayoutFull(props: P) {
 		/** LIFECYCLES **/
 		useEffect(() => {
 			const token = getJwtToken();
@@ -17,9 +17,8 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 		return (
 			<>
 				<Head>
-					<title>PetNest Korea — Everything they love</title>
-					<meta name="description" content="Premium accessories and essentials for happy dogs and cats." />
-					<meta name="viewport" content="width=device-width, initial-scale=1" />
+					<title>Product Detail | PetNest Korea</title>
+					<meta name="description" content="Product details, variants and delivery information." />
 				</Head>
 
 				<Stack id="pc-wrap">
@@ -37,7 +36,7 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 				</Stack>
 			</>
 		);
-	}
+	};
 };
 
-export default withLayoutHome;
+export default withLayoutFull;

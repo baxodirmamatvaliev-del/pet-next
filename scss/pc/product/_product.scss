@@ -31,6 +31,11 @@
 		background: rgb(255 255 255 / 88%);
 		color: $primary;
 		cursor: pointer;
+		&.Mui-disabled {
+			background: rgb(255 255 255 / 70%);
+			color: $muted;
+			cursor: default;
+		}
 		svg {
 			font-size: 20px;
 		}
@@ -86,13 +91,14 @@
 				color: $muted;
 				font-size: 12px;
 			}
-			select {
+			.MuiFormControl-root {
+				min-width: 150px;
+			}
+			.MuiOutlinedInput-root {
 				height: 42px;
-				padding: 0 34px 0 13px;
-				border: 1px solid $border;
-				border-radius: 8px;
 				background: #ffffff;
 				color: $ink;
+				font-size: 13px;
 			}
 		}
 	}
@@ -136,6 +142,13 @@
 				}
 			}
 		}
+		.product-filter__reset {
+			width: 100%;
+			margin-top: 28px;
+			border-color: $border;
+			color: $primary;
+			font-size: 12px;
+		}
 	}
 	.product-results {
 		.product-results__count {
@@ -172,6 +185,142 @@
 			}
 			.MuiPaginationItem-root {
 				font-size: 13px;
+			}
+		}
+	}
+}
+
+.product-detail-state {
+	min-height: 520px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.product-detail-page {
+	padding-block: 28px 40px;
+	.product-detail-page__breadcrumb {
+		margin-bottom: 26px;
+		color: $muted;
+		font-size: 12px;
+		a:hover {
+			color: $primary;
+		}
+	}
+	.product-detail {
+		display: grid;
+		grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
+		gap: 48px;
+	}
+	.product-gallery {
+		display: grid;
+		grid-template-columns: 82px minmax(0, 1fr);
+		gap: 14px;
+		.product-gallery__thumbs {
+			gap: 10px;
+			.MuiButton-root {
+				position: relative;
+				min-width: 82px;
+				aspect-ratio: 1 / 1;
+				overflow: hidden;
+				padding: 0;
+				border: 2px solid transparent;
+				border-radius: 10px;
+				background: #f6f4ef;
+				&.active {
+					border-color: $primary;
+				}
+				img {
+					object-fit: cover;
+				}
+			}
+		}
+		.product-gallery__main {
+			position: relative;
+			aspect-ratio: 1 / 1;
+			overflow: hidden;
+			border-radius: 18px;
+			background: #f6f4ef;
+			img {
+				object-fit: cover;
+			}
+		}
+	}
+	.product-detail__info {
+		align-items: flex-start;
+		padding-top: 10px;
+		.product-detail__category {
+			color: $secondary;
+			font-size: 12px;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+		}
+		h1 {
+			margin-top: 12px;
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 38px;
+			line-height: 1.15;
+		}
+		.product-detail__rating {
+			margin-top: 13px;
+			color: $muted;
+			font-size: 13px;
+			span {
+				color: #f2a900;
+			}
+		}
+		.product-detail__price {
+			margin-top: 18px;
+			font-size: 27px;
+		}
+		.product-detail__benefits {
+			width: 100%;
+			gap: 10px;
+			margin-top: 24px;
+			padding: 18px;
+			border-radius: 10px;
+			background: $sage;
+			> div {
+				align-items: center;
+				gap: 10px;
+			}
+			svg {
+				color: $primary;
+				font-size: 19px;
+			}
+			p {
+				font-size: 12px;
+			}
+		}
+		.product-variants {
+			width: 100%;
+			margin-top: 26px;
+			> div {
+				flex-wrap: wrap;
+				gap: 9px;
+				margin-top: 12px;
+			}
+			.MuiButton-root {
+				min-width: 78px;
+				border-radius: 8px;
+				font-size: 12px;
+			}
+			> p {
+				margin-top: 11px;
+				color: $muted;
+				font-size: 12px;
+			}
+		}
+		.product-detail__description {
+			width: 100%;
+			margin-top: 28px;
+			padding-top: 24px;
+			border-top: 1px solid $border;
+			p {
+				margin-top: 10px;
+				color: $muted;
+				font-size: 13px;
+				line-height: 1.7;
 			}
 		}
 	}

@@ -1,32 +1,39 @@
+import { ChangeEvent, useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Box, FormControl, MenuItem, Pagination, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
-import type { NextPage } from 'next';
+import {
+	Box,
+	FormControl,
+	MenuItem,
+	Pagination,
+	Select,
+	SelectChangeEvent,
+	Stack,
+	Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useMemo } from 'react';
 
 import { GET_PRODUCTS } from '../../apollo/user/query';
-import withLayoutHome from '../../libs/components/layout/LayoutHome';
+import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Filter from '../../libs/components/product/Filter';
 import ProductCard from '../../libs/components/product/ProductCard';
 import { Direction } from '../../libs/enums/common.enum';
 import { ProductCategory } from '../../libs/enums/product.enum';
+import { T } from '../../libs/types/common';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
-import { Products } from '../../libs/types/product/product';
+import { Product } from '../../libs/types/product/product';
 
-interface GetProductsData {
-	getProducts: Products;
+interface ProductListProps {
+	initialInput?: ProductsInquiry;
 }
 
-const initialInput: ProductsInquiry = {
-	page: 1,
-	limit: 12,
-	sort: 'createdAt',
-	direction: Direction.DESC,
-	search: {},
-};
-
-const ProductList: NextPage = () => {
+const ProductList = (props: ProductListProps) => {
+	const { initialInput = ProductList.defaultProps.initialInput } = props;
 	const router = useRouter();
+
+	/** STATES **/
+	const [products, setProducts] = useState<Product[]>([]);
+	const [total, setTotal] = useState(0);
+
 	const searchFilter = useMemo<ProductsInquiry>(() => {
 		if (typeof router.query.input === 'string') {
 			try {
@@ -44,30 +51,45 @@ const ProductList: NextPage = () => {
 			sort,
 			search: category ? { categoryList: [category] } : {},
 		};
-	}, [router.query.category, router.query.input, router.query.sort]);
-	const { data, loading, error } = useQuery<GetProductsData, { input: ProductsInquiry }>(GET_PRODUCTS, {
+	}, [initialInput, router.query.category, router.query.input, router.query.sort]);
+
+	/** APOLLO REQUESTS **/
+	const {
+		loading: getProductsLoading,
+		error: getProductsError,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'network-only',
 		variables: { input: searchFilter },
-		fetchPolicy: 'cache-and-network',
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getProducts?.list) setProducts(data.getProducts.list);
+			setTotal(data?.getProducts?.metaCounter[0]?.total ?? 0);
+		},
 	});
-	const products = data?.getProducts.list ?? [];
-	const total = data?.getProducts.metaCounter[0]?.total ?? 0;
+
+	/** HANDLERS **/
+	const updateSearchFilterHandler = (input: ProductsInquiry) => {
+		void router.push(
+			{ pathname: '/product', query: { input: JSON.stringify(input) } },
+			undefined,
+			{ scroll: false },
+		);
+	};
+
+	const sortingHandler = (event: SelectChangeEvent) => {
+		const input = { ...searchFilter, page: 1, sort: event.target.value };
+		updateSearchFilterHandler(input);
+	};
+
+	const paginationChangeHandler = (_event: ChangeEvent<unknown>, page: number) => {
+		const input = { ...searchFilter, page };
+		updateSearchFilterHandler(input);
+	};
+
+	/** COMPUTED VALUES **/
 	const totalPages = Math.ceil(total / searchFilter.limit);
 
-	const changeSearch = (search: ProductsInquiry['search']) => {
-		const input = { ...searchFilter, page: 1, search };
-		void router.push({ pathname: '/product', query: { input: JSON.stringify(input) } }, undefined, { scroll: false });
-	};
-
-	const changeSort = (event: SelectChangeEvent) => {
-		const input = { ...searchFilter, page: 1, sort: event.target.value };
-		void router.push({ pathname: '/product', query: { input: JSON.stringify(input) } }, undefined, { scroll: false });
-	};
-
-	const changePage = (_event: ChangeEvent<unknown>, page: number) => {
-		const input = { ...searchFilter, page };
-		void router.push({ pathname: '/product', query: { input: JSON.stringify(input) } }, undefined, { scroll: false });
-	};
-
+	/** RENDER **/
 	return (
 		<Box component="main" className="product-list-page container">
 			<Stack direction="row" className="product-list-page__heading">
@@ -78,7 +100,7 @@ const ProductList: NextPage = () => {
 				<Stack direction="row" component="label">
 					<Typography component="span">Sort by</Typography>
 					<FormControl size="small">
-						<Select value={searchFilter.sort} onChange={changeSort}>
+						<Select value={searchFilter.sort} onChange={sortingHandler}>
 							<MenuItem value="createdAt">Newest</MenuItem>
 							<MenuItem value="productSold">Best selling</MenuItem>
 							<MenuItem value="productRating">Highest rated</MenuItem>
@@ -89,13 +111,19 @@ const ProductList: NextPage = () => {
 			</Stack>
 
 			<Box className="product-catalog">
-				<Filter search={searchFilter.search} onChange={changeSearch} />
+				<Filter
+					searchFilter={searchFilter}
+					updateSearchFilter={updateSearchFilterHandler}
+					initialInput={initialInput}
+				/>
 				<Box component="section" className="product-results" aria-live="polite">
 					<Typography className="product-results__count">{total} products</Typography>
-					{loading && !products.length ? (
+					{getProductsLoading && !products.length ? (
 						<Typography className="product-results__message">Loading products...</Typography>
-					) : error ? (
-						<Typography className="product-results__message product-results__message--error">Products could not be loaded.</Typography>
+					) : getProductsError ? (
+						<Typography className="product-results__message product-results__message--error">
+							Products could not be loaded.
+						</Typography>
 					) : products.length ? (
 						<Box className="product-results__grid">
 							{products.map((product) => <ProductCard product={product} key={product._id} />)}
@@ -108,7 +136,7 @@ const ProductList: NextPage = () => {
 							<Pagination
 								page={searchFilter.page}
 								count={totalPages}
-								onChange={changePage}
+								onChange={paginationChangeHandler}
 								color="primary"
 								shape="rounded"
 							/>
@@ -121,4 +149,14 @@ const ProductList: NextPage = () => {
 	);
 };
 
-export default withLayoutHome(ProductList);
+ProductList.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 12,
+		sort: 'createdAt',
+		direction: Direction.DESC,
+		search: {},
+	},
+};
+
+export default withLayoutBasic(ProductList);

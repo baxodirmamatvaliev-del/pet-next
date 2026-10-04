@@ -68,6 +68,9 @@
 	border-radius: 10px;
 	background: #fbfaf7;
 	color: $muted;
+	.MuiOutlinedInput-notchedOutline {
+		border: 0;
+	}
 	input {
 		width: 100%;
 		border: 0;

@@ -16,7 +16,7 @@
 			label span {
 				display: none;
 			}
-			select {
+			.MuiFormControl-root {
 				max-width: 135px;
 			}
 		}
@@ -52,6 +52,34 @@
 				flex-direction: column;
 				gap: 14px;
 				margin-top: 34px;
+			}
+		}
+	}
+	.product-detail-state {
+		min-height: 360px;
+	}
+	.product-detail-page {
+		padding-top: 18px;
+		.product-detail {
+			grid-template-columns: 1fr;
+			gap: 28px;
+		}
+		.product-gallery {
+			grid-template-columns: 1fr;
+			.product-gallery__thumbs {
+				order: 2;
+				flex-direction: row;
+				overflow-x: auto;
+				.MuiButton-root {
+					min-width: 68px;
+					width: 68px;
+				}
+			}
+		}
+		.product-detail__info {
+			padding-top: 0;
+			h1 {
+				font-size: 30px;
 			}
 		}
 	}
