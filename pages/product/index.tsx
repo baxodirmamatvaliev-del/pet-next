@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client';
-import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { Box, FormControl, MenuItem, Pagination, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { ChangeEvent, useMemo } from 'react';
 
 import { GET_PRODUCTS } from '../../apollo/user/query';
 import withLayoutHome from '../../libs/components/layout/LayoutHome';
@@ -51,6 +51,7 @@ const ProductList: NextPage = () => {
 	});
 	const products = data?.getProducts.list ?? [];
 	const total = data?.getProducts.metaCounter[0]?.total ?? 0;
+	const totalPages = Math.ceil(total / searchFilter.limit);
 
 	const changeSearch = (search: ProductsInquiry['search']) => {
 		const input = { ...searchFilter, page: 1, search };
@@ -59,6 +60,11 @@ const ProductList: NextPage = () => {
 
 	const changeSort = (event: SelectChangeEvent) => {
 		const input = { ...searchFilter, page: 1, sort: event.target.value };
+		void router.push({ pathname: '/product', query: { input: JSON.stringify(input) } }, undefined, { scroll: false });
+	};
+
+	const changePage = (_event: ChangeEvent<unknown>, page: number) => {
+		const input = { ...searchFilter, page };
 		void router.push({ pathname: '/product', query: { input: JSON.stringify(input) } }, undefined, { scroll: false });
 	};
 
@@ -96,6 +102,18 @@ const ProductList: NextPage = () => {
 						</Box>
 					) : (
 						<Typography className="product-results__message">No products match your filters.</Typography>
+					)}
+					{products.length > 0 && totalPages > 0 && (
+						<Stack direction="row" className="product-pagination">
+							<Pagination
+								page={searchFilter.page}
+								count={totalPages}
+								onChange={changePage}
+								color="primary"
+								shape="rounded"
+							/>
+							<Typography>{total} products available</Typography>
+						</Stack>
 					)}
 				</Box>
 			</Box>

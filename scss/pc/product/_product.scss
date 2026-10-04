@@ -160,5 +160,19 @@
 				color: $secondary;
 			}
 		}
+		.product-pagination {
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 46px;
+			padding-top: 24px;
+			border-top: 1px solid $border;
+			> p {
+				color: $muted;
+				font-size: 12px;
+			}
+			.MuiPaginationItem-root {
+				font-size: 13px;
+			}
+		}
 	}
 }

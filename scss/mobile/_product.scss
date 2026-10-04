@@ -47,6 +47,12 @@
 				grid-template-columns: 1fr 1fr;
 				gap: 26px 12px;
 			}
+			.product-pagination {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 14px;
+				margin-top: 34px;
+			}
 		}
 	}
 }
