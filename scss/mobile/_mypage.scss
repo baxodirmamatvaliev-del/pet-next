@@ -1,0 +1,76 @@
+@media (max-width: 760px) {
+	#my-page {
+		padding-block: 28px 48px;
+		.mypage-state {
+			min-height: 380px;
+			padding-inline: 24px;
+			h1 {
+				font-size: 26px;
+			}
+		}
+		.mypage-content {
+			grid-template-columns: 1fr;
+			gap: 18px;
+		}
+		.my-menu {
+			position: static;
+			.my-menu__profile {
+				padding: 18px;
+			}
+			.my-menu__label {
+				display: none;
+			}
+			.MuiList-root {
+				display: flex;
+				overflow-x: auto;
+				padding: 8px;
+			}
+			.MuiListItemButton-root {
+				min-width: max-content;
+				margin: 0;
+			}
+		}
+		.mypage-main {
+			padding: 20px 14px;
+		}
+		.my-orders {
+			.my-orders__heading h1 {
+				font-size: 27px;
+			}
+			.order-tabs {
+				margin-top: 20px;
+			}
+			.my-orders__pagination {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 12px;
+			}
+		}
+		.order-card {
+			.order-card__header {
+				align-items: flex-start;
+				flex-wrap: wrap;
+				gap: 12px 24px;
+				.order-status {
+					margin-left: 0;
+				}
+			}
+			.order-card__body {
+				grid-template-columns: 1fr;
+				gap: 18px;
+			}
+			.order-card__delivery {
+				padding-top: 18px;
+				padding-left: 0;
+				border-top: 1px solid #e7e5df;
+				border-left: 0;
+			}
+			.order-product {
+				.order-product__image {
+					width: 58px;
+					flex-basis: 58px;
+				}
+			}
+		}
+	}
+}

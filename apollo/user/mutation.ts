@@ -207,6 +207,35 @@ export const CREATE_ORDER = gql`
 	}
 `;
 
+export const CANCEL_ORDER = gql`
+	mutation CancelOrder($orderId: String!) {
+		cancelOrder(orderId: $orderId) {
+			_id
+			memberId
+			orderStatus
+			orderItems {
+				productId
+				sku
+				productName
+				productImage
+				quantity
+				unitPrice
+				subtotal
+			}
+			totalAmount
+			recipientName
+			recipientPhone
+			deliveryAddress
+			deliveryNote
+			cancelledAt
+			shippedAt
+			deliveredAt
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
 /**************************
  *         PAYMENT        *
  *************************/

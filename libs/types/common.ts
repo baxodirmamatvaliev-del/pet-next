@@ -1,6 +1,6 @@
 import { Cart } from './cart/cart';
 import { AuthPayload, Member } from './member/member';
-import { Order } from './order/order';
+import { Order, Orders } from './order/order';
 import { Payment } from './payment/payment';
 import { Product, Products } from './product/product';
 
@@ -15,5 +15,7 @@ export interface T {
 	removeCartItem?: Cart;
 	clearCart?: Cart;
 	createOrder?: Order;
+	getMyOrders?: Orders;
+	cancelOrder?: Order;
 	createPayment?: Payment;
 }

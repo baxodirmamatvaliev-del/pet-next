@@ -98,3 +98,41 @@ export const GET_MY_CART = gql`
 		}
 	}
 `;
+
+/**************************
+ *          ORDER         *
+ *************************/
+
+export const GET_MY_ORDERS = gql`
+	query GetMyOrders($input: MyOrdersInquiry!) {
+		getMyOrders(input: $input) {
+			list {
+				_id
+				memberId
+				orderStatus
+				orderItems {
+					productId
+					sku
+					productName
+					productImage
+					quantity
+					unitPrice
+					subtotal
+				}
+				totalAmount
+				recipientName
+				recipientPhone
+				deliveryAddress
+				deliveryNote
+				cancelledAt
+				shippedAt
+				deliveredAt
+				createdAt
+				updatedAt
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;

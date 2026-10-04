@@ -1,0 +1,295 @@
+@use '../../variables' as *;
+
+#my-page {
+	min-height: 620px;
+	padding-block: 48px 80px;
+	background: #fbfaf7;
+	.mypage-state {
+		min-height: 480px;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		> svg {
+			color: $primary;
+			font-size: 58px;
+		}
+		h1 {
+			margin-top: 18px;
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 30px;
+		}
+		p {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 13px;
+		}
+		.MuiButton-root {
+			margin-top: 24px;
+			padding-inline: 28px;
+		}
+	}
+	.mypage-content {
+		display: grid;
+		grid-template-columns: 250px minmax(0, 1fr);
+		align-items: start;
+		gap: 28px;
+	}
+	.my-menu {
+		position: sticky;
+		top: 20px;
+		overflow: hidden;
+		border: 1px solid $border;
+		border-radius: 14px;
+		background: #ffffff;
+		.my-menu__profile {
+			align-items: center;
+			gap: 12px;
+			padding: 24px 20px;
+			border-bottom: 1px solid $border;
+			> div {
+				width: 48px;
+				height: 48px;
+				display: grid;
+				flex: 0 0 48px;
+				place-items: center;
+				border-radius: 50%;
+				background: $sage;
+				color: $primary;
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 21px;
+				font-weight: 800;
+			}
+			strong {
+				font-size: 13px;
+			}
+			p {
+				margin-top: 5px;
+				color: $muted;
+				font-size: 10px;
+			}
+		}
+		.my-menu__label {
+			padding: 22px 20px 10px;
+			color: $muted;
+			font-size: 10px;
+			font-weight: 800;
+			letter-spacing: 0.1em;
+		}
+		.MuiList-root {
+			padding: 0 10px 14px;
+		}
+		.MuiListItemButton-root {
+			min-height: 46px;
+			margin-top: 4px;
+			border-radius: 9px;
+			color: $muted;
+			&.active {
+				background: $sage;
+				color: $primary;
+			}
+			.MuiListItemIcon-root {
+				min-width: 38px;
+				color: inherit;
+				svg {
+					font-size: 20px;
+				}
+			}
+			.MuiListItemText-primary {
+				font-size: 12px;
+				font-weight: 700;
+			}
+		}
+	}
+	.mypage-main {
+		min-width: 0;
+		padding: 30px;
+		border: 1px solid $border;
+		border-radius: 14px;
+		background: #ffffff;
+	}
+	.my-orders {
+		.my-orders__heading {
+			h1 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 32px;
+			}
+			p {
+				margin-top: 7px;
+				color: $muted;
+				font-size: 12px;
+			}
+		}
+		.order-tabs {
+			gap: 4px;
+			overflow-x: auto;
+			margin-top: 26px;
+			padding-bottom: 13px;
+			border-bottom: 1px solid $border;
+			.MuiButton-root {
+				min-width: auto;
+				padding: 7px 13px;
+				border-radius: 18px;
+				color: $muted;
+				font-size: 11px;
+				white-space: nowrap;
+				&.active {
+					background: $primary;
+					color: #ffffff;
+				}
+			}
+		}
+		.my-orders__state {
+			min-height: 340px;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			h2 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 24px;
+			}
+			p {
+				margin-top: 7px;
+				color: $muted;
+				font-size: 12px;
+			}
+		}
+		.order-list {
+			gap: 16px;
+			margin-top: 20px;
+		}
+		.my-orders__pagination {
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 28px;
+			padding-top: 20px;
+			border-top: 1px solid $border;
+			> p {
+				color: $muted;
+				font-size: 11px;
+			}
+		}
+	}
+	.order-card {
+		overflow: hidden;
+		border: 1px solid $border;
+		border-radius: 12px;
+		.order-card__header {
+			align-items: center;
+			gap: 28px;
+			padding: 15px 18px;
+			background: $cream;
+			> div {
+				display: flex;
+				flex-direction: column;
+				gap: 3px;
+			}
+			span {
+				color: $muted;
+				font-size: 9px;
+				font-weight: 700;
+				letter-spacing: 0.06em;
+			}
+			strong,
+			p {
+				font-size: 11px;
+			}
+			.order-status {
+				margin-left: auto;
+				font-size: 9px;
+				font-weight: 800;
+				&.order-status--pending {
+					background: #fff0c9;
+					color: #8b6500;
+				}
+				&.order-status--payment_confirmed {
+					background: #dff0e5;
+					color: $primary;
+				}
+				&.order-status--in_transit {
+					background: #dceeff;
+					color: #245c8c;
+				}
+				&.order-status--delivered_to_customer {
+					background: $sage;
+					color: $primary;
+				}
+				&.order-status--cancelled {
+					background: #f9e2e0;
+					color: #a34036;
+				}
+			}
+		}
+		.order-card__body {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 250px;
+			gap: 24px;
+			padding: 18px;
+		}
+		.order-card__products {
+			gap: 14px;
+		}
+		.order-product {
+			align-items: center;
+			gap: 12px;
+			.order-product__image {
+				position: relative;
+				width: 66px;
+				aspect-ratio: 1 / 1;
+				overflow: hidden;
+				flex: 0 0 66px;
+				border-radius: 8px;
+				background: #f6f4ef;
+				img {
+					object-fit: cover;
+				}
+			}
+			> div {
+				min-width: 0;
+				flex: 1;
+				a {
+					display: block;
+					overflow: hidden;
+					font-size: 12px;
+					font-weight: 800;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+				p {
+					margin-top: 5px;
+					color: $muted;
+					font-size: 10px;
+				}
+			}
+			> strong {
+				font-size: 12px;
+			}
+		}
+		.order-card__delivery {
+			gap: 14px;
+			padding-left: 22px;
+			border-left: 1px solid $border;
+			> .MuiStack-root {
+				align-items: flex-start;
+				gap: 9px;
+				svg {
+					color: $primary;
+					font-size: 18px;
+				}
+				strong {
+					font-size: 11px;
+				}
+				p {
+					margin-top: 4px;
+					color: $muted;
+					font-size: 10px;
+					line-height: 1.5;
+				}
+			}
+			> .MuiButton-root {
+				align-self: flex-start;
+				margin-top: 2px;
+				font-size: 10px;
+			}
+		}
+	}
+}

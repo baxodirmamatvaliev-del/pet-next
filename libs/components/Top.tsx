@@ -57,7 +57,11 @@ const Top = () => {
 						<FavoriteBorderRoundedIcon />
 						<Typography component="span">Favorites</Typography>
 					</Stack>
-					<Stack component={Link} href="/account/join" aria-label={user?.sub ? 'My account' : 'Login'}>
+					<Stack
+						component={Link}
+						href={user?.sub ? '/mypage' : '/account/join'}
+						aria-label={user?.sub ? 'My account' : 'Login'}
+					>
 						<PersonOutlineRoundedIcon />
 						<Typography component="span">{user?.sub ? 'My Account' : 'Login'}</Typography>
 					</Stack>
