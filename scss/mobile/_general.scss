@@ -5,6 +5,9 @@
 	.announcement {
 		height: 34px;
 		font-size: 10px;
+		.MuiTypography-root {
+			font-size: 10px;
+		}
 		.announcement__kr {
 			display: none;
 		}

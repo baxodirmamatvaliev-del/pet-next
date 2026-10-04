@@ -1,0 +1,29 @@
+@media (max-width: 760px) {
+	.join-page {
+		padding: 22px 0 48px;
+		.join-card {
+			min-height: auto;
+			grid-template-columns: minmax(0, 1fr);
+			border-radius: 16px;
+		}
+		.join-form {
+			min-width: 0;
+			padding: 34px 22px 40px;
+			.join-switch,
+			.join-fields {
+				min-width: 0;
+				width: 100%;
+			}
+			.join-heading,
+			.join-session {
+				margin-top: 32px;
+				h1 {
+					font-size: 31px;
+				}
+			}
+		}
+		.join-side {
+			display: none;
+		}
+	}
+}
