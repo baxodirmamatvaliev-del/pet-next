@@ -1,4 +1,4 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
 import { GET_MY_CART } from '../../apollo/user/query';
+import MobileMenu from './MobileMenu';
 import { T } from '../types/common';
 
 const Top = () => {
@@ -19,6 +20,7 @@ const Top = () => {
 
 	/** STATES **/
 	const searchInputRef = useRef<HTMLInputElement>(null);
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const user = useReactiveVar(userVar);
 	const cartCount = useReactiveVar(cartCountVar);
 
@@ -33,14 +35,25 @@ const Top = () => {
 	});
 
 	/** HANDLERS **/
-	const searchHandler = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		const text = searchInputRef.current?.value.trim() ?? '';
+	const searchProductsHandler = (searchText: string) => {
+		const text = searchText.trim();
 		void router.push({
 			pathname: '/product',
 			query: text ? { text } : {},
 		});
+	};
+
+	const searchHandler = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		searchProductsHandler(searchInputRef.current?.value ?? '');
+	};
+
+	const mobileMenuOpenHandler = () => {
+		setMobileMenuOpen(true);
+	};
+
+	const mobileMenuCloseHandler = () => {
+		setMobileMenuOpen(false);
 	};
 
 	/** RENDER **/
@@ -97,7 +110,12 @@ const Top = () => {
 						<Typography component="b">{cartCount}</Typography>
 					</Stack>
 				</Stack>
-				<IconButton className="mobile-menu" aria-label="Open menu">
+				<IconButton
+					className="mobile-menu"
+					onClick={mobileMenuOpenHandler}
+					aria-label="Open menu"
+					aria-expanded={mobileMenuOpen}
+				>
 					<MenuRoundedIcon />
 				</IconButton>
 			</Box>
@@ -112,6 +130,13 @@ const Top = () => {
 					<Link href="/pet">Community</Link>
 				</Stack>
 			</Box>
+			<MobileMenu
+				open={mobileMenuOpen}
+				authenticated={Boolean(user?.sub)}
+				cartCount={cartCount}
+				closeHandler={mobileMenuCloseHandler}
+				searchProductsHandler={searchProductsHandler}
+			/>
 		</Stack>
 	);
 };
