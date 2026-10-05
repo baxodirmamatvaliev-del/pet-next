@@ -30,7 +30,8 @@ import { GET_MY_CART } from '../../apollo/user/query';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
-import { PaymentMethod } from '../../libs/enums/payment.enum';
+import { OrderStatus } from '../../libs/enums/order.enum';
+import { PaymentMethod, PaymentStatus } from '../../libs/enums/payment.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { Cart } from '../../libs/types/cart/cart';
@@ -90,14 +91,19 @@ const CheckoutPage: NextPage = () => {
 			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
 			if (!cart?.cartItems.length) return;
 
-			const input: CreateOrderInput = {
-				...orderInput,
-				deliveryNote: orderInput.deliveryNote?.trim() || undefined,
-			};
-			const orderResult = await createOrder({ variables: { input } });
-			const orderData = orderResult.data as T | null | undefined;
-			const createdOrder = orderData?.createOrder;
-			if (!createdOrder) throw new Error(Message.SOMETHING_WENT_WRONG);
+			let createdOrder = order;
+			if (!createdOrder) {
+				const input: CreateOrderInput = {
+					...orderInput,
+					deliveryNote: orderInput.deliveryNote?.trim() || undefined,
+				};
+				const orderResult = await createOrder({ variables: { input } });
+				const orderData = orderResult.data as T | null | undefined;
+				createdOrder = orderData?.createOrder ?? null;
+				if (!createdOrder) throw new Error(Message.SOMETHING_WENT_WRONG);
+				setOrder(createdOrder);
+			}
+			if (createdOrder.orderStatus === OrderStatus.CANCELLED) return;
 
 			const paymentInput: CreatePaymentInput = {
 				orderId: createdOrder._id,
@@ -108,9 +114,10 @@ const CheckoutPage: NextPage = () => {
 			const createdPayment = paymentData?.createPayment;
 			if (!createdPayment) throw new Error(Message.SOMETHING_WENT_WRONG);
 
-			setOrder(createdOrder);
 			setPayment(createdPayment);
-			await sweetTopSmallSuccessAlert('Order placed successfully', 900);
+			if (createdPayment.paymentStatus !== PaymentStatus.CANCELLED) {
+				await sweetTopSmallSuccessAlert('Order request submitted', 900);
+			}
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
 			await sweetMixinErrorAlert(message);
@@ -124,6 +131,9 @@ const CheckoutPage: NextPage = () => {
 		|| !orderInput.recipientPhone.trim()
 		|| !orderInput.deliveryAddress.trim();
 	const hasUnavailableItems = cart?.cartItems.some((cartItem) => !cartItem.available) ?? false;
+	const isPaymentConfirmed = payment?.paymentStatus === PaymentStatus.CONFIRMED;
+	const isOrderCancelled = order?.orderStatus === OrderStatus.CANCELLED
+		|| payment?.paymentStatus === PaymentStatus.CANCELLED;
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
@@ -149,18 +159,28 @@ const CheckoutPage: NextPage = () => {
 						<Stack className="checkout-state"><CircularProgress color="primary" /></Stack>
 					) : getMyCartError ? (
 						<Alert severity="error">Checkout information could not be loaded.</Alert>
+					) : isOrderCancelled ? (
+						<Stack className="checkout-state">
+							<Alert severity="warning">This order or its payment request was cancelled. It cannot be retried.</Alert>
+							<Button component={Link} href="/mypage?category=myOrders" variant="contained">View my orders</Button>
+						</Stack>
 					) : order && payment ? (
 						<Stack className="checkout-success">
 							<CheckCircleOutlineRoundedIcon />
 							<Typography component="span">ORDER RECEIVED</Typography>
 							<Typography component="h2">Thank you for your order</Typography>
-							<Typography>Your order has been created and the payment request is waiting for confirmation.</Typography>
+							<Typography>{isPaymentConfirmed ? 'Your payment has been confirmed.' : 'Your order has been created and the payment request is waiting for confirmation.'}</Typography>
 							<Box className="checkout-success__details">
 								<Stack direction="row"><Typography>Order number</Typography><Typography component="strong">#{order._id.slice(-8).toUpperCase()}</Typography></Stack>
 								<Stack direction="row"><Typography>Total</Typography><Typography component="strong">₩{formatterStr(order.totalAmount)}</Typography></Stack>
-								<Stack direction="row"><Typography>Payment</Typography><Chip label={payment.paymentStatus} color="warning" size="small" /></Stack>
+								<Stack direction="row"><Typography>Payment</Typography><Chip label={payment.paymentStatus} color={isPaymentConfirmed ? 'success' : 'warning'} size="small" /></Stack>
 							</Box>
 							<Button component={Link} href="/product" variant="contained">Continue shopping</Button>
+						</Stack>
+					) : order ? (
+						<Stack component="form" className="checkout-state" onSubmit={checkoutHandler}>
+							<Alert severity="warning">Order #{order._id.slice(-8).toUpperCase()} was created, but the payment request could not be confirmed here. No online charge was made.</Alert>
+							<Button type="submit" variant="contained" disabled={isCheckoutLoading}>{isCheckoutLoading ? 'Retrying...' : 'Retry payment request'}</Button>
 						</Stack>
 					) : !cart?.cartItems.length ? (
 						<Stack className="checkout-state">
@@ -221,15 +241,16 @@ const CheckoutPage: NextPage = () => {
 										<Typography component="span">2</Typography>
 										<Typography component="h2">Payment method</Typography>
 									</Stack>
+									<Alert className="checkout-section__notice" severity="info">No online charge is taken yet. Your payment request will remain pending until confirmed.</Alert>
 									<FormControl className="payment-methods">
 										<RadioGroup value={paymentMethod} onChange={(event) => paymentMethodChangeHandler(event.target.value)}>
-											<FormControlLabel value={PaymentMethod.CARD} control={<Radio />} label={<Stack direction="row"><CreditCardRoundedIcon /><Box><Typography component="strong">Pay with card</Typography><Typography>Secure credit or debit card payment</Typography></Box></Stack>} />
-											<FormControlLabel value={PaymentMethod.KAKAO_PAY} control={<Radio />} label={<Stack direction="row"><Typography component="b">K</Typography><Box><Typography component="strong">Kakao Pay</Typography><Typography>Fast payment with your Kakao account</Typography></Box></Stack>} />
+											<FormControlLabel value={PaymentMethod.CARD} control={<Radio />} label={<Stack direction="row"><CreditCardRoundedIcon /><Box><Typography component="strong">Card preference</Typography><Typography>No card charge is made yet</Typography></Box></Stack>} />
+											<FormControlLabel value={PaymentMethod.KAKAO_PAY} control={<Radio />} label={<Stack direction="row"><Typography component="b">K</Typography><Box><Typography component="strong">Kakao Pay preference</Typography><Typography>No Kakao Pay charge is made yet</Typography></Box></Stack>} />
 										</RadioGroup>
 									</FormControl>
 								</Box>
 								<Button type="submit" variant="contained" disabled={isSubmitDisabled} startIcon={<LockOutlinedIcon />}>
-									{isCheckoutLoading ? 'Processing...' : `Place order · ₩${formatterStr(cart.totalAmount)}`}
+									{isCheckoutLoading ? 'Processing...' : `Submit order request · ₩${formatterStr(cart.totalAmount)}`}
 								</Button>
 							</Stack>
 						</Stack>
@@ -267,14 +288,17 @@ const CheckoutPage: NextPage = () => {
 						</Stack>
 					) : getMyCartError ? (
 						<Alert severity="error">Checkout information could not be loaded.</Alert>
+					) : isOrderCancelled ? (
+						<Stack className="checkout-state">
+							<Alert severity="warning">This order or its payment request was cancelled. It cannot be retried.</Alert>
+							<Button component={Link} href="/mypage?category=myOrders" variant="contained">View my orders</Button>
+						</Stack>
 					) : order && payment ? (
 						<Stack className="checkout-success">
 							<CheckCircleOutlineRoundedIcon />
 							<Typography component="span">ORDER RECEIVED</Typography>
 							<Typography component="h2">Thank you for your order</Typography>
-							<Typography>
-								Your order has been created and the payment request is waiting for confirmation.
-							</Typography>
+							<Typography>{isPaymentConfirmed ? 'Your payment has been confirmed.' : 'Your order has been created and the payment request is waiting for confirmation.'}</Typography>
 							<Box className="checkout-success__details">
 								<Stack direction="row">
 									<Typography>Order number</Typography>
@@ -286,12 +310,17 @@ const CheckoutPage: NextPage = () => {
 								</Stack>
 								<Stack direction="row">
 									<Typography>Payment</Typography>
-									<Chip label={payment.paymentStatus} color="warning" size="small" />
+									<Chip label={payment.paymentStatus} color={isPaymentConfirmed ? 'success' : 'warning'} size="small" />
 								</Stack>
 							</Box>
 							<Button component={Link} href="/product" variant="contained">
 								Continue shopping
 							</Button>
+						</Stack>
+					) : order ? (
+						<Stack component="form" className="checkout-state" onSubmit={checkoutHandler}>
+							<Alert severity="warning">Order #{order._id.slice(-8).toUpperCase()} was created, but the payment request could not be confirmed here. No online charge was made.</Alert>
+							<Button type="submit" variant="contained" disabled={isCheckoutLoading}>{isCheckoutLoading ? 'Retrying...' : 'Retry payment request'}</Button>
 						</Stack>
 					) : !cart?.cartItems.length ? (
 						<Stack className="checkout-state">
@@ -364,6 +393,7 @@ const CheckoutPage: NextPage = () => {
 											<Typography>Select how you want to pay for your order.</Typography>
 										</Box>
 									</Stack>
+									<Alert className="checkout-section__notice" severity="info">No online charge is taken yet. Your payment request will remain pending until confirmed.</Alert>
 									<FormControl className="payment-methods">
 										<RadioGroup
 											value={paymentMethod}
@@ -376,8 +406,8 @@ const CheckoutPage: NextPage = () => {
 													<Stack direction="row">
 														<CreditCardRoundedIcon />
 														<Box>
-															<Typography component="strong">Pay with card</Typography>
-															<Typography>Secure credit or debit card payment</Typography>
+															<Typography component="strong">Card preference</Typography>
+															<Typography>No card charge is made yet</Typography>
 														</Box>
 													</Stack>
 												)}
@@ -389,8 +419,8 @@ const CheckoutPage: NextPage = () => {
 													<Stack direction="row">
 														<Typography component="b">K</Typography>
 														<Box>
-															<Typography component="strong">Kakao Pay</Typography>
-															<Typography>Fast payment with your Kakao account</Typography>
+															<Typography component="strong">Kakao Pay preference</Typography>
+															<Typography>No Kakao Pay charge is made yet</Typography>
 														</Box>
 													</Stack>
 												)}
@@ -405,7 +435,7 @@ const CheckoutPage: NextPage = () => {
 									disabled={isSubmitDisabled}
 									startIcon={<LockOutlinedIcon />}
 								>
-									{isCheckoutLoading ? 'Processing...' : `Place order · ₩${formatterStr(cart.totalAmount)}`}
+									{isCheckoutLoading ? 'Processing...' : `Submit order request · ₩${formatterStr(cart.totalAmount)}`}
 								</Button>
 							</Stack>
 

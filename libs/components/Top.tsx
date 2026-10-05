@@ -144,12 +144,11 @@ const Top = () => {
 				</Box>
 				<Box component="nav" className="category-nav" aria-label="Product categories">
 					<Stack direction="row" className="container category-nav__inner">
+						<Link href="/product">All Products</Link>
 						<Link href="/product?category=DOG">Dogs</Link>
 						<Link href="/product?category=CAT">Cats</Link>
 						<Link href="/product?sort=createdAt">New</Link>
 						<Link href="/product?sort=productSold">Best Sellers</Link>
-						<Link href="/product">Brands</Link>
-						<Link href="/product">Sale</Link>
 						<Link href="/pet">Community</Link>
 					</Stack>
 				</Box>

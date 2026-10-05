@@ -29,9 +29,9 @@ const Footer = () => {
 					</Stack>
 					<Stack className="footer-links">
 						<Typography component="strong">Explore</Typography>
-						<Link href="/about">Our Story</Link>
 						<Link href="/pet">Community</Link>
-						<Link href="/cs">Contact Us</Link>
+						<Link href="/pet/create">Create listing</Link>
+						<Link href="/mypage?category=myOrders">My orders</Link>
 					</Stack>
 				</Box>
 				<Box className="container site-footer__bottom">© 2026 PetNest Korea. All rights reserved.</Box>
@@ -63,15 +63,15 @@ const Footer = () => {
 						<Link href="/product?sort=productSold">Best Sellers</Link>
 					</Stack>
 					<Stack className="footer-links">
-						<Typography component="strong">Customer Service</Typography>
-						<Link href="/cs">Shipping & Delivery</Link>
-						<Link href="/cs">Returns & Refunds</Link>
-						<Link href="/cs">Contact Us</Link>
+						<Typography component="strong">Your account</Typography>
+						<Link href="/mypage?category=myOrders">My orders</Link>
+						<Link href="/mypage?category=myFavorites">Favorites</Link>
+						<Link href="/mypage?category=myProfile">My profile</Link>
 					</Stack>
 					<Stack className="footer-links">
-						<Typography component="strong">About Us</Typography>
-						<Link href="/about">Our Story</Link>
+						<Typography component="strong">Explore</Typography>
 						<Link href="/pet">Community</Link>
+						<Link href="/pet/create">Create listing</Link>
 					</Stack>
 				</Box>
 				<Box className="container site-footer__bottom">© 2026 PetNest Korea. All rights reserved.</Box>
