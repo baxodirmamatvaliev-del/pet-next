@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CrueltyFreeOutlinedIcon from '@mui/icons-material/CrueltyFreeOutlined';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
@@ -140,6 +141,10 @@ const MobileMenu = (props: MobileMenuProps) => {
 						<LocalMallOutlinedIcon />
 					</ListItemIcon>
 					<ListItemText primary="Shopping Cart" secondary={`${cartCount} items`} />
+				</ListItemButton>
+				<ListItemButton component={Link} href="/mypage?category=myFavorites" onClick={closeHandler}>
+					<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
+					<ListItemText primary="Favorites" />
 				</ListItemButton>
 			</List>
 		</Drawer>

@@ -15,6 +15,7 @@ export interface T {
 	getPets?: Pets;
 	getPet?: Pet;
 	getMyPets?: Pets;
+	getFavoritePets?: Pets;
 	likeTargetPet?: Pet;
 	createPet?: Pet;
 	updatePet?: Pet;

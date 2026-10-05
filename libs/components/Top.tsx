@@ -127,7 +127,7 @@ const Top = () => {
 						/>
 					</Box>
 					<Stack direction="row" component="nav" className="header-actions" aria-label="Account navigation">
-						<Stack component={Link} href="/favorites" aria-label="Favorites">
+						<Stack component={Link} href="/mypage?category=myFavorites" aria-label="Favorites">
 							<FavoriteBorderRoundedIcon />
 							<Typography component="span">Favorites</Typography>
 						</Stack>

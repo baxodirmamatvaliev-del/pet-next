@@ -1,4 +1,5 @@
 import React from 'react';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
@@ -39,6 +40,10 @@ const MyMenu = () => {
 					<ListItemButton component={Link} href="/mypage?category=myOrders" className={category === 'myOrders' ? 'active' : ''}>
 						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="Orders" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/mypage?category=myFavorites" className={category === 'myFavorites' ? 'active' : ''}>
+						<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
+						<ListItemText primary="Favorites" />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=myPets" className={category === 'myPets' ? 'active' : ''}>
 						<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
@@ -84,6 +89,14 @@ const MyMenu = () => {
 					>
 						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="My Orders" />
+					</ListItemButton>
+					<ListItemButton
+						component={Link}
+						href="/mypage?category=myFavorites"
+						className={category === 'myFavorites' ? 'active' : ''}
+					>
+						<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
+						<ListItemText primary="My Favorites" />
 					</ListItemButton>
 					<ListItemButton
 						component={Link}

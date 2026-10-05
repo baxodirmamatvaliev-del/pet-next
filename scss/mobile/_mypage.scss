@@ -70,6 +70,20 @@
 				}
 			}
 		}
+		.my-favorites {
+			.my-favorites__heading h1 {
+				font-size: 27px;
+			}
+			.my-favorites__grid {
+				grid-template-columns: 1fr;
+				gap: 18px;
+			}
+			.my-favorites__pagination {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 12px;
+			}
+		}
 		.my-pets {
 			.my-pets__heading {
 				align-items: flex-start;

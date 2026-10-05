@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 
 import { userVar } from '../../apollo/store';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
+import MyFavorites from '../../libs/components/mypage/MyFavorites';
 import MyMenu from '../../libs/components/mypage/MyMenu';
 import MyOrders from '../../libs/components/mypage/MyOrders';
 import MyPets from '../../libs/components/mypage/MyPets';
@@ -22,10 +23,13 @@ const MyPage: NextPage = () => {
 	/** STATES **/
 	const user = useReactiveVar(userVar);
 	const category = typeof router.query.category === 'string' ? router.query.category : 'myOrders';
+	const accountReferrer = category === 'myFavorites' ? '/mypage?category=myFavorites' : '/mypage';
+	const accountHref = `/account/join?referrer=${encodeURIComponent(accountReferrer)}`;
 	const activeContent = (
 		<Box component="section" className="mypage-main">
 			{category === 'myProfile' && <MyProfile />}
 			{category === 'myOrders' && <MyOrders />}
+			{category === 'myFavorites' && <MyFavorites />}
 			{category === 'myPets' && <MyPets />}
 		</Box>
 	);
@@ -44,7 +48,7 @@ const MyPage: NextPage = () => {
 								<LockOutlinedIcon />
 								<Typography component="h1">Sign in to view your account</Typography>
 								<Typography>Manage your PetNest orders from one secure place.</Typography>
-								<Button component={Link} href="/account/join?referrer=/mypage" variant="contained">
+								<Button component={Link} href={accountHref} variant="contained">
 									Login or sign up
 								</Button>
 							</Stack>
@@ -74,7 +78,7 @@ const MyPage: NextPage = () => {
 								<LockOutlinedIcon />
 								<Typography component="h1">Sign in to view your account</Typography>
 								<Typography>Manage your PetNest orders from one secure place.</Typography>
-								<Button component={Link} href="/account/join?referrer=/mypage" variant="contained">
+								<Button component={Link} href={accountHref} variant="contained">
 									Login or sign up
 								</Button>
 							</Stack>

@@ -248,6 +248,69 @@
 			}
 		}
 	}
+	.my-favorites {
+		.my-favorites__heading {
+			h1 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 32px;
+			}
+			p {
+				margin-top: 7px;
+				color: $muted;
+				font-size: 12px;
+			}
+		}
+		.my-favorites__grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 20px;
+			margin-top: 24px;
+		}
+		.my-favorites__item {
+			min-width: 0;
+			gap: 10px;
+			> .MuiButton-root {
+				align-self: flex-end;
+				border-radius: 9px;
+				font-size: 11px;
+				font-weight: 700;
+				text-transform: none;
+			}
+		}
+		.my-favorites__state {
+			min-height: 340px;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			text-align: center;
+			> svg {
+				color: $primary;
+				font-size: 40px;
+			}
+			h2 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 24px;
+			}
+			p {
+				color: $muted;
+				font-size: 12px;
+			}
+			.MuiButton-root {
+				margin-top: 14px;
+			}
+		}
+		.my-favorites__pagination {
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 26px;
+			padding-top: 18px;
+			border-top: 1px solid $border;
+			> p {
+				color: $muted;
+				font-size: 11px;
+			}
+		}
+	}
 	.my-pets {
 		.my-pets__heading {
 			align-items: center;
