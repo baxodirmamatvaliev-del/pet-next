@@ -14,6 +14,7 @@ import MyMenu from '../../libs/components/mypage/MyMenu';
 import MyOrders from '../../libs/components/mypage/MyOrders';
 import MyPets from '../../libs/components/mypage/MyPets';
 import MyProfile from '../../libs/components/mypage/MyProfile';
+import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 
 const MyPage: NextPage = () => {
@@ -23,13 +24,14 @@ const MyPage: NextPage = () => {
 	/** STATES **/
 	const user = useReactiveVar(userVar);
 	const category = typeof router.query.category === 'string' ? router.query.category : 'myOrders';
-	const accountReferrer = category === 'myFavorites' ? '/mypage?category=myFavorites' : '/mypage';
+	const accountReferrer = `/mypage?category=${encodeURIComponent(category)}`;
 	const accountHref = `/account/join?referrer=${encodeURIComponent(accountReferrer)}`;
 	const activeContent = (
 		<Box component="section" className="mypage-main">
 			{category === 'myProfile' && <MyProfile />}
 			{category === 'myOrders' && <MyOrders />}
 			{category === 'myFavorites' && <MyFavorites />}
+			{category === 'recentlyVisited' && <RecentlyVisited />}
 			{category === 'myPets' && <MyPets />}
 		</Box>
 	);

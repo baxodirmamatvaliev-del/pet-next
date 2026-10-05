@@ -248,8 +248,10 @@
 			}
 		}
 	}
-	.my-favorites {
-		.my-favorites__heading {
+	.my-favorites,
+	.recently-visited {
+		.my-favorites__heading,
+		.recently-visited__heading {
 			h1 {
 				font-family: Georgia, 'Times New Roman', serif;
 				font-size: 32px;
@@ -260,7 +262,8 @@
 				font-size: 12px;
 			}
 		}
-		.my-favorites__grid {
+		.my-favorites__grid,
+		.recently-visited__grid {
 			display: grid;
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 20px;
@@ -277,7 +280,8 @@
 				text-transform: none;
 			}
 		}
-		.my-favorites__state {
+		.my-favorites__state,
+		.recently-visited__state {
 			min-height: 340px;
 			align-items: center;
 			justify-content: center;
@@ -299,7 +303,8 @@
 				margin-top: 14px;
 			}
 		}
-		.my-favorites__pagination {
+		.my-favorites__pagination,
+		.recently-visited__pagination {
 			align-items: center;
 			justify-content: space-between;
 			margin-top: 26px;

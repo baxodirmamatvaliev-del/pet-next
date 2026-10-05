@@ -70,15 +70,19 @@
 				}
 			}
 		}
-		.my-favorites {
-			.my-favorites__heading h1 {
+		.my-favorites,
+		.recently-visited {
+			.my-favorites__heading h1,
+			.recently-visited__heading h1 {
 				font-size: 27px;
 			}
-			.my-favorites__grid {
+			.my-favorites__grid,
+			.recently-visited__grid {
 				grid-template-columns: 1fr;
 				gap: 18px;
 			}
-			.my-favorites__pagination {
+			.my-favorites__pagination,
+			.recently-visited__pagination {
 				align-items: flex-start;
 				flex-direction: column;
 				gap: 12px;

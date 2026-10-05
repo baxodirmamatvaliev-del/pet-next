@@ -47,6 +47,11 @@ export interface MyPetsInquiry {
 	};
 }
 
+export interface OrdinaryInquiry {
+	page: number;
+	limit: number;
+}
+
 export interface PetUpdateInput extends Partial<PetInput> {
 	_id: string;
 	petStatus?: PetStatus;
