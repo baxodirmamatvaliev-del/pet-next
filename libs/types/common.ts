@@ -15,6 +15,7 @@ export interface T {
 	getPets?: Pets;
 	getPet?: Pet;
 	likeTargetPet?: Pet;
+	createPet?: Pet;
 	getMyCart?: Cart;
 	addToCart?: Cart;
 	updateCartItem?: Cart;

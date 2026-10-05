@@ -79,8 +79,45 @@
 		}
 	}
 	.pet-results {
-		.pet-results__count {
+		.pet-results__toolbar {
+			align-items: center;
+			justify-content: space-between;
 			margin-bottom: 18px;
+			.pet-results__count {
+				margin: 0;
+			}
+			.pet-results__create {
+				min-width: 0;
+				min-height: 36px;
+				padding: 0 13px;
+				border: 1px solid $primary;
+				border-radius: 9px;
+				background: $primary;
+				color: #ffffff;
+				font-size: 12px;
+				font-weight: 700;
+				text-transform: none;
+				transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+				.MuiButton-startIcon {
+					margin-right: 5px;
+					margin-left: 0;
+					svg {
+						font-size: 18px;
+					}
+				}
+				&:hover {
+					transform: translateY(-2px);
+					border-color: $secondary;
+					background: $secondary;
+					box-shadow: 0 6px 14px rgb(255 112 87 / 24%);
+				}
+				&:active {
+					transform: translateY(0);
+					box-shadow: none;
+				}
+			}
+		}
+		.pet-results__count {
 			color: $muted;
 			font-size: 12px;
 		}
@@ -351,6 +388,100 @@
 				font-size: 14px;
 				line-height: 1.8;
 				white-space: pre-line;
+			}
+		}
+	}
+}
+
+.pet-create-page {
+	max-width: 900px;
+	padding-block: 48px 72px;
+	.pet-create-page__heading {
+		margin-bottom: 30px;
+		> p:first-child {
+			color: $secondary;
+			font-size: 11px;
+			font-weight: 800;
+			letter-spacing: 0.12em;
+		}
+		h1 {
+			margin-top: 8px;
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 38px;
+		}
+		> p:last-child {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 14px;
+		}
+	}
+	.pet-create-page__auth {
+		margin-bottom: 20px;
+		a {
+			color: $primary;
+			font-weight: 700;
+			text-decoration: underline;
+		}
+	}
+	.pet-create-form {
+		gap: 24px;
+		padding: 30px;
+		border: 1px solid $border;
+		border-radius: 16px;
+		background: #ffffff;
+		.pet-create-form__section-heading {
+			align-items: center;
+			gap: 10px;
+			color: $primary;
+			svg {
+				font-size: 22px;
+			}
+			h2 {
+				color: $ink;
+				font-size: 18px;
+			}
+		}
+		.pet-create-form__grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 18px;
+			.MuiInputBase-root {
+				background: #ffffff;
+			}
+		}
+		.pet-create-form__description {
+			.MuiInputBase-root {
+				background: #ffffff;
+			}
+		}
+		.pet-create-form__images {
+			align-items: flex-start;
+			gap: 8px;
+			> strong {
+				font-size: 14px;
+			}
+			> p {
+				color: $muted;
+				font-size: 12px;
+			}
+			.MuiButton-root {
+				margin-top: 6px;
+				border-color: $border;
+				color: $primary;
+			}
+			.pet-create-form__file-count {
+				max-width: 100%;
+				margin-top: 4px;
+				overflow-wrap: anywhere;
+				color: $muted;
+			}
+		}
+		.pet-create-form__actions {
+			justify-content: flex-end;
+			gap: 12px;
+			.MuiButton-root {
+				min-width: 145px;
+				min-height: 46px;
 			}
 		}
 	}

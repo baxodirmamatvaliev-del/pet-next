@@ -218,6 +218,15 @@ export const LIKE_TARGET_PET = gql`
 	}
 `;
 
+export const CREATE_PET = gql`
+	mutation CreatePet($input: PetInput!) {
+		createPet(input: $input) {
+			_id
+			petName
+		}
+	}
+`;
+
 /**************************
  *          ORDER         *
  *************************/

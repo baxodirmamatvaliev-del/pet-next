@@ -1,6 +1,8 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Box, FormControl, MenuItem, Pagination, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import { Box, Button, FormControl, MenuItem, Pagination, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { GET_PETS } from '../../apollo/user/query';
@@ -95,7 +97,17 @@ const PetList = (props: PetListProps) => {
 			<PetFilter searchFilter={searchFilter} updateSearchFilter={updateSearchFilterHandler} />
 
 			<Box component="section" className="pet-results" aria-live="polite">
-				<Typography className="pet-results__count">{total} pets available</Typography>
+				<Stack direction="row" className="pet-results__toolbar">
+					<Typography className="pet-results__count">{total} pets available</Typography>
+					<Button
+						component={Link}
+						href="/pet/create"
+						className="pet-results__create"
+						startIcon={<AddRoundedIcon />}
+					>
+						Create listing
+					</Button>
+				</Stack>
 				{getPetsLoading && !pets.length ? (
 					<Typography className="pet-results__message">Loading pets...</Typography>
 				) : getPetsError ? (

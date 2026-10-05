@@ -37,6 +37,17 @@
 			}
 		}
 		.pet-results {
+			.pet-results__toolbar {
+				gap: 10px;
+				.pet-results__count {
+					font-size: 11px;
+				}
+				.pet-results__create {
+					flex-shrink: 0;
+					padding: 0 10px;
+					font-size: 11px;
+				}
+			}
 			.pet-results__grid {
 				grid-template-columns: 1fr;
 				gap: 20px;
@@ -74,6 +85,28 @@
 			padding-top: 0;
 			h1 {
 				font-size: 30px;
+			}
+		}
+	}
+	.pet-create-page {
+		padding-block: 30px 48px;
+		.pet-create-page__heading {
+			h1 {
+				font-size: 30px;
+			}
+		}
+		.pet-create-form {
+			gap: 20px;
+			padding: 20px 16px;
+			.pet-create-form__grid {
+				grid-template-columns: 1fr;
+				gap: 16px;
+			}
+			.pet-create-form__actions {
+				flex-direction: column-reverse;
+				.MuiButton-root {
+					width: 100%;
+				}
 			}
 		}
 	}

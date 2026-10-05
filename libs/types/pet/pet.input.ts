@@ -1,5 +1,19 @@
 import { Direction } from '../../enums/common.enum';
-import { PetListingType, PetLocation, PetType } from '../../enums/pet.enum';
+import { PetGender, PetListingType, PetLocation, PetType } from '../../enums/pet.enum';
+
+export interface PetInput {
+	petType: PetType;
+	petListingType: PetListingType;
+	petLocation: PetLocation;
+	petTitle: string;
+	petName: string;
+	petBreed?: string;
+	petGender?: PetGender;
+	petAgeMonths?: number;
+	petPrice?: number;
+	petImages?: string[];
+	petDesc?: string;
+}
 
 interface PetPriceRange {
 	start: number;
