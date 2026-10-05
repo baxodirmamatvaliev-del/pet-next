@@ -66,18 +66,16 @@
 			gap: 12px;
 			padding: 24px 20px;
 			border-bottom: 1px solid $border;
-			> div {
+			.MuiAvatar-root {
 				width: 48px;
 				height: 48px;
-				display: grid;
 				flex: 0 0 48px;
-				place-items: center;
-				border-radius: 50%;
 				background: $sage;
 				color: $primary;
-				font-family: Georgia, 'Times New Roman', serif;
-				font-size: 21px;
-				font-weight: 800;
+			}
+			> .MuiStack-root {
+				min-width: 0;
+				flex: 1;
 			}
 			strong {
 				font-size: 13px;

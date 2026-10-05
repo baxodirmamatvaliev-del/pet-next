@@ -7,21 +7,46 @@ import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import { useReactiveVar } from '@apollo/client';
-import { Box, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
+import { useQuery, useReactiveVar } from '@apollo/client';
+import { Avatar, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { userVar } from '../../../apollo/store';
+import { GET_MEMBER } from '../../../apollo/user/query';
 import { logOut } from '../../auth';
+import { REACT_APP_API_URL } from '../../config';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetConfirmAlert } from '../../sweetAlert';
+import { T } from '../../types/common';
 
 const MyMenu = () => {
 	const router = useRouter();
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const category = typeof router.query.category === 'string' ? router.query.category : 'myOrders';
+
+	/** APOLLO REQUESTS **/
+	const { data: getMemberData } = useQuery(GET_MEMBER, {
+		fetchPolicy: 'cache-and-network',
+		variables: { memberId: user?.sub ?? '' },
+		skip: !user?.sub,
+	});
+
+	/** COMPUTED VALUES **/
+	const member = (getMemberData as T | undefined)?.getMember;
+	const memberImage = member?.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : '';
+	const profileHeader = (
+		<Stack direction="row" className="my-menu__profile">
+			<Avatar src={memberImage} alt={member?.memberNick ?? 'PetNest Member'}>
+				<PetsRoundedIcon />
+			</Avatar>
+			<Stack>
+				<Typography component="strong">{member?.memberNick ?? 'PetNest Member'}</Typography>
+				<Typography>#{user?.sub.slice(-8).toUpperCase()}</Typography>
+			</Stack>
+		</Stack>
+	);
 
 	/** HANDLERS **/
 	const logoutHandler = async () => {
@@ -33,6 +58,7 @@ const MyMenu = () => {
 		/** RENDER MOBILE **/
 		return (
 			<Stack component="aside" className="my-menu my-menu--mobile">
+				{profileHeader}
 				<List disablePadding>
 					<ListItemButton component={Link} href="/mypage?category=myProfile" className={category === 'myProfile' ? 'active' : ''}>
 						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
@@ -69,13 +95,7 @@ const MyMenu = () => {
 		/** RENDER PC **/
 		return (
 			<Stack component="aside" className="my-menu">
-				<Stack direction="row" className="my-menu__profile">
-					<Box><PetsRoundedIcon /></Box>
-					<Stack>
-						<Typography component="strong">PetNest Member</Typography>
-						<Typography>#{user?.sub.slice(-8).toUpperCase()}</Typography>
-					</Stack>
-				</Stack>
+				{profileHeader}
 
 				<Typography className="my-menu__label">MY ACCOUNT</Typography>
 				<List disablePadding>
