@@ -4,6 +4,26 @@
 	min-height: 620px;
 	padding-block: 48px 80px;
 	background: #fbfaf7;
+	&.order-detail-page {
+		.order-detail-page__heading {
+			gap: 8px;
+			margin: 12px 0 26px;
+			h1 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 30px;
+			}
+			p {
+				color: $muted;
+				font-size: 13px;
+			}
+		}
+		.order-detail-page__state {
+			min-height: 360px;
+			align-items: center;
+			justify-content: center;
+			gap: 18px;
+		}
+	}
 	.mypage-state {
 		min-height: 480px;
 		align-items: center;

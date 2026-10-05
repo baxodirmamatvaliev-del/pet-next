@@ -17,7 +17,7 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Filter from '../../libs/components/product/Filter';
 import ProductCard from '../../libs/components/product/ProductCard';
 import { Direction } from '../../libs/enums/common.enum';
-import { ProductCategory } from '../../libs/enums/product.enum';
+import { ProductCategory, ProductType } from '../../libs/enums/product.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { T } from '../../libs/types/common';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
@@ -26,6 +26,8 @@ import { Product } from '../../libs/types/product/product';
 interface ProductListProps {
 	initialInput?: ProductsInquiry;
 }
+
+const productSorts = ['createdAt', 'productSold', 'productRating', 'productName'];
 
 const ProductList = (props: ProductListProps) => {
 	const { initialInput = ProductList.defaultProps.initialInput } = props;
@@ -39,15 +41,45 @@ const ProductList = (props: ProductListProps) => {
 	const searchFilter = useMemo<ProductsInquiry>(() => {
 		if (typeof router.query.input === 'string') {
 			try {
-				return JSON.parse(router.query.input) as ProductsInquiry;
+				const input = JSON.parse(router.query.input) as ProductsInquiry;
+				const search = input.search;
+				if (!search || typeof search !== 'object' || Array.isArray(search)) return initialInput;
+
+				const validCategories = search.categoryList === undefined
+					|| (Array.isArray(search.categoryList) && search.categoryList.every((category) => Object.values(ProductCategory).includes(category)));
+				const validTypes = search.typeList === undefined
+					|| (Array.isArray(search.typeList) && search.typeList.every((type) => Object.values(ProductType).includes(type)));
+				const validText = search.text === undefined
+					|| (typeof search.text === 'string' && !!search.text.trim() && search.text.length <= 100);
+
+				if (!Number.isInteger(input.page) || input.page < 1
+					|| !Number.isInteger(input.limit) || input.limit < 1 || input.limit > 100
+					|| (input.sort !== undefined && !productSorts.includes(input.sort))
+					|| (input.direction !== undefined && !Object.values(Direction).includes(input.direction))
+					|| !validCategories || !validTypes || !validText) {
+					return initialInput;
+				}
+
+				return {
+					page: input.page,
+					limit: input.limit,
+					sort: input.sort,
+					direction: input.direction,
+					search: {
+						categoryList: search.categoryList,
+						typeList: search.typeList,
+						text: search.text,
+					},
+				};
 			} catch {
 				return initialInput;
 			}
 		}
 
 		const category = Object.values(ProductCategory).find((item) => item === router.query.category);
-		const sort = typeof router.query.sort === 'string' ? router.query.sort : initialInput.sort;
-		const text = typeof router.query.text === 'string' ? router.query.text.trim() : '';
+		const sort = typeof router.query.sort === 'string' && productSorts.includes(router.query.sort)
+			? router.query.sort : initialInput.sort;
+		const text = typeof router.query.text === 'string' ? router.query.text.trim().slice(0, 100) : '';
 
 		return {
 			...initialInput,

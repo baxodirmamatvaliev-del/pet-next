@@ -1,6 +1,9 @@
 @media (max-width: 760px) {
 	#my-page {
 		padding-block: 28px 48px;
+		&.order-detail-page .order-detail-page__heading h1 {
+			font-size: 26px;
+		}
 		.mypage-state {
 			min-height: 380px;
 			padding-inline: 24px;

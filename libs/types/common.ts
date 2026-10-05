@@ -31,6 +31,7 @@ export interface T {
 	clearCart?: Cart;
 	createOrder?: Order;
 	getMyOrders?: Orders;
+	getOrder?: Order;
 	cancelOrder?: Order;
 	createPayment?: Payment;
 }

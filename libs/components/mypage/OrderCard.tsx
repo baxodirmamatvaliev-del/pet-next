@@ -14,9 +14,10 @@ interface OrderCardProps {
 	order: Order;
 	cancelOrderHandler: (orderId: string) => Promise<void>;
 	cancelOrderLoading: boolean;
+	showDetailsLink?: boolean;
 }
 
-const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading }: OrderCardProps) => {
+const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading, showDetailsLink = true }: OrderCardProps) => {
 	/** COMPUTED VALUES **/
 	const orderDate = new Date(order.createdAt).toLocaleDateString('en-CA');
 	const orderStatus = order.orderStatus.replaceAll('_', ' ');
@@ -89,6 +90,9 @@ const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading }: OrderCardP
 							<Typography>{order.recipientName} · {order.recipientPhone}</Typography>
 						</Box>
 					</Stack>
+					{showDetailsLink && (
+						<Button component={Link} href={`/order/detail?id=${order._id}`} variant="outlined">View details</Button>
+					)}
 					{order.orderStatus === OrderStatus.PENDING && (
 						<Button
 							variant="outlined"

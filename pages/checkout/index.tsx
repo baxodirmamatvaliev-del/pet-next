@@ -175,7 +175,7 @@ const CheckoutPage: NextPage = () => {
 								<Stack direction="row"><Typography>Total</Typography><Typography component="strong">₩{formatterStr(order.totalAmount)}</Typography></Stack>
 								<Stack direction="row"><Typography>Payment</Typography><Chip label={payment.paymentStatus} color={isPaymentConfirmed ? 'success' : 'warning'} size="small" /></Stack>
 							</Box>
-							<Button component={Link} href="/product" variant="contained">Continue shopping</Button>
+							<Button component={Link} href={`/order/detail?id=${order._id}`} variant="contained">View order</Button>
 						</Stack>
 					) : order ? (
 						<Stack component="form" className="checkout-state" onSubmit={checkoutHandler}>
@@ -313,8 +313,8 @@ const CheckoutPage: NextPage = () => {
 									<Chip label={payment.paymentStatus} color={isPaymentConfirmed ? 'success' : 'warning'} size="small" />
 								</Stack>
 							</Box>
-							<Button component={Link} href="/product" variant="contained">
-								Continue shopping
+							<Button component={Link} href={`/order/detail?id=${order._id}`} variant="contained">
+								View order
 							</Button>
 						</Stack>
 					) : order ? (
