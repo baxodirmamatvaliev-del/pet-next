@@ -3,6 +3,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
@@ -16,6 +17,7 @@ import { userVar } from '../../../apollo/store';
 import { GET_MEMBER } from '../../../apollo/user/query';
 import { logOut } from '../../auth';
 import { REACT_APP_API_URL } from '../../config';
+import { MemberType } from '../../enums/member.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetConfirmAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
@@ -35,6 +37,7 @@ const MyMenu = () => {
 
 	/** COMPUTED VALUES **/
 	const member = (getMemberData as T | undefined)?.getMember;
+	const canManageProducts = member?.memberType === MemberType.ADMIN || member?.memberType === MemberType.AGENT;
 	const memberImage = member?.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : '';
 	const profileHeader = (
 		<Stack direction="row" className="my-menu__profile">
@@ -43,7 +46,7 @@ const MyMenu = () => {
 			</Avatar>
 			<Stack>
 				<Typography component="strong">{member?.memberNick ?? 'PetNest Member'}</Typography>
-				<Typography>#{user?.sub.slice(-8).toUpperCase()}</Typography>
+				<Typography>{member?.memberType}</Typography>
 			</Stack>
 		</Stack>
 	);
@@ -80,6 +83,12 @@ const MyMenu = () => {
 						<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="Pet listings" />
 					</ListItemButton>
+					{canManageProducts && (
+						<ListItemButton component={Link} href="/mypage?category=myProducts" className={category === 'myProducts' ? 'active' : ''}>
+							<ListItemIcon><Inventory2OutlinedIcon /></ListItemIcon>
+							<ListItemText primary="Products" />
+						</ListItemButton>
+					)}
 					<ListItemButton component={Link} href="/cart">
 						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="Cart" />
@@ -139,6 +148,12 @@ const MyMenu = () => {
 						<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="My Pet Listings" />
 					</ListItemButton>
+					{canManageProducts && (
+						<ListItemButton component={Link} href="/mypage?category=myProducts" className={category === 'myProducts' ? 'active' : ''}>
+							<ListItemIcon><Inventory2OutlinedIcon /></ListItemIcon>
+							<ListItemText primary="My Products" />
+						</ListItemButton>
+					)}
 					<ListItemButton component={Link} href="/cart">
 						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="Shopping Cart" />

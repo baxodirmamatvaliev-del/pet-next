@@ -1,5 +1,5 @@
 import { Direction } from '../../enums/common.enum';
-import { ProductCategory, ProductType } from '../../enums/product.enum';
+import { ProductCategory, ProductStatus, ProductType } from '../../enums/product.enum';
 
 export interface ProductVariantInput {
 	sku: string;
@@ -18,8 +18,9 @@ export interface ProductInput {
 	productVariants: ProductVariantInput[];
 }
 
-export interface ProductUpdateInput extends ProductInput {
+export interface ProductUpdateInput extends Partial<ProductInput> {
 	_id: string;
+	productStatus?: ProductStatus;
 }
 
 interface ProductSearch {
@@ -34,4 +35,12 @@ export interface ProductsInquiry {
 	sort?: string;
 	direction?: Direction;
 	search: ProductSearch;
+}
+
+export interface MyProductsInquiry {
+	page: number;
+	limit: number;
+	sort?: string;
+	direction?: Direction;
+	search: { productStatus?: ProductStatus };
 }

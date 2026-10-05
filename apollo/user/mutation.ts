@@ -227,6 +227,14 @@ export const UPDATE_PRODUCT = gql`
 	}
 `;
 
+export const REMOVE_PRODUCT = gql`
+	mutation RemoveProduct($productId: String!) {
+		removeProduct(productId: $productId) {
+			_id
+		}
+	}
+`;
+
 /**************************
  *           PET          *
  *************************/

@@ -13,8 +13,10 @@ export interface T {
 	updateMember?: Member;
 	getProduct?: Product;
 	getProducts?: Products;
+	getMyProducts?: Products;
 	createProduct?: Product;
 	updateProduct?: Product;
+	removeProduct?: Product;
 	getPets?: Pets;
 	getPet?: Pet;
 	getMyPets?: Pets;

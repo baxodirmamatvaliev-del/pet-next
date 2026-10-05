@@ -462,6 +462,145 @@
 			}
 		}
 	}
+	.my-products {
+		.my-products__heading {
+			align-items: center;
+			justify-content: space-between;
+			gap: 18px;
+			h1 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 32px;
+			}
+			p {
+				margin-top: 7px;
+				color: $muted;
+				font-size: 12px;
+			}
+			.MuiButton-root {
+				min-height: 40px;
+				border-radius: 9px;
+				font-size: 11px;
+				font-weight: 700;
+			}
+		}
+		.my-products__tabs {
+			gap: 4px;
+			margin-top: 24px;
+			padding-bottom: 12px;
+			border-bottom: 1px solid $border;
+			.MuiButton-root {
+				min-width: auto;
+				padding: 7px 13px;
+				border-radius: 18px;
+				color: $muted;
+				font-size: 11px;
+				text-transform: none;
+				&.active {
+					background: $primary;
+					color: #ffffff;
+				}
+			}
+		}
+		.my-products__list {
+			gap: 14px;
+			margin-top: 22px;
+		}
+		.my-products__state {
+			min-height: 300px;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			text-align: center;
+			h2 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 24px;
+			}
+			p {
+				color: $muted;
+				font-size: 12px;
+			}
+			.MuiButton-root {
+				margin-top: 14px;
+			}
+		}
+		.my-products__pagination {
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 26px;
+			padding-top: 18px;
+			border-top: 1px solid $border;
+			p {
+				color: $muted;
+				font-size: 11px;
+			}
+		}
+	}
+	.my-product-card {
+		flex-direction: row;
+		gap: 18px;
+		padding: 14px;
+		border: 1px solid $border;
+		border-radius: 12px;
+		.my-product-card__image {
+			position: relative;
+			width: 126px;
+			height: 126px;
+			overflow: hidden;
+			flex: 0 0 126px;
+			border-radius: 9px;
+			background: #f6f4ef;
+			img {
+				object-fit: cover;
+			}
+		}
+		.my-product-card__content {
+			min-width: 0;
+			flex: 1;
+			gap: 10px;
+			> p {
+				color: $muted;
+				font-size: 12px;
+			}
+		}
+		.my-product-card__title {
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+			h2 {
+				font-size: 15px;
+			}
+			.MuiChip-root {
+				font-size: 10px;
+				font-weight: 700;
+				&.active {
+					background: $sage;
+					color: $primary;
+				}
+				&.hidden {
+					background: #f4eee4;
+					color: #805f32;
+				}
+			}
+		}
+		.my-product-card__actions {
+			flex-wrap: wrap;
+			gap: 4px;
+			margin-top: auto;
+			.MuiButton-root {
+				min-height: 32px;
+				padding: 0 8px;
+				font-size: 11px;
+				text-transform: none;
+				svg {
+					font-size: 16px;
+				}
+			}
+			.my-product-card__remove {
+				margin-left: auto;
+				color: $muted;
+			}
+		}
+	}
 	.order-card {
 		overflow: hidden;
 		border: 1px solid $border;

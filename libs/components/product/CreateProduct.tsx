@@ -1,8 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import { Alert, Box, Button, CircularProgress, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -156,6 +157,12 @@ const CreateProduct = (props: CreateProductProps) => {
 		setImagePreviews(files.map((file) => URL.createObjectURL(file)));
 	};
 
+	const removeImageHandler = (index: number) => {
+		const files = selectedFiles.filter((_file, fileIndex) => fileIndex !== index);
+		setSelectedFiles(files);
+		setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+	};
+
 	const uploadImagesHandler = async (token: string): Promise<string[]> => {
 		const formData = new FormData();
 		const files = selectedFiles.map(() => null);
@@ -298,6 +305,9 @@ const CreateProduct = (props: CreateProductProps) => {
 						{imagePreviews.map((preview, index) => (
 							<Stack className="product-create-form__preview" key={preview}>
 								<Image src={preview} alt={selectedFiles[index].name} width={150} height={150} unoptimized />
+								<IconButton aria-label={`Remove ${selectedFiles[index].name}`} onClick={() => removeImageHandler(index)}>
+									<CloseRoundedIcon fontSize="small" />
+								</IconButton>
 								<Typography title={selectedFiles[index].name}>{index === 0 ? 'Catalog image' : `Image ${index + 1}`} · {selectedFiles[index].name}</Typography>
 							</Stack>
 						))}

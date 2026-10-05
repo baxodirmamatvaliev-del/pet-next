@@ -14,6 +14,7 @@ import MyMenu from '../../libs/components/mypage/MyMenu';
 import MyOrders from '../../libs/components/mypage/MyOrders';
 import MyPets from '../../libs/components/mypage/MyPets';
 import MyProfile from '../../libs/components/mypage/MyProfile';
+import MyProducts from '../../libs/components/mypage/MyProducts';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 
@@ -33,6 +34,7 @@ const MyPage: NextPage = () => {
 			{category === 'myFavorites' && <MyFavorites />}
 			{category === 'recentlyVisited' && <RecentlyVisited />}
 			{category === 'myPets' && <MyPets />}
+			{category === 'myProducts' && <MyProducts />}
 		</Box>
 	);
 

@@ -115,6 +115,35 @@
 				gap: 12px;
 			}
 		}
+		.my-products {
+			.my-products__heading {
+				align-items: flex-start;
+				flex-direction: column;
+				h1 {
+					font-size: 27px;
+				}
+				.MuiButton-root {
+					width: 100%;
+				}
+			}
+			.my-products__tabs {
+				margin-top: 18px;
+			}
+			.my-products__pagination {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 12px;
+			}
+		}
+		.my-product-card {
+			flex-direction: column;
+			.my-product-card__image {
+				width: 100%;
+				height: auto;
+				aspect-ratio: 1.6 / 1;
+				flex-basis: auto;
+			}
+		}
 		.order-card {
 			.order-card__header {
 				align-items: flex-start;
