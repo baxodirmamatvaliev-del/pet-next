@@ -21,6 +21,7 @@ import { GET_MEMBER } from '../../../apollo/user/query';
 import { getJwtToken, updateStorage, updateUserInfo } from '../../auth';
 import { REACT_APP_API_GRAPHQL_URL, REACT_APP_API_URL } from '../../config';
 import { Message } from '../../enums/common.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Member } from '../../types/member/member';
@@ -34,6 +35,8 @@ const initialMemberUpdate: MemberUpdateInput = {
 };
 
 const MyProfile = () => {
+	const device = useDeviceDetect();
+
 	/** STATES **/
 	const [member, setMember] = useState<Member | null>(null);
 	const [memberUpdate, setMemberUpdate] = useState<MemberUpdateInput>(initialMemberUpdate);
@@ -158,6 +161,41 @@ const MyProfile = () => {
 		return <Alert severity="error">Profile information could not be loaded.</Alert>;
 	}
 
+	if (device === 'mobile') {
+		/** RENDER MOBILE **/
+		return (
+			<Box className="my-profile my-profile--mobile">
+				<Box className="my-profile__heading">
+					<Typography component="h1">My Profile</Typography>
+					<Typography>Keep your delivery and account information up to date.</Typography>
+				</Box>
+				<Stack component="form" className="profile-form" onSubmit={updateMemberHandler}>
+					<Stack className="profile-photo profile-photo--mobile">
+						<Avatar src={imagePath} alt={member.memberNick}><PetsRoundedIcon /></Avatar>
+						<Box>
+							<Typography component="strong">Profile photo</Typography>
+							<Typography>JPG, JPEG or PNG image.</Typography>
+							<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />} disabled={imageUploaderLoading}>
+								{imageUploaderLoading ? 'Uploading...' : 'Upload image'}
+								<Box component="input" className="profile-photo__input" type="file" accept="image/jpeg,image/png" onChange={uploadImageHandler} />
+							</Button>
+						</Box>
+					</Stack>
+					<Box className="profile-fields profile-fields--mobile">
+						<TextField label="Nickname" value={member.memberNick} disabled fullWidth />
+						<TextField label="Phone number" value={member.memberPhone} disabled fullWidth />
+						<TextField label="Full name" value={memberUpdate.memberFullName} onChange={(event) => inputChangeHandler('memberFullName', event.target.value)} slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }} fullWidth />
+						<TextField label="Address" value={memberUpdate.memberAddress} onChange={(event) => inputChangeHandler('memberAddress', event.target.value)} fullWidth />
+						<TextField className="profile-fields__wide" label="About me" value={memberUpdate.memberDesc} onChange={(event) => inputChangeHandler('memberDesc', event.target.value)} multiline rows={4} fullWidth />
+					</Box>
+					<Button type="submit" variant="contained" startIcon={<SaveOutlinedIcon />} disabled={isUpdateDisabled}>
+						{updateMemberLoading ? 'Saving...' : 'Save changes'}
+					</Button>
+				</Stack>
+			</Box>
+		);
+	} else {
+		/** RENDER PC **/
 	/** RENDER **/
 	return (
 		<Box className="my-profile">
@@ -230,6 +268,7 @@ const MyProfile = () => {
 			</Stack>
 		</Box>
 	);
+	}
 };
 
 export default MyProfile;

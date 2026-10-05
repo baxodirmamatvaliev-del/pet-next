@@ -8,6 +8,7 @@ import { UPDATE_PET } from '../../../apollo/user/mutation';
 import { GET_MY_PETS } from '../../../apollo/user/query';
 import { Direction, Message } from '../../enums/common.enum';
 import { PetStatus } from '../../enums/pet.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Pet } from '../../types/pet/pet';
@@ -20,6 +21,7 @@ interface MyPetsProps {
 
 const MyPets = (props: MyPetsProps) => {
 	const { initialInput = MyPets.defaultProps.initialInput } = props;
+	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [searchFilter, setSearchFilter] = useState<MyPetsInquiry>(initialInput);
@@ -86,23 +88,25 @@ const MyPets = (props: MyPetsProps) => {
 				<Button component={Link} href="/pet/create" variant="contained">Create listing</Button>
 			</Stack>
 
-			<Stack direction="row" className="my-pets__tabs">
-				<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>
-					All listings
-				</Button>
-				<Button className={selectedStatus === PetStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ACTIVE)}>
-					Active
-				</Button>
-				<Button className={selectedStatus === PetStatus.RESERVED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.RESERVED)}>
-					Reserved
-				</Button>
-				<Button className={selectedStatus === PetStatus.SOLD ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.SOLD)}>
-					Sold
-				</Button>
-				<Button className={selectedStatus === PetStatus.ADOPTED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ADOPTED)}>
-					Adopted
-				</Button>
-			</Stack>
+			{device === 'mobile' ? (
+				/** RENDER MOBILE PET FILTERS **/
+				<Stack direction="row" className="my-pets__tabs my-pets__tabs--mobile">
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>All</Button>
+					<Button className={selectedStatus === PetStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ACTIVE)}>Active</Button>
+					<Button className={selectedStatus === PetStatus.RESERVED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.RESERVED)}>Reserved</Button>
+					<Button className={selectedStatus === PetStatus.SOLD ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.SOLD)}>Sold</Button>
+					<Button className={selectedStatus === PetStatus.ADOPTED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ADOPTED)}>Adopted</Button>
+				</Stack>
+			) : (
+				/** RENDER PC PET FILTERS **/
+				<Stack direction="row" className="my-pets__tabs my-pets__tabs--pc">
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>All listings</Button>
+					<Button className={selectedStatus === PetStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ACTIVE)}>Active</Button>
+					<Button className={selectedStatus === PetStatus.RESERVED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.RESERVED)}>Reserved</Button>
+					<Button className={selectedStatus === PetStatus.SOLD ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.SOLD)}>Sold</Button>
+					<Button className={selectedStatus === PetStatus.ADOPTED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ADOPTED)}>Adopted</Button>
+				</Stack>
+			)}
 
 			{getMyPetsLoading && !pets.length ? (
 				<Stack className="my-pets__state">

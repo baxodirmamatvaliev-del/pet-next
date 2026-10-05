@@ -10,10 +10,12 @@ import {
 	FormLabel,
 	IconButton,
 	InputAdornment,
+	Stack,
 	TextField,
 } from '@mui/material';
 
 import { ProductCategory, ProductType } from '../../enums/product.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { ProductsInquiry } from '../../types/product/product.input';
 
 interface FilterType {
@@ -38,6 +40,7 @@ const typeOptions = [
 
 const Filter = (props: FilterType) => {
 	const { searchFilter, updateSearchFilter, initialInput } = props;
+	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [searchText, setSearchText] = useState(searchFilter.search.text ?? '');
@@ -92,6 +95,47 @@ const Filter = (props: FilterType) => {
 		updateSearchFilter(initialInput);
 	};
 
+	if (device === 'mobile') {
+		/** RENDER MOBILE **/
+		return (
+			<Stack component="aside" className="product-filter product-filter--mobile">
+				<Box component="form" className="product-filter__search" onSubmit={searchHandler}>
+					<TextField
+						fullWidth
+						size="small"
+						type="search"
+						value={searchText}
+						onChange={(event) => setSearchText(event.target.value)}
+						placeholder="Search products"
+						slotProps={{
+							htmlInput: { 'aria-label': 'Search products' },
+							input: { endAdornment: <InputAdornment position="end"><IconButton type="submit" edge="end" aria-label="Submit search"><SearchRoundedIcon /></IconButton></InputAdornment> },
+						}}
+					/>
+				</Box>
+				<Stack direction="row" className="product-filter__mobile-groups">
+					<FormControl className="product-filter__group">
+						<FormLabel>Pet</FormLabel>
+						<FormGroup>
+							{categoryOptions.map(({ label, value }) => (
+								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.categoryList?.includes(value) ?? false} onChange={() => categorySelectHandler(value)} />} />
+							))}
+						</FormGroup>
+					</FormControl>
+					<FormControl className="product-filter__group">
+						<FormLabel>Product type</FormLabel>
+						<FormGroup>
+							{typeOptions.map(({ label, value }) => (
+								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.typeList?.includes(value) ?? false} onChange={() => typeSelectHandler(value)} />} />
+							))}
+						</FormGroup>
+					</FormControl>
+				</Stack>
+				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>Reset filters</Button>
+			</Stack>
+		);
+	} else {
+		/** RENDER PC **/
 	return (
 		<Box component="aside" className="product-filter">
 			<Box component="form" className="product-filter__search" onSubmit={searchHandler}>
@@ -160,6 +204,7 @@ const Filter = (props: FilterType) => {
 			</Button>
 		</Box>
 	);
+	}
 };
 
 export default Filter;

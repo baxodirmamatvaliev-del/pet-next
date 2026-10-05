@@ -31,6 +31,7 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
 import { PaymentMethod } from '../../libs/enums/payment.enum';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { Cart } from '../../libs/types/cart/cart';
 import { T } from '../../libs/types/common';
@@ -48,6 +49,8 @@ const initialOrderInput: CreateOrderInput = {
 };
 
 const CheckoutPage: NextPage = () => {
+	const device = useDeviceDetect();
+
 	/** STATES **/
 	const [orderInput, setOrderInput] = useState<CreateOrderInput>(initialOrderInput);
 	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.CARD);
@@ -121,6 +124,121 @@ const CheckoutPage: NextPage = () => {
 		|| !orderInput.recipientPhone.trim()
 		|| !orderInput.deliveryAddress.trim();
 	const hasUnavailableItems = cart?.cartItems.some((cartItem) => !cartItem.available) ?? false;
+
+	if (device === 'mobile') {
+		/** RENDER MOBILE **/
+		return (
+			<>
+				<Head>
+					<title>Checkout | PetNest Korea</title>
+					<meta name="title" content="Checkout | PetNest Korea" />
+				</Head>
+				<Box component="main" className="checkout-page checkout-page--mobile container">
+					<Box className="checkout-page__heading">
+						<Typography component="p">Home / Cart / Checkout</Typography>
+						<Typography component="h1">Checkout</Typography>
+					</Box>
+					{!user?.sub ? (
+						<Stack className="checkout-state">
+							<LockOutlinedIcon />
+							<Typography component="h2">Sign in to continue</Typography>
+							<Typography>Your account is required to place an order securely.</Typography>
+							<Button component={Link} href="/account/join?referrer=/checkout" variant="contained">Login or sign up</Button>
+						</Stack>
+					) : getMyCartLoading && !cart ? (
+						<Stack className="checkout-state"><CircularProgress color="primary" /></Stack>
+					) : getMyCartError ? (
+						<Alert severity="error">Checkout information could not be loaded.</Alert>
+					) : order && payment ? (
+						<Stack className="checkout-success">
+							<CheckCircleOutlineRoundedIcon />
+							<Typography component="span">ORDER RECEIVED</Typography>
+							<Typography component="h2">Thank you for your order</Typography>
+							<Typography>Your order has been created and the payment request is waiting for confirmation.</Typography>
+							<Box className="checkout-success__details">
+								<Stack direction="row"><Typography>Order number</Typography><Typography component="strong">#{order._id.slice(-8).toUpperCase()}</Typography></Stack>
+								<Stack direction="row"><Typography>Total</Typography><Typography component="strong">₩{formatterStr(order.totalAmount)}</Typography></Stack>
+								<Stack direction="row"><Typography>Payment</Typography><Chip label={payment.paymentStatus} color="warning" size="small" /></Stack>
+							</Box>
+							<Button component={Link} href="/product" variant="contained">Continue shopping</Button>
+						</Stack>
+					) : !cart?.cartItems.length ? (
+						<Stack className="checkout-state">
+							<LocalShippingOutlinedIcon />
+							<Typography component="h2">Your cart is empty</Typography>
+							<Typography>Add products to your cart before starting checkout.</Typography>
+							<Button component={Link} href="/product" variant="contained">Browse products</Button>
+						</Stack>
+					) : hasUnavailableItems ? (
+						<Stack className="checkout-state">
+							<Alert severity="warning">Your cart contains unavailable products.</Alert>
+							<Button component={Link} href="/cart" variant="contained">Return to cart</Button>
+						</Stack>
+					) : (
+						<Stack className="checkout-content checkout-content--mobile">
+							<Stack className="checkout-summary">
+								<Typography component="h2">Order Summary</Typography>
+								<Stack className="checkout-summary__items">
+									{cart.cartItems.map((cartItem) => {
+										const product = cartItem.productData;
+										const imagePath = product?.productImages[0]
+											? `${REACT_APP_API_URL}/${product.productImages[0]}`
+											: '/img/banner/home-hero.png';
+
+										return (
+											<Stack direction="row" className="checkout-summary__item" key={`${cartItem.productId}-${cartItem.sku}`}>
+												<Box className="checkout-summary__image">
+													<Image src={imagePath} alt={product?.productName ?? 'Pet product'} fill sizes="70px" unoptimized />
+												</Box>
+												<Box>
+													<Typography component="strong">{product?.productName}</Typography>
+													<Typography>Quantity: {cartItem.quantity}</Typography>
+												</Box>
+												<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
+												</Stack>
+										);
+									})}
+								</Stack>
+								<Stack direction="row" className="checkout-summary__total">
+									<Typography>Total</Typography><Typography>₩{formatterStr(cart.totalAmount)}</Typography>
+								</Stack>
+							</Stack>
+							<Stack component="form" className="checkout-form" onSubmit={checkoutHandler}>
+								<Box className="checkout-section">
+									<Stack direction="row" className="checkout-section__title">
+										<Typography component="span">1</Typography>
+										<Typography component="h2">Delivery information</Typography>
+									</Stack>
+									<Box className="checkout-fields">
+										<TextField label="Recipient name" value={orderInput.recipientName} onChange={(event) => inputChangeHandler('recipientName', event.target.value)} required fullWidth />
+										<TextField label="Phone number" type="tel" value={orderInput.recipientPhone} onChange={(event) => inputChangeHandler('recipientPhone', event.target.value)} required fullWidth />
+										<TextField className="checkout-fields__wide" label="Delivery address" value={orderInput.deliveryAddress} onChange={(event) => inputChangeHandler('deliveryAddress', event.target.value)} required fullWidth />
+										<TextField className="checkout-fields__wide" label="Delivery note (optional)" value={orderInput.deliveryNote} onChange={(event) => inputChangeHandler('deliveryNote', event.target.value)} multiline rows={3} fullWidth />
+									</Box>
+								</Box>
+								<Box className="checkout-section">
+									<Stack direction="row" className="checkout-section__title">
+										<Typography component="span">2</Typography>
+										<Typography component="h2">Payment method</Typography>
+									</Stack>
+									<FormControl className="payment-methods">
+										<RadioGroup value={paymentMethod} onChange={(event) => paymentMethodChangeHandler(event.target.value)}>
+											<FormControlLabel value={PaymentMethod.CARD} control={<Radio />} label={<Stack direction="row"><CreditCardRoundedIcon /><Box><Typography component="strong">Pay with card</Typography><Typography>Secure credit or debit card payment</Typography></Box></Stack>} />
+											<FormControlLabel value={PaymentMethod.KAKAO_PAY} control={<Radio />} label={<Stack direction="row"><Typography component="b">K</Typography><Box><Typography component="strong">Kakao Pay</Typography><Typography>Fast payment with your Kakao account</Typography></Box></Stack>} />
+										</RadioGroup>
+									</FormControl>
+								</Box>
+								<Button type="submit" variant="contained" disabled={isSubmitDisabled} startIcon={<LockOutlinedIcon />}>
+									{isCheckoutLoading ? 'Processing...' : `Place order · ₩${formatterStr(cart.totalAmount)}`}
+								</Button>
+							</Stack>
+						</Stack>
+					)}
+				</Box>
+			</>
+		);
+	} else {
+		/** RENDER PC **/
 
 	/** RENDER **/
 	return (
@@ -346,6 +464,7 @@ const CheckoutPage: NextPage = () => {
 			</Box>
 		</>
 	);
+	}
 };
 
 export default withLayoutBasic(CheckoutPage);

@@ -58,70 +58,90 @@ const Top = () => {
 		setMobileMenuOpen(false);
 	};
 
-	/** RENDER **/
-	return (
-		<Stack component="header" className="site-header">
-			<Stack direction="row" className="announcement">
-				<Typography component="span">Free delivery on all orders over ₩30,000</Typography>
-				<Typography component="span" className="announcement__kr">
-					30,000원 이상 주문 시 무료배송
-				</Typography>
-			</Stack>
-			<Box className="header-main container">
-				<Stack direction="row" component={Link} href="/" className="brand" aria-label="PetNest Korea home">
-					<PetsRoundedIcon className="brand__mark" />
-					<Stack component="span" className="brand__text">
-						<Typography component="strong">PetNest</Typography>
-						<Typography component="small">Korea</Typography>
-					</Stack>
+	if (device === 'mobile') {
+		/** RENDER MOBILE **/
+		return (
+			<Stack component="header" className="site-header site-header--mobile">
+				<Stack direction="row" className="announcement">
+					<Typography component="span">Free delivery on all orders over ₩30,000</Typography>
+					<Typography component="span" className="announcement__kr">30,000원 이상 주문 시 무료배송</Typography>
 				</Stack>
-				<Box component="form" className="header-search-form" onSubmit={searchHandler}>
-					<OutlinedInput
-						key={typeof router.query.text === 'string' ? router.query.text : 'empty-search'}
-						className="header-search"
-						type="search"
-						inputRef={searchInputRef}
-						defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
-						placeholder="Search products..."
-						inputProps={{ 'aria-label': 'Search products' }}
-						endAdornment={(
-							<InputAdornment position="end">
-								<IconButton type="submit" edge="end" aria-label="Submit search">
-									<SearchRoundedIcon />
-								</IconButton>
-							</InputAdornment>
-						)}
-					/>
+				<Box className="header-main container">
+					<Stack direction="row" component={Link} href="/" className="brand" aria-label="PetNest Korea home">
+						<PetsRoundedIcon className="brand__mark" />
+						<Stack component="span" className="brand__text">
+							<Typography component="strong">PetNest</Typography>
+							<Typography component="small">Korea</Typography>
+						</Stack>
+					</Stack>
+					<Stack direction="row" component="nav" className="header-actions" aria-label="Shopping actions">
+						<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
+							<LocalMallOutlinedIcon />
+							<Typography component="span">Cart</Typography>
+							<Typography component="b">{cartCount}</Typography>
+						</Stack>
+					</Stack>
+					<IconButton className="mobile-menu" onClick={mobileMenuOpenHandler} aria-label="Open menu" aria-expanded={mobileMenuOpen}>
+						<MenuRoundedIcon />
+					</IconButton>
 				</Box>
-				<Stack direction="row" component="nav" className="header-actions" aria-label="Account navigation">
-					<Stack component={Link} href="/favorites" aria-label="Favorites">
-						<FavoriteBorderRoundedIcon />
-						<Typography component="span">Favorites</Typography>
-					</Stack>
-					<Stack
-						component={Link}
-						href={user?.sub ? '/mypage' : '/account/join'}
-						aria-label={user?.sub ? 'My account' : 'Login'}
-					>
-						<PersonOutlineRoundedIcon />
-						<Typography component="span">{user?.sub ? 'My Account' : 'Login'}</Typography>
-					</Stack>
-					<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
-						<LocalMallOutlinedIcon />
-						<Typography component="span">Cart</Typography>
-						<Typography component="b">{cartCount}</Typography>
-					</Stack>
+				<MobileMenu
+					open={mobileMenuOpen}
+					authenticated={Boolean(user?.sub)}
+					cartCount={cartCount}
+					closeHandler={mobileMenuCloseHandler}
+					searchProductsHandler={searchProductsHandler}
+				/>
+			</Stack>
+		);
+	} else {
+		/** RENDER PC **/
+		return (
+			<Stack component="header" className="site-header site-header--pc">
+				<Stack direction="row" className="announcement">
+					<Typography component="span">Free delivery on all orders over ₩30,000</Typography>
+					<Typography component="span" className="announcement__kr">30,000원 이상 주문 시 무료배송</Typography>
 				</Stack>
-				<IconButton
-					className="mobile-menu"
-					onClick={mobileMenuOpenHandler}
-					aria-label="Open menu"
-					aria-expanded={mobileMenuOpen}
-				>
-					<MenuRoundedIcon />
-				</IconButton>
-			</Box>
-			{device !== 'mobile' && (
+				<Box className="header-main container">
+					<Stack direction="row" component={Link} href="/" className="brand" aria-label="PetNest Korea home">
+						<PetsRoundedIcon className="brand__mark" />
+						<Stack component="span" className="brand__text">
+							<Typography component="strong">PetNest</Typography>
+							<Typography component="small">Korea</Typography>
+						</Stack>
+					</Stack>
+					<Box component="form" className="header-search-form" onSubmit={searchHandler}>
+						<OutlinedInput
+							key={typeof router.query.text === 'string' ? router.query.text : 'empty-search'}
+							className="header-search"
+							type="search"
+							inputRef={searchInputRef}
+							defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
+							placeholder="Search products..."
+							inputProps={{ 'aria-label': 'Search products' }}
+							endAdornment={(
+								<InputAdornment position="end">
+									<IconButton type="submit" edge="end" aria-label="Submit search"><SearchRoundedIcon /></IconButton>
+								</InputAdornment>
+							)}
+						/>
+					</Box>
+					<Stack direction="row" component="nav" className="header-actions" aria-label="Account navigation">
+						<Stack component={Link} href="/favorites" aria-label="Favorites">
+							<FavoriteBorderRoundedIcon />
+							<Typography component="span">Favorites</Typography>
+						</Stack>
+						<Stack component={Link} href={user?.sub ? '/mypage' : '/account/join'} aria-label={user?.sub ? 'My account' : 'Login'}>
+							<PersonOutlineRoundedIcon />
+							<Typography component="span">{user?.sub ? 'My Account' : 'Login'}</Typography>
+						</Stack>
+						<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
+							<LocalMallOutlinedIcon />
+							<Typography component="span">Cart</Typography>
+							<Typography component="b">{cartCount}</Typography>
+						</Stack>
+					</Stack>
+				</Box>
 				<Box component="nav" className="category-nav" aria-label="Product categories">
 					<Stack direction="row" className="container category-nav__inner">
 						<Link href="/product?category=DOG">Dogs</Link>
@@ -133,18 +153,9 @@ const Top = () => {
 						<Link href="/pet">Community</Link>
 					</Stack>
 				</Box>
-			)}
-			{device === 'mobile' && (
-				<MobileMenu
-					open={mobileMenuOpen}
-					authenticated={Boolean(user?.sub)}
-					cartCount={cartCount}
-					closeHandler={mobileMenuCloseHandler}
-					searchProductsHandler={searchProductsHandler}
-				/>
-			)}
-		</Stack>
-	);
+			</Stack>
+		);
+	}
 };
 
 export default Top;
