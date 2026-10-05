@@ -359,6 +359,15 @@
 			&.Mui-focused .MuiOutlinedInput-notchedOutline { border-width: 2px; }
 		}
 	}
+	.admin-list__filters { align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+	.admin-list__search {
+		align-items: center;
+		gap: 8px;
+		.MuiTextField-root { min-width: 210px; }
+		.MuiButton-root { min-height: 40px; border-radius: 10px; font-weight: 700; text-transform: none; }
+		.MuiButton-contained { background: $primary; box-shadow: none; &:hover { background: #277657; box-shadow: 0 6px 14px #17624338; } }
+		.MuiButton-text { color: $muted; &:hover { background: #e8f4ec; color: $primary; } }
+	}
 
 	.admin-list__items { gap: 12px; }
 

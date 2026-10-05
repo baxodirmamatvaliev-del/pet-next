@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert, Avatar, Button, CircularProgress, MenuItem, Pagination, Stack, TextField, Typography } from '@mui/material';
 
@@ -26,6 +26,7 @@ const ProductList = () => {
 	const [inquiry, setInquiry] = useState<AdminProductsInquiry>(initialInquiry);
 	const [products, setProducts] = useState<Product[]>([]);
 	const [total, setTotal] = useState(0);
+	const [searchText, setSearchText] = useState('');
 
 	/** APOLLO REQUESTS **/
 	const [updateProductByAdmin, { loading: updateProductLoading }] = useMutation(UPDATE_PRODUCT_BY_ADMIN);
@@ -44,8 +45,18 @@ const ProductList = () => {
 	});
 
 	/** HANDLERS **/
+	const searchHandler = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, text: searchText.trim() || undefined } });
+	};
+
+	const clearSearchHandler = () => {
+		setSearchText('');
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, text: undefined } });
+	};
+
 	const statusFilterHandler = (value: string) => {
-		setInquiry({ ...inquiry, page: 1, search: { productStatus: value ? value as ProductStatus : undefined } });
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, productStatus: value ? value as ProductStatus : undefined } });
 	};
 
 	const updateProductStatusHandler = async (product: Product, productStatus: ProductStatus) => {
@@ -66,10 +77,17 @@ const ProductList = () => {
 		<Stack className="admin-list">
 			<Stack direction="row" className="admin-list__heading">
 				<Stack><Typography component="h1">Products</Typography><Typography>Review and manage catalog visibility.</Typography></Stack>
-				<TextField select size="small" label="Status" value={inquiry.search.productStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
-					<MenuItem value="">All</MenuItem>
-					{Object.values(ProductStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
-				</TextField>
+				<Stack direction="row" className="admin-list__filters">
+					<Stack component="form" direction="row" className="admin-list__search" onSubmit={searchHandler}>
+						<TextField size="small" label="Search products" value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
+						<Button type="submit" variant="contained">Search</Button>
+						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>Clear</Button>}
+					</Stack>
+					<TextField select size="small" label="Status" value={inquiry.search.productStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
+						<MenuItem value="">All</MenuItem>
+						{Object.values(ProductStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
+					</TextField>
+				</Stack>
 			</Stack>
 			{getAllProductsByAdminError ? <Alert severity="error">Products could not be loaded.</Alert> : getAllProductsByAdminLoading && !products.length ? <CircularProgress /> : products.length ? (
 				<>

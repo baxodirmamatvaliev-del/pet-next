@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Alert, Avatar, Button, CircularProgress, MenuItem, Pagination, Stack, TextField, Typography } from '@mui/material';
 
@@ -26,6 +26,7 @@ const MemberList = () => {
 	const [inquiry, setInquiry] = useState<MembersInquiry>(initialInquiry);
 	const [members, setMembers] = useState<Member[]>([]);
 	const [total, setTotal] = useState(0);
+	const [searchText, setSearchText] = useState('');
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
@@ -45,8 +46,18 @@ const MemberList = () => {
 	});
 
 	/** HANDLERS **/
+	const searchHandler = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, text: searchText.trim() || undefined } });
+	};
+
+	const clearSearchHandler = () => {
+		setSearchText('');
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, text: undefined } });
+	};
+
 	const statusFilterHandler = (value: string) => {
-		setInquiry({ ...inquiry, page: 1, search: { memberStatus: value ? value as MemberStatus : undefined } });
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, memberStatus: value ? value as MemberStatus : undefined } });
 	};
 
 	const updateMemberHandler = async (member: Member, changes: { memberStatus?: MemberStatus; memberType?: MemberType }) => {
@@ -68,10 +79,17 @@ const MemberList = () => {
 		<Stack className="admin-list">
 			<Stack direction="row" className="admin-list__heading">
 				<Stack><Typography component="h1">Members</Typography><Typography>Manage access and seller roles.</Typography></Stack>
-				<TextField select size="small" label="Status" value={inquiry.search.memberStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
-					<MenuItem value="">All</MenuItem>
-					{Object.values(MemberStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
-				</TextField>
+				<Stack direction="row" className="admin-list__filters">
+					<Stack component="form" direction="row" className="admin-list__search" onSubmit={searchHandler}>
+						<TextField size="small" label="Search members" value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
+						<Button type="submit" variant="contained">Search</Button>
+						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>Clear</Button>}
+					</Stack>
+					<TextField select size="small" label="Status" value={inquiry.search.memberStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
+						<MenuItem value="">All</MenuItem>
+						{Object.values(MemberStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
+					</TextField>
+				</Stack>
 			</Stack>
 			{getAllMembersByAdminError ? <Alert severity="error">Members could not be loaded.</Alert> : getAllMembersByAdminLoading && !members.length ? <CircularProgress /> : members.length ? (
 				<>

@@ -177,6 +177,7 @@
 
 	.admin-list {
 		.admin-list__heading { align-items: flex-start; flex-direction: column; h1 { font-size: 32px; } }
+		.admin-list__filters { width: 100%; justify-content: flex-start; }
 		.admin-list__item { align-items: flex-start; flex-wrap: wrap; gap: 12px; }
 		.admin-list__details { min-width: calc(100% - 80px); }
 		.admin-list__status { min-width: auto; }
@@ -187,6 +188,7 @@
 @media (max-width: 540px) {
 	.admin-page .admin-page__topbar .MuiChip-root { display: none; }
 	.admin-list {
+		.admin-list__search { width: 100%; .MuiTextField-root { flex: 1; min-width: 0; } }
 		.admin-list__item .MuiAvatar-root { width: 50px; height: 50px; }
 		.admin-list__details { min-width: calc(100% - 64px); }
 		.admin-list__actions { width: 100%; }
