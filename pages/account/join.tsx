@@ -13,6 +13,7 @@ import { userVar } from '../../apollo/store';
 import { logIn, logOut, signUp } from '../../libs/auth';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Message } from '../../libs/enums/common.enum';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 
 interface AccountInput {
@@ -23,6 +24,7 @@ interface AccountInput {
 
 const Join: NextPage = () => {
 	const router = useRouter();
+	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [input, setInput] = useState<AccountInput>({ nick: '', password: '', phone: '' });
@@ -197,14 +199,16 @@ const Join: NextPage = () => {
 							)}
 						</Stack>
 
-						<Stack className="join-side">
-							<PetsRoundedIcon />
-							<Typography component="span">PETNEST MEMBERSHIP</Typography>
-							<Typography component="h2">Everything they love, all in one place.</Typography>
-							<Typography>
-								Save favorites, build your cart and keep every order close at hand.
-							</Typography>
-						</Stack>
+						{device === 'mobile' ? null : (
+							<Stack className="join-side">
+								<PetsRoundedIcon />
+								<Typography component="span">PETNEST MEMBERSHIP</Typography>
+								<Typography component="h2">Everything they love, all in one place.</Typography>
+								<Typography>
+									Save favorites, build your cart and keep every order close at hand.
+								</Typography>
+							</Stack>
+						)}
 					</Box>
 				</Box>
 			</Box>

@@ -3,39 +3,51 @@ import Head from 'next/head';
 import React, { useEffect } from 'react';
 
 import { getJwtToken, updateUserInfo } from '../../auth';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Footer from '../Footer';
 import Top from '../Top';
 
 const withLayoutBasic = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutBasic(props: P) {
+		const device = useDeviceDetect();
+
 		/** LIFECYCLES **/
 		useEffect(() => {
 			const token = getJwtToken();
 			if (token) updateUserInfo(token);
 		}, []);
 
-		return (
-			<>
-				<Head>
-					<title>Shop | PetNest Korea</title>
-					<meta name="title" content="Shop | PetNest Korea" />
-				</Head>
-
-				<Stack id="pc-wrap">
-					<Stack id="top">
-						<Top />
+		if (device === 'mobile') {
+			/** RENDER MOBILE **/
+			return (
+				<>
+					<Head>
+						<title>Shop | PetNest Korea</title>
+						<meta name="title" content="Shop | PetNest Korea" />
+					</Head>
+					<Stack id="mobile-wrap">
+						<Stack id="top"><Top /></Stack>
+						<Stack id="main"><Component {...props} /></Stack>
+						<Stack id="footer"><Footer /></Stack>
 					</Stack>
-
-					<Stack id="main">
-						<Component {...props} />
+				</>
+			);
+		} else {
+			/** RENDER PC **/
+			return (
+				<>
+					<Head>
+						<title>Shop | PetNest Korea</title>
+						<meta name="title" content="Shop | PetNest Korea" />
+					</Head>
+					<Stack id="pc-wrap">
+						<Stack id="top"><Top /></Stack>
+						<Stack id="main"><Component {...props} /></Stack>
+						<Stack id="footer"><Footer /></Stack>
 					</Stack>
-
-					<Stack id="footer">
-						<Footer />
-					</Stack>
-				</Stack>
-			</>
-		);
+				</>
+			);
+		}
 	};
 };
 

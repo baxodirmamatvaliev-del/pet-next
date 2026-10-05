@@ -18,6 +18,7 @@ import { GET_PRODUCT } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { AddToCartInput } from '../../libs/types/cart/cart.input';
 import { T } from '../../libs/types/common';
@@ -26,6 +27,7 @@ import { formatterStr } from '../../libs/utils';
 
 const ProductDetail: NextPage = () => {
 	const router = useRouter();
+	const device = useDeviceDetect();
 	const productId = typeof router.query.id === 'string' ? router.query.id : '';
 
 	/** STATES **/
@@ -118,7 +120,84 @@ const ProductDetail: NextPage = () => {
 		);
 	}
 
-	/** RENDER **/
+	/** RENDER MOBILE **/
+	if (device === 'mobile') {
+		return (
+			<Box component="main" className="product-detail-page product-detail-page--mobile container">
+				<Typography className="product-detail-page__breadcrumb">
+					<Link href="/">Home</Link> / <Link href="/product">Shop</Link> / {product.productName}
+				</Typography>
+
+				<Box className="product-detail product-detail--mobile">
+					<Box className="product-gallery">
+						<Box className="product-gallery__main">
+							<Image src={imagePath} alt={product.productName} fill sizes="100vw" priority unoptimized />
+						</Box>
+						<Stack className="product-gallery__thumbs">
+							{product.productImages.map((image) => (
+								<Button
+									className={image === slideImage ? 'active' : ''}
+									onClick={() => changeImageHandler(image)}
+									key={image}
+								>
+									<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="68px" unoptimized />
+								</Button>
+							))}
+						</Stack>
+					</Box>
+
+					<Stack className="product-detail__info">
+						<Typography className="product-detail__category">
+							{product.productCategory} / {product.productType}
+						</Typography>
+						<Typography component="h1">{product.productName}</Typography>
+						<Typography className="product-detail__rating">
+							<Box component="span">★</Box> {product.productRating.toFixed(1)} ({product.productReviews} reviews)
+						</Typography>
+						<Typography component="strong" className="product-detail__price">
+							₩{formatterStr(activeVariant?.price ?? 0)}
+						</Typography>
+						<Box className="product-variants">
+							<Typography component="strong">Choose an option</Typography>
+							<Stack direction="row">
+								{product.productVariants.map((variant) => (
+									<Button
+										variant={variant.sku === activeVariant?.sku ? 'contained' : 'outlined'}
+										onClick={() => variantSelectHandler(variant.sku)}
+										key={variant.sku}
+									>
+										{[variant.color, variant.size].filter(Boolean).join(' / ') || variant.sku}
+									</Button>
+								))}
+							</Stack>
+							<Typography>{activeVariant?.stock ?? 0} items in stock</Typography>
+						</Box>
+						<Stack direction="row" className="product-detail__cart-action">
+							<Stack direction="row" className="product-detail__quantity">
+								<IconButton onClick={decreaseQuantityHandler} disabled={quantity === 1 || isOutOfStock} aria-label="Decrease quantity">
+									<RemoveRoundedIcon />
+								</IconButton>
+								<Typography>{quantity}</Typography>
+								<IconButton onClick={() => increaseQuantityHandler(activeVariant?.stock ?? 0)} disabled={quantity >= (activeVariant?.stock ?? 0)} aria-label="Increase quantity">
+									<AddRoundedIcon />
+								</IconButton>
+							</Stack>
+							<Button variant="contained" startIcon={<ShoppingBagOutlinedIcon />} onClick={addToCartHandler} disabled={isOutOfStock || addToCartLoading}>
+								{addToCartLoading ? 'Adding...' : 'Add to cart'}
+							</Button>
+						</Stack>
+						{product.productDesc && (
+							<Box className="product-detail__description">
+								<Typography component="strong">Product information</Typography>
+								<Typography>{product.productDesc}</Typography>
+							</Box>
+						)}
+					</Stack>
+				</Box>
+			</Box>
+		);
+	} else {
+		/** RENDER PC **/
 	return (
 		<Box component="main" className="product-detail-page container">
 			<Typography className="product-detail-page__breadcrumb">
@@ -232,6 +311,7 @@ const ProductDetail: NextPage = () => {
 			</Box>
 		</Box>
 	);
+	}
 };
 
 export default withLayoutFull(ProductDetail);

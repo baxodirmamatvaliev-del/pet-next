@@ -18,6 +18,7 @@ import Filter from '../../libs/components/product/Filter';
 import ProductCard from '../../libs/components/product/ProductCard';
 import { Direction } from '../../libs/enums/common.enum';
 import { ProductCategory } from '../../libs/enums/product.enum';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { T } from '../../libs/types/common';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { Product } from '../../libs/types/product/product';
@@ -29,6 +30,7 @@ interface ProductListProps {
 const ProductList = (props: ProductListProps) => {
 	const { initialInput = ProductList.defaultProps.initialInput } = props;
 	const router = useRouter();
+	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [products, setProducts] = useState<Product[]>([]);
@@ -93,6 +95,58 @@ const ProductList = (props: ProductListProps) => {
 	/** COMPUTED VALUES **/
 	const totalPages = Math.ceil(total / searchFilter.limit);
 
+	/** RENDER MOBILE **/
+	if (device === 'mobile') {
+		return (
+			<Box component="main" className="product-list-page product-list-page--mobile container">
+				<Stack className="product-list-page__heading">
+					<Box>
+						<Typography>Home / Shop</Typography>
+						<Typography component="h1">All Pet Products</Typography>
+					</Box>
+					<Stack direction="row" component="label">
+						<Typography component="span">Sort by</Typography>
+						<FormControl size="small">
+							<Select value={searchFilter.sort} onChange={sortingHandler}>
+								<MenuItem value="createdAt">Newest</MenuItem>
+								<MenuItem value="productSold">Best selling</MenuItem>
+								<MenuItem value="productRating">Highest rated</MenuItem>
+								<MenuItem value="productName">Product name</MenuItem>
+							</Select>
+						</FormControl>
+					</Stack>
+				</Stack>
+				<Filter
+					key={searchFilter.search.text ?? 'empty-search'}
+					searchFilter={searchFilter}
+					updateSearchFilter={updateSearchFilterHandler}
+					initialInput={initialInput}
+				/>
+				<Box component="section" className="product-results" aria-live="polite">
+					<Typography className="product-results__count">{total} products</Typography>
+					{getProductsLoading && !products.length ? (
+						<Typography className="product-results__message">Loading products...</Typography>
+					) : getProductsError ? (
+						<Typography className="product-results__message product-results__message--error">Products could not be loaded.</Typography>
+					) : products.length ? (
+						<Box className="product-results__grid">
+							{products.map((product) => <ProductCard product={product} key={product._id} />)}
+						</Box>
+					) : (
+						<Typography className="product-results__message">No products match your filters.</Typography>
+					)}
+					{products.length > 0 && totalPages > 0 && (
+						<Stack direction="row" className="product-pagination">
+							<Pagination page={searchFilter.page} count={totalPages} onChange={paginationChangeHandler} color="primary" shape="rounded" />
+							<Typography>{total} products available</Typography>
+						</Stack>
+					)}
+				</Box>
+			</Box>
+		);
+	} else {
+		/** RENDER PC **/
+
 	/** RENDER **/
 	return (
 		<Box component="main" className="product-list-page container">
@@ -152,6 +206,7 @@ const ProductList = (props: ProductListProps) => {
 			</Box>
 		</Box>
 	);
+	}
 };
 
 ProductList.defaultProps = {

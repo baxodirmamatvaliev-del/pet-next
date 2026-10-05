@@ -12,10 +12,12 @@ import { useRouter } from 'next/router';
 
 import { userVar } from '../../../apollo/store';
 import { logOut } from '../../auth';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetConfirmAlert } from '../../sweetAlert';
 
 const MyMenu = () => {
 	const router = useRouter();
+	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const category = typeof router.query.category === 'string' ? router.query.category : 'myOrders';
 
@@ -25,7 +27,36 @@ const MyMenu = () => {
 		if (isConfirmed) logOut();
 	};
 
-	/** RENDER **/
+	if (device === 'mobile') {
+		/** RENDER MOBILE **/
+		return (
+			<Stack component="aside" className="my-menu my-menu--mobile">
+				<List disablePadding>
+					<ListItemButton component={Link} href="/mypage?category=myProfile" className={category === 'myProfile' ? 'active' : ''}>
+						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
+						<ListItemText primary="Profile" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/mypage?category=myOrders" className={category === 'myOrders' ? 'active' : ''}>
+						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="Orders" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/mypage?category=myPets" className={category === 'myPets' ? 'active' : ''}>
+						<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="Pet listings" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/cart">
+						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="Cart" />
+					</ListItemButton>
+					<ListItemButton onClick={logoutHandler}>
+						<ListItemIcon><LogoutRoundedIcon /></ListItemIcon>
+						<ListItemText primary="Log out" />
+					</ListItemButton>
+				</List>
+			</Stack>
+		);
+	} else {
+		/** RENDER PC **/
 	return (
 		<Stack component="aside" className="my-menu">
 			<Stack direction="row" className="my-menu__profile">
@@ -73,6 +104,7 @@ const MyMenu = () => {
 			</List>
 		</Stack>
 	);
+	}
 };
 
 export default MyMenu;

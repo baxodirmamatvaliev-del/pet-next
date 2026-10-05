@@ -17,6 +17,7 @@ import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
 import { PetListingType } from '../../libs/enums/pet.enum';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { T } from '../../libs/types/common';
 import { Pet } from '../../libs/types/pet/pet';
@@ -24,6 +25,7 @@ import { formatterStr } from '../../libs/utils';
 
 const PetDetail: NextPage = () => {
 	const router = useRouter();
+	const device = useDeviceDetect();
 	const petId = typeof router.query.id === 'string' ? router.query.id : '';
 
 	/** STATES **/
@@ -97,8 +99,93 @@ const PetDetail: NextPage = () => {
 		);
 	}
 
-	/** RENDER **/
-	return (
+	/** RENDER MOBILE **/
+	if (device === 'mobile') {
+		return (
+			<Box component="main" className="pet-detail-page pet-detail-page--mobile container">
+				<Typography className="pet-detail-page__breadcrumb">
+					<Link href="/pet">Community</Link> / {pet.petName}
+				</Typography>
+
+				<Box className="pet-detail pet-detail--mobile">
+					<Box className="pet-gallery">
+						<Box className="pet-gallery__main">
+							<Image
+								src={imagePath}
+								alt={pet.petName}
+								fill
+								sizes="100vw"
+								priority
+								unoptimized
+							/>
+						</Box>
+						<Stack className="pet-gallery__thumbs">
+							{pet.petImages.map((image) => (
+								<Button
+									className={image === slideImage ? 'active' : ''}
+									onClick={() => changeImageHandler(image)}
+									key={image}
+								>
+									<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="68px" unoptimized />
+								</Button>
+							))}
+						</Stack>
+					</Box>
+
+					<Stack className="pet-detail__info">
+						<Stack direction="row" className="pet-detail__eyebrow">
+							<Typography>{pet.petListingType === PetListingType.ADOPTION ? 'ADOPTION' : 'FOR SALE'}</Typography>
+							<IconButton
+								className={isFavorite ? 'active' : ''}
+								onClick={likePetHandler}
+								disabled={likeLoading}
+								aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+							>
+								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+							</IconButton>
+						</Stack>
+						<Typography component="h1">{pet.petName}</Typography>
+						<Typography className="pet-detail__title">{pet.petTitle}</Typography>
+						<Typography component="strong" className="pet-detail__price">{petPrice}</Typography>
+
+						<Stack className="pet-detail__facts">
+							<Stack direction="row">
+								<PetsOutlinedIcon />
+								<Typography>{pet.petBreed ?? pet.petType} · {pet.petGender} · {petAge}</Typography>
+							</Stack>
+							<Stack direction="row">
+								<LocationOnOutlinedIcon />
+								<Typography>{pet.petLocation}, South Korea</Typography>
+							</Stack>
+						</Stack>
+
+						<Button
+							className="button button--primary"
+							startIcon={isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+							onClick={likePetHandler}
+							disabled={likeLoading}
+						>
+							{isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+						</Button>
+
+						<Stack className="pet-detail__owner">
+							<Typography>Listed by</Typography>
+							<Typography component="strong">{pet.memberData?.memberNick ?? 'PetNest member'}</Typography>
+						</Stack>
+
+						{pet.petDesc && (
+							<Box className="pet-detail__description">
+								<Typography component="strong">About {pet.petName}</Typography>
+								<Typography>{pet.petDesc}</Typography>
+							</Box>
+						)}
+					</Stack>
+				</Box>
+			</Box>
+		);
+	} else {
+		/** RENDER PC **/
+		return (
 		<Box component="main" className="pet-detail-page container">
 			<Typography className="pet-detail-page__breadcrumb">
 				<Link href="/">Home</Link> / <Link href="/pet">Community</Link> / {pet.petName}
@@ -179,7 +266,8 @@ const PetDetail: NextPage = () => {
 				</Stack>
 			</Box>
 		</Box>
-	);
+		);
+	}
 };
 
 export default withLayoutFull(PetDetail);

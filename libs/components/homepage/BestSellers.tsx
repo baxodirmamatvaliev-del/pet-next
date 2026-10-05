@@ -9,6 +9,7 @@ import { Direction } from '../../enums/common.enum';
 import { T } from '../../types/common';
 import { Product } from '../../types/product/product';
 import { ProductsInquiry } from '../../types/product/product.input';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ProductCard from '../product/ProductCard';
 
 interface BestSellersProps {
@@ -17,6 +18,7 @@ interface BestSellersProps {
 
 const BestSellers = (props: BestSellersProps) => {
 	const { initialInput = BestSellers.defaultProps.initialInput } = props;
+	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [products, setProducts] = useState<Product[]>([]);
@@ -34,32 +36,52 @@ const BestSellers = (props: BestSellersProps) => {
 		},
 	});
 
-	/** RENDER **/
-	return (
-		<Stack component="section" className="best-sellers container">
-			<Stack direction="row" className="section-heading">
-				<Box>
-					<Typography component="span">Customer favorites</Typography>
-					<Typography component="h2">Best Sellers</Typography>
-				</Box>
-				<Stack direction="row" component={Link} href="/product?sort=productSold">
-					View all <ArrowForwardRoundedIcon />
-				</Stack>
-			</Stack>
-
-			{getProductsLoading && !products.length ? (
-				<Typography className="product-message">Loading products...</Typography>
-			) : getProductsError ? (
-				<Typography className="product-message product-message--error">Products could not be loaded.</Typography>
-			) : products.length ? (
-				<Box className="product-grid">
-					{products.map((product) => <ProductCard product={product} key={product._id} />)}
-				</Box>
-			) : (
-				<Typography className="product-message">No products available yet.</Typography>
-			)}
-		</Stack>
+	/** COMPUTED VALUES **/
+	const productContent = getProductsLoading && !products.length ? (
+		<Typography className="product-message">Loading products...</Typography>
+	) : getProductsError ? (
+		<Typography className="product-message product-message--error">Products could not be loaded.</Typography>
+	) : products.length ? (
+		<Box className={`product-grid product-grid--${device}`}>
+			{products.map((product) => <ProductCard product={product} key={product._id} />)}
+		</Box>
+	) : (
+		<Typography className="product-message">No products available yet.</Typography>
 	);
+
+	if (device === 'mobile') {
+		/** RENDER MOBILE **/
+		return (
+			<Stack component="section" className="best-sellers best-sellers--mobile container">
+				<Stack direction="row" className="section-heading">
+					<Box>
+						<Typography component="span">Customer favorites</Typography>
+						<Typography component="h2">Best Sellers</Typography>
+					</Box>
+					<Stack direction="row" component={Link} href="/product?sort=productSold">
+						View all <ArrowForwardRoundedIcon />
+					</Stack>
+				</Stack>
+				{productContent}
+			</Stack>
+		);
+	} else {
+		/** RENDER PC **/
+		return (
+			<Stack component="section" className="best-sellers best-sellers--pc container">
+				<Stack direction="row" className="section-heading">
+					<Box>
+						<Typography component="span">Customer favorites</Typography>
+						<Typography component="h2">Best Sellers</Typography>
+					</Box>
+					<Stack direction="row" component={Link} href="/product?sort=productSold">
+						View all <ArrowForwardRoundedIcon />
+					</Stack>
+				</Stack>
+				{productContent}
+			</Stack>
+		);
+	}
 };
 
 BestSellers.defaultProps = {

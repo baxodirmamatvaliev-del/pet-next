@@ -12,11 +12,13 @@ import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
 import { GET_MY_CART } from '../../apollo/user/query';
+import useDeviceDetect from '../hooks/useDeviceDetect';
 import MobileMenu from './MobileMenu';
 import { T } from '../types/common';
 
 const Top = () => {
 	const router = useRouter();
+	const device = useDeviceDetect();
 
 	/** STATES **/
 	const searchInputRef = useRef<HTMLInputElement>(null);
@@ -119,24 +121,28 @@ const Top = () => {
 					<MenuRoundedIcon />
 				</IconButton>
 			</Box>
-			<Box component="nav" className="category-nav" aria-label="Product categories">
-				<Stack direction="row" className="container category-nav__inner">
-					<Link href="/product?category=DOG">Dogs</Link>
-					<Link href="/product?category=CAT">Cats</Link>
-					<Link href="/product?sort=createdAt">New</Link>
-					<Link href="/product?sort=productSold">Best Sellers</Link>
-					<Link href="/product">Brands</Link>
-					<Link href="/product">Sale</Link>
-					<Link href="/pet">Community</Link>
-				</Stack>
-			</Box>
-			<MobileMenu
-				open={mobileMenuOpen}
-				authenticated={Boolean(user?.sub)}
-				cartCount={cartCount}
-				closeHandler={mobileMenuCloseHandler}
-				searchProductsHandler={searchProductsHandler}
-			/>
+			{device !== 'mobile' && (
+				<Box component="nav" className="category-nav" aria-label="Product categories">
+					<Stack direction="row" className="container category-nav__inner">
+						<Link href="/product?category=DOG">Dogs</Link>
+						<Link href="/product?category=CAT">Cats</Link>
+						<Link href="/product?sort=createdAt">New</Link>
+						<Link href="/product?sort=productSold">Best Sellers</Link>
+						<Link href="/product">Brands</Link>
+						<Link href="/product">Sale</Link>
+						<Link href="/pet">Community</Link>
+					</Stack>
+				</Box>
+			)}
+			{device === 'mobile' && (
+				<MobileMenu
+					open={mobileMenuOpen}
+					authenticated={Boolean(user?.sub)}
+					cartCount={cartCount}
+					closeHandler={mobileMenuCloseHandler}
+					searchProductsHandler={searchProductsHandler}
+				/>
+			)}
 		</Stack>
 	);
 };
