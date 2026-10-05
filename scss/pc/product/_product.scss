@@ -455,4 +455,16 @@
 			text-transform: none;
 		}
 	}
+	.product-related {
+		margin-top: 70px;
+		.product-related__heading {
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			margin-bottom: 24px;
+			h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 28px; }
+			a { color: $primary; font-size: 13px; font-weight: 700; text-decoration: none; &:hover { text-decoration: underline; } }
+		}
+		.product-related__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+	}
 }

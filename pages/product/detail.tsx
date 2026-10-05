@@ -14,10 +14,11 @@ import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
 import { ADD_TO_CART } from '../../apollo/user/mutation';
-import { GET_PRODUCT } from '../../apollo/user/query';
+import { GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
+import ProductCard from '../../libs/components/product/ProductCard';
 import { REACT_APP_API_URL } from '../../libs/config';
-import { Message } from '../../libs/enums/common.enum';
+import { Direction, Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { AddToCartInput } from '../../libs/types/cart/cart.input';
@@ -35,6 +36,7 @@ const ProductDetail: NextPage = () => {
 	const [slideImage, setSlideImage] = useState('');
 	const [selectedSku, setSelectedSku] = useState('');
 	const [quantity, setQuantity] = useState(1);
+	const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
@@ -44,7 +46,6 @@ const ProductDetail: NextPage = () => {
 		},
 	});
 	const {
-		loading: getProductLoading,
 		error: getProductError,
 	} = useQuery(GET_PRODUCT, {
 		fetchPolicy: 'network-only',
@@ -55,7 +56,26 @@ const ProductDetail: NextPage = () => {
 			if (data?.getProduct) {
 				setProduct(data.getProduct);
 				setSlideImage(data.getProduct.productImages[0] ?? '');
+				setSelectedSku('');
+				setQuantity(1);
 			}
+		},
+	});
+	useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: {
+			input: {
+				page: 1,
+				limit: 5,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: { categoryList: product?.productCategory ? [product.productCategory] : [] },
+			},
+		},
+		skip: !productId || !product || product._id !== productId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setRelatedProducts(data?.getProducts?.list ?? []);
 		},
 	});
 
@@ -100,11 +120,14 @@ const ProductDetail: NextPage = () => {
 	const activeVariant = product?.productVariants.find((variant) => variant.sku === selectedSku)
 		?? product?.productVariants[0];
 	const isOutOfStock = !activeVariant || activeVariant.stock < 1;
+	const visibleRelatedProducts = relatedProducts
+		.filter((item) => item._id !== productId && item.productCategory === product?.productCategory)
+		.slice(0, 4);
 	const imagePath = slideImage
 		? `${REACT_APP_API_URL}/${slideImage}`
 		: '/img/banner/home-hero.png';
 
-	if (!router.isReady || !productId || (getProductLoading && !product)) {
+	if (!router.isReady || !productId || (product?._id !== productId && !getProductError)) {
 		return (
 			<Stack className="product-detail-state">
 				<CircularProgress color="primary" />
@@ -199,6 +222,17 @@ const ProductDetail: NextPage = () => {
 						)}
 					</Stack>
 				</Box>
+				{visibleRelatedProducts.length > 0 && (
+					<Box component="section" className="product-related">
+						<Stack direction="row" className="product-related__heading">
+							<Typography component="h2">You may also like</Typography>
+							<Link href="/product">View all products</Link>
+						</Stack>
+						<Box className="product-related__grid">
+							{visibleRelatedProducts.map((item) => <ProductCard product={item} key={item._id} />)}
+						</Box>
+					</Box>
+				)}
 			</Box>
 		);
 	} else {
@@ -319,6 +353,17 @@ const ProductDetail: NextPage = () => {
 						)}
 					</Stack>
 				</Box>
+				{visibleRelatedProducts.length > 0 && (
+					<Box component="section" className="product-related">
+						<Stack direction="row" className="product-related__heading">
+							<Typography component="h2">You may also like</Typography>
+							<Link href="/product">View all products</Link>
+						</Stack>
+						<Box className="product-related__grid">
+							{visibleRelatedProducts.map((item) => <ProductCard product={item} key={item._id} />)}
+						</Box>
+					</Box>
+				)}
 			</Box>
 		);
 	}
