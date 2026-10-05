@@ -126,71 +126,69 @@ const PetList = (props: PetListProps) => {
 		);
 	} else {
 		/** RENDER PC **/
-
-	/** RENDER **/
-	return (
-		<Box component="main" className="pet-list-page container">
-			<Stack direction="row" className="pet-list-page__heading">
-				<Box>
-					<Typography>Home / Community</Typography>
-					<Typography component="h1">Find your new best friend</Typography>
-					<Typography>Meet pets looking for loving homes across South Korea.</Typography>
-				</Box>
-				<Stack direction="row" component="label">
-					<Typography component="span">Sort by</Typography>
-					<FormControl size="small">
-						<Select value={searchFilter.sort} onChange={sortingHandler}>
-							<MenuItem value="createdAt">Newest</MenuItem>
-							<MenuItem value="petLikes">Most liked</MenuItem>
-							<MenuItem value="petViews">Most viewed</MenuItem>
-							<MenuItem value="petPrice">Price</MenuItem>
-						</Select>
-					</FormControl>
-				</Stack>
-			</Stack>
-
-			<PetFilter searchFilter={searchFilter} updateSearchFilter={updateSearchFilterHandler} />
-
-			<Box component="section" className="pet-results" aria-live="polite">
-				<Stack direction="row" className="pet-results__toolbar">
-					<Typography className="pet-results__count">{total} pets available</Typography>
-					<Button
-						component={Link}
-						href="/pet/create"
-						className="pet-results__create"
-						startIcon={<AddRoundedIcon />}
-					>
-						Create listing
-					</Button>
-				</Stack>
-				{getPetsLoading && !pets.length ? (
-					<Typography className="pet-results__message">Loading pets...</Typography>
-				) : getPetsError ? (
-					<Typography className="pet-results__message pet-results__message--error">
-						Pets could not be loaded.
-					</Typography>
-				) : pets.length ? (
-					<Box className="pet-results__grid">
-						{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
+		return (
+			<Box component="main" className="pet-list-page container">
+				<Stack direction="row" className="pet-list-page__heading">
+					<Box>
+						<Typography>Home / Community</Typography>
+						<Typography component="h1">Find your new best friend</Typography>
+						<Typography>Meet pets looking for loving homes across South Korea.</Typography>
 					</Box>
-				) : (
-					<Typography className="pet-results__message">No pets match your filters.</Typography>
-				)}
-				{pets.length > 0 && totalPages > 0 && (
-					<Stack direction="row" className="pet-pagination">
-						<Pagination
-							page={searchFilter.page}
-							count={totalPages}
-							onChange={paginationChangeHandler}
-							color="primary"
-							shape="rounded"
-						/>
-						<Typography>{total} pets available</Typography>
+					<Stack direction="row" component="label">
+						<Typography component="span">Sort by</Typography>
+						<FormControl size="small">
+							<Select value={searchFilter.sort} onChange={sortingHandler}>
+								<MenuItem value="createdAt">Newest</MenuItem>
+								<MenuItem value="petLikes">Most liked</MenuItem>
+								<MenuItem value="petViews">Most viewed</MenuItem>
+								<MenuItem value="petPrice">Price</MenuItem>
+							</Select>
+						</FormControl>
 					</Stack>
-				)}
+				</Stack>
+
+				<PetFilter searchFilter={searchFilter} updateSearchFilter={updateSearchFilterHandler} />
+
+				<Box component="section" className="pet-results" aria-live="polite">
+					<Stack direction="row" className="pet-results__toolbar">
+						<Typography className="pet-results__count">{total} pets available</Typography>
+						<Button
+							component={Link}
+							href="/pet/create"
+							className="pet-results__create"
+							startIcon={<AddRoundedIcon />}
+						>
+							Create listing
+						</Button>
+					</Stack>
+					{getPetsLoading && !pets.length ? (
+						<Typography className="pet-results__message">Loading pets...</Typography>
+					) : getPetsError ? (
+						<Typography className="pet-results__message pet-results__message--error">
+							Pets could not be loaded.
+						</Typography>
+					) : pets.length ? (
+						<Box className="pet-results__grid">
+							{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
+						</Box>
+					) : (
+						<Typography className="pet-results__message">No pets match your filters.</Typography>
+					)}
+					{pets.length > 0 && totalPages > 0 && (
+						<Stack direction="row" className="pet-pagination">
+							<Pagination
+								page={searchFilter.page}
+								count={totalPages}
+								onChange={paginationChangeHandler}
+								color="primary"
+								shape="rounded"
+							/>
+							<Typography>{total} pets available</Typography>
+						</Stack>
+					)}
+				</Box>
 			</Box>
-		</Box>
-	);
+		);
 	}
 };
 

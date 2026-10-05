@@ -60,36 +60,34 @@ const MyPage: NextPage = () => {
 		);
 	} else {
 		/** RENDER PC **/
+		return (
+			<>
+				<Head>
+					<title>My Account | PetNest Korea</title>
+					<meta name="title" content="My Account | PetNest Korea" />
+				</Head>
 
-	/** RENDER **/
-	return (
-		<>
-			<Head>
-				<title>My Account | PetNest Korea</title>
-				<meta name="title" content="My Account | PetNest Korea" />
-			</Head>
-
-			<Box component="main" id="my-page">
-				<Box className="container">
-					{!user?.sub ? (
-						<Stack className="mypage-state">
-							<LockOutlinedIcon />
-							<Typography component="h1">Sign in to view your account</Typography>
-							<Typography>Manage your PetNest orders from one secure place.</Typography>
-							<Button component={Link} href="/account/join?referrer=/mypage" variant="contained">
-								Login or sign up
-							</Button>
-						</Stack>
-					) : (
-						<Box className="mypage-content">
-							<MyMenu />
-							{activeContent}
-						</Box>
-					)}
+				<Box component="main" id="my-page">
+					<Box className="container">
+						{!user?.sub ? (
+							<Stack className="mypage-state">
+								<LockOutlinedIcon />
+								<Typography component="h1">Sign in to view your account</Typography>
+								<Typography>Manage your PetNest orders from one secure place.</Typography>
+								<Button component={Link} href="/account/join?referrer=/mypage" variant="contained">
+									Login or sign up
+								</Button>
+							</Stack>
+						) : (
+							<Box className="mypage-content">
+								<MyMenu />
+								{activeContent}
+							</Box>
+						)}
+					</Box>
 				</Box>
-			</Box>
-		</>
-	);
+			</>
+		);
 	}
 };
 

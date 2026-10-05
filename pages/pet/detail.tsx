@@ -186,86 +186,86 @@ const PetDetail: NextPage = () => {
 	} else {
 		/** RENDER PC **/
 		return (
-		<Box component="main" className="pet-detail-page container">
-			<Typography className="pet-detail-page__breadcrumb">
-				<Link href="/">Home</Link> / <Link href="/pet">Community</Link> / {pet.petName}
-			</Typography>
+			<Box component="main" className="pet-detail-page container">
+				<Typography className="pet-detail-page__breadcrumb">
+					<Link href="/">Home</Link> / <Link href="/pet">Community</Link> / {pet.petName}
+				</Typography>
 
-			<Box className="pet-detail">
-				<Box className="pet-gallery">
-					<Stack className="pet-gallery__thumbs">
-						{pet.petImages.map((image) => (
-							<Button
-								className={image === slideImage ? 'active' : ''}
-								onClick={() => changeImageHandler(image)}
-								key={image}
-							>
-								<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="80px" unoptimized />
-							</Button>
-						))}
-					</Stack>
-					<Box className="pet-gallery__main">
-						<Image
-							src={imagePath}
-							alt={pet.petName}
-							fill
-							sizes="(max-width: 760px) 100vw, 620px"
-							priority
-							unoptimized
-						/>
+				<Box className="pet-detail">
+					<Box className="pet-gallery">
+						<Stack className="pet-gallery__thumbs">
+							{pet.petImages.map((image) => (
+								<Button
+									className={image === slideImage ? 'active' : ''}
+									onClick={() => changeImageHandler(image)}
+									key={image}
+								>
+									<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="80px" unoptimized />
+								</Button>
+							))}
+						</Stack>
+						<Box className="pet-gallery__main">
+							<Image
+								src={imagePath}
+								alt={pet.petName}
+								fill
+								sizes="(max-width: 760px) 100vw, 620px"
+								priority
+								unoptimized
+							/>
+						</Box>
 					</Box>
-				</Box>
 
-				<Stack className="pet-detail__info">
-					<Stack direction="row" className="pet-detail__eyebrow">
-						<Typography>{pet.petListingType === PetListingType.ADOPTION ? 'ADOPTION' : 'FOR SALE'}</Typography>
-						<IconButton
-							className={isFavorite ? 'active' : ''}
+					<Stack className="pet-detail__info">
+						<Stack direction="row" className="pet-detail__eyebrow">
+							<Typography>{pet.petListingType === PetListingType.ADOPTION ? 'ADOPTION' : 'FOR SALE'}</Typography>
+							<IconButton
+								className={isFavorite ? 'active' : ''}
+								onClick={likePetHandler}
+								disabled={likeLoading}
+								aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+							>
+								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+							</IconButton>
+						</Stack>
+						<Typography component="h1">{pet.petName}</Typography>
+						<Typography className="pet-detail__title">{pet.petTitle}</Typography>
+						<Typography component="strong" className="pet-detail__price">{petPrice}</Typography>
+
+						<Stack className="pet-detail__facts">
+							<Stack direction="row">
+								<PetsOutlinedIcon />
+								<Typography>{pet.petBreed ?? pet.petType} · {pet.petGender} · {petAge}</Typography>
+							</Stack>
+							<Stack direction="row">
+								<LocationOnOutlinedIcon />
+								<Typography>{pet.petLocation}, South Korea</Typography>
+							</Stack>
+						</Stack>
+
+						<Button
+							className="button button--primary"
+							startIcon={isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 							onClick={likePetHandler}
 							disabled={likeLoading}
-							aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
 						>
-							{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
-						</IconButton>
-					</Stack>
-					<Typography component="h1">{pet.petName}</Typography>
-					<Typography className="pet-detail__title">{pet.petTitle}</Typography>
-					<Typography component="strong" className="pet-detail__price">{petPrice}</Typography>
+							{isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+						</Button>
 
-					<Stack className="pet-detail__facts">
-						<Stack direction="row">
-							<PetsOutlinedIcon />
-							<Typography>{pet.petBreed ?? pet.petType} · {pet.petGender} · {petAge}</Typography>
+						<Stack className="pet-detail__owner">
+							<Typography>Listed by</Typography>
+							<Typography component="strong">{pet.memberData?.memberNick ?? 'PetNest member'}</Typography>
 						</Stack>
-						<Stack direction="row">
-							<LocationOnOutlinedIcon />
-							<Typography>{pet.petLocation}, South Korea</Typography>
-						</Stack>
+
+						{pet.petDesc && (
+							<Box className="pet-detail__description">
+								<Typography component="strong">About {pet.petName}</Typography>
+								<Typography>{pet.petDesc}</Typography>
+							</Box>
+						)}
 					</Stack>
-
-					<Button
-						className="button button--primary"
-						startIcon={isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
-						onClick={likePetHandler}
-						disabled={likeLoading}
-					>
-						{isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-					</Button>
-
-					<Stack className="pet-detail__owner">
-						<Typography>Listed by</Typography>
-						<Typography component="strong">{pet.memberData?.memberNick ?? 'PetNest member'}</Typography>
-					</Stack>
-
-					{pet.petDesc && (
-						<Box className="pet-detail__description">
-							<Typography component="strong">About {pet.petName}</Typography>
-							<Typography>{pet.petDesc}</Typography>
-						</Box>
-					)}
-				</Stack>
+				</Box>
 			</Box>
-		</Box>
 		);
 	}
 };

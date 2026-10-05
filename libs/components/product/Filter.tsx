@@ -136,74 +136,74 @@ const Filter = (props: FilterType) => {
 		);
 	} else {
 		/** RENDER PC **/
-	return (
-		<Box component="aside" className="product-filter">
-			<Box component="form" className="product-filter__search" onSubmit={searchHandler}>
-				<TextField
-					fullWidth
-					size="small"
-					type="search"
-					value={searchText}
-					onChange={(event) => setSearchText(event.target.value)}
-					placeholder="Search products"
-					slotProps={{
-						htmlInput: { 'aria-label': 'Search products' },
-						input: {
-							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton type="submit" edge="end" aria-label="Submit search">
-										<SearchRoundedIcon />
-									</IconButton>
-								</InputAdornment>
-							),
-						},
-					}}
-				/>
+		return (
+			<Box component="aside" className="product-filter">
+				<Box component="form" className="product-filter__search" onSubmit={searchHandler}>
+					<TextField
+						fullWidth
+						size="small"
+						type="search"
+						value={searchText}
+						onChange={(event) => setSearchText(event.target.value)}
+						placeholder="Search products"
+						slotProps={{
+							htmlInput: { 'aria-label': 'Search products' },
+							input: {
+								endAdornment: (
+									<InputAdornment position="end">
+										<IconButton type="submit" edge="end" aria-label="Submit search">
+											<SearchRoundedIcon />
+										</IconButton>
+									</InputAdornment>
+								),
+							},
+						}}
+					/>
+				</Box>
+
+				<FormControl className="product-filter__group">
+					<FormLabel>Pet</FormLabel>
+					<FormGroup>
+						{categoryOptions.map(({ label, value }) => (
+							<FormControlLabel
+								key={value}
+								label={label}
+								control={(
+									<Checkbox
+										size="small"
+										checked={searchFilter.search.categoryList?.includes(value) ?? false}
+										onChange={() => categorySelectHandler(value)}
+									/>
+								)}
+							/>
+						))}
+					</FormGroup>
+				</FormControl>
+
+				<FormControl className="product-filter__group">
+					<FormLabel>Product type</FormLabel>
+					<FormGroup>
+						{typeOptions.map(({ label, value }) => (
+							<FormControlLabel
+								key={value}
+								label={label}
+								control={(
+									<Checkbox
+										size="small"
+										checked={searchFilter.search.typeList?.includes(value) ?? false}
+										onChange={() => typeSelectHandler(value)}
+									/>
+								)}
+							/>
+						))}
+					</FormGroup>
+				</FormControl>
+
+				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>
+					Reset filters
+				</Button>
 			</Box>
-
-			<FormControl className="product-filter__group">
-				<FormLabel>Pet</FormLabel>
-				<FormGroup>
-					{categoryOptions.map(({ label, value }) => (
-						<FormControlLabel
-							key={value}
-							label={label}
-							control={(
-								<Checkbox
-									size="small"
-									checked={searchFilter.search.categoryList?.includes(value) ?? false}
-									onChange={() => categorySelectHandler(value)}
-								/>
-							)}
-						/>
-					))}
-				</FormGroup>
-			</FormControl>
-
-			<FormControl className="product-filter__group">
-				<FormLabel>Product type</FormLabel>
-				<FormGroup>
-					{typeOptions.map(({ label, value }) => (
-						<FormControlLabel
-							key={value}
-							label={label}
-							control={(
-								<Checkbox
-									size="small"
-									checked={searchFilter.search.typeList?.includes(value) ?? false}
-									onChange={() => typeSelectHandler(value)}
-								/>
-							)}
-						/>
-					))}
-				</FormGroup>
-			</FormControl>
-
-			<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>
-				Reset filters
-			</Button>
-		</Box>
-	);
+		);
 	}
 };
 

@@ -57,53 +57,53 @@ const MyMenu = () => {
 		);
 	} else {
 		/** RENDER PC **/
-	return (
-		<Stack component="aside" className="my-menu">
-			<Stack direction="row" className="my-menu__profile">
-				<Box><PetsRoundedIcon /></Box>
-				<Stack>
-					<Typography component="strong">PetNest Member</Typography>
-					<Typography>#{user?.sub.slice(-8).toUpperCase()}</Typography>
+		return (
+			<Stack component="aside" className="my-menu">
+				<Stack direction="row" className="my-menu__profile">
+					<Box><PetsRoundedIcon /></Box>
+					<Stack>
+						<Typography component="strong">PetNest Member</Typography>
+						<Typography>#{user?.sub.slice(-8).toUpperCase()}</Typography>
+					</Stack>
 				</Stack>
-			</Stack>
 
-			<Typography className="my-menu__label">MY ACCOUNT</Typography>
-			<List disablePadding>
-				<ListItemButton
-					component={Link}
-					href="/mypage?category=myProfile"
-					className={category === 'myProfile' ? 'active' : ''}
-				>
-					<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
-					<ListItemText primary="My Profile" />
-				</ListItemButton>
-				<ListItemButton
-					component={Link}
-					href="/mypage?category=myOrders"
-					className={category === 'myOrders' ? 'active' : ''}
-				>
-					<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
-					<ListItemText primary="My Orders" />
-				</ListItemButton>
-				<ListItemButton
-					component={Link}
-					href="/mypage?category=myPets"
-					className={category === 'myPets' ? 'active' : ''}
-				>
-					<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
-					<ListItemText primary="My Pet Listings" />
-				</ListItemButton>
-				<ListItemButton component={Link} href="/cart">
-					<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
-					<ListItemText primary="Shopping Cart" />
-				</ListItemButton>
-				<ListItemButton onClick={logoutHandler}>
-					<ListItemIcon><LogoutRoundedIcon /></ListItemIcon>
-					<ListItemText primary="Logout" />
-				</ListItemButton>
-			</List>
-		</Stack>
-	);
+				<Typography className="my-menu__label">MY ACCOUNT</Typography>
+				<List disablePadding>
+					<ListItemButton
+						component={Link}
+						href="/mypage?category=myProfile"
+						className={category === 'myProfile' ? 'active' : ''}
+					>
+						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
+						<ListItemText primary="My Profile" />
+					</ListItemButton>
+					<ListItemButton
+						component={Link}
+						href="/mypage?category=myOrders"
+						className={category === 'myOrders' ? 'active' : ''}
+					>
+						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="My Orders" />
+					</ListItemButton>
+					<ListItemButton
+						component={Link}
+						href="/mypage?category=myPets"
+						className={category === 'myPets' ? 'active' : ''}
+					>
+						<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="My Pet Listings" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/cart">
+						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="Shopping Cart" />
+					</ListItemButton>
+					<ListItemButton onClick={logoutHandler}>
+						<ListItemIcon><LogoutRoundedIcon /></ListItemIcon>
+						<ListItemText primary="Logout" />
+					</ListItemButton>
+				</List>
+			</Stack>
+		);
 	}
 };
 

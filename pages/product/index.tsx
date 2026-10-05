@@ -146,66 +146,64 @@ const ProductList = (props: ProductListProps) => {
 		);
 	} else {
 		/** RENDER PC **/
-
-	/** RENDER **/
-	return (
-		<Box component="main" className="product-list-page container">
-			<Stack direction="row" className="product-list-page__heading">
-				<Box>
-					<Typography>Home / Shop</Typography>
-					<Typography component="h1">All Pet Products</Typography>
-				</Box>
-				<Stack direction="row" component="label">
-					<Typography component="span">Sort by</Typography>
-					<FormControl size="small">
-						<Select value={searchFilter.sort} onChange={sortingHandler}>
-							<MenuItem value="createdAt">Newest</MenuItem>
-							<MenuItem value="productSold">Best selling</MenuItem>
-							<MenuItem value="productRating">Highest rated</MenuItem>
-							<MenuItem value="productName">Product name</MenuItem>
-						</Select>
-					</FormControl>
+		return (
+			<Box component="main" className="product-list-page container">
+				<Stack direction="row" className="product-list-page__heading">
+					<Box>
+						<Typography>Home / Shop</Typography>
+						<Typography component="h1">All Pet Products</Typography>
+					</Box>
+					<Stack direction="row" component="label">
+						<Typography component="span">Sort by</Typography>
+						<FormControl size="small">
+							<Select value={searchFilter.sort} onChange={sortingHandler}>
+								<MenuItem value="createdAt">Newest</MenuItem>
+								<MenuItem value="productSold">Best selling</MenuItem>
+								<MenuItem value="productRating">Highest rated</MenuItem>
+								<MenuItem value="productName">Product name</MenuItem>
+							</Select>
+						</FormControl>
+					</Stack>
 				</Stack>
-			</Stack>
 
-			<Box className="product-catalog">
-				<Filter
-					key={searchFilter.search.text ?? 'empty-search'}
-					searchFilter={searchFilter}
-					updateSearchFilter={updateSearchFilterHandler}
-					initialInput={initialInput}
-				/>
-				<Box component="section" className="product-results" aria-live="polite">
-					<Typography className="product-results__count">{total} products</Typography>
-					{getProductsLoading && !products.length ? (
-						<Typography className="product-results__message">Loading products...</Typography>
-					) : getProductsError ? (
-						<Typography className="product-results__message product-results__message--error">
-							Products could not be loaded.
-						</Typography>
-					) : products.length ? (
-						<Box className="product-results__grid">
-							{products.map((product) => <ProductCard product={product} key={product._id} />)}
-						</Box>
-					) : (
-						<Typography className="product-results__message">No products match your filters.</Typography>
-					)}
-					{products.length > 0 && totalPages > 0 && (
-						<Stack direction="row" className="product-pagination">
-							<Pagination
-								page={searchFilter.page}
-								count={totalPages}
-								onChange={paginationChangeHandler}
-								color="primary"
-								shape="rounded"
-							/>
-							<Typography>{total} products available</Typography>
-						</Stack>
-					)}
+				<Box className="product-catalog">
+					<Filter
+						key={searchFilter.search.text ?? 'empty-search'}
+						searchFilter={searchFilter}
+						updateSearchFilter={updateSearchFilterHandler}
+						initialInput={initialInput}
+					/>
+					<Box component="section" className="product-results" aria-live="polite">
+						<Typography className="product-results__count">{total} products</Typography>
+						{getProductsLoading && !products.length ? (
+							<Typography className="product-results__message">Loading products...</Typography>
+						) : getProductsError ? (
+							<Typography className="product-results__message product-results__message--error">
+								Products could not be loaded.
+							</Typography>
+						) : products.length ? (
+							<Box className="product-results__grid">
+								{products.map((product) => <ProductCard product={product} key={product._id} />)}
+							</Box>
+						) : (
+							<Typography className="product-results__message">No products match your filters.</Typography>
+						)}
+						{products.length > 0 && totalPages > 0 && (
+							<Stack direction="row" className="product-pagination">
+								<Pagination
+									page={searchFilter.page}
+									count={totalPages}
+									onChange={paginationChangeHandler}
+									color="primary"
+									shape="rounded"
+								/>
+								<Typography>{total} products available</Typography>
+							</Stack>
+						)}
+					</Box>
 				</Box>
 			</Box>
-		</Box>
-	);
+		);
 	}
 };
 

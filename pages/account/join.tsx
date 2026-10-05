@@ -93,113 +93,132 @@ const Join: NextPage = () => {
 		|| input.password.length < 8
 		|| (!loginView && !input.phone.trim());
 
-	/** RENDER **/
-	return (
-		<>
-			<Head>
-				<title>Account | PetNest Korea</title>
-				<meta name="title" content="Account | PetNest Korea" />
-			</Head>
+	const joinForm = (
+		<Stack className="join-form">
+			<Stack direction="row" className="join-brand">
+				<PetsRoundedIcon />
+				<Stack>
+					<Typography component="strong">PetNest</Typography>
+					<Typography component="small">Korea</Typography>
+				</Stack>
+			</Stack>
 
-			<Box component="main" className="join-page">
-				<Box className="container">
-					<Box className="join-card">
-						<Stack className="join-form">
-							<Stack direction="row" className="join-brand">
-								<PetsRoundedIcon />
-								<Stack>
-									<Typography component="strong">PetNest</Typography>
-									<Typography component="small">Korea</Typography>
-								</Stack>
-							</Stack>
+			{user?.sub ? (
+				<Stack className="join-session">
+					<Typography component="span">ACCOUNT</Typography>
+					<Typography component="h1">You are signed in</Typography>
+					<Typography>Your PetNest session is active and ready for shopping.</Typography>
+					<Button
+						variant="contained"
+						startIcon={<LogoutRoundedIcon />}
+						onClick={logoutHandler}
+					>
+						Logout
+					</Button>
+					<Button component={Link} href="/product" variant="outlined">
+						Continue shopping
+					</Button>
+				</Stack>
+			) : (
+				<>
+					<Box className="join-heading">
+						<Typography component="span">WELCOME TO PETNEST</Typography>
+						<Typography component="h1">
+							{loginView ? 'Welcome back' : 'Create your account'}
+						</Typography>
+						<Typography>
+							{loginView
+								? 'Login to manage your cart, favorites and orders.'
+								: 'Join PetNest and make shopping for your pet easier.'}
+						</Typography>
+					</Box>
 
-							{user?.sub ? (
-								<Stack className="join-session">
-									<Typography component="span">ACCOUNT</Typography>
-									<Typography component="h1">You are signed in</Typography>
-									<Typography>Your PetNest session is active and ready for shopping.</Typography>
-									<Button
-										variant="contained"
-										startIcon={<LogoutRoundedIcon />}
-										onClick={logoutHandler}
-									>
-										Logout
-									</Button>
-									<Button component={Link} href="/product" variant="outlined">
-										Continue shopping
-									</Button>
-								</Stack>
-							) : (
-								<>
-									<Box className="join-heading">
-										<Typography component="span">WELCOME TO PETNEST</Typography>
-										<Typography component="h1">
-											{loginView ? 'Welcome back' : 'Create your account'}
-										</Typography>
-										<Typography>
-											{loginView
-												? 'Login to manage your cart, favorites and orders.'
-												: 'Join PetNest and make shopping for your pet easier.'}
-										</Typography>
-									</Box>
+					<Stack direction="row" className="join-switch">
+						<Button className={loginView ? 'active' : ''} onClick={() => viewChangeHandler(true)}>
+							Login
+						</Button>
+						<Button className={!loginView ? 'active' : ''} onClick={() => viewChangeHandler(false)}>
+							Sign up
+						</Button>
+					</Stack>
 
-									<Stack direction="row" className="join-switch">
-										<Button className={loginView ? 'active' : ''} onClick={() => viewChangeHandler(true)}>
-											Login
-										</Button>
-										<Button className={!loginView ? 'active' : ''} onClick={() => viewChangeHandler(false)}>
-											Sign up
-										</Button>
-									</Stack>
+					<Stack
+						component="form"
+						className="join-fields"
+						onSubmit={loginView ? loginHandler : signupHandler}
+					>
+						<TextField
+							label="Nickname"
+							placeholder="Enter your nickname"
+							value={input.nick}
+							onChange={(event) => inputChangeHandler('nick', event.target.value)}
+							required
+							fullWidth
+						/>
+						<TextField
+							label="Password"
+							placeholder="At least 8 characters"
+							type="password"
+							value={input.password}
+							onChange={(event) => inputChangeHandler('password', event.target.value)}
+							slotProps={{ htmlInput: { minLength: 8 } }}
+							required
+							fullWidth
+						/>
+						{!loginView && (
+							<TextField
+								label="Phone number"
+								placeholder="010-0000-0000"
+								type="tel"
+								value={input.phone}
+								onChange={(event) => inputChangeHandler('phone', event.target.value)}
+								required
+								fullWidth
+							/>
+						)}
+						<Button
+							type="submit"
+							variant="contained"
+							endIcon={<ArrowForwardRoundedIcon />}
+							disabled={isSubmitDisabled}
+						>
+							{loading ? 'Please wait...' : loginView ? 'Login' : 'Create account'}
+						</Button>
+					</Stack>
+				</>
+			)}
+		</Stack>
+	);
 
-									<Stack
-										component="form"
-										className="join-fields"
-										onSubmit={loginView ? loginHandler : signupHandler}
-									>
-										<TextField
-											label="Nickname"
-											placeholder="Enter your nickname"
-											value={input.nick}
-											onChange={(event) => inputChangeHandler('nick', event.target.value)}
-											required
-											fullWidth
-										/>
-										<TextField
-											label="Password"
-											placeholder="At least 8 characters"
-											type="password"
-											value={input.password}
-											onChange={(event) => inputChangeHandler('password', event.target.value)}
-											slotProps={{ htmlInput: { minLength: 8 } }}
-											required
-											fullWidth
-										/>
-										{!loginView && (
-											<TextField
-												label="Phone number"
-												placeholder="010-0000-0000"
-												type="tel"
-												value={input.phone}
-												onChange={(event) => inputChangeHandler('phone', event.target.value)}
-												required
-												fullWidth
-											/>
-										)}
-										<Button
-											type="submit"
-											variant="contained"
-											endIcon={<ArrowForwardRoundedIcon />}
-											disabled={isSubmitDisabled}
-										>
-											{loading ? 'Please wait...' : loginView ? 'Login' : 'Create account'}
-										</Button>
-									</Stack>
-								</>
-							)}
-						</Stack>
-
-						{device === 'mobile' ? null : (
+	if (device === 'mobile') {
+		/** RENDER MOBILE **/
+		return (
+			<>
+				<Head>
+					<title>Account | PetNest Korea</title>
+					<meta name="title" content="Account | PetNest Korea" />
+				</Head>
+				<Box component="main" className="join-page join-page--mobile">
+					<Box className="container">
+						<Box className="join-card">
+							{joinForm}
+						</Box>
+					</Box>
+				</Box>
+			</>
+		);
+	} else {
+		/** RENDER PC **/
+		return (
+			<>
+				<Head>
+					<title>Account | PetNest Korea</title>
+					<meta name="title" content="Account | PetNest Korea" />
+				</Head>
+				<Box component="main" className="join-page join-page--pc">
+					<Box className="container">
+						<Box className="join-card">
+							{joinForm}
 							<Stack className="join-side">
 								<PetsRoundedIcon />
 								<Typography component="span">PETNEST MEMBERSHIP</Typography>
@@ -208,12 +227,12 @@ const Join: NextPage = () => {
 									Save favorites, build your cart and keep every order close at hand.
 								</Typography>
 							</Stack>
-						)}
+						</Box>
 					</Box>
 				</Box>
-			</Box>
-		</>
-	);
+			</>
+		);
+	}
 };
 
 export default withLayoutBasic(Join);

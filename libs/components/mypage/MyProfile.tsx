@@ -196,78 +196,77 @@ const MyProfile = () => {
 		);
 	} else {
 		/** RENDER PC **/
-	/** RENDER **/
-	return (
-		<Box className="my-profile">
-			<Box className="my-profile__heading">
-				<Typography component="h1">My Profile</Typography>
-				<Typography>Keep your delivery and account information up to date.</Typography>
-			</Box>
-
-			<Stack component="form" className="profile-form" onSubmit={updateMemberHandler}>
-				<Stack direction="row" className="profile-photo">
-					<Avatar src={imagePath} alt={member.memberNick}>
-						<PetsRoundedIcon />
-					</Avatar>
-					<Box>
-						<Typography component="strong">Profile photo</Typography>
-						<Typography>JPG, JPEG or PNG image.</Typography>
-						<Button
-							component="label"
-							variant="outlined"
-							startIcon={<CloudUploadOutlinedIcon />}
-							disabled={imageUploaderLoading}
-						>
-							{imageUploaderLoading ? 'Uploading...' : 'Upload image'}
-							<Box
-								component="input"
-								className="profile-photo__input"
-								type="file"
-								accept="image/jpeg,image/png"
-								onChange={uploadImageHandler}
-							/>
-						</Button>
-					</Box>
-				</Stack>
-
-				<Box className="profile-fields">
-					<TextField label="Nickname" value={member.memberNick} disabled fullWidth />
-					<TextField label="Phone number" value={member.memberPhone} disabled fullWidth />
-					<TextField
-						label="Full name"
-						value={memberUpdate.memberFullName}
-						onChange={(event) => inputChangeHandler('memberFullName', event.target.value)}
-						slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }}
-						fullWidth
-					/>
-					<TextField
-						label="Address"
-						value={memberUpdate.memberAddress}
-						onChange={(event) => inputChangeHandler('memberAddress', event.target.value)}
-						fullWidth
-					/>
-					<TextField
-						className="profile-fields__wide"
-						label="About me"
-						value={memberUpdate.memberDesc}
-						onChange={(event) => inputChangeHandler('memberDesc', event.target.value)}
-						multiline
-						rows={4}
-						fullWidth
-					/>
+		return (
+			<Box className="my-profile">
+				<Box className="my-profile__heading">
+					<Typography component="h1">My Profile</Typography>
+					<Typography>Keep your delivery and account information up to date.</Typography>
 				</Box>
 
-				<Button
-					type="submit"
-					variant="contained"
-					startIcon={<SaveOutlinedIcon />}
-					disabled={isUpdateDisabled}
-				>
-					{updateMemberLoading ? 'Saving...' : 'Save changes'}
-				</Button>
-			</Stack>
-		</Box>
-	);
+				<Stack component="form" className="profile-form" onSubmit={updateMemberHandler}>
+					<Stack direction="row" className="profile-photo">
+						<Avatar src={imagePath} alt={member.memberNick}>
+							<PetsRoundedIcon />
+						</Avatar>
+						<Box>
+							<Typography component="strong">Profile photo</Typography>
+							<Typography>JPG, JPEG or PNG image.</Typography>
+							<Button
+								component="label"
+								variant="outlined"
+								startIcon={<CloudUploadOutlinedIcon />}
+								disabled={imageUploaderLoading}
+							>
+								{imageUploaderLoading ? 'Uploading...' : 'Upload image'}
+								<Box
+									component="input"
+									className="profile-photo__input"
+									type="file"
+									accept="image/jpeg,image/png"
+									onChange={uploadImageHandler}
+								/>
+							</Button>
+						</Box>
+					</Stack>
+
+					<Box className="profile-fields">
+						<TextField label="Nickname" value={member.memberNick} disabled fullWidth />
+						<TextField label="Phone number" value={member.memberPhone} disabled fullWidth />
+						<TextField
+							label="Full name"
+							value={memberUpdate.memberFullName}
+							onChange={(event) => inputChangeHandler('memberFullName', event.target.value)}
+							slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }}
+							fullWidth
+						/>
+						<TextField
+							label="Address"
+							value={memberUpdate.memberAddress}
+							onChange={(event) => inputChangeHandler('memberAddress', event.target.value)}
+							fullWidth
+						/>
+						<TextField
+							className="profile-fields__wide"
+							label="About me"
+							value={memberUpdate.memberDesc}
+							onChange={(event) => inputChangeHandler('memberDesc', event.target.value)}
+							multiline
+							rows={4}
+							fullWidth
+						/>
+					</Box>
+
+					<Button
+						type="submit"
+						variant="contained"
+						startIcon={<SaveOutlinedIcon />}
+						disabled={isUpdateDisabled}
+					>
+						{updateMemberLoading ? 'Saving...' : 'Save changes'}
+					</Button>
+				</Stack>
+			</Box>
+		);
 	}
 };
 
