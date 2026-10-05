@@ -100,6 +100,51 @@ export const GET_PRODUCTS = gql`
 `;
 
 /**************************
+ *           PET          *
+ *************************/
+
+export const GET_PETS = gql`
+	query GetPets($input: PetsInquiry!) {
+		getPets(input: $input) {
+			list {
+				_id
+				petType
+				petListingType
+				petStatus
+				petLocation
+				petTitle
+				petName
+				petBreed
+				petGender
+				petAgeMonths
+				petPrice
+				petImages
+				petViews
+				petLikes
+				petComments
+				petRank
+				memberId
+				createdAt
+				updatedAt
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
+				}
+				memberData {
+					_id
+					memberNick
+					memberImage
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+/**************************
  *          CART          *
  *************************/
 

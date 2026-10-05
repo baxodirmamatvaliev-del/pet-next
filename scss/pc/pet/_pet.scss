@@ -1,0 +1,213 @@
+@use '../../variables' as *;
+
+.pet-list-page {
+	padding-block: 42px 20px;
+	.pet-list-page__heading {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		padding-bottom: 28px;
+		border-bottom: 1px solid $border;
+		> div {
+			> p:first-child {
+				margin-bottom: 12px;
+				color: $muted;
+				font-size: 12px;
+			}
+			> p:last-child {
+				margin-top: 10px;
+				color: $muted;
+				font-size: 14px;
+			}
+		}
+		h1 {
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 38px;
+		}
+		label {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			span {
+				color: $muted;
+				font-size: 12px;
+			}
+			.MuiFormControl-root {
+				min-width: 150px;
+			}
+			.MuiOutlinedInput-root {
+				height: 42px;
+				background: #ffffff;
+				color: $ink;
+				font-size: 13px;
+			}
+		}
+	}
+	.pet-filter {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 30px;
+		padding: 24px 0 28px;
+		.pet-filter__group {
+			gap: 10px;
+			> p {
+				color: $muted;
+				font-size: 11px;
+				font-weight: 700;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+			}
+			.MuiToggleButtonGroup-root {
+				gap: 8px;
+				.MuiToggleButtonGroup-grouped {
+					height: 36px;
+					padding: 0 16px;
+					border: 1px solid $border;
+					border-radius: 20px;
+					color: $muted;
+					font-size: 11px;
+					font-weight: 700;
+					text-transform: none;
+					&.Mui-selected {
+						border-color: $primary;
+						background: $primary;
+						color: #ffffff;
+					}
+				}
+			}
+		}
+	}
+	.pet-results {
+		.pet-results__count {
+			margin-bottom: 18px;
+			color: $muted;
+			font-size: 12px;
+		}
+		.pet-results__grid {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 28px 20px;
+		}
+		.pet-results__message {
+			min-height: 360px;
+			display: grid;
+			place-items: center;
+			border: 1px dashed $border;
+			border-radius: 15px;
+			color: $muted;
+			font-size: 14px;
+			&.pet-results__message--error {
+				color: $secondary;
+			}
+		}
+		.pet-pagination {
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 46px;
+			padding-top: 24px;
+			border-top: 1px solid $border;
+			> p {
+				color: $muted;
+				font-size: 12px;
+			}
+		}
+	}
+}
+
+.pet-card {
+	min-width: 0;
+	overflow: hidden;
+	border: 1px solid $border;
+	border-radius: 16px;
+	background: #ffffff;
+	transition: transform 180ms ease, box-shadow 180ms ease;
+	&:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 14px 34px rgb(23 79 63 / 10%);
+	}
+	.pet-card__image {
+		position: relative;
+		aspect-ratio: 4 / 3;
+		overflow: hidden;
+		background: #f6f4ef;
+		img {
+			object-fit: cover;
+		}
+		.pet-card__status {
+			position: absolute;
+			top: 14px;
+			left: 14px;
+			height: 28px;
+			background: rgb(255 255 255 / 92%);
+			color: $primary;
+			font-size: 11px;
+			font-weight: 800;
+		}
+	}
+	.pet-card__content {
+		padding: 18px;
+		.pet-card__heading {
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 14px;
+			h2 {
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 22px;
+			}
+			p {
+				margin-top: 4px;
+				color: $muted;
+				font-size: 12px;
+			}
+			strong {
+				flex-shrink: 0;
+				color: $primary;
+				font-size: 14px;
+			}
+		}
+		.pet-card__title {
+			margin-top: 14px;
+			overflow: hidden;
+			font-size: 14px;
+			font-weight: 700;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.pet-card__meta {
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 14px;
+			color: $muted;
+			p {
+				display: flex;
+				align-items: center;
+				font-size: 11px;
+				svg {
+					margin-right: 3px;
+					font-size: 15px;
+				}
+			}
+		}
+		.pet-card__stats {
+			align-items: center;
+			gap: 14px;
+			margin-top: 16px;
+			padding-top: 14px;
+			border-top: 1px solid $border;
+			color: $muted;
+			p {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+				font-size: 11px;
+				svg {
+					font-size: 15px;
+				}
+				&:last-child {
+					margin-left: auto;
+				}
+			}
+		}
+	}
+}

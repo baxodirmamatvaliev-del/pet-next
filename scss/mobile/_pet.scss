@@ -1,0 +1,52 @@
+@media (max-width: 760px) {
+	.pet-list-page {
+		padding-top: 28px;
+		.pet-list-page__heading {
+			align-items: flex-start;
+			gap: 20px;
+			h1 {
+				font-size: 28px;
+			}
+			> div > p:last-child {
+				max-width: 250px;
+				font-size: 12px;
+			}
+			label {
+				span {
+					display: none;
+				}
+				.MuiFormControl-root {
+					min-width: 120px;
+				}
+			}
+		}
+		.pet-filter {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 20px;
+			overflow: hidden;
+			.pet-filter__group {
+				width: 100%;
+				.MuiToggleButtonGroup-root {
+					width: 100%;
+					overflow-x: auto;
+					.MuiToggleButtonGroup-grouped {
+						flex: 1 0 auto;
+					}
+				}
+			}
+		}
+		.pet-results {
+			.pet-results__grid {
+				grid-template-columns: 1fr;
+				gap: 20px;
+			}
+			.pet-pagination {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 14px;
+				margin-top: 34px;
+			}
+		}
+	}
+}

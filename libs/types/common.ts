@@ -2,6 +2,7 @@ import { Cart } from './cart/cart';
 import { AuthPayload, Member } from './member/member';
 import { Order, Orders } from './order/order';
 import { Payment } from './payment/payment';
+import { Pets } from './pet/pet';
 import { Product, Products } from './product/product';
 
 export interface T {
@@ -11,6 +12,7 @@ export interface T {
 	updateMember?: Member;
 	getProduct?: Product;
 	getProducts?: Products;
+	getPets?: Pets;
 	getMyCart?: Cart;
 	addToCart?: Cart;
 	updateCartItem?: Cart;
