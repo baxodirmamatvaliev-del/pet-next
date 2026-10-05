@@ -14,6 +14,7 @@ import { userVar } from '../../apollo/store';
 import { LIKE_TARGET_PET } from '../../apollo/user/mutation';
 import { GET_PET } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
+import PetComments from '../../libs/components/pet/PetComments';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
 import { PetListingType } from '../../libs/enums/pet.enum';
@@ -181,6 +182,7 @@ const PetDetail: NextPage = () => {
 						)}
 					</Stack>
 				</Box>
+				<PetComments petId={petId} key={petId} />
 			</Box>
 		);
 	} else {
@@ -265,6 +267,7 @@ const PetDetail: NextPage = () => {
 						)}
 					</Stack>
 				</Box>
+				<PetComments petId={petId} key={petId} />
 			</Box>
 		);
 	}

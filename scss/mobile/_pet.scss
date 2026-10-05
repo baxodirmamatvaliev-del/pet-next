@@ -87,6 +87,29 @@
 				font-size: 30px;
 			}
 		}
+		.pet-comments {
+			margin-top: 32px;
+			padding: 20px 16px;
+			.pet-comments__heading {
+				align-items: flex-start;
+				flex-direction: column;
+				h2 {
+					font-size: 24px;
+				}
+			}
+			.pet-comments__sign-in {
+				align-items: flex-start;
+				flex-direction: column;
+			}
+			.pet-comments__form .MuiButton-root {
+				width: 100%;
+			}
+			.pet-comments__author {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 3px;
+			}
+		}
 	}
 	.pet-create-page {
 		padding-block: 30px 48px;

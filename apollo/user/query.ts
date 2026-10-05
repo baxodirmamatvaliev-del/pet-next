@@ -296,6 +296,35 @@ export const GET_VISITED_PETS = gql`
 `;
 
 /**************************
+ *         COMMENT        *
+ *************************/
+
+export const GET_COMMENTS = gql`
+	query GetComments($input: CommentsInquiry!) {
+		getComments(input: $input) {
+			list {
+				_id
+				commentStatus
+				commentGroup
+				commentContent
+				commentRefId
+				memberId
+				createdAt
+				updatedAt
+				memberData {
+					_id
+					memberNick
+					memberImage
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+/**************************
  *          CART          *
  *************************/
 

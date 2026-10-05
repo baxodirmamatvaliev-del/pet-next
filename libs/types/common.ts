@@ -1,4 +1,5 @@
 import { Cart } from './cart/cart';
+import { Comment, Comments } from './comment/comment';
 import { AuthPayload, Member } from './member/member';
 import { Order, Orders } from './order/order';
 import { Payment } from './payment/payment';
@@ -17,6 +18,8 @@ export interface T {
 	getMyPets?: Pets;
 	getFavoritePets?: Pets;
 	getVisitedPets?: Pets;
+	getComments?: Comments;
+	createComment?: Comment;
 	likeTargetPet?: Pet;
 	createPet?: Pet;
 	updatePet?: Pet;
