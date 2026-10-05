@@ -44,3 +44,7 @@ export interface MyProductsInquiry {
 	direction?: Direction;
 	search: { productStatus?: ProductStatus };
 }
+
+export interface AdminProductsInquiry extends ProductsInquiry {
+	search: ProductSearch & { productStatus?: ProductStatus };
+}

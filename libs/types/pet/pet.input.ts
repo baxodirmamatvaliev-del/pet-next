@@ -47,6 +47,14 @@ export interface MyPetsInquiry {
 	};
 }
 
+export interface AdminPetsInquiry {
+	page: number;
+	limit: number;
+	sort?: string;
+	direction?: Direction;
+	search: { petStatus?: PetStatus; typeList?: PetType[]; locationList?: PetLocation[] };
+}
+
 export interface OrdinaryInquiry {
 	page: number;
 	limit: number;

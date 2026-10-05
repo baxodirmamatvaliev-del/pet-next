@@ -16,3 +16,9 @@ export interface MyOrdersInquiry {
 	limit: number;
 	search: MyOrderSearch;
 }
+
+export interface AdminOrdersInquiry {
+	page: number;
+	limit: number;
+	search: { orderStatus?: OrderStatus; memberId?: string };
+}

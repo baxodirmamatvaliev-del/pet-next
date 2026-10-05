@@ -1,4 +1,5 @@
 import React from 'react';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
@@ -89,6 +90,12 @@ const MyMenu = () => {
 							<ListItemText primary="Products" />
 						</ListItemButton>
 					)}
+					{member?.memberType === MemberType.ADMIN && (
+						<ListItemButton component={Link} href="/_admin">
+							<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
+							<ListItemText primary="Admin panel" />
+						</ListItemButton>
+					)}
 					<ListItemButton component={Link} href="/cart">
 						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="Cart" />
@@ -152,6 +159,12 @@ const MyMenu = () => {
 						<ListItemButton component={Link} href="/mypage?category=myProducts" className={category === 'myProducts' ? 'active' : ''}>
 							<ListItemIcon><Inventory2OutlinedIcon /></ListItemIcon>
 							<ListItemText primary="My Products" />
+						</ListItemButton>
+					)}
+					{member?.memberType === MemberType.ADMIN && (
+						<ListItemButton component={Link} href="/_admin">
+							<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
+							<ListItemText primary="Admin Panel" />
 						</ListItemButton>
 					)}
 					<ListItemButton component={Link} href="/cart">

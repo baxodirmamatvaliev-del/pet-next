@@ -26,7 +26,7 @@ import Link from 'next/link';
 
 import { userVar } from '../../apollo/store';
 import { CREATE_ORDER, CREATE_PAYMENT } from '../../apollo/user/mutation';
-import { GET_MY_CART } from '../../apollo/user/query';
+import { GET_MEMBER, GET_MY_CART } from '../../apollo/user/query';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
@@ -72,6 +72,22 @@ const CheckoutPage: NextPage = () => {
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			if (data?.getMyCart) setCart(data.getMyCart);
+		},
+	});
+	useQuery(GET_MEMBER, {
+		fetchPolicy: 'network-only',
+		variables: { memberId: user?.sub ?? '' },
+		skip: !user?.sub,
+		onCompleted: (data: T) => {
+			const member = data?.getMember;
+			if (!member) return;
+
+			setOrderInput((previous) => ({
+				...previous,
+				recipientName: previous.recipientName || member.memberFullName || member.memberNick || '',
+				recipientPhone: previous.recipientPhone || member.memberPhone || '',
+				deliveryAddress: previous.deliveryAddress || member.memberAddress || '',
+			}));
 		},
 	});
 

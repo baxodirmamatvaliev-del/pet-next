@@ -7,6 +7,14 @@ import { Pet, Pets } from './pet/pet';
 import { Product, Products } from './product/product';
 
 export interface T {
+	getAllProductsByAdmin?: Products;
+	getAllPetsByAdmin?: Pets;
+	getAllOrdersByAdmin?: Orders;
+	getAllMembersByAdmin?: { list: Member[]; metaCounter: { total: number }[] };
+	updateProductByAdmin?: Product;
+	updatePetByAdmin?: Pet;
+	updateOrderStatusByAdmin?: Order;
+	updateMemberByAdmin?: Member;
 	signup?: Member;
 	login?: AuthPayload;
 	getMember?: Member;

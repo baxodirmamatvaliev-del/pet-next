@@ -145,3 +145,50 @@
 		}
 	}
 }
+
+/* ADMIN PANEL */
+@media (max-width: 900px) {
+	.admin-page {
+		.admin-page__layout { flex-direction: column; }
+		.admin-page__sidebar {
+			position: relative;
+			width: 100%;
+			height: auto;
+			padding: 18px 16px 10px;
+			box-shadow: none;
+		}
+		.admin-page__menu-label { margin: 18px 0 7px 3px; }
+		.admin-menu {
+			display: flex;
+			overflow-x: auto;
+			gap: 6px;
+			scrollbar-width: none;
+			&::-webkit-scrollbar { display: none; }
+			.MuiListItemButton-root { min-width: max-content; padding: 8px 12px; }
+		}
+		.admin-page__sidebar-bottom {
+			margin-top: 6px;
+			.admin-page__member { display: none; }
+			> .MuiButton-root { align-self: flex-start; }
+		}
+		.admin-page__content { width: 100%; padding: 18px 16px 48px; }
+		.admin-page__topbar { margin-bottom: 26px; padding: 14px 16px; }
+	}
+
+	.admin-list {
+		.admin-list__heading { align-items: flex-start; flex-direction: column; h1 { font-size: 32px; } }
+		.admin-list__item { align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+		.admin-list__details { min-width: calc(100% - 80px); }
+		.admin-list__status { min-width: auto; }
+		.admin-list__actions { justify-content: flex-start; min-width: 0; flex-wrap: wrap; }
+	}
+}
+
+@media (max-width: 540px) {
+	.admin-page .admin-page__topbar .MuiChip-root { display: none; }
+	.admin-list {
+		.admin-list__item .MuiAvatar-root { width: 50px; height: 50px; }
+		.admin-list__details { min-width: calc(100% - 64px); }
+		.admin-list__actions { width: 100%; }
+	}
+}
