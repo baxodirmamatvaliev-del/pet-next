@@ -459,6 +459,15 @@
 				align-items: center;
 				justify-content: space-between;
 				gap: 12px;
+				.pet-comments__author-actions {
+					align-items: center;
+					gap: 8px;
+					.MuiButton-root {
+						min-width: 0;
+						padding: 2px 4px;
+						font-size: 11px;
+					}
+				}
 				strong {
 					font-size: 13px;
 				}
@@ -473,6 +482,14 @@
 				line-height: 1.7;
 				white-space: pre-wrap;
 				word-break: break-word;
+			}
+			.pet-comments__edit-form {
+				gap: 10px;
+				margin-top: 10px;
+				.pet-comments__edit-actions {
+					justify-content: flex-end;
+					gap: 8px;
+				}
 			}
 		}
 		.pet-comments__empty {

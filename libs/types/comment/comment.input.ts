@@ -7,6 +7,11 @@ export interface CommentInput {
 	commentRefId: string;
 }
 
+export interface CommentUpdateInput {
+	_id: string;
+	commentContent: string;
+}
+
 export interface CommentsInquiry {
 	page: number;
 	limit: number;

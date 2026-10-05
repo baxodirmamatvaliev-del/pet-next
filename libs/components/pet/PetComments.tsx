@@ -4,7 +4,7 @@ import { Alert, Avatar, Box, Button, CircularProgress, Pagination, Stack, TextFi
 import Link from 'next/link';
 
 import { userVar } from '../../../apollo/store';
-import { CREATE_COMMENT } from '../../../apollo/user/mutation';
+import { CREATE_COMMENT, UPDATE_COMMENT } from '../../../apollo/user/mutation';
 import { GET_COMMENTS } from '../../../apollo/user/query';
 import { REACT_APP_API_URL } from '../../config';
 import { CommentGroup } from '../../enums/comment.enum';
@@ -13,7 +13,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Comment } from '../../types/comment/comment';
-import { CommentInput, CommentsInquiry } from '../../types/comment/comment.input';
+import { CommentInput, CommentUpdateInput, CommentsInquiry } from '../../types/comment/comment.input';
 
 interface PetCommentsProps {
 	petId: string;
@@ -26,12 +26,15 @@ const PetComments = (props: PetCommentsProps) => {
 	/** STATES **/
 	const [commentPage, setCommentPage] = useState(1);
 	const [commentText, setCommentText] = useState('');
+	const [editingCommentId, setEditingCommentId] = useState('');
+	const [editText, setEditText] = useState('');
 	const [comments, setComments] = useState<Comment[]>([]);
 	const [total, setTotal] = useState(0);
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
 	const [createComment, { loading: createCommentLoading }] = useMutation(CREATE_COMMENT);
+	const [updateComment, { loading: updateCommentLoading }] = useMutation(UPDATE_COMMENT);
 	const commentInquiry: CommentsInquiry = {
 		page: commentPage,
 		limit: 5,
@@ -56,7 +59,37 @@ const PetComments = (props: PetCommentsProps) => {
 
 	/** HANDLERS **/
 	const paginationHandler = (_event: ChangeEvent<unknown>, page: number) => {
+		setEditingCommentId('');
 		setCommentPage(page);
+	};
+
+	const editCommentHandler = (comment: Comment) => {
+		setEditingCommentId(comment._id);
+		setEditText(comment.commentContent);
+	};
+
+	const cancelEditHandler = () => {
+		setEditingCommentId('');
+		setEditText('');
+	};
+
+	const updateCommentHandler = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		try {
+			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+			const content = editText.trim();
+			if (!editingCommentId || !content) return;
+
+			const input: CommentUpdateInput = { _id: editingCommentId, commentContent: content };
+			await updateComment({ variables: { input } });
+			await getCommentsRefetch({ input: commentInquiry });
+			cancelEditHandler();
+			await sweetTopSmallSuccessAlert('Comment updated', 800);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
+			await sweetMixinErrorAlert(message);
+		}
 	};
 
 	const commentSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
@@ -127,6 +160,8 @@ const PetComments = (props: PetCommentsProps) => {
 					<Stack className="pet-comments__list">
 						{comments.map((comment) => {
 							const author = comment.memberData?.memberNick ?? 'PetNest member';
+							const isOwner = user?.sub === comment.memberId;
+							const isEditing = editingCommentId === comment._id;
 							const avatar = comment.memberData?.memberImage
 								? `${REACT_APP_API_URL}/${comment.memberData.memberImage}`
 								: undefined;
@@ -137,9 +172,22 @@ const PetComments = (props: PetCommentsProps) => {
 									<Box>
 										<Stack direction="row" className="pet-comments__author">
 											<Typography component="strong">{author}</Typography>
-											<Typography>{new Date(comment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
+											<Stack direction="row" className="pet-comments__author-actions">
+												<Typography>{new Date(comment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
+												{isOwner && !isEditing && <Button size="small" onClick={() => editCommentHandler(comment)}>Edit</Button>}
+											</Stack>
 										</Stack>
-										<Typography className="pet-comments__text">{comment.commentContent}</Typography>
+										{isEditing ? (
+											<Stack component="form" className="pet-comments__edit-form" onSubmit={updateCommentHandler}>
+												<TextField value={editText} onChange={(event) => setEditText(event.target.value)} multiline rows={3} fullWidth slotProps={{ htmlInput: { maxLength: 500, 'aria-label': 'Edit comment' } }} />
+												<Stack direction="row" className="pet-comments__edit-actions">
+													<Button type="button" onClick={cancelEditHandler} disabled={updateCommentLoading}>Cancel</Button>
+													<Button type="submit" variant="contained" disabled={!editText.trim() || editText.trim() === comment.commentContent || updateCommentLoading}>{updateCommentLoading ? 'Saving...' : 'Save'}</Button>
+												</Stack>
+											</Stack>
+										) : (
+											<Typography className="pet-comments__text">{comment.commentContent}</Typography>
+										)}
 									</Box>
 								</Stack>
 							);

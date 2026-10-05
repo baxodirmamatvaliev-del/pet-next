@@ -20,6 +20,7 @@ export interface T {
 	getVisitedPets?: Pets;
 	getComments?: Comments;
 	createComment?: Comment;
+	updateComment?: Comment;
 	likeTargetPet?: Pet;
 	createPet?: Pet;
 	updatePet?: Pet;

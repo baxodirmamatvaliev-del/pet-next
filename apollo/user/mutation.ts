@@ -250,6 +250,15 @@ export const CREATE_COMMENT = gql`
 	}
 `;
 
+export const UPDATE_COMMENT = gql`
+	mutation UpdateComment($input: CommentUpdateInput!) {
+		updateComment(input: $input) {
+			_id
+			commentContent
+		}
+	}
+`;
+
 /**************************
  *          ORDER         *
  *************************/
