@@ -1,5 +1,5 @@
 import { Direction } from '../../enums/common.enum';
-import { PetGender, PetListingType, PetLocation, PetType } from '../../enums/pet.enum';
+import { PetGender, PetListingType, PetLocation, PetStatus, PetType } from '../../enums/pet.enum';
 
 export interface PetInput {
 	petType: PetType;
@@ -35,4 +35,19 @@ export interface PetsInquiry {
 	sort?: string;
 	direction?: Direction;
 	search: PetSearch;
+}
+
+export interface MyPetsInquiry {
+	page: number;
+	limit: number;
+	sort?: string;
+	direction?: Direction;
+	search: {
+		petStatus?: PetStatus;
+	};
+}
+
+export interface PetUpdateInput extends Partial<PetInput> {
+	_id: string;
+	petStatus?: PetStatus;
 }

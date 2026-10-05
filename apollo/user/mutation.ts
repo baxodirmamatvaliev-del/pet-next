@@ -227,6 +227,15 @@ export const CREATE_PET = gql`
 	}
 `;
 
+export const UPDATE_PET = gql`
+	mutation UpdatePet($input: PetUpdateInput!) {
+		updatePet(input: $input) {
+			_id
+			petStatus
+		}
+	}
+`;
+
 /**************************
  *          ORDER         *
  *************************/

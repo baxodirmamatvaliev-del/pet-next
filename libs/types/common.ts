@@ -14,8 +14,10 @@ export interface T {
 	getProducts?: Products;
 	getPets?: Pets;
 	getPet?: Pet;
+	getMyPets?: Pets;
 	likeTargetPet?: Pet;
 	createPet?: Pet;
+	updatePet?: Pet;
 	getMyCart?: Cart;
 	addToCart?: Cart;
 	updateCartItem?: Cart;

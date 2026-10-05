@@ -11,6 +11,7 @@ import { userVar } from '../../apollo/store';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import MyMenu from '../../libs/components/mypage/MyMenu';
 import MyOrders from '../../libs/components/mypage/MyOrders';
+import MyPets from '../../libs/components/mypage/MyPets';
 import MyProfile from '../../libs/components/mypage/MyProfile';
 
 const MyPage: NextPage = () => {
@@ -45,6 +46,7 @@ const MyPage: NextPage = () => {
 							<Box component="section" className="mypage-main">
 								{category === 'myProfile' && <MyProfile />}
 								{category === 'myOrders' && <MyOrders />}
+								{category === 'myPets' && <MyPets />}
 							</Box>
 						</Box>
 					)}

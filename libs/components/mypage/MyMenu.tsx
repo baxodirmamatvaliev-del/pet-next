@@ -1,5 +1,6 @@
 import React from 'react';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
@@ -52,6 +53,14 @@ const MyMenu = () => {
 				>
 					<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
 					<ListItemText primary="My Orders" />
+				</ListItemButton>
+				<ListItemButton
+					component={Link}
+					href="/mypage?category=myPets"
+					className={category === 'myPets' ? 'active' : ''}
+				>
+					<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
+					<ListItemText primary="My Pet Listings" />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/cart">
 					<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>

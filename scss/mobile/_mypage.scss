@@ -70,6 +70,30 @@
 				}
 			}
 		}
+		.my-pets {
+			.my-pets__heading {
+				align-items: flex-start;
+				flex-direction: column;
+				h1 {
+					font-size: 27px;
+				}
+				.MuiButton-root {
+					width: 100%;
+				}
+			}
+			.my-pets__tabs {
+				margin-top: 18px;
+			}
+			.my-pets__grid {
+				grid-template-columns: 1fr;
+				gap: 18px;
+			}
+			.my-pets__pagination {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 12px;
+			}
+		}
 		.order-card {
 			.order-card__header {
 				align-items: flex-start;

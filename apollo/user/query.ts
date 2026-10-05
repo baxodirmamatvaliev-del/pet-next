@@ -181,6 +181,38 @@ export const GET_PET = gql`
 	}
 `;
 
+export const GET_MY_PETS = gql`
+	query GetMyPets($input: MyPetsInquiry!) {
+		getMyPets(input: $input) {
+			list {
+				_id
+				petType
+				petListingType
+				petStatus
+				petLocation
+				petTitle
+				petName
+				petBreed
+				petGender
+				petAgeMonths
+				petPrice
+				petImages
+				petDesc
+				petViews
+				petLikes
+				petComments
+				petRank
+				memberId
+				createdAt
+				updatedAt
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
 /**************************
  *          CART          *
  *************************/
