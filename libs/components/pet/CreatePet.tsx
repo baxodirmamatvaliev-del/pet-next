@@ -1,24 +1,30 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useMutation, useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
-import { Alert, Box, Button, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { userVar } from '../../../apollo/store';
-import { CREATE_PET } from '../../../apollo/user/mutation';
+import { CREATE_PET, UPDATE_PET } from '../../../apollo/user/mutation';
+import { GET_PET } from '../../../apollo/user/query';
 import { getJwtToken } from '../../auth';
-import { REACT_APP_API_GRAPHQL_URL } from '../../config';
+import { REACT_APP_API_GRAPHQL_URL, REACT_APP_API_URL } from '../../config';
 import { Message } from '../../enums/common.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { PetGender, PetListingType, PetLocation, PetType } from '../../enums/pet.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
-import { PetInput } from '../../types/pet/pet.input';
+import { Pet } from '../../types/pet/pet';
+import { PetInput, PetUpdateInput } from '../../types/pet/pet.input';
+
+interface CreatePetProps {
+	mode?: 'create' | 'edit';
+}
 
 interface PetFormData {
 	petType: string;
@@ -46,19 +52,50 @@ const initialPetData: PetFormData = {
 	petDesc: '',
 };
 
-const CreatePet = () => {
+const CreatePet = (props: CreatePetProps) => {
+	const { mode = 'create' } = props;
 	const router = useRouter();
 	const device = useDeviceDetect();
+	const isEdit = mode === 'edit';
+	const petId = typeof router.query.id === 'string' ? router.query.id : '';
 
 	/** STATES **/
 	const [petData, setPetData] = useState<PetFormData>(initialPetData);
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 	const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 	const [uploadLoading, setUploadLoading] = useState(false);
+	const [currentPet, setCurrentPet] = useState<Pet | null>(null);
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
 	const [createPet, { loading: createPetLoading }] = useMutation(CREATE_PET);
+	const [updatePet, { loading: updatePetLoading }] = useMutation(UPDATE_PET);
+	const {
+		loading: getPetLoading,
+		error: getPetError,
+	} = useQuery(GET_PET, {
+		fetchPolicy: 'network-only',
+		variables: { petId },
+		skip: !isEdit || !petId,
+		onCompleted: (data: T) => {
+			const pet = data?.getPet;
+			if (!pet) return;
+
+			setCurrentPet(pet);
+			setPetData({
+				petType: pet.petType,
+				petListingType: pet.petListingType,
+				petLocation: pet.petLocation,
+				petTitle: pet.petTitle,
+				petName: pet.petName,
+				petBreed: pet.petBreed ?? '',
+				petGender: pet.petGender ?? PetGender.UNKNOWN,
+				petAgeMonths: pet.petAgeMonths == null ? '' : String(pet.petAgeMonths),
+				petPrice: pet.petPrice == null ? '' : String(pet.petPrice),
+				petDesc: pet.petDesc ?? '',
+			});
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => () => {
@@ -124,16 +161,19 @@ const CreatePet = () => {
 		return uploadedImages;
 	};
 
-	const createPetHandler = async (event: FormEvent<HTMLFormElement>) => {
+	const submitPetHandler = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		try {
 			const token = getJwtToken();
 			if (!token || !user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
-			if (!selectedFiles.length) throw new Error('Please add at least one pet image.');
+			if (isEdit && currentPet?.memberId !== user.sub) throw new Error('You can only edit your own listing.');
+			if (!selectedFiles.length && !currentPet?.petImages.length) throw new Error('Please add at least one pet image.');
 
 			setUploadLoading(true);
-			const petImages = await uploadImagesHandler(token);
+			const petImages = selectedFiles.length
+				? await uploadImagesHandler(token)
+				: currentPet?.petImages ?? [];
 			const input: PetInput = {
 				petType: petData.petType as PetType,
 				petListingType: petData.petListingType as PetListingType,
@@ -148,12 +188,16 @@ const CreatePet = () => {
 				petDesc: petData.petDesc.trim() || undefined,
 			};
 
-			const result = await createPet({ variables: { input } });
+			const updateInput: PetUpdateInput = { ...input, _id: petId };
+			const result = isEdit
+				? await updatePet({ variables: { input: updateInput } })
+				: await createPet({ variables: { input } });
 			const data = result.data as T | null | undefined;
-			if (!data?.createPet?._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+			const savedPet = isEdit ? data?.updatePet : data?.createPet;
+			if (!savedPet?._id) throw new Error(Message.SOMETHING_WENT_WRONG);
 
-			await sweetTopSmallSuccessAlert('Pet listing created', 800);
-			await router.push({ pathname: '/pet/detail', query: { id: data.createPet._id } });
+			await sweetTopSmallSuccessAlert(isEdit ? 'Pet listing updated' : 'Pet listing created', 800);
+			await router.push({ pathname: '/pet/detail', query: { id: savedPet._id } });
 		} catch (error) {
 			const message = axios.isAxiosError(error)
 				? error.response?.data?.errors?.[0]?.message ?? error.message
@@ -166,8 +210,8 @@ const CreatePet = () => {
 
 	/** COMPUTED VALUES **/
 	const isSale = petData.petListingType === PetListingType.SALE;
-	const isSubmitDisabled = createPetLoading || uploadLoading || !petData.petName.trim()
-		|| petData.petTitle.trim().length < 3 || !selectedFiles.length
+	const isSubmitDisabled = createPetLoading || updatePetLoading || uploadLoading || !petData.petName.trim()
+		|| petData.petTitle.trim().length < 3 || (!selectedFiles.length && !currentPet?.petImages.length)
 		|| (isSale && (!petData.petPrice || Number(petData.petPrice) <= 0));
 	const imagePreview = imagePreviews.length > 0 && (
 		<Stack className="pet-create-form__previews">
@@ -184,22 +228,45 @@ const CreatePet = () => {
 			))}
 		</Stack>
 	);
+	const existingImages = isEdit && !imagePreviews.length && currentPet && (
+		<Stack className="pet-create-form__previews">
+			{currentPet.petImages.map((image, index) => (
+				<Box className="pet-create-form__preview" key={image}>
+					<Image src={`${REACT_APP_API_URL}/${image}`} alt={`${currentPet.petName} ${index + 1}`} width={150} height={150} unoptimized />
+					<Typography>{index === 0 ? 'Cover image' : `Image ${index + 1}`}</Typography>
+				</Box>
+			))}
+		</Stack>
+	);
+	const editState = isEdit && (!petId || getPetError || !currentPet || currentPet.memberId !== user?.sub);
+
+	if (isEdit && (getPetLoading || editState)) {
+		return (
+			<Box component="main" className={`pet-create-page container${device === 'mobile' ? ' pet-create-page--mobile' : ''}`}>
+				{getPetLoading ? <CircularProgress color="primary" /> : (
+					<Alert severity={currentPet && currentPet.memberId !== user?.sub ? 'warning' : 'error'}>
+						{currentPet && currentPet.memberId !== user?.sub ? 'You can only edit your own listing.' : 'Pet listing could not be loaded.'}
+					</Alert>
+				)}
+			</Box>
+		);
+	}
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
 		return (
 			<Box component="main" className="pet-create-page pet-create-page--mobile container">
-				<Stack className="pet-create-page__heading">
+			<Stack className="pet-create-page__heading">
 					<Typography>COMMUNITY</Typography>
-					<Typography component="h1">Create a pet listing</Typography>
-					<Typography>Share your pet with people looking to adopt or welcome a new companion.</Typography>
+					<Typography component="h1">{isEdit ? 'Edit pet listing' : 'Create a pet listing'}</Typography>
+					<Typography>{isEdit ? 'Update your pet listing details and photos.' : 'Share your pet with people looking to adopt or welcome a new companion.'}</Typography>
 				</Stack>
 				{!user?.sub && (
 					<Alert severity="info" className="pet-create-page__auth">
-						Please <Link href="/account/join?referrer=/pet/create">sign in</Link> to publish this listing.
+						Please <Link href={isEdit ? `/account/join?referrer=/pet/edit?id=${petId}` : '/account/join?referrer=/pet/create'}>sign in</Link> to manage this listing.
 					</Alert>
 				)}
-				<Stack component="form" className="pet-create-form pet-create-form--mobile" onSubmit={createPetHandler}>
+				<Stack component="form" className="pet-create-form pet-create-form--mobile" onSubmit={submitPetHandler}>
 					<Stack direction="row" className="pet-create-form__section-heading">
 						<PetsRoundedIcon />
 						<Typography component="h2">Pet information</Typography>
@@ -227,17 +294,18 @@ const CreatePet = () => {
 					<TextField label="Description (optional)" value={petData.petDesc} onChange={(event) => inputChangeHandler('petDesc', event.target.value)} multiline minRows={5} className="pet-create-form__description" />
 					<Stack className="pet-create-form__images">
 						<Typography component="strong">Pet photos</Typography>
-						<Typography>Upload up to 10 JPG or PNG images. Add at least one photo.</Typography>
+						<Typography>{isEdit ? 'Choose new images to replace the current photos, or leave them unchanged.' : 'Upload up to 10 JPG or PNG images. Add at least one photo.'}</Typography>
 						<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />}>
 							Choose images
 							<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
 						</Button>
 						{imagePreview}
+						{existingImages}
 					</Stack>
 					<Stack direction="row" className="pet-create-form__actions">
-						<Button component={Link} href="/pet" variant="outlined">Cancel</Button>
+						<Button component={Link} href={isEdit ? `/pet/detail?id=${petId}` : '/pet'} variant="outlined">Cancel</Button>
 						<Button type="submit" variant="contained" disabled={isSubmitDisabled}>
-							{uploadLoading ? 'Uploading images...' : createPetLoading ? 'Publishing...' : 'Publish listing'}
+							{uploadLoading ? 'Uploading images...' : createPetLoading || updatePetLoading ? 'Saving...' : isEdit ? 'Save changes' : 'Publish listing'}
 						</Button>
 					</Stack>
 				</Stack>
@@ -247,19 +315,19 @@ const CreatePet = () => {
 		/** RENDER PC **/
 		return (
 			<Box component="main" className="pet-create-page container">
-				<Stack className="pet-create-page__heading">
+			<Stack className="pet-create-page__heading">
 					<Typography>COMMUNITY</Typography>
-					<Typography component="h1">Create a pet listing</Typography>
-					<Typography>Share your pet with people looking to adopt or welcome a new companion.</Typography>
+					<Typography component="h1">{isEdit ? 'Edit pet listing' : 'Create a pet listing'}</Typography>
+					<Typography>{isEdit ? 'Update your pet listing details and photos.' : 'Share your pet with people looking to adopt or welcome a new companion.'}</Typography>
 				</Stack>
 
 				{!user?.sub && (
 					<Alert severity="info" className="pet-create-page__auth">
-						Please <Link href="/account/join?referrer=/pet/create">sign in</Link> to publish this listing.
+						Please <Link href={isEdit ? `/account/join?referrer=/pet/edit?id=${petId}` : '/account/join?referrer=/pet/create'}>sign in</Link> to manage this listing.
 					</Alert>
 				)}
 
-				<Stack component="form" className="pet-create-form" onSubmit={createPetHandler}>
+				<Stack component="form" className="pet-create-form" onSubmit={submitPetHandler}>
 					<Stack direction="row" className="pet-create-form__section-heading">
 						<PetsRoundedIcon />
 						<Typography component="h2">Pet information</Typography>
@@ -353,18 +421,19 @@ const CreatePet = () => {
 
 					<Stack className="pet-create-form__images">
 						<Typography component="strong">Pet photos</Typography>
-						<Typography>Upload up to 10 JPG or PNG images. Add at least one photo.</Typography>
+						<Typography>{isEdit ? 'Choose new images to replace the current photos, or leave them unchanged.' : 'Upload up to 10 JPG or PNG images. Add at least one photo.'}</Typography>
 						<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />}>
 							Choose images
 							<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
 						</Button>
 						{imagePreview}
+						{existingImages}
 					</Stack>
 
 					<Stack direction="row" className="pet-create-form__actions">
-						<Button component={Link} href="/pet" variant="outlined">Cancel</Button>
+						<Button component={Link} href={isEdit ? `/pet/detail?id=${petId}` : '/pet'} variant="outlined">Cancel</Button>
 						<Button type="submit" variant="contained" disabled={isSubmitDisabled}>
-							{uploadLoading ? 'Uploading images...' : createPetLoading ? 'Publishing...' : 'Publish listing'}
+							{uploadLoading ? 'Uploading images...' : createPetLoading || updatePetLoading ? 'Saving...' : isEdit ? 'Save changes' : 'Publish listing'}
 						</Button>
 					</Stack>
 				</Stack>

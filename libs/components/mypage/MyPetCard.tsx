@@ -1,8 +1,10 @@
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded';
 import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded';
 import { Button, Chip, Stack } from '@mui/material';
+import Link from 'next/link';
 
 import { PetListingType, PetStatus } from '../../enums/pet.enum';
 import { Pet } from '../../types/pet/pet';
@@ -27,6 +29,11 @@ const MyPetCard = (props: MyPetCardProps) => {
 				<Chip label={pet.petStatus.replace('_', ' ')} className={`my-pet-card__status my-pet-card__status--${pet.petStatus.toLowerCase()}`} />
 				{canManage && (
 					<Stack direction="row" className="my-pet-card__buttons">
+						{pet.petStatus === PetStatus.ACTIVE && (
+							<Button component={Link} href={`/pet/edit?id=${pet._id}`} variant="outlined" startIcon={<EditOutlinedIcon />}>
+								Edit
+							</Button>
+						)}
 						<Button
 							variant="outlined"
 							startIcon={pet.petStatus === PetStatus.RESERVED
