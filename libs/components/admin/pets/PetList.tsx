@@ -6,7 +6,7 @@ import { UPDATE_PET_BY_ADMIN } from '../../../../apollo/admin/mutation';
 import { GET_ALL_PETS_BY_ADMIN } from '../../../../apollo/admin/query';
 import { REACT_APP_API_URL } from '../../../config';
 import { Direction, Message } from '../../../enums/common.enum';
-import { PetListingType, PetStatus } from '../../../enums/pet.enum';
+import { PetListingType, PetLocation, PetStatus, PetType } from '../../../enums/pet.enum';
 import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../../sweetAlert';
 import { T } from '../../../types/common';
 import { Pet } from '../../../types/pet/pet';
@@ -44,7 +44,15 @@ const PetList = () => {
 
 	/** HANDLERS **/
 	const statusFilterHandler = (value: string) => {
-		setInquiry({ ...inquiry, page: 1, search: { petStatus: value ? value as PetStatus : undefined } });
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, petStatus: value ? value as PetStatus : undefined } });
+	};
+
+	const typeFilterHandler = (value: string) => {
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, typeList: value ? [value as PetType] : undefined } });
+	};
+
+	const locationFilterHandler = (value: string) => {
+		setInquiry({ ...inquiry, page: 1, search: { ...inquiry.search, locationList: value ? [value as PetLocation] : undefined } });
 	};
 
 	const updatePetStatusHandler = async (pet: Pet, petStatus: PetStatus) => {
@@ -65,10 +73,20 @@ const PetList = () => {
 		<Stack className="admin-list">
 			<Stack direction="row" className="admin-list__heading">
 				<Stack><Typography component="h1">Pet listings</Typography><Typography>Moderate community listings and their status.</Typography></Stack>
-				<TextField select size="small" label="Status" value={inquiry.search.petStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
-					<MenuItem value="">All</MenuItem>
-					{Object.values(PetStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
-				</TextField>
+				<Stack direction="row" className="admin-list__filters">
+					<TextField select size="small" label="Pet" value={inquiry.search.typeList?.[0] ?? ''} onChange={(event) => typeFilterHandler(event.target.value)}>
+						<MenuItem value="">All pets</MenuItem>
+						{Object.values(PetType).map((type) => <MenuItem value={type} key={type}>{type}</MenuItem>)}
+					</TextField>
+					<TextField select size="small" label="Location" value={inquiry.search.locationList?.[0] ?? ''} onChange={(event) => locationFilterHandler(event.target.value)}>
+						<MenuItem value="">All locations</MenuItem>
+						{Object.values(PetLocation).map((location) => <MenuItem value={location} key={location}>{location}</MenuItem>)}
+					</TextField>
+					<TextField select size="small" label="Status" value={inquiry.search.petStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
+						<MenuItem value="">All statuses</MenuItem>
+						{Object.values(PetStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
+					</TextField>
+				</Stack>
 			</Stack>
 			{getAllPetsByAdminError ? <Alert severity="error">Pet listings could not be loaded.</Alert> : getAllPetsByAdminLoading && !pets.length ? <CircularProgress /> : pets.length ? (
 				<>

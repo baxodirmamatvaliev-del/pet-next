@@ -8,7 +8,7 @@ const AdminHome = () => {
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		router.replace('/_admin/products').then();
+		router.replace('/_admin/overview').then();
 	}, [router]);
 
 	return null;

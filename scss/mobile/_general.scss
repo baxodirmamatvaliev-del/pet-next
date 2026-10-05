@@ -183,6 +183,7 @@
 		.admin-list__status { min-width: auto; }
 		.admin-list__actions { justify-content: flex-start; min-width: 0; flex-wrap: wrap; }
 	}
+	.admin-dashboard .admin-dashboard__summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 540px) {
@@ -192,5 +193,12 @@
 		.admin-list__item .MuiAvatar-root { width: 50px; height: 50px; }
 		.admin-list__details { min-width: calc(100% - 64px); }
 		.admin-list__actions { width: 100%; }
+	}
+	.admin-dashboard {
+		.admin-dashboard__summary { gap: 10px; }
+		.admin-dashboard__card { min-height: 158px; padding: 16px; }
+		.admin-dashboard__orders { padding: 18px; }
+		.admin-dashboard__orders-heading { align-items: flex-start; flex-direction: column; }
+		.admin-dashboard__order { flex-wrap: wrap; gap: 8px; > .MuiStack-root { min-width: calc(100% - 145px); } > strong { min-width: auto; margin-left: auto; } }
 	}
 }
