@@ -58,6 +58,32 @@
 	.product-detail-state {
 		min-height: 360px;
 	}
+	.product-create-page {
+		padding-block: 30px 48px;
+		.product-create-page__heading h1 {
+			font-size: 30px;
+		}
+		.product-create-form {
+			padding: 20px 16px;
+			.product-create-form__grid {
+				grid-template-columns: 1fr;
+				gap: 16px;
+			}
+			.product-create-form__preview {
+				width: 120px;
+				img {
+					width: 120px;
+					height: 120px;
+				}
+			}
+			.product-create-form__actions {
+				flex-direction: column-reverse;
+				.MuiButton-root {
+					width: 100%;
+				}
+			}
+		}
+	}
 	.product-detail-page {
 		padding-top: 18px;
 		.product-detail {

@@ -206,6 +206,28 @@ export const CLEAR_CART = gql`
 `;
 
 /**************************
+ *         PRODUCT        *
+ *************************/
+
+export const CREATE_PRODUCT = gql`
+	mutation CreateProduct($input: ProductInput!) {
+		createProduct(input: $input) {
+			_id
+			productName
+		}
+	}
+`;
+
+export const UPDATE_PRODUCT = gql`
+	mutation UpdateProduct($input: ProductUpdateInput!) {
+		updateProduct(input: $input) {
+			_id
+			productName
+		}
+	}
+`;
+
+/**************************
  *           PET          *
  *************************/
 

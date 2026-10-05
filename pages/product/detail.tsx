@@ -192,6 +192,11 @@ const ProductDetail: NextPage = () => {
 								<Typography>{product.productDesc}</Typography>
 							</Box>
 						)}
+						{user?.sub === product.memberId && (
+							<Button component={Link} href={`/product/edit?id=${product._id}`} variant="outlined" className="product-detail__edit">
+								Edit product
+							</Button>
+						)}
 					</Stack>
 				</Box>
 			</Box>
@@ -306,6 +311,11 @@ const ProductDetail: NextPage = () => {
 								<Typography component="strong">Product information</Typography>
 								<Typography>{product.productDesc}</Typography>
 							</Box>
+						)}
+						{user?.sub === product.memberId && (
+							<Button component={Link} href={`/product/edit?id=${product._id}`} variant="outlined" className="product-detail__edit">
+								Edit product
+							</Button>
 						)}
 					</Stack>
 				</Box>

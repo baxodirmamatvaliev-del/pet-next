@@ -581,11 +581,44 @@
 				border-color: $border;
 				color: $primary;
 			}
-			.pet-create-form__file-count {
-				max-width: 100%;
-				margin-top: 4px;
-				overflow-wrap: anywhere;
-				color: $muted;
+			.pet-create-form__previews {
+				flex-direction: row;
+				flex-wrap: wrap;
+				gap: 14px;
+				width: 100%;
+				margin-top: 8px;
+			}
+			.pet-create-form__preview {
+				position: relative;
+				width: 150px;
+				img {
+					display: block;
+					width: 150px;
+					height: 150px;
+					border: 1px solid $border;
+					border-radius: 10px;
+					object-fit: cover;
+				}
+				.MuiIconButton-root {
+					position: absolute;
+					top: 6px;
+					right: 6px;
+					padding: 4px;
+					background: #ffffff;
+					color: $ink;
+					box-shadow: 0 1px 5px #00000026;
+					&:hover {
+						background: #f6f4ef;
+					}
+				}
+				p {
+					overflow: hidden;
+					margin-top: 6px;
+					color: $muted;
+					font-size: 11px;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
 			}
 		}
 		.pet-create-form__actions {

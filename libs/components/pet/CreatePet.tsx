@@ -1,9 +1,11 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useMutation, useReactiveVar } from '@apollo/client';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
-import { Alert, Box, Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -51,11 +53,17 @@ const CreatePet = () => {
 	/** STATES **/
 	const [petData, setPetData] = useState<PetFormData>(initialPetData);
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+	const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 	const [uploadLoading, setUploadLoading] = useState(false);
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
 	const [createPet, { loading: createPetLoading }] = useMutation(CREATE_PET);
+
+	/** LIFECYCLES **/
+	useEffect(() => () => {
+		imagePreviews.forEach((preview) => URL.revokeObjectURL(preview));
+	}, [imagePreviews]);
 
 	/** HANDLERS **/
 	const inputChangeHandler = (name: keyof PetFormData, value: string) => {
@@ -76,6 +84,13 @@ const CreatePet = () => {
 		}
 
 		setSelectedFiles(files);
+		setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+	};
+
+	const removeImageHandler = (index: number) => {
+		const files = selectedFiles.filter((_file, fileIndex) => fileIndex !== index);
+		setSelectedFiles(files);
+		setImagePreviews(files.map((file) => URL.createObjectURL(file)));
 	};
 
 	const uploadImagesHandler = async (token: string): Promise<string[]> => {
@@ -154,6 +169,21 @@ const CreatePet = () => {
 	const isSubmitDisabled = createPetLoading || uploadLoading || !petData.petName.trim()
 		|| petData.petTitle.trim().length < 3 || !selectedFiles.length
 		|| (isSale && (!petData.petPrice || Number(petData.petPrice) <= 0));
+	const imagePreview = imagePreviews.length > 0 && (
+		<Stack className="pet-create-form__previews">
+			{imagePreviews.map((preview, index) => (
+				<Box className="pet-create-form__preview" key={preview}>
+					<Image src={preview} alt={selectedFiles[index].name} width={150} height={150} unoptimized />
+					<IconButton aria-label={`Remove ${selectedFiles[index].name}`} onClick={() => removeImageHandler(index)}>
+						<CloseRoundedIcon fontSize="small" />
+					</IconButton>
+					<Typography title={selectedFiles[index].name}>
+						{index === 0 ? 'Cover · ' : ''}{selectedFiles[index].name}
+					</Typography>
+				</Box>
+			))}
+		</Stack>
+	);
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
@@ -202,7 +232,7 @@ const CreatePet = () => {
 							Choose images
 							<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
 						</Button>
-						{selectedFiles.length > 0 && <Typography className="pet-create-form__file-count">{selectedFiles.length} image{selectedFiles.length === 1 ? '' : 's'} selected: {selectedFiles.map((file) => file.name).join(', ')}</Typography>}
+						{imagePreview}
 					</Stack>
 					<Stack direction="row" className="pet-create-form__actions">
 						<Button component={Link} href="/pet" variant="outlined">Cancel</Button>
@@ -328,11 +358,7 @@ const CreatePet = () => {
 							Choose images
 							<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
 						</Button>
-						{selectedFiles.length > 0 && (
-							<Typography className="pet-create-form__file-count">
-								{selectedFiles.length} image{selectedFiles.length === 1 ? '' : 's'} selected: {selectedFiles.map((file) => file.name).join(', ')}
-							</Typography>
-						)}
+						{imagePreview}
 					</Stack>
 
 					<Stack direction="row" className="pet-create-form__actions">

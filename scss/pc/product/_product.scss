@@ -55,6 +55,99 @@
 	}
 }
 
+.product-create-page {
+	max-width: 900px;
+	padding-block: 48px 72px;
+	.product-create-page__heading {
+		margin-bottom: 30px;
+		h1 {
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 38px;
+		}
+		p {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 14px;
+		}
+	}
+	.product-create-page__state {
+		align-items: center;
+		padding: 60px 0;
+	}
+	.product-create-form {
+		gap: 26px;
+		padding: 30px;
+		border: 1px solid $border;
+		border-radius: 16px;
+		background: #ffffff;
+		h2 {
+			font-size: 18px;
+			font-weight: 700;
+		}
+		.product-create-form__grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 18px;
+		}
+		.product-create-form__wide {
+			grid-column: 1 / -1;
+		}
+		.product-create-form__section {
+			align-items: flex-start;
+			gap: 16px;
+			padding-top: 24px;
+			border-top: 1px solid $border;
+			> p {
+				color: $muted;
+				font-size: 13px;
+			}
+		}
+		.product-create-form__variant {
+			width: 100%;
+			gap: 14px;
+			.product-create-form__variant-heading {
+				align-items: center;
+				justify-content: space-between;
+			}
+		}
+		.product-create-form__add {
+			color: $primary;
+		}
+		.product-create-form__previews {
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 14px;
+			width: 100%;
+		}
+		.product-create-form__preview {
+			width: 150px;
+			gap: 6px;
+			img {
+				width: 150px;
+				height: 150px;
+				border: 1px solid $border;
+				border-radius: 10px;
+				object-fit: cover;
+			}
+			p {
+				overflow: hidden;
+				color: $muted;
+				font-size: 11px;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+		.product-create-form__actions {
+			justify-content: flex-end;
+			gap: 12px;
+			.MuiButton-root {
+				min-width: 145px;
+				min-height: 46px;
+			}
+		}
+	}
+}
+
 .product-list-page {
 	padding-block: 42px 20px;
 	.product-list-page__heading {
@@ -338,6 +431,14 @@
 				font-size: 13px;
 				line-height: 1.7;
 			}
+		}
+		.product-detail__edit {
+			margin-top: 24px;
+			border-color: $primary;
+			color: $primary;
+			font-size: 12px;
+			font-weight: 700;
+			text-transform: none;
 		}
 	}
 }
