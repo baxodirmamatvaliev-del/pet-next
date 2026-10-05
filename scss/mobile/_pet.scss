@@ -49,4 +49,32 @@
 			}
 		}
 	}
+	.pet-detail-state {
+		min-height: 360px;
+	}
+	.pet-detail-page {
+		padding-top: 18px;
+		.pet-detail {
+			grid-template-columns: 1fr;
+			gap: 28px;
+		}
+		.pet-gallery {
+			grid-template-columns: 1fr;
+			.pet-gallery__thumbs {
+				order: 2;
+				flex-direction: row;
+				overflow-x: auto;
+				.MuiButton-root {
+					min-width: 68px;
+					width: 68px;
+				}
+			}
+		}
+		.pet-detail__info {
+			padding-top: 0;
+			h1 {
+				font-size: 30px;
+			}
+		}
+	}
 }

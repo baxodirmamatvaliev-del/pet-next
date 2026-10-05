@@ -3,6 +3,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { Box, Chip, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { REACT_APP_API_URL } from '../../config';
 import { PetListingType } from '../../enums/pet.enum';
@@ -26,7 +27,11 @@ const PetCard = (props: PetCardProps) => {
 	/** RENDER **/
 	return (
 		<Stack component="article" className="pet-card">
-			<Box className="pet-card__image">
+			<Box
+				component={Link}
+				href={{ pathname: '/pet/detail', query: { id: pet._id } }}
+				className="pet-card__image"
+			>
 				<Image src={imagePath} alt={pet.petName} fill sizes="(max-width: 760px) 100vw, 310px" unoptimized />
 				<Chip
 					label={pet.petListingType === PetListingType.ADOPTION ? 'Adoption' : 'For sale'}
@@ -35,7 +40,7 @@ const PetCard = (props: PetCardProps) => {
 			</Box>
 			<Stack className="pet-card__content">
 				<Stack direction="row" className="pet-card__heading">
-					<Box>
+					<Box component={Link} href={{ pathname: '/pet/detail', query: { id: pet._id } }}>
 						<Typography component="h2">{pet.petName}</Typography>
 						<Typography>{pet.petBreed ?? pet.petType}</Typography>
 					</Box>

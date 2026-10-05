@@ -211,3 +211,147 @@
 		}
 	}
 }
+
+.pet-detail-state {
+	min-height: 520px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.pet-detail-page {
+	padding-block: 28px 40px;
+	.pet-detail-page__breadcrumb {
+		margin-bottom: 26px;
+		color: $muted;
+		font-size: 12px;
+		a:hover {
+			color: $primary;
+		}
+	}
+	.pet-detail {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+		gap: 48px;
+	}
+	.pet-gallery {
+		display: grid;
+		grid-template-columns: 82px minmax(0, 1fr);
+		gap: 14px;
+		.pet-gallery__thumbs {
+			gap: 10px;
+			.MuiButton-root {
+				position: relative;
+				min-width: 82px;
+				aspect-ratio: 1 / 1;
+				overflow: hidden;
+				padding: 0;
+				border: 2px solid transparent;
+				border-radius: 10px;
+				background: #f6f4ef;
+				&.active {
+					border-color: $primary;
+				}
+				img {
+					object-fit: cover;
+				}
+			}
+		}
+		.pet-gallery__main {
+			position: relative;
+			aspect-ratio: 1 / 1;
+			overflow: hidden;
+			border-radius: 18px;
+			background: #f6f4ef;
+			img {
+				object-fit: cover;
+			}
+		}
+	}
+	.pet-detail__info {
+		align-items: flex-start;
+		padding-top: 8px;
+		.pet-detail__eyebrow {
+			width: 100%;
+			align-items: center;
+			justify-content: space-between;
+			> p {
+				color: $secondary;
+				font-size: 12px;
+				font-weight: 800;
+				letter-spacing: 0.08em;
+			}
+			.MuiIconButton-root {
+				border: 1px solid $border;
+				color: $muted;
+				&.active {
+					color: $secondary;
+				}
+			}
+		}
+		h1 {
+			margin-top: 12px;
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 38px;
+		}
+		.pet-detail__title {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 15px;
+		}
+		.pet-detail__price {
+			margin-top: 22px;
+			font-size: 28px;
+		}
+		.pet-detail__facts {
+			width: 100%;
+			gap: 12px;
+			margin-block: 24px;
+			padding-block: 20px;
+			border-block: 1px solid $border;
+			.MuiStack-root {
+				align-items: center;
+				gap: 10px;
+				color: $muted;
+				svg {
+					color: $primary;
+					font-size: 20px;
+				}
+				p {
+					font-size: 13px;
+				}
+			}
+		}
+		> .MuiButton-root {
+			width: 100%;
+		}
+		.pet-detail__owner {
+			width: 100%;
+			gap: 6px;
+			margin-top: 24px;
+			p {
+				color: $muted;
+				font-size: 12px;
+			}
+			strong {
+				font-size: 14px;
+			}
+		}
+		.pet-detail__description {
+			width: 100%;
+			margin-top: 26px;
+			padding-top: 22px;
+			border-top: 1px solid $border;
+			strong {
+				font-size: 15px;
+			}
+			p {
+				margin-top: 10px;
+				color: $muted;
+				font-size: 14px;
+				line-height: 1.8;
+				white-space: pre-line;
+			}
+		}
+	}
+}

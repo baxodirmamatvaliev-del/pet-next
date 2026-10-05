@@ -144,6 +144,43 @@ export const GET_PETS = gql`
 	}
 `;
 
+export const GET_PET = gql`
+	query GetPet($petId: String!) {
+		getPet(petId: $petId) {
+			_id
+			petType
+			petListingType
+			petStatus
+			petLocation
+			petTitle
+			petName
+			petBreed
+			petGender
+			petAgeMonths
+			petPrice
+			petImages
+			petDesc
+			petViews
+			petLikes
+			petComments
+			petRank
+			memberId
+			createdAt
+			updatedAt
+			meLiked {
+				memberId
+				likeRefId
+				myFavorite
+			}
+			memberData {
+				_id
+				memberNick
+				memberImage
+			}
+		}
+	}
+`;
+
 /**************************
  *          CART          *
  *************************/

@@ -206,6 +206,19 @@ export const CLEAR_CART = gql`
 `;
 
 /**************************
+ *           PET          *
+ *************************/
+
+export const LIKE_TARGET_PET = gql`
+	mutation LikeTargetPet($petId: String!) {
+		likeTargetPet(petId: $petId) {
+			_id
+			petLikes
+		}
+	}
+`;
+
+/**************************
  *          ORDER         *
  *************************/
 
