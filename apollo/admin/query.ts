@@ -55,6 +55,18 @@ export const GET_ALL_ORDERS_BY_ADMIN = gql`
 	}
 `;
 
+export const GET_PAYMENT_BY_ORDER_BY_ADMIN = gql`
+	query GetPaymentByOrderByAdmin($orderId: String!) {
+		getPaymentByOrderByAdmin(orderId: $orderId) {
+			_id
+			orderId
+			paymentMethod
+			paymentStatus
+			paymentAmount
+		}
+	}
+`;
+
 export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 	query GetAllMembersByAdmin($input: MembersInquiry!) {
 		getAllMembersByAdmin(input: $input) {

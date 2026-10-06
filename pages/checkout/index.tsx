@@ -185,7 +185,7 @@ const CheckoutPage: NextPage = () => {
 							<CheckCircleOutlineRoundedIcon />
 							<Typography component="span">ORDER RECEIVED</Typography>
 							<Typography component="h2">Thank you for your order</Typography>
-							<Typography>{isPaymentConfirmed ? 'Your payment has been confirmed.' : 'Your order has been created and the payment request is waiting for confirmation.'}</Typography>
+							<Typography>{isPaymentConfirmed ? 'Your demo payment request has been confirmed. No real charge was made.' : 'Your order has been created and the demo payment request is waiting for confirmation. No real charge was made.'}</Typography>
 							<Box className="checkout-success__details">
 								<Stack direction="row"><Typography>Order number</Typography><Typography component="strong">#{order._id.slice(-8).toUpperCase()}</Typography></Stack>
 								<Stack direction="row"><Typography>Total</Typography><Typography component="strong">₩{formatterStr(order.totalAmount)}</Typography></Stack>
@@ -314,7 +314,7 @@ const CheckoutPage: NextPage = () => {
 							<CheckCircleOutlineRoundedIcon />
 							<Typography component="span">ORDER RECEIVED</Typography>
 							<Typography component="h2">Thank you for your order</Typography>
-							<Typography>{isPaymentConfirmed ? 'Your payment has been confirmed.' : 'Your order has been created and the payment request is waiting for confirmation.'}</Typography>
+							<Typography>{isPaymentConfirmed ? 'Your demo payment request has been confirmed. No real charge was made.' : 'Your order has been created and the demo payment request is waiting for confirmation. No real charge was made.'}</Typography>
 							<Box className="checkout-success__details">
 								<Stack direction="row">
 									<Typography>Order number</Typography>

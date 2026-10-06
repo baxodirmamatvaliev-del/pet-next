@@ -18,6 +18,16 @@ export const UPDATE_ORDER_STATUS_BY_ADMIN = gql`
 	}
 `;
 
+export const CONFIRM_PAYMENT = gql`
+	mutation ConfirmPayment($input: ConfirmPaymentInput!) {
+		confirmPayment(input: $input) {
+			_id
+			orderId
+			paymentStatus
+		}
+	}
+`;
+
 export const UPDATE_MEMBER_BY_ADMIN = gql`
 	mutation UpdateMemberByAdmin($input: MemberUpdateByAdminInput!) {
 		updateMemberByAdmin(input: $input) { _id memberType memberStatus }

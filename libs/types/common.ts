@@ -11,6 +11,8 @@ export interface T {
 	getAllProductsByAdmin?: Products;
 	getAllPetsByAdmin?: Pets;
 	getAllOrdersByAdmin?: Orders;
+	getPaymentByOrderByAdmin?: Payment | null;
+	confirmPayment?: Payment;
 	getAllMembersByAdmin?: { list: Member[]; metaCounter: { total: number }[] };
 	updateProductByAdmin?: Product;
 	updatePetByAdmin?: Pet;

@@ -20,7 +20,9 @@ interface OrderCardProps {
 const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading, showDetailsLink = true }: OrderCardProps) => {
 	/** COMPUTED VALUES **/
 	const orderDate = new Date(order.createdAt).toLocaleDateString('en-CA');
-	const orderStatus = order.orderStatus.replaceAll('_', ' ');
+	const orderStatus = order.orderStatus === OrderStatus.PAYMENT_CONFIRMED
+		? 'DEMO PAYMENT CONFIRMED'
+		: order.orderStatus.replaceAll('_', ' ');
 
 	/** RENDER **/
 	return (
