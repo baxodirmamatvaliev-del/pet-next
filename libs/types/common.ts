@@ -1,4 +1,5 @@
 import { Cart } from './cart/cart';
+import { Follows } from './follow/follow';
 import { Comment, Comments } from './comment/comment';
 import { AuthPayload, Member } from './member/member';
 import { Order, Orders } from './order/order';
@@ -18,6 +19,8 @@ export interface T {
 	signup?: Member;
 	login?: AuthPayload;
 	getMember?: Member;
+	getMemberFollowers?: Follows;
+	getMemberFollowings?: Follows;
 	updateMember?: Member;
 	getProduct?: Product;
 	getProducts?: Products;

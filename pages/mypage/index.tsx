@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { userVar } from '../../apollo/store';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import MyFavorites from '../../libs/components/mypage/MyFavorites';
+import MyFollows from '../../libs/components/mypage/MyFollows';
 import MyMenu from '../../libs/components/mypage/MyMenu';
 import MyOrders from '../../libs/components/mypage/MyOrders';
 import MyPets from '../../libs/components/mypage/MyPets';
@@ -32,6 +33,8 @@ const MyPage: NextPage = () => {
 			{category === 'myProfile' && <MyProfile />}
 			{category === 'myOrders' && <MyOrders />}
 			{category === 'myFavorites' && <MyFavorites />}
+			{category === 'followers' && <MyFollows key="followers" category="followers" />}
+			{category === 'followings' && <MyFollows key="followings" category="followings" />}
 			{category === 'recentlyVisited' && <RecentlyVisited />}
 			{category === 'myPets' && <MyPets />}
 			{category === 'myProducts' && <MyProducts />}

@@ -6,6 +6,8 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
+import PeopleOutlineRoundedIcon from '@mui/icons-material/PeopleOutlineRounded';
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
@@ -76,6 +78,14 @@ const MyMenu = () => {
 						<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
 						<ListItemText primary="Favorites" />
 					</ListItemButton>
+					<ListItemButton component={Link} href="/mypage?category=followers" className={category === 'followers' ? 'active' : ''}>
+						<ListItemIcon><PeopleOutlineRoundedIcon /></ListItemIcon>
+						<ListItemText primary="Followers" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/mypage?category=followings" className={category === 'followings' ? 'active' : ''}>
+						<ListItemIcon><PersonAddAltOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="Followings" />
+					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=recentlyVisited" className={category === 'recentlyVisited' ? 'active' : ''}>
 						<ListItemIcon><HistoryRoundedIcon /></ListItemIcon>
 						<ListItemText primary="History" />
@@ -138,6 +148,14 @@ const MyMenu = () => {
 					>
 						<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
 						<ListItemText primary="My Favorites" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/mypage?category=followers" className={category === 'followers' ? 'active' : ''}>
+						<ListItemIcon><PeopleOutlineRoundedIcon /></ListItemIcon>
+						<ListItemText primary="My Followers" />
+					</ListItemButton>
+					<ListItemButton component={Link} href="/mypage?category=followings" className={category === 'followings' ? 'active' : ''}>
+						<ListItemIcon><PersonAddAltOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="My Followings" />
 					</ListItemButton>
 					<ListItemButton
 						component={Link}

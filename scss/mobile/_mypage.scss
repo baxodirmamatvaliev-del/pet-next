@@ -36,6 +36,15 @@
 		.mypage-main {
 			padding: 20px 14px;
 		}
+		.my-follows {
+			.my-follows__heading h1 { font-size: 27px; }
+			.my-follows__member { flex-wrap: wrap; gap: 12px; }
+			.my-follows__identity { flex: 1 1 100%; }
+			.my-follows__counts { gap: 12px; margin-left: 0; }
+			.my-follows__follow,
+			.my-follows__unfollow { margin-left: auto; }
+			.my-follows__pagination { flex-direction: column; align-items: flex-start; gap: 12px; }
+		}
 		.my-orders {
 			.my-orders__heading h1 {
 				font-size: 27px;

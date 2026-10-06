@@ -40,6 +40,38 @@ export const GET_MEMBER = gql`
 `;
 
 /**************************
+ *         FOLLOW         *
+ *************************/
+
+export const GET_MEMBER_FOLLOWERS = gql`
+	query GetMemberFollowers($input: FollowInquiry!) {
+		getMemberFollowers(input: $input) {
+			list {
+				_id
+				followerId
+				meFollowed { myFollowing }
+				followerData { _id memberNick memberImage memberType memberFollowers memberFollowings }
+			}
+			metaCounter { total }
+		}
+	}
+`;
+
+export const GET_MEMBER_FOLLOWINGS = gql`
+	query GetMemberFollowings($input: FollowInquiry!) {
+		getMemberFollowings(input: $input) {
+			list {
+				_id
+				followingId
+				meFollowed { myFollowing }
+				followingData { _id memberNick memberImage memberType memberFollowers memberFollowings }
+			}
+			metaCounter { total }
+		}
+	}
+`;
+
+/**************************
  *         PRODUCT        *
  *************************/
 
