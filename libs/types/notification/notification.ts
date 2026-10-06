@@ -9,6 +9,7 @@ export interface Notification {
 	petId?: string;
 	productId?: string;
 	orderId?: string;
+	inquiryId?: string;
 	createdAt: string;
 }
 

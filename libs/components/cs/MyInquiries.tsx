@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { Alert, Box, Button, Chip, CircularProgress, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { userVar } from '../../../apollo/store';
 import { GET_MY_INQUIRIES } from '../../../apollo/user/query';
@@ -11,10 +12,12 @@ import { Inquiry } from '../../types/inquiry/inquiry';
 
 const MyInquiries = () => {
 	const device = useDeviceDetect();
+	const router = useRouter();
 
 	/** STATES **/
 	const user = useReactiveVar(userVar);
 	const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+	const selectedId = typeof router.query.id === 'string' ? router.query.id : '';
 
 	/** APOLLO REQUESTS **/
 	const { loading: getMyInquiriesLoading, error: getMyInquiriesError } = useQuery(GET_MY_INQUIRIES, {
@@ -22,6 +25,13 @@ const MyInquiries = () => {
 		skip: !user?.sub,
 		onCompleted: (data: T) => setInquiries(data?.getMyInquiries ?? []),
 	});
+
+	/** LIFECYCLES **/
+	useEffect(() => {
+		if (selectedId && inquiries.some((inquiry) => inquiry._id === selectedId)) {
+			document.getElementById(`inquiry-${selectedId}`)?.scrollIntoView({ block: 'center' });
+		}
+	}, [selectedId, inquiries]);
 
 	/** COMPUTED VALUES **/
 	const content = !user?.sub ? (
@@ -40,7 +50,7 @@ const MyInquiries = () => {
 	) : inquiries.length ? (
 		<Stack className="cs-tickets">
 			{inquiries.map((inquiry) => (
-				<Box className="cs-ticket" key={inquiry._id}>
+				<Box id={`inquiry-${inquiry._id}`} className={`cs-ticket ${selectedId === inquiry._id ? 'cs-ticket--selected' : ''}`} key={inquiry._id}>
 					<Stack direction="row" className="cs-ticket__heading">
 						<Box>
 							<Typography component="h2">{inquiry.inquiryTitle}</Typography>

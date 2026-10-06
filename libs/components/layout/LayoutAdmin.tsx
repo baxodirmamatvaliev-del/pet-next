@@ -14,6 +14,7 @@ import { REACT_APP_API_URL } from '../../config';
 import { MemberType } from '../../enums/member.enum';
 import { T } from '../../types/common';
 import AdminMenuList from '../admin/AdminMenuList';
+import NotificationBell from '../NotificationBell';
 
 const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutAdmin(props: P) {
@@ -87,7 +88,10 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 							<Box className="admin-page__content">
 								<Stack direction="row" className="admin-page__topbar">
 									<Stack><Typography component="strong">Control center</Typography><Typography>Everything happening at PetNest, in one place.</Typography></Stack>
-									<Chip icon={<VerifiedUserOutlinedIcon />} label="ADMIN ACCESS" />
+									<Stack direction="row" alignItems="center" spacing={1}>
+										<NotificationBell adminPanel />
+										<Chip icon={<VerifiedUserOutlinedIcon />} label="ADMIN ACCESS" />
+									</Stack>
 								</Stack>
 								<Component {...props} />
 							</Box>

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert, Box, Button, Chip, CircularProgress, Stack, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { ANSWER_INQUIRY } from '../../../apollo/user/mutation';
 import { GET_ASSIGNED_INQUIRIES } from '../../../apollo/user/query';
@@ -11,11 +12,13 @@ import { Inquiry } from '../../types/inquiry/inquiry';
 
 const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 	const device = useDeviceDetect();
+	const router = useRouter();
 
 	/** STATES **/
 	const [inquiries, setInquiries] = useState<Inquiry[]>([]);
 	const [activeId, setActiveId] = useState('');
 	const [answerText, setAnswerText] = useState('');
+	const selectedId = typeof router.query.id === 'string' ? router.query.id : '';
 
 	/** APOLLO REQUESTS **/
 	const [answerInquiry, { loading: answerInquiryLoading }] = useMutation(ANSWER_INQUIRY);
@@ -28,6 +31,13 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 		skip: !enabled,
 		onCompleted: (data: T) => setInquiries(data?.getAssignedInquiries ?? []),
 	});
+
+	/** LIFECYCLES **/
+	useEffect(() => {
+		if (selectedId && inquiries.some((inquiry) => inquiry._id === selectedId)) {
+			document.getElementById(`inquiry-${selectedId}`)?.scrollIntoView({ block: 'center' });
+		}
+	}, [selectedId, inquiries]);
 
 	/** HANDLERS **/
 	const openAnswerHandler = (id: string) => {
@@ -60,7 +70,7 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 	) : inquiries.length ? (
 		<Stack className="cs-tickets">
 			{inquiries.map((inquiry) => (
-				<Box className="cs-ticket" key={inquiry._id}>
+				<Box id={`inquiry-${inquiry._id}`} className={`cs-ticket ${selectedId === inquiry._id ? 'cs-ticket--selected' : ''}`} key={inquiry._id}>
 					<Stack direction="row" className="cs-ticket__heading">
 						<Box>
 							<Typography component="h2">{inquiry.inquiryTitle}</Typography>

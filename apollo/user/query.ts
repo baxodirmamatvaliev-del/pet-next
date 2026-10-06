@@ -46,6 +46,7 @@ export const GET_MY_NOTIFICATIONS = gql`
 				petId
 				productId
 				orderId
+				inquiryId
 				createdAt
 			}
 			metaCounter { total }

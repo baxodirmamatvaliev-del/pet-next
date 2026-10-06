@@ -131,6 +131,10 @@
 	border: 1px solid $border;
 	border-radius: 12px;
 	background: #fff;
+	&.cs-ticket--selected {
+		border-color: $primary;
+		box-shadow: 0 0 0 3px rgba(24, 79, 64, 0.12);
+	}
 	.cs-ticket__heading {
 		align-items: flex-start;
 		justify-content: space-between;

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
+import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 import { Badge, Box, CircularProgress, IconButton, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { io } from 'socket.io-client';
@@ -17,7 +18,7 @@ import { Notification } from '../types/notification/notification';
 
 const initialInput = { page: 1, limit: 30, search: {} };
 
-const NotificationBell = () => {
+const NotificationBell = ({ adminPanel = false }: { adminPanel?: boolean }) => {
 	const router = useRouter();
 
 	/** STATES **/
@@ -73,7 +74,11 @@ const NotificationBell = () => {
 		}
 
 		closeHandler();
-		if (notification.orderId) void router.push(`/order/detail?id=${notification.orderId}`);
+		if (notification.inquiryId && notification.notificationType === 'INQUIRY') {
+			void router.push(adminPanel ? `/_admin/inquiries?id=${notification.inquiryId}` : `/cs?tab=inbox&id=${notification.inquiryId}`);
+		} else if (notification.inquiryId && notification.notificationType === 'REPLY') {
+			void router.push(`/cs?tab=my&id=${notification.inquiryId}`);
+		} else if (notification.orderId) void router.push(`/order/detail?id=${notification.orderId}`);
 		else if (notification.petId) void router.push(`/pet/detail?id=${notification.petId}`);
 		else if (notification.productId) void router.push(`/product/detail?id=${notification.productId}`);
 		else if (notification.notificationType === 'FOLLOW') void router.push(`/member/detail?id=${notification.authorId}`);
@@ -115,7 +120,7 @@ const NotificationBell = () => {
 						onClick={() => void notificationClickHandler(notification)}
 					>
 						<Box className="notification-panel__icon">
-							{notification.notificationType === 'FOLLOW' ? <PersonAddAltOutlinedIcon /> : <LocalShippingOutlinedIcon />}
+							{notification.notificationGroup === 'SUPPORT' ? <SupportAgentOutlinedIcon /> : notification.notificationType === 'FOLLOW' ? <PersonAddAltOutlinedIcon /> : <LocalShippingOutlinedIcon />}
 						</Box>
 						<Box className="notification-panel__content">
 							<Stack direction="row" className="notification-panel__item-top">
