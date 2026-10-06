@@ -1,6 +1,31 @@
 import { gql } from '@apollo/client';
 
 /**************************
+ *      NOTIFICATION      *
+ *************************/
+
+export const GET_MY_NOTIFICATIONS = gql`
+	query GetMyNotifications($input: NotificationsInquiry!) {
+		getMyNotifications(input: $input) {
+			list {
+				_id
+				notificationType
+				notificationStatus
+				notificationGroup
+				notificationTitle
+				notificationDesc
+				authorId
+				petId
+				productId
+				orderId
+				createdAt
+			}
+			metaCounter { total }
+		}
+	}
+`;
+
+/**************************
  *         MEMBER         *
  *************************/
 

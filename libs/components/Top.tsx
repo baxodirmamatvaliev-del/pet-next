@@ -12,9 +12,10 @@ import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
 import { GET_MY_CART } from '../../apollo/user/query';
+import { T } from '../types/common';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import MobileMenu from './MobileMenu';
-import { T } from '../types/common';
+import NotificationBell from './NotificationBell';
 
 const Top = () => {
 	const router = useRouter();
@@ -75,6 +76,7 @@ const Top = () => {
 						</Stack>
 					</Stack>
 					<Stack direction="row" component="nav" className="header-actions" aria-label="Shopping actions">
+						<NotificationBell />
 						<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
 							<LocalMallOutlinedIcon />
 							<Typography component="span">Cart</Typography>
@@ -127,6 +129,7 @@ const Top = () => {
 						/>
 					</Box>
 					<Stack direction="row" component="nav" className="header-actions" aria-label="Account navigation">
+						<NotificationBell />
 						<Stack component={Link} href="/mypage?category=myFavorites" aria-label="Favorites">
 							<FavoriteBorderRoundedIcon />
 							<Typography component="span">Favorites</Typography>

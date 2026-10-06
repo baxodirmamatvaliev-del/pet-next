@@ -1,6 +1,19 @@
 import { gql } from '@apollo/client';
 
 /**************************
+ *      NOTIFICATION      *
+ *************************/
+
+export const READ_NOTIFICATION = gql`
+	mutation ReadNotification($notificationId: String!) {
+		readNotification(notificationId: $notificationId) {
+			_id
+			notificationStatus
+		}
+	}
+`;
+
+/**************************
  *         MEMBER         *
  *************************/
 

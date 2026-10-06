@@ -34,6 +34,9 @@
 		}
 		.header-actions {
 			gap: 12px;
+			.notification-bell {
+				padding: 5px;
+			}
 			a {
 				min-width: auto;
 				span {

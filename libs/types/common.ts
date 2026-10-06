@@ -3,6 +3,7 @@ import { Follows } from './follow/follow';
 import { Comment, Comments } from './comment/comment';
 import { AuthPayload, Member } from './member/member';
 import { Order, Orders } from './order/order';
+import { Notification, Notifications } from './notification/notification';
 import { Payment } from './payment/payment';
 import { Pet, Pets } from './pet/pet';
 import { Product, Products } from './product/product';
@@ -48,6 +49,8 @@ export interface T {
 	clearCart?: Cart;
 	createOrder?: Order;
 	getMyOrders?: Orders;
+	getMyNotifications?: Notifications;
+	readNotification?: Notification;
 	getOrder?: Order;
 	cancelOrder?: Order;
 	createPayment?: Payment;
