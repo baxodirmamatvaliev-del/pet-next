@@ -373,6 +373,7 @@ export const GET_COMMENTS = gql`
 				memberData {
 					_id
 					memberNick
+					memberType
 					memberImage
 				}
 			}

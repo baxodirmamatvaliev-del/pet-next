@@ -9,6 +9,7 @@ import { GET_COMMENTS } from '../../../apollo/user/query';
 import { REACT_APP_API_URL } from '../../config';
 import { CommentGroup } from '../../enums/comment.enum';
 import { Direction, Message } from '../../enums/common.enum';
+import { MemberType } from '../../enums/member.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
@@ -160,6 +161,7 @@ const PetComments = (props: PetCommentsProps) => {
 					<Stack className="pet-comments__list">
 						{comments.map((comment) => {
 							const author = comment.memberData?.memberNick ?? 'PetNest member';
+							const memberType = comment.memberData?.memberType;
 							const isOwner = user?.sub === comment.memberId;
 							const authorHref = isOwner ? '/mypage?category=myProfile' : `/member/detail?id=${comment.memberId}`;
 							const isEditing = editingCommentId === comment._id;
@@ -172,7 +174,12 @@ const PetComments = (props: PetCommentsProps) => {
 									<Avatar component={Link} href={authorHref} src={avatar} alt={author}>{author.charAt(0).toUpperCase()}</Avatar>
 									<Box>
 										<Stack direction="row" className="pet-comments__author">
-											<Typography component={Link} href={authorHref} className="pet-comments__author-link">{author}</Typography>
+											<Stack className="pet-comments__author-identity">
+												{(memberType === MemberType.ADMIN || memberType === MemberType.AGENT) && (
+													<Typography component="span" className={`pet-comments__role pet-comments__role--${memberType.toLowerCase()}`}>{memberType}</Typography>
+												)}
+												<Typography component={Link} href={authorHref} className="pet-comments__author-link">{author}</Typography>
+											</Stack>
 											<Stack direction="row" className="pet-comments__author-actions">
 												<Typography>{new Date(comment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
 												{isOwner && !isEditing && <Button size="small" onClick={() => editCommentHandler(comment)}>Edit</Button>}

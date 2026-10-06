@@ -12,7 +12,7 @@ import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { Avatar, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
+import { Avatar, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -66,13 +66,15 @@ const MyMenu = () => {
 			<Stack component="aside" className="my-menu my-menu--mobile">
 				{profileHeader}
 				<List disablePadding>
+					{member?.memberType === MemberType.ADMIN && (
+						<ListItemButton component={Link} href="/_admin" className="my-menu__admin-link">
+							<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
+							<ListItemText primary="Admin panel" />
+						</ListItemButton>
+					)}
 					<ListItemButton component={Link} href="/mypage?category=myProfile" className={category === 'myProfile' ? 'active' : ''}>
 						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
 						<ListItemText primary="Profile" />
-					</ListItemButton>
-					<ListItemButton component={Link} href="/mypage?category=myOrders" className={category === 'myOrders' ? 'active' : ''}>
-						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="Orders" />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=myFavorites" className={category === 'myFavorites' ? 'active' : ''}>
 						<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
@@ -100,12 +102,10 @@ const MyMenu = () => {
 							<ListItemText primary="Products" />
 						</ListItemButton>
 					)}
-					{member?.memberType === MemberType.ADMIN && (
-						<ListItemButton component={Link} href="/_admin">
-							<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
-							<ListItemText primary="Admin panel" />
-						</ListItemButton>
-					)}
+					<ListItemButton component={Link} href="/mypage?category=myOrders" className={category === 'myOrders' ? 'active' : ''}>
+						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="Orders" />
+					</ListItemButton>
 					<ListItemButton component={Link} href="/cart">
 						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="Cart" />
@@ -123,6 +123,17 @@ const MyMenu = () => {
 			<Stack component="aside" className="my-menu">
 				{profileHeader}
 
+				{member?.memberType === MemberType.ADMIN && (
+					<>
+						<Typography className="my-menu__label">MANAGEMENT</Typography>
+						<List disablePadding>
+							<ListItemButton component={Link} href="/_admin" className="my-menu__admin-link">
+								<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
+								<ListItemText primary="Admin Panel" />
+							</ListItemButton>
+						</List>
+					</>
+				)}
 				<Typography className="my-menu__label">MY ACCOUNT</Typography>
 				<List disablePadding>
 					<ListItemButton
@@ -132,14 +143,6 @@ const MyMenu = () => {
 					>
 						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
 						<ListItemText primary="My Profile" />
-					</ListItemButton>
-					<ListItemButton
-						component={Link}
-						href="/mypage?category=myOrders"
-						className={category === 'myOrders' ? 'active' : ''}
-					>
-						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="My Orders" />
 					</ListItemButton>
 					<ListItemButton
 						component={Link}
@@ -165,6 +168,7 @@ const MyMenu = () => {
 						<ListItemIcon><HistoryRoundedIcon /></ListItemIcon>
 						<ListItemText primary="Recently Visited" />
 					</ListItemButton>
+					<ListSubheader className="my-menu__section-label" disableSticky>MY LISTINGS</ListSubheader>
 					<ListItemButton
 						component={Link}
 						href="/mypage?category=myPets"
@@ -179,12 +183,11 @@ const MyMenu = () => {
 							<ListItemText primary="My Products" />
 						</ListItemButton>
 					)}
-					{member?.memberType === MemberType.ADMIN && (
-						<ListItemButton component={Link} href="/_admin">
-							<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
-							<ListItemText primary="Admin Panel" />
-						</ListItemButton>
-					)}
+					<ListSubheader className="my-menu__section-label" disableSticky>SHOPPING</ListSubheader>
+					<ListItemButton component={Link} href="/mypage?category=myOrders" className={category === 'myOrders' ? 'active' : ''}>
+						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
+						<ListItemText primary="My Orders" />
+					</ListItemButton>
 					<ListItemButton component={Link} href="/cart">
 						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
 						<ListItemText primary="Shopping Cart" />

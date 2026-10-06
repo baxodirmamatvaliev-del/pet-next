@@ -93,6 +93,15 @@
 			font-weight: 800;
 			letter-spacing: 0.1em;
 		}
+		.my-menu__section-label {
+			padding: 22px 10px 8px;
+			background: transparent;
+			color: $muted;
+			font-size: 10px;
+			font-weight: 800;
+			line-height: 1.4;
+			letter-spacing: 0.1em;
+		}
 		.MuiList-root {
 			padding: 0 10px 14px;
 		}
@@ -101,6 +110,14 @@
 			margin-top: 4px;
 			border-radius: 9px;
 			color: $muted;
+			&.my-menu__admin-link {
+				background: #fff3eb;
+				color: #a74420;
+				&:hover {
+					background: #ffe4d3;
+					color: #872e10;
+				}
+			}
 			&.active {
 				background: $sage;
 				color: $primary;
