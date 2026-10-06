@@ -140,4 +140,24 @@
 			}
 		}
 	}
+	.member-detail-page {
+		padding-block: 18px 48px;
+		.member-detail__profile {
+			align-items: flex-start;
+			padding: 22px;
+			.MuiAvatar-root {
+				width: 76px;
+				height: 76px;
+			}
+			h1 { font-size: 29px; }
+		}
+		.member-detail__listings {
+			margin-top: 36px;
+			h2 { font-size: 25px; }
+		}
+		.member-detail__grid {
+			grid-template-columns: 1fr;
+			gap: 20px;
+		}
+	}
 }

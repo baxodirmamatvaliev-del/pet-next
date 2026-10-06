@@ -228,6 +228,7 @@
 		}
 		.pet-card__stats {
 			align-items: center;
+			flex-wrap: wrap;
 			gap: 14px;
 			margin-top: 16px;
 			padding-top: 14px;
@@ -241,9 +242,23 @@
 				svg {
 					font-size: 15px;
 				}
-				&:last-child {
-					margin-left: auto;
-				}
+			}
+			.pet-card__owner {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+				margin-left: auto;
+				color: $primary;
+				font-size: 13px;
+				font-weight: 700;
+				text-decoration: underline;
+				text-decoration-color: #95bea7;
+				text-underline-offset: 4px;
+				cursor: pointer;
+				transition: color 180ms ease, text-decoration-color 180ms ease;
+				&::after { content: '↗'; font-size: 13px; line-height: 1; }
+				&:hover { color: $secondary; text-decoration-color: $secondary; }
+				&:focus-visible { outline: 2px solid $primary; outline-offset: 2px; }
 			}
 		}
 	}
@@ -370,8 +385,22 @@
 				color: $muted;
 				font-size: 12px;
 			}
-			strong {
-				font-size: 14px;
+			a {
+				display: inline-flex;
+				align-self: flex-start;
+				align-items: center;
+				gap: 6px;
+				color: $primary;
+				font-size: 16px;
+				font-weight: 700;
+				text-decoration: underline;
+				text-decoration-color: #95bea7;
+				text-underline-offset: 5px;
+				cursor: pointer;
+				transition: color 180ms ease, text-decoration-color 180ms ease;
+				&::after { content: '↗'; font-size: 16px; line-height: 1; }
+				&:hover { color: $secondary; text-decoration-color: $secondary; }
+				&:focus-visible { outline: 2px solid $primary; outline-offset: 3px; }
 			}
 		}
 		.pet-detail__description {
@@ -502,6 +531,74 @@
 			justify-content: center;
 			margin-top: 22px;
 		}
+	}
+}
+
+.member-detail-state {
+	display: flex;
+	min-height: 420px;
+	align-items: center;
+	justify-content: center;
+}
+
+.member-detail-page {
+	padding-block: 28px 72px;
+
+	.member-detail-page__breadcrumb {
+		margin-bottom: 26px;
+		color: $muted;
+		font-size: 12px;
+		a:hover { color: $primary; }
+	}
+
+	.member-detail__profile {
+		align-items: center;
+		gap: 24px;
+		padding: 30px;
+		border: 1px solid $border;
+		border-radius: 18px;
+		background: $cream;
+		.MuiAvatar-root {
+			width: 96px;
+			height: 96px;
+			border: 3px solid #ffffff;
+			box-shadow: 0 4px 16px #174f3f20;
+		}
+		h1 {
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 34px;
+		}
+		p {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 14px;
+			line-height: 1.6;
+			white-space: pre-line;
+		}
+	}
+
+	.member-detail__listings {
+		gap: 22px;
+		margin-top: 48px;
+		h2 {
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 29px;
+			span {
+				color: $muted;
+				font-family: Arial, sans-serif;
+				font-size: 16px;
+			}
+		}
+		> p { color: $muted; }
+		.MuiPagination-root {
+			align-self: center;
+			margin-top: 10px;
+		}
+	}
+	.member-detail__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 24px;
 	}
 }
 

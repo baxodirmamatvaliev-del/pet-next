@@ -171,7 +171,7 @@ const PetDetail: NextPage = () => {
 
 						<Stack className="pet-detail__owner">
 							<Typography>Listed by</Typography>
-							<Typography component="strong">{pet.memberData?.memberNick ?? 'PetNest member'}</Typography>
+							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? 'PetNest member'}</Link>
 						</Stack>
 
 						{pet.petDesc && (
@@ -256,7 +256,7 @@ const PetDetail: NextPage = () => {
 
 						<Stack className="pet-detail__owner">
 							<Typography>Listed by</Typography>
-							<Typography component="strong">{pet.memberData?.memberNick ?? 'PetNest member'}</Typography>
+							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? 'PetNest member'}</Link>
 						</Stack>
 
 						{pet.petDesc && (

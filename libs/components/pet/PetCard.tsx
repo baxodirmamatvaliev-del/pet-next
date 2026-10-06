@@ -50,7 +50,9 @@ const PetCard = (props: PetCardProps) => {
 					<Stack direction="row" className="pet-card__stats">
 						<Typography><FavoriteBorderRoundedIcon /> {pet.petLikes}</Typography>
 						<Typography><VisibilityOutlinedIcon /> {pet.petViews}</Typography>
-						<Typography>{pet.memberData?.memberNick ?? 'PetNest member'}</Typography>
+						<Box component={Link} href={`/member/detail?id=${pet.memberId}`} className="pet-card__owner">
+							{pet.memberData?.memberNick ?? 'PetNest member'}
+						</Box>
 					</Stack>
 				</Stack>
 			</Stack>
@@ -88,7 +90,9 @@ const PetCard = (props: PetCardProps) => {
 					<Stack direction="row" className="pet-card__stats">
 						<Typography><FavoriteBorderRoundedIcon /> {pet.petLikes}</Typography>
 						<Typography><VisibilityOutlinedIcon /> {pet.petViews}</Typography>
-						<Typography>{pet.memberData?.memberNick ?? 'PetNest member'}</Typography>
+						<Box component={Link} href={`/member/detail?id=${pet.memberId}`} className="pet-card__owner">
+							{pet.memberData?.memberNick ?? 'PetNest member'}
+						</Box>
 					</Stack>
 				</Stack>
 			</Stack>
