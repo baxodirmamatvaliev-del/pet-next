@@ -10,6 +10,7 @@ import { userVar } from '../../apollo/store';
 import { SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
 import { GET_MEMBER, GET_PETS } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
+import MyFollows from '../../libs/components/mypage/MyFollows';
 import PetCard from '../../libs/components/pet/PetCard';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Direction, Message } from '../../libs/enums/common.enum';
@@ -28,7 +29,7 @@ const initialInquiry: PetsInquiry = {
 	search: {},
 };
 
-const MemberDetailContent = ({ memberId }: { memberId: string }) => {
+const MemberDetailContent = ({ memberId, category }: { memberId: string; category: string }) => {
 	const device = useDeviceDetect();
 
 	/** STATES **/
@@ -38,6 +39,7 @@ const MemberDetailContent = ({ memberId }: { memberId: string }) => {
 	const [petTotal, setPetTotal] = useState(0);
 	const [followLoading, setFollowLoading] = useState(false);
 	const user = useReactiveVar(userVar);
+	const activeCategory = category === 'followers' || category === 'followings' ? category : 'pets';
 
 	/** APOLLO REQUESTS **/
 	const [subscribe] = useMutation(SUBSCRIBE);
@@ -51,7 +53,7 @@ const MemberDetailContent = ({ memberId }: { memberId: string }) => {
 	const { loading: getPetsLoading, error: getPetsError } = useQuery(GET_PETS, {
 		fetchPolicy: 'cache-and-network',
 		variables: { input: inquiry },
-		skip: !memberId,
+		skip: !memberId || activeCategory !== 'pets',
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			setPets(data?.getPets?.list ?? []);
@@ -111,6 +113,28 @@ const MemberDetailContent = ({ memberId }: { memberId: string }) => {
 	const totalPages = Math.ceil(petTotal / inquiry.limit);
 	const isOwnProfile = user?.sub === memberId;
 	const isFollowing = member?.meFollowed?.some((follow) => follow.myFollowing) ?? false;
+	const memberContent = (
+		<>
+			<Stack direction="row" className="member-detail__tabs">
+				<Button component={Link} href={`/member/detail?id=${memberId}`} className={activeCategory === 'pets' ? 'active' : ''}>Pet listings</Button>
+				<Button component={Link} href={`/member/detail?id=${memberId}&category=followers`} className={activeCategory === 'followers' ? 'active' : ''}>Followers</Button>
+				<Button component={Link} href={`/member/detail?id=${memberId}&category=followings`} className={activeCategory === 'followings' ? 'active' : ''}>Followings</Button>
+			</Stack>
+			{activeCategory === 'pets' ? (
+				<Stack className="member-detail__listings">
+					<Typography component="h2">Pet listings <span>({petTotal})</span></Typography>
+					{getPetsError ? <Alert severity="error">Listings could not be loaded.</Alert> : getPetsLoading ? <CircularProgress /> : pets.length ? (
+						<Box className="member-detail__grid">{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}</Box>
+					) : <Typography>No active pet listings yet.</Typography>}
+					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
+				</Stack>
+			) : (
+				<Box className="member-detail__follows">
+					<MyFollows key={`${memberId}-${activeCategory}`} memberId={memberId} category={activeCategory} />
+				</Box>
+			)}
+		</>
+	);
 	const followButton = isOwnProfile ? null : user?.sub ? isFollowing ? (
 		<>
 			<Button className="member-detail__unfollow" variant="outlined" onClick={unsubscribeHandler} disabled={followLoading}>Unfollow</Button>
@@ -145,18 +169,13 @@ const MemberDetailContent = ({ memberId }: { memberId: string }) => {
 							<Typography component="h1">{member.memberNick}</Typography>
 							<Typography>{member.memberDesc || 'PetNest community member'}</Typography>
 							<Stack direction="row" className="member-detail__social">
-								<Typography><strong>{member.memberFollowers}</strong> followers</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}><strong>{member.memberFollowers}</strong> followers</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}><strong>{member.memberFollowings}</strong> following</Typography>
 								{followButton}
 							</Stack>
 						</Stack>
 					</Stack>
-					<Stack className="member-detail__listings">
-						<Typography component="h2">Pet listings <span>({petTotal})</span></Typography>
-						{getPetsError ? <Alert severity="error">Listings could not be loaded.</Alert> : getPetsLoading ? <CircularProgress /> : pets.length ? (
-							<Box className="member-detail__grid">{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}</Box>
-						) : <Typography>No active pet listings yet.</Typography>}
-						{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
-					</Stack>
+					{memberContent}
 				</Box>
 			</>
 		);
@@ -173,18 +192,13 @@ const MemberDetailContent = ({ memberId }: { memberId: string }) => {
 							<Typography component="h1">{member.memberNick}</Typography>
 							<Typography>{member.memberDesc || 'PetNest community member'}</Typography>
 							<Stack direction="row" className="member-detail__social">
-								<Typography><strong>{member.memberFollowers}</strong> followers</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}><strong>{member.memberFollowers}</strong> followers</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}><strong>{member.memberFollowings}</strong> following</Typography>
 								{followButton}
 							</Stack>
 						</Stack>
 					</Stack>
-					<Stack className="member-detail__listings">
-						<Typography component="h2">Pet listings <span>({petTotal})</span></Typography>
-						{getPetsError ? <Alert severity="error">Listings could not be loaded.</Alert> : getPetsLoading ? <CircularProgress /> : pets.length ? (
-							<Box className="member-detail__grid">{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}</Box>
-						) : <Typography>No active pet listings yet.</Typography>}
-						{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
-					</Stack>
+					{memberContent}
 				</Box>
 			</>
 		);
@@ -194,8 +208,9 @@ const MemberDetailContent = ({ memberId }: { memberId: string }) => {
 const MemberDetail: NextPage = () => {
 	const router = useRouter();
 	const memberId = typeof router.query.id === 'string' ? router.query.id : '';
+	const category = typeof router.query.category === 'string' ? router.query.category : 'pets';
 
-	return <MemberDetailContent memberId={memberId} key={memberId} />;
+	return <MemberDetailContent memberId={memberId} category={category} key={memberId} />;
 };
 
 export default withLayoutFull(MemberDetail);

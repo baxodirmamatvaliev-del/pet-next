@@ -39,7 +39,7 @@
 		.mypage-main {
 			padding: 20px 14px;
 		}
-		.my-follows {
+		@at-root #my-page .my-follows, .member-detail-page .my-follows {
 			.my-follows__heading h1 { font-size: 27px; }
 			.my-follows__member { flex-wrap: wrap; gap: 12px; }
 			.my-follows__identity { flex: 1 1 100%; }

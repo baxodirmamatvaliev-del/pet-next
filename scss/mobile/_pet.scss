@@ -142,6 +142,11 @@
 	}
 	.member-detail-page {
 		padding-block: 18px 48px;
+		.member-detail__tabs {
+			overflow-x: auto;
+			.MuiButton-root { white-space: nowrap; }
+		}
+		.member-detail__follows { padding: 18px 14px; }
 		.member-detail__profile {
 			align-items: flex-start;
 			padding: 22px;

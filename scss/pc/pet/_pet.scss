@@ -613,6 +613,11 @@
 			gap: 16px;
 			margin-top: 18px;
 			p { margin-top: 0; font-size: 13px; }
+			a {
+				color: $muted;
+				text-decoration: none;
+				&:hover { color: $primary; text-decoration: underline; }
+			}
 			strong { color: $primary; }
 			.MuiButton-root {
 				min-width: 116px;
@@ -635,6 +640,29 @@
 			}
 			.member-detail__following { color: #b9b9b9; font-style: italic; }
 		}
+	}
+	.member-detail__tabs {
+		gap: 8px;
+		margin-top: 30px;
+		border-bottom: 1px solid $border;
+		.MuiButton-root {
+			padding: 10px 18px;
+			border-radius: 9px 9px 0 0;
+			color: $muted;
+			font-size: 12px;
+			text-transform: none;
+			&:hover, &.active {
+				background: $sage;
+				color: $primary;
+			}
+		}
+	}
+	.member-detail__follows {
+		min-height: 350px;
+		margin-top: 30px;
+		padding: 28px;
+		border: 1px solid $border;
+		border-radius: 14px;
 	}
 
 	.member-detail__listings {

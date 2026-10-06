@@ -142,7 +142,7 @@
 		border-radius: 14px;
 		background: #ffffff;
 	}
-	.my-follows {
+	@at-root #my-page .my-follows, .member-detail-page .my-follows {
 		.my-follows__heading {
 			h1 {
 				font-family: Georgia, 'Times New Roman', serif;

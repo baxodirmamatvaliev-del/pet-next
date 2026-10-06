@@ -17,18 +17,21 @@ import { FollowInquiry } from '../../types/follow/follow.input';
 
 interface MyFollowsProps {
 	category: 'followers' | 'followings';
+	memberId?: string;
 }
 
-const MyFollows = ({ category }: MyFollowsProps) => {
+const MyFollows = ({ category, memberId }: MyFollowsProps) => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const isFollowers = category === 'followers';
+	const targetMemberId = memberId ?? user?.sub;
+	const isOwnList = !memberId || memberId === user?.sub;
 
 	/** STATES **/
 	const [followInquiry, setFollowInquiry] = useState<FollowInquiry>({
 		page: 1,
 		limit: 5,
-		search: isFollowers ? { followingId: user?.sub } : { followerId: user?.sub },
+		search: isFollowers ? { followingId: targetMemberId } : { followerId: targetMemberId },
 	});
 	const [members, setMembers] = useState<Follow[]>([]);
 	const [total, setTotal] = useState(0);
@@ -44,7 +47,7 @@ const MyFollows = ({ category }: MyFollowsProps) => {
 	} = useQuery(isFollowers ? GET_MEMBER_FOLLOWERS : GET_MEMBER_FOLLOWINGS, {
 		fetchPolicy: 'network-only',
 		variables: { input: followInquiry },
-		skip: !user?.sub,
+		skip: !targetMemberId,
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			const follows = isFollowers ? data?.getMemberFollowers : data?.getMemberFollowings;
@@ -67,7 +70,7 @@ const MyFollows = ({ category }: MyFollowsProps) => {
 			if (isFollowing) await unsubscribe({ variables: { input: { followingId: memberId } } });
 			else await subscribe({ variables: { input: { followingId: memberId } } });
 
-			if (!isFollowers && isFollowing && members.length === 1 && followInquiry.page > 1) {
+			if (isOwnList && !isFollowers && isFollowing && members.length === 1 && followInquiry.page > 1) {
 				setFollowInquiry({ ...followInquiry, page: followInquiry.page - 1 });
 			} else {
 				await getFollowsRefetch({ input: followInquiry });
@@ -80,7 +83,7 @@ const MyFollows = ({ category }: MyFollowsProps) => {
 	};
 
 	/** COMPUTED VALUES **/
-	const title = isFollowers ? 'My Followers' : 'My Followings';
+	const title = `${isOwnList ? 'My ' : ''}${isFollowers ? 'Followers' : 'Followings'}`;
 	const totalPages = Math.ceil(total / followInquiry.limit);
 	const listContent = (
 		<>
@@ -96,9 +99,10 @@ const MyFollows = ({ category }: MyFollowsProps) => {
 							if (!member) return null;
 							const isFollowing = follow.meFollowed?.some((item) => item.myFollowing) ?? false;
 							const image = member.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : undefined;
+							const profileHref = member._id === user?.sub ? '/mypage?category=myProfile' : `/member/detail?id=${member._id}`;
 							return (
 								<Stack direction="row" className="my-follows__member" key={follow._id}>
-									<Stack component={Link} href={`/member/detail?id=${member._id}`} direction="row" className="my-follows__identity">
+									<Stack component={Link} href={profileHref} direction="row" className="my-follows__identity">
 										<Avatar src={image} alt={member.memberNick} />
 										<Stack>
 											<Typography component="strong">{member.memberNick}</Typography>
@@ -109,7 +113,7 @@ const MyFollows = ({ category }: MyFollowsProps) => {
 										<Typography><strong>{member.memberFollowers}</strong> followers</Typography>
 										<Typography><strong>{member.memberFollowings}</strong> following</Typography>
 									</Stack>
-									{member._id !== user?.sub && (
+									{member._id !== user?.sub && (user?.sub ? (
 										<Button
 											className={isFollowing ? 'my-follows__unfollow' : 'my-follows__follow'}
 											variant={isFollowing ? 'outlined' : 'contained'}
@@ -118,7 +122,9 @@ const MyFollows = ({ category }: MyFollowsProps) => {
 										>
 											{isFollowing ? 'Unfollow' : 'Follow'}
 										</Button>
-									)}
+					) : (
+						<Button component={Link} href={`/account/join?referrer=${encodeURIComponent(`/member/detail?id=${member._id}`)}`} variant="outlined">Sign in to follow</Button>
+									))}
 								</Stack>
 							);
 						})}
@@ -132,7 +138,7 @@ const MyFollows = ({ category }: MyFollowsProps) => {
 				<Stack className="my-follows__state">
 					<PeopleOutlineRoundedIcon />
 					<Typography component="h2">No {category} yet</Typography>
-					<Typography>{isFollowers ? 'People who follow you will appear here.' : 'Members you follow will appear here.'}</Typography>
+					<Typography>{isOwnList ? (isFollowers ? 'People who follow you will appear here.' : 'Members you follow will appear here.') : `This member has no ${category} yet.`}</Typography>
 					<Button component={Link} href="/pet" variant="contained">Explore community</Button>
 				</Stack>
 			)}
