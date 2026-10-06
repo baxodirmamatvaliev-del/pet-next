@@ -161,6 +161,7 @@ const PetComments = (props: PetCommentsProps) => {
 						{comments.map((comment) => {
 							const author = comment.memberData?.memberNick ?? 'PetNest member';
 							const isOwner = user?.sub === comment.memberId;
+							const authorHref = isOwner ? '/mypage?category=myProfile' : `/member/detail?id=${comment.memberId}`;
 							const isEditing = editingCommentId === comment._id;
 							const avatar = comment.memberData?.memberImage
 								? `${REACT_APP_API_URL}/${comment.memberData.memberImage}`
@@ -168,10 +169,10 @@ const PetComments = (props: PetCommentsProps) => {
 
 							return (
 								<Stack direction="row" className="pet-comments__item" key={comment._id}>
-									<Avatar src={avatar} alt={author}>{author.charAt(0).toUpperCase()}</Avatar>
+									<Avatar component={Link} href={authorHref} src={avatar} alt={author}>{author.charAt(0).toUpperCase()}</Avatar>
 									<Box>
 										<Stack direction="row" className="pet-comments__author">
-											<Typography component="strong">{author}</Typography>
+											<Typography component={Link} href={authorHref} className="pet-comments__author-link">{author}</Typography>
 											<Stack direction="row" className="pet-comments__author-actions">
 												<Typography>{new Date(comment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
 												{isOwner && !isEditing && <Button size="small" onClick={() => editCommentHandler(comment)}>Edit</Button>}

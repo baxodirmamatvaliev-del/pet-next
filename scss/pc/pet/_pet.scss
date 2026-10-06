@@ -483,6 +483,9 @@
 			.MuiAvatar-root {
 				background: $sage;
 				color: $primary;
+				&:hover {
+					opacity: 0.8;
+				}
 			}
 			.pet-comments__author {
 				align-items: center;
@@ -497,8 +500,15 @@
 						font-size: 11px;
 					}
 				}
-				strong {
+				.pet-comments__author-link {
+					color: inherit;
 					font-size: 13px;
+					font-weight: 700;
+					text-decoration: none;
+					&:hover {
+						color: $primary;
+						text-decoration: underline;
+					}
 				}
 				p {
 					color: $muted;
