@@ -101,6 +101,24 @@ export const UPDATE_MEMBER = gql`
 	}
 `;
 
+export const SUBSCRIBE = gql`
+	mutation Subscribe($input: FollowInput!) {
+		subscribe(input: $input) {
+			_id
+			followingId
+		}
+	}
+`;
+
+export const UNSUBSCRIBE = gql`
+	mutation Unsubscribe($input: FollowInput!) {
+		unsubscribe(input: $input) {
+			_id
+			followingId
+		}
+	}
+`;
+
 /**************************
  *          CART          *
  *************************/

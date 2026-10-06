@@ -22,6 +22,7 @@ export interface Member {
 	memberRank: number;
 	memberWarnings: number;
 	memberBlocks: number;
+	meFollowed?: { followingId: string; followerId: string; myFollowing: boolean }[];
 	deletedAt?: Date;
 	createdAt: Date;
 	updatedAt: Date;

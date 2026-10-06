@@ -28,6 +28,11 @@ export const GET_MEMBER = gql`
 			memberRank
 			memberWarnings
 			memberBlocks
+			meFollowed {
+				followingId
+				followerId
+				myFollowing
+			}
 			createdAt
 			updatedAt
 		}

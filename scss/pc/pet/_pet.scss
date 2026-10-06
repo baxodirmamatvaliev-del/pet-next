@@ -575,6 +575,35 @@
 			line-height: 1.6;
 			white-space: pre-line;
 		}
+		.member-detail__intro { flex: 1; min-width: 0; }
+		.member-detail__social {
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 16px;
+			margin-top: 18px;
+			p { margin-top: 0; font-size: 13px; }
+			strong { color: $primary; }
+			.MuiButton-root {
+				min-width: 116px;
+				border-radius: 9px;
+				font-size: 12px;
+				font-weight: 700;
+				text-transform: none;
+				&.MuiButton-outlined { border-color: $primary; color: $primary; &:hover { background: $sage; } }
+				&.member-detail__follow {
+					background: #ff5d18;
+					color: #ffffff;
+					&:hover { background: #e84d0c; }
+				}
+				&.member-detail__unfollow {
+					border-color: #b9b9b9;
+					background: #b9b9b9;
+					color: #181a20;
+					&:hover { border-color: #a5a5a5; background: #a5a5a5; }
+				}
+			}
+			.member-detail__following { color: #b9b9b9; font-style: italic; }
+		}
 	}
 
 	.member-detail__listings {
