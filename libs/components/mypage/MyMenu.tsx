@@ -11,6 +11,7 @@ import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { Avatar, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -72,6 +73,12 @@ const MyMenu = () => {
 							<ListItemText primary="Admin panel" />
 						</ListItemButton>
 					)}
+					{member?.memberType === MemberType.AGENT && (
+						<ListItemButton component={Link} href="/cs?tab=inbox">
+							<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
+							<ListItemText primary="Support inbox" />
+						</ListItemButton>
+					)}
 					<ListItemButton component={Link} href="/mypage?category=myProfile" className={category === 'myProfile' ? 'active' : ''}>
 						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
 						<ListItemText primary="Profile" />
@@ -130,6 +137,17 @@ const MyMenu = () => {
 							<ListItemButton component={Link} href="/_admin" className="my-menu__admin-link">
 								<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
 								<ListItemText primary="Admin Panel" />
+							</ListItemButton>
+						</List>
+					</>
+				)}
+				{member?.memberType === MemberType.AGENT && (
+					<>
+						<Typography className="my-menu__label">SUPPORT</Typography>
+						<List disablePadding>
+							<ListItemButton component={Link} href="/cs?tab=inbox">
+								<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
+								<ListItemText primary="Support Inbox" />
 							</ListItemButton>
 						</List>
 					</>

@@ -15,6 +15,14 @@ export interface MembersInquiry {
 	search: { memberStatus?: MemberStatus; memberType?: MemberType; text?: string };
 }
 
+export interface AgentsInquiry {
+	page: number;
+	limit: number;
+	sort?: string;
+	direction?: Direction;
+	search: { text?: string };
+}
+
 export interface LoginInput {
 	memberNick: string;
 	memberPassword: string;

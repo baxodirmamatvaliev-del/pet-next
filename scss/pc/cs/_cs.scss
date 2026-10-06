@@ -1,0 +1,189 @@
+@use '../../variables' as *;
+
+.cs-page {
+	padding-block: 50px 90px;
+	.cs-page__eyebrow {
+		color: $secondary;
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.14em;
+	}
+	h1 {
+		margin-top: 8px;
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 44px;
+	}
+	.cs-page__intro {
+		margin-top: 10px;
+		color: $muted;
+	}
+	.cs-page__tabs {
+		gap: 10px;
+		margin: 30px 0 26px;
+		border-bottom: 1px solid $border;
+		.MuiButton-root {
+			padding: 12px 18px;
+			border-radius: 10px 10px 0 0;
+			color: $muted;
+			font-size: 13px;
+			font-weight: 700;
+			text-transform: none;
+			&:hover,
+			&.active {
+				background: $sage;
+				color: $primary;
+			}
+		}
+	}
+}
+
+.cs-faq,
+.cs-panel {
+	max-width: 850px;
+}
+
+.cs-faq {
+	gap: 10px;
+	.MuiAccordion-root {
+		border: 1px solid $border;
+		border-radius: 12px;
+		&::before {
+			display: none;
+		}
+		.MuiAccordionSummary-root {
+			min-height: 58px;
+		}
+		.MuiAccordionDetails-root {
+			color: $muted;
+			line-height: 1.65;
+		}
+	}
+}
+
+.cs-panel {
+	padding: 28px;
+	border: 1px solid $border;
+	border-radius: 16px;
+	background: #fff;
+}
+
+.cs-inquiry {
+	gap: 20px;
+	h2 {
+		font-size: 23px;
+	}
+	.cs-inquiry__hint {
+		margin-top: -12px;
+		color: $muted;
+		font-size: 13px;
+	}
+	.cs-inquiry__roles {
+		gap: 12px;
+		.MuiButton-root {
+			min-width: 145px;
+			padding: 12px 18px;
+			border: 1px solid $border;
+			border-radius: 11px;
+			color: $primary;
+			font-weight: 700;
+			text-transform: none;
+			&:hover {
+				border-color: $primary;
+				background: $sage;
+			}
+			&.active {
+				border-color: $primary;
+				background: $primary;
+				color: #fff;
+			}
+		}
+	}
+	.cs-inquiry__actions {
+		display: flex;
+		justify-content: flex-end;
+		.MuiButton-root {
+			min-width: 160px;
+			text-transform: none;
+		}
+	}
+}
+
+.cs-state {
+	min-height: 240px;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	text-align: center;
+	h2 {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 27px;
+	}
+	p {
+		color: $muted;
+	}
+}
+
+.cs-tickets {
+	gap: 18px;
+}
+.cs-ticket {
+	padding: 22px;
+	border: 1px solid $border;
+	border-radius: 12px;
+	background: #fff;
+	.cs-ticket__heading {
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 14px;
+		h2 {
+			font-size: 17px;
+		}
+		p {
+			margin-top: 5px;
+			color: $muted;
+			font-size: 12px;
+		}
+	}
+	.cs-ticket__message {
+		margin-top: 16px;
+		white-space: pre-wrap;
+		line-height: 1.6;
+	}
+	.cs-ticket__reply {
+		margin-top: 18px;
+		padding: 16px;
+		border-left: 3px solid $primary;
+		border-radius: 8px;
+		background: $sage;
+		strong {
+			color: $primary;
+			font-size: 13px;
+		}
+		p {
+			margin-top: 8px;
+			white-space: pre-wrap;
+		}
+	}
+	.cs-ticket__answer {
+		gap: 12px;
+		margin-top: 16px;
+	}
+	.cs-ticket__reply-button {
+		margin-top: 16px;
+		text-transform: none;
+	}
+}
+
+.cs-admin-inbox {
+	h1 {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 34px;
+	}
+	> p {
+		margin: 8px 0 24px;
+		color: $muted;
+	}
+	.cs-panel {
+		max-width: none;
+	}
+}

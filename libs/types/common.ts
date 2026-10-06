@@ -1,7 +1,8 @@
 import { Cart } from './cart/cart';
 import { Follows } from './follow/follow';
+import { Inquiry, SupportRecipient } from './inquiry/inquiry';
 import { Comment, Comments } from './comment/comment';
-import { AuthPayload, Member } from './member/member';
+import { AuthPayload, Member, Members } from './member/member';
 import { Order, Orders } from './order/order';
 import { Notification, Notifications } from './notification/notification';
 import { Payment } from './payment/payment';
@@ -9,6 +10,11 @@ import { Pet, Pets } from './pet/pet';
 import { Product, Products } from './product/product';
 
 export interface T {
+	getSupportRecipients?: SupportRecipient[];
+	getMyInquiries?: Inquiry[];
+	getAssignedInquiries?: Inquiry[];
+	createInquiry?: Inquiry;
+	answerInquiry?: Inquiry;
 	getAllProductsByAdmin?: Products;
 	getAllPetsByAdmin?: Pets;
 	getAllOrdersByAdmin?: Orders;
@@ -22,6 +28,7 @@ export interface T {
 	signup?: Member;
 	login?: AuthPayload;
 	getMember?: Member;
+	getAgents?: Members;
 	getMemberFollowers?: Follows;
 	getMemberFollowings?: Follows;
 	updateMember?: Member;

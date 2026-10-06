@@ -369,6 +369,16 @@
 			margin-top: 18px;
 			font-size: 27px;
 		}
+		.product-detail__seller {
+			margin-top: 9px;
+			color: $muted;
+			font-size: 13px;
+			a {
+				color: $primary;
+				font-weight: 800;
+				&:hover { color: $secondary; text-decoration: underline; }
+			}
+		}
 		.product-detail__benefits {
 			width: 100%;
 			gap: 10px;

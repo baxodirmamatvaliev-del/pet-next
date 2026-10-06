@@ -1,6 +1,34 @@
 import { gql } from '@apollo/client';
 
 /**************************
+ *         INQUIRY        *
+ *************************/
+
+export const GET_SUPPORT_RECIPIENTS = gql`
+	query GetSupportRecipients {
+		getSupportRecipients { _id memberNick memberImage memberType }
+	}
+`;
+
+export const GET_MY_INQUIRIES = gql`
+	query GetMyInquiries {
+		getMyInquiries {
+			_id senderId receiverId senderNick receiverNick
+			inquiryTitle inquiryContent inquiryStatus inquiryAnswer createdAt answeredAt
+		}
+	}
+`;
+
+export const GET_ASSIGNED_INQUIRIES = gql`
+	query GetAssignedInquiries {
+		getAssignedInquiries {
+			_id senderId receiverId senderNick receiverNick
+			inquiryTitle inquiryContent inquiryStatus inquiryAnswer createdAt answeredAt
+		}
+	}
+`;
+
+/**************************
  *      NOTIFICATION      *
  *************************/
 
@@ -28,6 +56,22 @@ export const GET_MY_NOTIFICATIONS = gql`
 /**************************
  *         MEMBER         *
  *************************/
+
+export const GET_AGENTS = gql`
+	query GetAgents($input: AgentsInquiry!) {
+		getAgents(input: $input) {
+			list {
+				_id
+				memberNick
+				memberImage
+				memberDesc
+				memberFollowers
+				memberLikes
+			}
+			metaCounter { total }
+		}
+	}
+`;
 
 export const GET_MEMBER = gql`
 	query GetMember($memberId: String!) {

@@ -1,7 +1,9 @@
 @use './general';
+@use './agent/agent';
 @use './account/join';
 @use './cart/cart';
 @use './checkout/checkout';
+@use './cs/cs';
 @use './homepage/homepage';
 @use './mypage/mypage';
 @use './pet/pet';

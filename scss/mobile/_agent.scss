@@ -1,0 +1,30 @@
+@media (max-width: 760px) {
+	.agent-page {
+		padding-block: 30px 56px;
+		h1 { font-size: 34px; }
+		.agent-page__toolbar {
+			align-items: stretch;
+			flex-direction: column;
+			margin-top: 26px;
+			.agent-page__search {
+				.MuiTextField-root { flex: 1; }
+			}
+		}
+		.agent-page__grid { grid-template-columns: 1fr; }
+	}
+	.agent-card--mobile {
+		min-height: 0;
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 16px;
+		padding: 22px;
+		text-align: left;
+		.MuiAvatar-root {
+			width: 68px;
+			height: 68px;
+			flex-shrink: 0;
+			margin: 0;
+		}
+		.agent-card__description { min-height: 0; }
+	}
+}

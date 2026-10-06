@@ -1,0 +1,28 @@
+@media (max-width: 760px) {
+	.cs-page {
+		padding-block: 30px 55px;
+		h1 {
+			font-size: 34px;
+		}
+		.cs-page__tabs {
+			overflow-x: auto;
+			.MuiButton-root {
+				flex-shrink: 0;
+				white-space: nowrap;
+			}
+		}
+	}
+	.cs-panel {
+		padding: 18px;
+	}
+	.cs-inquiry .cs-inquiry__roles .MuiButton-root {
+		min-width: 0;
+		flex: 1;
+	}
+	.cs-ticket {
+		padding: 18px;
+		.cs-ticket__heading {
+			flex-wrap: wrap;
+		}
+	}
+}

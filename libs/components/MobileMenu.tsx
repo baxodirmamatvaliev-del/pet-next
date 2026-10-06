@@ -8,6 +8,7 @@ import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import {
 	Box,
@@ -120,6 +121,14 @@ const MobileMenu = (props: MobileMenuProps) => {
 						<TrendingUpRoundedIcon />
 					</ListItemIcon>
 					<ListItemText primary="Best Sellers" />
+				</ListItemButton>
+				<ListItemButton component={Link} href="/agent" onClick={closeHandler}>
+					<ListItemIcon><StorefrontOutlinedIcon /></ListItemIcon>
+					<ListItemText primary="Agents" />
+				</ListItemButton>
+				<ListItemButton component={Link} href="/cs" onClick={closeHandler}>
+					<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
+					<ListItemText primary="Help Center" />
 				</ListItemButton>
 			</List>
 

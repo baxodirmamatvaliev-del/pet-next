@@ -152,7 +152,9 @@ const Top = () => {
 						<Link href="/product?category=CAT">Cats</Link>
 						<Link href="/product?sort=createdAt">New</Link>
 						<Link href="/product?sort=productSold">Best Sellers</Link>
+						<Link href="/agent">Agents</Link>
 						<Link href="/pet">Community</Link>
+						<Link href="/cs">Help Center</Link>
 					</Stack>
 				</Box>
 			</Stack>

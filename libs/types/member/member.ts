@@ -33,3 +33,8 @@ export interface AuthPayload {
 	accessToken: string;
 	member: Member;
 }
+
+export interface Members {
+	list: Member[];
+	metaCounter: { total: number }[];
+}

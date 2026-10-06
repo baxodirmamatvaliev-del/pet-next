@@ -8,20 +8,32 @@ import { useRouter } from 'next/router';
 
 import { userVar } from '../../apollo/store';
 import { SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
-import { GET_MEMBER, GET_PETS } from '../../apollo/user/query';
+import { GET_MEMBER, GET_PETS, GET_PRODUCTS } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import MyFollows from '../../libs/components/mypage/MyFollows';
 import PetCard from '../../libs/components/pet/PetCard';
+import ProductCard from '../../libs/components/product/ProductCard';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Direction, Message } from '../../libs/enums/common.enum';
+import { MemberType } from '../../libs/enums/member.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { T } from '../../libs/types/common';
 import { Member } from '../../libs/types/member/member';
 import { Pet } from '../../libs/types/pet/pet';
 import { PetsInquiry } from '../../libs/types/pet/pet.input';
+import { Product } from '../../libs/types/product/product';
+import { ProductsInquiry } from '../../libs/types/product/product.input';
 
 const initialInquiry: PetsInquiry = {
+	page: 1,
+	limit: 6,
+	sort: 'createdAt',
+	direction: Direction.DESC,
+	search: {},
+};
+
+const initialProductsInquiry: ProductsInquiry = {
 	page: 1,
 	limit: 6,
 	sort: 'createdAt',
@@ -37,9 +49,12 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 	const [inquiry, setInquiry] = useState<PetsInquiry>({ ...initialInquiry, search: { memberId } });
 	const [pets, setPets] = useState<Pet[]>([]);
 	const [petTotal, setPetTotal] = useState(0);
+	const [productsInquiry, setProductsInquiry] = useState<ProductsInquiry>({ ...initialProductsInquiry, search: { memberId } });
+	const [products, setProducts] = useState<Product[]>([]);
+	const [productTotal, setProductTotal] = useState(0);
 	const [followLoading, setFollowLoading] = useState(false);
 	const user = useReactiveVar(userVar);
-	const activeCategory = category === 'followers' || category === 'followings' ? category : 'pets';
+	const activeCategory = category === 'followers' || category === 'followings' || category === 'products' ? category : 'pets';
 
 	/** APOLLO REQUESTS **/
 	const [subscribe] = useMutation(SUBSCRIBE);
@@ -58,6 +73,16 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 		onCompleted: (data: T) => {
 			setPets(data?.getPets?.list ?? []);
 			setPetTotal(data?.getPets?.metaCounter[0]?.total ?? 0);
+		},
+	});
+	const { loading: getProductsLoading, error: getProductsError } = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: productsInquiry },
+		skip: !memberId || activeCategory !== 'products',
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setProducts(data?.getProducts?.list ?? []);
+			setProductTotal(data?.getProducts?.metaCounter[0]?.total ?? 0);
 		},
 	});
 
@@ -111,11 +136,15 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 	/** COMPUTED VALUES **/
 	const memberImage = member?.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : undefined;
 	const totalPages = Math.ceil(petTotal / inquiry.limit);
+	const productTotalPages = Math.ceil(productTotal / productsInquiry.limit);
 	const isOwnProfile = user?.sub === memberId;
 	const isFollowing = member?.meFollowed?.some((follow) => follow.myFollowing) ?? false;
 	const memberContent = (
 		<>
 			<Stack direction="row" className="member-detail__tabs">
+				{(member?.memberType === MemberType.AGENT || member?.memberType === MemberType.ADMIN) && (
+					<Button component={Link} href={`/member/detail?id=${memberId}&category=products`} className={activeCategory === 'products' ? 'active' : ''}>Products</Button>
+				)}
 				<Button component={Link} href={`/member/detail?id=${memberId}`} className={activeCategory === 'pets' ? 'active' : ''}>Pet listings</Button>
 				<Button component={Link} href={`/member/detail?id=${memberId}&category=followers`} className={activeCategory === 'followers' ? 'active' : ''}>Followers</Button>
 				<Button component={Link} href={`/member/detail?id=${memberId}&category=followings`} className={activeCategory === 'followings' ? 'active' : ''}>Followings</Button>
@@ -127,6 +156,14 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 						<Box className="member-detail__grid">{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}</Box>
 					) : <Typography>No active pet listings yet.</Typography>}
 					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
+				</Stack>
+			) : activeCategory === 'products' ? (
+				<Stack className="member-detail__listings">
+					<Typography component="h2">Products <span>({productTotal})</span></Typography>
+					{getProductsError ? <Alert severity="error">Products could not be loaded.</Alert> : getProductsLoading ? <CircularProgress /> : products.length ? (
+						<Box className="member-detail__grid">{products.map((product) => <ProductCard product={product} key={product._id} />)}</Box>
+					) : <Typography>No active products yet.</Typography>}
+					{productTotalPages > 1 && <Pagination page={productsInquiry.page} count={productTotalPages} onChange={(_event, page) => setProductsInquiry({ ...productsInquiry, page })} />}
 				</Stack>
 			) : (
 				<Box className="member-detail__follows">
@@ -147,6 +184,9 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 			Sign in to follow
 		</Button>
 	);
+	const contactButton = member?.memberType === MemberType.AGENT && !isOwnProfile ? (
+		<Button component={Link} href={`/cs?tab=ask&recipient=${memberId}`} variant="outlined">Contact agent</Button>
+	) : null;
 
 	if (!memberId || (member?._id !== memberId && !getMemberError)) {
 		return <Stack className="member-detail-state"><CircularProgress /></Stack>;
@@ -172,6 +212,7 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}><strong>{member.memberFollowers}</strong> followers</Typography>
 								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}><strong>{member.memberFollowings}</strong> following</Typography>
 								{followButton}
+								{contactButton}
 							</Stack>
 						</Stack>
 					</Stack>
@@ -195,6 +236,7 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}><strong>{member.memberFollowers}</strong> followers</Typography>
 								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}><strong>{member.memberFollowings}</strong> following</Typography>
 								{followButton}
+								{contactButton}
 							</Stack>
 						</Stack>
 					</Stack>

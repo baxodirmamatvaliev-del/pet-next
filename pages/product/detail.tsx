@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
 import { ADD_TO_CART } from '../../apollo/user/mutation';
-import { GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
+import { GET_MEMBER, GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import ProductCard from '../../libs/components/product/ProductCard';
 import { REACT_APP_API_URL } from '../../libs/config';
@@ -23,6 +23,7 @@ import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { AddToCartInput } from '../../libs/types/cart/cart.input';
 import { T } from '../../libs/types/common';
+import { Member } from '../../libs/types/member/member';
 import { Product } from '../../libs/types/product/product';
 import { formatterStr } from '../../libs/utils';
 
@@ -37,6 +38,7 @@ const ProductDetail: NextPage = () => {
 	const [selectedSku, setSelectedSku] = useState('');
 	const [quantity, setQuantity] = useState(1);
 	const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+	const [seller, setSeller] = useState<Member | null>(null);
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
@@ -77,6 +79,12 @@ const ProductDetail: NextPage = () => {
 		onCompleted: (data: T) => {
 			setRelatedProducts(data?.getProducts?.list ?? []);
 		},
+	});
+	useQuery(GET_MEMBER, {
+		fetchPolicy: 'cache-and-network',
+		variables: { memberId: product?.memberId ?? '' },
+		skip: !product?.memberId,
+		onCompleted: (data: T) => setSeller(data?.getMember ?? null),
 	});
 
 	/** HANDLERS **/
@@ -126,6 +134,7 @@ const ProductDetail: NextPage = () => {
 	const imagePath = slideImage
 		? `${REACT_APP_API_URL}/${slideImage}`
 		: '/img/banner/home-hero.png';
+	const sellerName = seller && seller._id === product?.memberId ? seller.memberNick : 'Seller';
 
 	if (!router.isReady || !productId || (product?._id !== productId && !getProductError)) {
 		return (
@@ -180,6 +189,7 @@ const ProductDetail: NextPage = () => {
 						<Typography component="strong" className="product-detail__price">
 							₩{formatterStr(activeVariant?.price ?? 0)}
 						</Typography>
+						<Typography className="product-detail__seller">Sold by <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
 						<Box className="product-variants">
 							<Typography component="strong">Choose an option</Typography>
 							<Stack direction="row">
@@ -280,6 +290,7 @@ const ProductDetail: NextPage = () => {
 						<Typography component="strong" className="product-detail__price">
 							₩{formatterStr(activeVariant?.price ?? 0)}
 						</Typography>
+						<Typography className="product-detail__seller">Sold by <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
 
 						<Stack className="product-detail__benefits">
 							<Stack direction="row">
