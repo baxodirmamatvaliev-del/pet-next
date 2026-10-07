@@ -1,5 +1,5 @@
 import { ChangeEvent, useMemo, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
 	Box,
 	FormControl,
@@ -13,15 +13,18 @@ import {
 import { useRouter } from 'next/router';
 
 import { GET_PRODUCTS } from '../../apollo/user/query';
+import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Filter from '../../libs/components/product/Filter';
 import ProductCard from '../../libs/components/product/ProductCard';
-import { Direction } from '../../libs/enums/common.enum';
+import { Direction, Message } from '../../libs/enums/common.enum';
 import { ProductCategory, ProductType } from '../../libs/enums/product.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { T } from '../../libs/types/common';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { Product } from '../../libs/types/product/product';
+import { CustomJwtPayload } from '../../libs/types/customJwtPayload';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 
 interface ProductListProps {
 	initialInput?: ProductsInquiry;
@@ -92,9 +95,11 @@ const ProductList = (props: ProductListProps) => {
 	}, [initialInput, router.query.category, router.query.input, router.query.sort, router.query.text]);
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 	const {
 		loading: getProductsLoading,
 		error: getProductsError,
+		refetch: getProductsRefetch,
 	} = useQuery(GET_PRODUCTS, {
 		fetchPolicy: 'network-only',
 		variables: { input: searchFilter },
@@ -122,6 +127,19 @@ const ProductList = (props: ProductListProps) => {
 	const paginationChangeHandler = (_event: ChangeEvent<unknown>, page: number) => {
 		const input = { ...searchFilter, page };
 		updateSearchFilterHandler(input);
+	};
+
+	const likeProductHandler = async (user: CustomJwtPayload | null, productId: string) => {
+		try {
+			if (!productId) return;
+			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProduct({ variables: { productId } });
+			await getProductsRefetch({ input: searchFilter });
+			await sweetTopSmallSuccessAlert('Favorites updated', 800);
+		} catch (err) {
+			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
+			await sweetMixinErrorAlert(message);
+		}
 	};
 
 	/** COMPUTED VALUES **/
@@ -162,7 +180,7 @@ const ProductList = (props: ProductListProps) => {
 						<Typography className="product-results__message product-results__message--error">Products could not be loaded.</Typography>
 					) : products.length ? (
 						<Box className="product-results__grid">
-							{products.map((product) => <ProductCard product={product} key={product._id} />)}
+							{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 						</Box>
 					) : (
 						<Typography className="product-results__message">No products match your filters.</Typography>
@@ -215,7 +233,7 @@ const ProductList = (props: ProductListProps) => {
 							</Typography>
 						) : products.length ? (
 							<Box className="product-results__grid">
-								{products.map((product) => <ProductCard product={product} key={product._id} />)}
+								{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 							</Box>
 						) : (
 							<Typography className="product-results__message">No products match your filters.</Typography>

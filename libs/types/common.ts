@@ -34,10 +34,13 @@ export interface T {
 	updateMember?: Member;
 	getProduct?: Product;
 	getProducts?: Products;
+	getFavoriteProducts?: Products;
+	getVisitedProducts?: Products;
 	getMyProducts?: Products;
 	createProduct?: Product;
 	updateProduct?: Product;
 	removeProduct?: Product;
+	likeTargetProduct?: Product;
 	getPets?: Pets;
 	getPet?: Pet;
 	getMyPets?: Pets;

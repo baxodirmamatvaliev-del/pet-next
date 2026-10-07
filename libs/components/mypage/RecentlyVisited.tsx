@@ -1,38 +1,62 @@
 import { ChangeEvent, useState } from 'react';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import { Alert, Box, Button, CircularProgress, Pagination, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 
 import { userVar } from '../../../apollo/store';
-import { GET_VISITED_PETS } from '../../../apollo/user/query';
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { GET_VISITED_PETS, GET_VISITED_PRODUCTS } from '../../../apollo/user/query';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
+import { CustomJwtPayload } from '../../types/customJwtPayload';
 import { Pet } from '../../types/pet/pet';
 import { OrdinaryInquiry } from '../../types/pet/pet.input';
+import { Product } from '../../types/product/product';
 import PetCard from '../pet/PetCard';
+import ProductCard from '../product/ProductCard';
 
 const RecentlyVisited = () => {
 	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [searchVisited, setSearchVisited] = useState<OrdinaryInquiry>({ page: 1, limit: 6 });
-	const [recentlyVisited, setRecentlyVisited] = useState<Pet[]>([]);
-	const [total, setTotal] = useState(0);
+	const [visitedType, setVisitedType] = useState<'pets' | 'products'>('products');
+	const [visitedPets, setVisitedPets] = useState<Pet[]>([]);
+	const [visitedProducts, setVisitedProducts] = useState<Product[]>([]);
+	const [petTotal, setPetTotal] = useState(0);
+	const [productTotal, setProductTotal] = useState(0);
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 	const {
-		loading: getVisitedLoading,
-		error: getVisitedError,
+		loading: getVisitedPetsLoading,
+		error: getVisitedPetsError,
 	} = useQuery(GET_VISITED_PETS, {
 		fetchPolicy: 'network-only',
 		variables: { input: searchVisited },
-		skip: !user?.sub,
+		skip: !user?.sub || visitedType !== 'pets',
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setRecentlyVisited(data?.getVisitedPets?.list ?? []);
-			setTotal(data?.getVisitedPets?.metaCounter[0]?.total ?? 0);
+			setVisitedPets(data?.getVisitedPets?.list ?? []);
+			setPetTotal(data?.getVisitedPets?.metaCounter[0]?.total ?? 0);
+		},
+	});
+	const {
+		loading: getVisitedProductsLoading,
+		error: getVisitedProductsError,
+		refetch: getVisitedProductsRefetch,
+	} = useQuery(GET_VISITED_PRODUCTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchVisited },
+		skip: !user?.sub || visitedType !== 'products',
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setVisitedProducts(data?.getVisitedProducts?.list ?? []);
+			setProductTotal(data?.getVisitedProducts?.metaCounter[0]?.total ?? 0);
 		},
 	});
 
@@ -41,18 +65,45 @@ const RecentlyVisited = () => {
 		setSearchVisited({ ...searchVisited, page });
 	};
 
+	const visitedTypeHandler = (type: 'pets' | 'products') => {
+		setVisitedType(type);
+		setSearchVisited({ ...searchVisited, page: 1 });
+	};
+
+	const likeProductHandler = async (authUser: CustomJwtPayload | null, productId: string) => {
+		try {
+			if (!productId) return;
+			if (!authUser?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProduct({ variables: { productId } });
+			await getVisitedProductsRefetch({ input: searchVisited });
+		} catch (error) {
+			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
+			await sweetMixinErrorAlert(message);
+		}
+	};
+
 	/** COMPUTED VALUES **/
+	const activeItems = visitedType === 'products' ? visitedProducts : visitedPets;
+	const total = visitedType === 'products' ? productTotal : petTotal;
+	const getVisitedLoading = visitedType === 'products' ? getVisitedProductsLoading : getVisitedPetsLoading;
+	const getVisitedError = visitedType === 'products' ? getVisitedProductsError : getVisitedPetsError;
 	const totalPages = Math.ceil(total / searchVisited.limit);
 	const visitedContent = (
 		<>
-			{getVisitedLoading && !recentlyVisited.length ? (
+			<Stack direction="row" className="recently-visited__tabs">
+				<Button className={visitedType === 'products' ? 'active' : ''} onClick={() => visitedTypeHandler('products')}>Products</Button>
+				<Button className={visitedType === 'pets' ? 'active' : ''} onClick={() => visitedTypeHandler('pets')}>Pet listings</Button>
+			</Stack>
+			{getVisitedLoading && !activeItems.length ? (
 				<Stack className="recently-visited__state"><CircularProgress color="primary" /></Stack>
 			) : getVisitedError ? (
-				<Alert severity="error">Recently visited pets could not be loaded.</Alert>
-			) : recentlyVisited.length ? (
+				<Alert severity="error">Recently visited items could not be loaded.</Alert>
+			) : activeItems.length ? (
 				<>
 					<Box className="recently-visited__grid">
-						{recentlyVisited.map((pet) => <PetCard pet={pet} key={pet._id} />)}
+						{visitedType === 'products'
+							? visitedProducts.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)
+							: visitedPets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
 					</Box>
 					{totalPages > 0 && (
 						<Stack direction="row" className="recently-visited__pagination">
@@ -63,16 +114,16 @@ const RecentlyVisited = () => {
 								color="primary"
 								shape="rounded"
 							/>
-							<Typography>{total} visited pets</Typography>
+							<Typography>{total} visited {visitedType === 'products' ? 'products' : 'pets'}</Typography>
 						</Stack>
 					)}
 				</>
 			) : (
 				<Stack className="recently-visited__state">
 					<HistoryRoundedIcon />
-					<Typography component="h2">No visited pets yet</Typography>
-					<Typography>Pet listings you open will appear here.</Typography>
-					<Button component={Link} href="/pet" variant="contained">Explore pets</Button>
+					<Typography component="h2">No visited {visitedType === 'products' ? 'products' : 'pets'} yet</Typography>
+					<Typography>Items you open will appear here.</Typography>
+					<Button component={Link} href={visitedType === 'products' ? '/product' : '/pet'} variant="contained">Explore {visitedType}</Button>
 				</Stack>
 			)}
 		</>
@@ -84,7 +135,7 @@ const RecentlyVisited = () => {
 			<Box className="recently-visited recently-visited--mobile">
 				<Box className="recently-visited__heading">
 					<Typography component="h1">Recently Visited</Typography>
-					<Typography>Pet listings you viewed recently.</Typography>
+					<Typography>Products and pet listings you viewed recently.</Typography>
 				</Box>
 				{visitedContent}
 			</Box>
@@ -95,7 +146,7 @@ const RecentlyVisited = () => {
 			<Box className="recently-visited recently-visited--pc">
 				<Box className="recently-visited__heading">
 					<Typography component="h1">Recently Visited</Typography>
-					<Typography>Pet listings you viewed recently.</Typography>
+					<Typography>Products and pet listings you viewed recently.</Typography>
 				</Box>
 				{visitedContent}
 			</Box>

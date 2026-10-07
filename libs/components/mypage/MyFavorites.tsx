@@ -5,8 +5,8 @@ import { Alert, Box, Button, CircularProgress, Pagination, Stack, Typography } f
 import Link from 'next/link';
 
 import { userVar } from '../../../apollo/store';
-import { LIKE_TARGET_PET } from '../../../apollo/user/mutation';
-import { GET_FAVORITE_PETS } from '../../../apollo/user/query';
+import { LIKE_TARGET_PET, LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { GET_FAVORITE_PETS, GET_FAVORITE_PRODUCTS } from '../../../apollo/user/query';
 import PetCard from '../pet/PetCard';
 import { Message } from '../../enums/common.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
@@ -14,31 +14,51 @@ import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { FavoriteInquiry } from '../../types/like/like.input';
 import { Pet } from '../../types/pet/pet';
+import { Product } from '../../types/product/product';
+import ProductCard from '../product/ProductCard';
 
 const MyFavorites = () => {
 	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [searchFavorites, setSearchFavorites] = useState<FavoriteInquiry>({ page: 1, limit: 6 });
+	const [favoriteType, setFavoriteType] = useState<'pets' | 'products'>('products');
 	const [favoritePets, setFavoritePets] = useState<Pet[]>([]);
-	const [total, setTotal] = useState(0);
-	const [removingPetId, setRemovingPetId] = useState('');
+	const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
+	const [petTotal, setPetTotal] = useState(0);
+	const [productTotal, setProductTotal] = useState(0);
+	const [removingId, setRemovingId] = useState('');
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetPet] = useMutation(LIKE_TARGET_PET);
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 	const {
-		loading: getFavoritesLoading,
-		error: getFavoritesError,
-		refetch: getFavoritesRefetch,
+		loading: getFavoritePetsLoading,
+		error: getFavoritePetsError,
+		refetch: getFavoritePetsRefetch,
 	} = useQuery(GET_FAVORITE_PETS, {
 		fetchPolicy: 'network-only',
 		variables: { input: searchFavorites },
-		skip: !user?.sub,
+		skip: !user?.sub || favoriteType !== 'pets',
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			setFavoritePets(data?.getFavoritePets?.list ?? []);
-			setTotal(data?.getFavoritePets?.metaCounter[0]?.total ?? 0);
+			setPetTotal(data?.getFavoritePets?.metaCounter[0]?.total ?? 0);
+		},
+	});
+	const {
+		loading: getFavoriteProductsLoading,
+		error: getFavoriteProductsError,
+		refetch: getFavoriteProductsRefetch,
+	} = useQuery(GET_FAVORITE_PRODUCTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFavorites },
+		skip: !user?.sub || favoriteType !== 'products',
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setFavoriteProducts(data?.getFavoriteProducts?.list ?? []);
+			setProductTotal(data?.getFavoriteProducts?.metaCounter[0]?.total ?? 0);
 		},
 	});
 
@@ -52,42 +72,82 @@ const MyFavorites = () => {
 			if (!petId) return;
 			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
 
-			setRemovingPetId(petId);
+			setRemovingId(petId);
 			await likeTargetPet({ variables: { petId } });
 			if (favoritePets.length === 1 && searchFavorites.page > 1) {
 				setSearchFavorites({ ...searchFavorites, page: searchFavorites.page - 1 });
 			} else {
-				await getFavoritesRefetch({ input: searchFavorites });
+				await getFavoritePetsRefetch({ input: searchFavorites });
 			}
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
 			await sweetMixinErrorAlert(message);
 		} finally {
-			setRemovingPetId('');
+			setRemovingId('');
 		}
 	};
 
+	const removeFavoriteProductHandler = async (productId: string) => {
+		try {
+			if (!productId) return;
+			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+
+			setRemovingId(productId);
+			await likeTargetProduct({ variables: { productId } });
+			if (favoriteProducts.length === 1 && searchFavorites.page > 1) {
+				setSearchFavorites({ ...searchFavorites, page: searchFavorites.page - 1 });
+			} else {
+				await getFavoriteProductsRefetch({ input: searchFavorites });
+			}
+		} catch (error) {
+			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
+			await sweetMixinErrorAlert(message);
+		} finally {
+			setRemovingId('');
+		}
+	};
+
+	const favoriteTypeHandler = (type: 'pets' | 'products') => {
+		setFavoriteType(type);
+		setSearchFavorites({ ...searchFavorites, page: 1 });
+	};
+
 	/** COMPUTED VALUES **/
+	const activeItems = favoriteType === 'products' ? favoriteProducts : favoritePets;
+	const total = favoriteType === 'products' ? productTotal : petTotal;
+	const getFavoritesLoading = favoriteType === 'products' ? getFavoriteProductsLoading : getFavoritePetsLoading;
+	const getFavoritesError = favoriteType === 'products' ? getFavoriteProductsError : getFavoritePetsError;
 	const totalPages = Math.ceil(total / searchFavorites.limit);
 	const favoritesContent = (
 		<>
-			{getFavoritesLoading && !favoritePets.length ? (
+			<Stack direction="row" className="my-favorites__tabs">
+				<Button className={favoriteType === 'products' ? 'active' : ''} onClick={() => favoriteTypeHandler('products')}>Products</Button>
+				<Button className={favoriteType === 'pets' ? 'active' : ''} onClick={() => favoriteTypeHandler('pets')}>Pet listings</Button>
+			</Stack>
+			{getFavoritesLoading && !activeItems.length ? (
 				<Stack className="my-favorites__state"><CircularProgress color="primary" /></Stack>
 			) : getFavoritesError ? (
-				<Alert severity="error">Favorite pets could not be loaded.</Alert>
-			) : favoritePets.length ? (
+				<Alert severity="error">Favorites could not be loaded.</Alert>
+			) : activeItems.length ? (
 				<>
 					<Box className="my-favorites__grid">
-						{favoritePets.map((pet) => (
+						{favoriteType === 'pets' ? favoritePets.map((pet) => (
 							<Stack className="my-favorites__item" key={pet._id}>
 								<PetCard pet={pet} />
 								<Button
 									variant="outlined"
 									startIcon={<FavoriteRoundedIcon />}
 									onClick={() => removeFavoriteHandler(pet._id)}
-									disabled={Boolean(removingPetId)}
+									disabled={Boolean(removingId)}
 								>
-									{removingPetId === pet._id ? 'Removing...' : 'Remove from favorites'}
+									{removingId === pet._id ? 'Removing...' : 'Remove from favorites'}
+								</Button>
+							</Stack>
+						)) : favoriteProducts.map((product) => (
+							<Stack className="my-favorites__item" key={product._id}>
+								<ProductCard product={product} showFavorite={false} />
+								<Button variant="outlined" startIcon={<FavoriteRoundedIcon />} onClick={() => removeFavoriteProductHandler(product._id)} disabled={Boolean(removingId)}>
+									{removingId === product._id ? 'Removing...' : 'Remove from favorites'}
 								</Button>
 							</Stack>
 						))}
@@ -95,16 +155,16 @@ const MyFavorites = () => {
 					{totalPages > 0 && (
 						<Stack direction="row" className="my-favorites__pagination">
 							<Pagination page={searchFavorites.page} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />
-							<Typography>{total} saved pets</Typography>
+							<Typography>{total} saved {favoriteType === 'products' ? 'products' : 'pets'}</Typography>
 						</Stack>
 					)}
 				</>
 			) : (
 				<Stack className="my-favorites__state">
 					<FavoriteRoundedIcon />
-					<Typography component="h2">No favorite pets yet</Typography>
-					<Typography>Pets you save will appear here.</Typography>
-					<Button component={Link} href="/pet" variant="contained">Explore pets</Button>
+					<Typography component="h2">No favorite {favoriteType === 'products' ? 'products' : 'pets'} yet</Typography>
+					<Typography>Items you save will appear here.</Typography>
+					<Button component={Link} href={favoriteType === 'products' ? '/product' : '/pet'} variant="contained">Explore {favoriteType}</Button>
 				</Stack>
 			)}
 		</>
@@ -116,7 +176,7 @@ const MyFavorites = () => {
 			<Box className="my-favorites my-favorites--mobile">
 				<Box className="my-favorites__heading">
 					<Typography component="h1">My Favorites</Typography>
-					<Typography>Pet listings you saved.</Typography>
+					<Typography>Products and pet listings you saved.</Typography>
 				</Box>
 				{favoritesContent}
 			</Box>
@@ -127,7 +187,7 @@ const MyFavorites = () => {
 			<Box className="my-favorites my-favorites--pc">
 				<Box className="my-favorites__heading">
 					<Typography component="h1">My Favorites</Typography>
-					<Typography>Pet listings you saved.</Typography>
+					<Typography>Products and pet listings you saved.</Typography>
 				</Box>
 				{favoritesContent}
 			</Box>

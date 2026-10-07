@@ -282,6 +282,15 @@ export const REMOVE_PRODUCT = gql`
 	}
 `;
 
+export const LIKE_TARGET_PRODUCT = gql`
+	mutation LikeTargetProduct($productId: String!) {
+		likeTargetProduct(productId: $productId) {
+			_id
+			productLikes
+		}
+	}
+`;
+
 /**************************
  *           PET          *
  *************************/

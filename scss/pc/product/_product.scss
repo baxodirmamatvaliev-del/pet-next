@@ -3,6 +3,20 @@
 .product-card {
 	position: relative;
 	min-width: 0;
+	.product-card__favorite {
+		position: absolute;
+		top: 12px;
+		left: 12px;
+		z-index: 2;
+		width: 34px;
+		height: 34px;
+		background: rgba(255, 255, 255, 0.92);
+		color: $muted;
+		box-shadow: 0 4px 14px rgba(21, 75, 59, 0.12);
+		transition: color 160ms ease, transform 160ms ease;
+		&:hover { background: #ffffff; color: $secondary; transform: translateY(-2px); }
+		&.active { color: $secondary; }
+	}
 	.product-card__image {
 		position: relative;
 		aspect-ratio: 1 / 1;
@@ -442,6 +456,14 @@
 				border-radius: 9px;
 				font-size: 13px;
 				font-weight: 700;
+			}
+			.product-detail__favorite {
+				width: 48px;
+				height: 48px;
+				border: 1px solid $border;
+				border-radius: 9px;
+				color: $muted;
+				&:hover, &.active { border-color: $secondary; color: $secondary; }
 			}
 		}
 		.product-detail__description {

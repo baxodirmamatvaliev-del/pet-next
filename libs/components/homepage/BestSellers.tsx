@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { Box, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 
 import { GET_PRODUCTS } from '../../../apollo/user/query';
-import { Direction } from '../../enums/common.enum';
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { Direction, Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
+import { CustomJwtPayload } from '../../types/customJwtPayload';
 import { Product } from '../../types/product/product';
 import { ProductsInquiry } from '../../types/product/product.input';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
@@ -24,9 +27,11 @@ const BestSellers = (props: BestSellersProps) => {
 	const [products, setProducts] = useState<Product[]>([]);
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 	const {
 		loading: getProductsLoading,
 		error: getProductsError,
+		refetch: getProductsRefetch,
 	} = useQuery(GET_PRODUCTS, {
 		fetchPolicy: 'cache-and-network',
 		variables: { input: initialInput },
@@ -36,6 +41,19 @@ const BestSellers = (props: BestSellersProps) => {
 		},
 	});
 
+	/** HANDLERS **/
+	const likeProductHandler = async (user: CustomJwtPayload | null, productId: string) => {
+		try {
+			if (!productId) return;
+			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProduct({ variables: { productId } });
+			await getProductsRefetch({ input: initialInput });
+		} catch (err) {
+			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
+			await sweetMixinErrorAlert(message);
+		}
+	};
+
 	/** COMPUTED VALUES **/
 	const productContent = getProductsLoading && !products.length ? (
 		<Typography className="product-message">Loading products...</Typography>
@@ -43,7 +61,7 @@ const BestSellers = (props: BestSellersProps) => {
 		<Typography className="product-message product-message--error">Products could not be loaded.</Typography>
 	) : products.length ? (
 		<Box className={`product-grid product-grid--${device}`}>
-			{products.map((product) => <ProductCard product={product} key={product._id} />)}
+			{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 		</Box>
 	) : (
 		<Typography className="product-message">No products available yet.</Typography>

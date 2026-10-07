@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Alert, Box, Button, CircularProgress, IconButton, Stack, Typography } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
@@ -13,7 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
-import { ADD_TO_CART } from '../../apollo/user/mutation';
+import { ADD_TO_CART, LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
 import { GET_MEMBER, GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import ProductCard from '../../libs/components/product/ProductCard';
@@ -26,6 +28,7 @@ import { AddToCartInput } from '../../libs/types/cart/cart.input';
 import { T } from '../../libs/types/common';
 import { Member } from '../../libs/types/member/member';
 import { Product } from '../../libs/types/product/product';
+import { CustomJwtPayload } from '../../libs/types/customJwtPayload';
 import { formatterStr } from '../../libs/utils';
 
 const ProductDetail: NextPage = () => {
@@ -48,6 +51,7 @@ const ProductDetail: NextPage = () => {
 			if (data?.addToCart) cartCountVar(data.addToCart.totalQuantity);
 		},
 	});
+	const [likeTargetProduct, { loading: likeTargetProductLoading }] = useMutation(LIKE_TARGET_PRODUCT);
 	const {
 		error: getProductError,
 		refetch: getProductRefetch,
@@ -65,7 +69,7 @@ const ProductDetail: NextPage = () => {
 			}
 		},
 	});
-	useQuery(GET_PRODUCTS, {
+	const { refetch: getProductsRefetch } = useQuery(GET_PRODUCTS, {
 		fetchPolicy: 'cache-and-network',
 		variables: {
 			input: {
@@ -130,6 +134,19 @@ const ProductDetail: NextPage = () => {
 		await getProductRefetch({ productId });
 	};
 
+	const likeProductHandler = async (authUser: CustomJwtPayload | null, id: string) => {
+		try {
+			if (!id) return;
+			if (!authUser?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProduct({ variables: { productId: id } });
+			if (id === productId) await getProductRefetch({ productId });
+			await getProductsRefetch();
+		} catch (err) {
+			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
+			await sweetMixinErrorAlert(message);
+		}
+	};
+
 	/** COMPUTED VALUES **/
 	const activeVariant = product?.productVariants.find((variant) => variant.sku === selectedSku)
 		?? product?.productVariants[0];
@@ -141,6 +158,7 @@ const ProductDetail: NextPage = () => {
 		? `${REACT_APP_API_URL}/${slideImage}`
 		: '/img/banner/home-hero.png';
 	const sellerName = seller && seller._id === product?.memberId ? seller.memberNick : 'Seller';
+	const isFavorite = Boolean(product?.meLiked?.[0]?.myFavorite);
 
 	if (!router.isReady || !productId || (product?._id !== productId && !getProductError)) {
 		return (
@@ -224,6 +242,9 @@ const ProductDetail: NextPage = () => {
 							<Button variant="contained" startIcon={<ShoppingBagOutlinedIcon />} onClick={addToCartHandler} disabled={isOutOfStock || addToCartLoading}>
 								{addToCartLoading ? 'Adding...' : 'Add to cart'}
 							</Button>
+							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+							</IconButton>
 						</Stack>
 						{product.productDesc && (
 							<Box className="product-detail__description">
@@ -246,7 +267,7 @@ const ProductDetail: NextPage = () => {
 							<Link href="/product">View all products</Link>
 						</Stack>
 						<Box className="product-related__grid">
-							{visibleRelatedProducts.map((item) => <ProductCard product={item} key={item._id} />)}
+							{visibleRelatedProducts.map((item) => <ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />)}
 						</Box>
 					</Box>
 				)}
@@ -356,6 +377,9 @@ const ProductDetail: NextPage = () => {
 							>
 								{addToCartLoading ? 'Adding...' : 'Add to cart'}
 							</Button>
+							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+							</IconButton>
 						</Stack>
 
 						{product.productDesc && (
@@ -379,7 +403,7 @@ const ProductDetail: NextPage = () => {
 							<Link href="/product">View all products</Link>
 						</Stack>
 						<Box className="product-related__grid">
-							{visibleRelatedProducts.map((item) => <ProductCard product={item} key={item._id} />)}
+							{visibleRelatedProducts.map((item) => <ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />)}
 						</Box>
 					</Box>
 				)}

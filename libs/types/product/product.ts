@@ -22,6 +22,9 @@ export interface Product {
 	productReviews: number;
 	productSold: number;
 	productRank: number;
+	productLikes?: number;
+	productViews?: number;
+	meLiked?: { memberId: string; likeRefId: string; myFavorite: boolean }[];
 	deletedAt?: Date;
 	createdAt: Date;
 	updatedAt: Date;

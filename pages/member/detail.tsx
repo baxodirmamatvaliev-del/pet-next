@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { userVar } from '../../apollo/store';
-import { SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
+import { LIKE_TARGET_PRODUCT, SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
 import { GET_MEMBER, GET_PETS, GET_PRODUCTS } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import MyFollows from '../../libs/components/mypage/MyFollows';
@@ -24,6 +24,7 @@ import { Pet } from '../../libs/types/pet/pet';
 import { PetsInquiry } from '../../libs/types/pet/pet.input';
 import { Product } from '../../libs/types/product/product';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
+import { CustomJwtPayload } from '../../libs/types/customJwtPayload';
 
 const initialInquiry: PetsInquiry = {
 	page: 1,
@@ -59,6 +60,7 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 	/** APOLLO REQUESTS **/
 	const [subscribe] = useMutation(SUBSCRIBE);
 	const [unsubscribe] = useMutation(UNSUBSCRIBE);
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 	const { error: getMemberError, refetch: getMemberRefetch } = useQuery(GET_MEMBER, {
 		fetchPolicy: 'network-only',
 		variables: { memberId },
@@ -75,7 +77,7 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 			setPetTotal(data?.getPets?.metaCounter[0]?.total ?? 0);
 		},
 	});
-	const { loading: getProductsLoading, error: getProductsError } = useQuery(GET_PRODUCTS, {
+	const { loading: getProductsLoading, error: getProductsError, refetch: getProductsRefetch } = useQuery(GET_PRODUCTS, {
 		fetchPolicy: 'cache-and-network',
 		variables: { input: productsInquiry },
 		skip: !memberId || activeCategory !== 'products',
@@ -133,6 +135,17 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 		}
 	};
 
+	const likeProductHandler = async (authUser: CustomJwtPayload | null, productId: string) => {
+		try {
+			if (!productId) return;
+			if (!authUser?.sub) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProduct({ variables: { productId } });
+			await getProductsRefetch({ input: productsInquiry });
+		} catch (error) {
+			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+		}
+	};
+
 	/** COMPUTED VALUES **/
 	const memberImage = member?.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : undefined;
 	const totalPages = Math.ceil(petTotal / inquiry.limit);
@@ -161,7 +174,7 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 				<Stack className="member-detail__listings">
 					<Typography component="h2">Products <span>({productTotal})</span></Typography>
 					{getProductsError ? <Alert severity="error">Products could not be loaded.</Alert> : getProductsLoading ? <CircularProgress /> : products.length ? (
-						<Box className="member-detail__grid">{products.map((product) => <ProductCard product={product} key={product._id} />)}</Box>
+						<Box className="member-detail__grid">{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}</Box>
 					) : <Typography>No active products yet.</Typography>}
 					{productTotalPages > 1 && <Pagination page={productsInquiry.page} count={productTotalPages} onChange={(_event, page) => setProductsInquiry({ ...productsInquiry, page })} />}
 				</Stack>

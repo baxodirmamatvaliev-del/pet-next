@@ -167,6 +167,9 @@ export const GET_PRODUCT = gql`
 			productReviews
 			productSold
 			productRank
+			productLikes
+			productViews
+			meLiked { memberId likeRefId myFavorite }
 			createdAt
 			updatedAt
 		}
@@ -196,12 +199,71 @@ export const GET_PRODUCTS = gql`
 				productReviews
 				productSold
 				productRank
+				productLikes
+				productViews
+				meLiked { memberId likeRefId myFavorite }
 				createdAt
 				updatedAt
 			}
 			metaCounter {
 				total
 			}
+		}
+	}
+`;
+
+export const GET_FAVORITE_PRODUCTS = gql`
+	query GetFavoriteProducts($input: FavoriteInquiry!) {
+		getFavoriteProducts(input: $input) {
+			list {
+				_id
+				memberId
+				productCategory
+				productType
+				productStatus
+				productName
+				productDesc
+				productImages
+				productVariants { sku color size price stock }
+				productRating
+				productReviews
+				productSold
+				productRank
+				productLikes
+				productViews
+				meLiked { memberId likeRefId myFavorite }
+				createdAt
+				updatedAt
+			}
+			metaCounter { total }
+		}
+	}
+`;
+
+export const GET_VISITED_PRODUCTS = gql`
+	query GetVisitedProducts($input: OrdinaryInquiry!) {
+		getVisitedProducts(input: $input) {
+			list {
+				_id
+				memberId
+				productCategory
+				productType
+				productStatus
+				productName
+				productDesc
+				productImages
+				productVariants { sku color size price stock }
+				productRating
+				productReviews
+				productSold
+				productRank
+				productLikes
+				productViews
+				meLiked { memberId likeRefId myFavorite }
+				createdAt
+				updatedAt
+			}
+			metaCounter { total }
 		}
 	}
 `;
