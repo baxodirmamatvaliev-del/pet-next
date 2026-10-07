@@ -18,9 +18,21 @@ export function setJwtToken(token: string) {
 	window.localStorage.setItem('accessToken', token);
 }
 
-export function updateUserInfo(token: string) {
-	const claims = jwtDecode<CustomJwtPayload>(token);
-	userVar(claims);
+export function updateUserInfo(token: string): boolean {
+	try {
+		const claims = jwtDecode<CustomJwtPayload>(token);
+		const currentTime = Math.floor(Date.now() / 1000);
+
+		if (!claims?.sub || (claims.exp && claims.exp <= currentTime)) {
+			throw new Error('Invalid or expired token');
+		}
+
+		userVar(claims);
+		return true;
+	} catch {
+		clearAuthSession();
+		return false;
+	}
 }
 
 export const logIn = async (nick: string, password: string): Promise<void> => {
@@ -93,10 +105,16 @@ export const updateStorage = ({ jwtToken }: { jwtToken: string }) => {
 	window.localStorage.setItem('login', Date.now().toString());
 };
 
-export function logOut() {
-	window.localStorage.removeItem('accessToken');
-	window.localStorage.setItem('logout', Date.now().toString());
+export function clearAuthSession() {
+	if (typeof window !== 'undefined') {
+		window.localStorage.removeItem('accessToken');
+		window.localStorage.setItem('logout', Date.now().toString());
+	}
 	cartCountVar(0);
 	userVar(null);
+}
+
+export function logOut() {
+	clearAuthSession();
 	window.location.reload();
 }

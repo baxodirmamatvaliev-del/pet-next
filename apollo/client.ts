@@ -9,7 +9,7 @@ import { onError } from '@apollo/client/link/error';
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 import { useMemo } from 'react';
 
-import { getJwtToken } from '../libs/auth';
+import { clearAuthSession, getJwtToken } from '../libs/auth';
 import { REACT_APP_API_GRAPHQL_URL } from '../libs/config';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -33,6 +33,8 @@ function createIsomorphicLink() {
 		graphQLErrors?.forEach(({ message }) => {
 			console.error(`[GraphQL error]: ${message}`);
 		});
+		const unauthenticated = graphQLErrors?.some(({ extensions }) => extensions?.code === 'UNAUTHENTICATED');
+		if (unauthenticated) clearAuthSession();
 
 		if (networkError) console.error(`[Network error]: ${networkError.message}`);
 	});
