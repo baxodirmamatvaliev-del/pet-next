@@ -17,6 +17,7 @@ import { ADD_TO_CART } from '../../apollo/user/mutation';
 import { GET_MEMBER, GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import ProductCard from '../../libs/components/product/ProductCard';
+import ProductReviews from '../../libs/components/product/ProductReviews';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
@@ -49,6 +50,7 @@ const ProductDetail: NextPage = () => {
 	});
 	const {
 		error: getProductError,
+		refetch: getProductRefetch,
 	} = useQuery(GET_PRODUCT, {
 		fetchPolicy: 'network-only',
 		variables: { productId },
@@ -122,6 +124,10 @@ const ProductDetail: NextPage = () => {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
 			await sweetMixinErrorAlert(message);
 		}
+	};
+
+	const reviewCreatedHandler = async () => {
+		await getProductRefetch({ productId });
 	};
 
 	/** COMPUTED VALUES **/
@@ -232,6 +238,7 @@ const ProductDetail: NextPage = () => {
 						)}
 					</Stack>
 				</Box>
+				<ProductReviews productId={product._id} ownerId={product.memberId} onReviewCreated={reviewCreatedHandler} />
 				{visibleRelatedProducts.length > 0 && (
 					<Box component="section" className="product-related">
 						<Stack direction="row" className="product-related__heading">
@@ -364,6 +371,7 @@ const ProductDetail: NextPage = () => {
 						)}
 					</Stack>
 				</Box>
+				<ProductReviews productId={product._id} ownerId={product.memberId} onReviewCreated={reviewCreatedHandler} />
 				{visibleRelatedProducts.length > 0 && (
 					<Box component="section" className="product-related">
 						<Stack direction="row" className="product-related__heading">

@@ -122,5 +122,22 @@
 			.product-related__heading { margin-bottom: 18px; h2 { font-size: 23px; } a { font-size: 12px; } }
 			.product-related__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; }
 		}
+		.product-reviews {
+			margin-top: 42px;
+			padding: 20px 16px;
+			.product-reviews__heading {
+				h2 { font-size: 23px; }
+				> span { white-space: nowrap; }
+			}
+			.product-reviews__form {
+				align-items: stretch;
+				padding: 16px;
+				> .MuiButton-root { width: 100%; }
+			}
+			.product-reviews__sign-in { align-items: flex-start; flex-direction: column; }
+			.product-reviews__item {
+				.product-reviews__author { align-items: flex-start; flex-direction: column; gap: 4px; }
+			}
+		}
 	}
 }

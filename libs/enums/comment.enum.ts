@@ -7,4 +7,5 @@ export enum CommentGroup {
 	MEMBER = 'MEMBER',
 	ARTICLE = 'ARTICLE',
 	PET = 'PET',
+	PRODUCT = 'PRODUCT',
 }

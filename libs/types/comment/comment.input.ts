@@ -4,6 +4,7 @@ import { Direction } from '../../enums/common.enum';
 export interface CommentInput {
 	commentGroup: CommentGroup;
 	commentContent: string;
+	commentRating?: number;
 	commentRefId: string;
 }
 

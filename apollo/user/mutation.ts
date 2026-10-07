@@ -322,6 +322,7 @@ export const CREATE_COMMENT = gql`
 		createComment(input: $input) {
 			_id
 			commentContent
+			commentRating
 			commentRefId
 		}
 	}
