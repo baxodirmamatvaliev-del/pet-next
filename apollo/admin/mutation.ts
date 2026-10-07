@@ -33,3 +33,13 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
 		updateMemberByAdmin(input: $input) { _id memberType memberStatus }
 	}
 `;
+
+export const REMOVE_COMMENT_BY_ADMIN = gql`
+	mutation RemoveCommentByAdmin($commentId: String!) {
+		removeCommentByAdmin(commentId: $commentId) {
+			_id
+			commentGroup
+			commentRefId
+		}
+	}
+`;

@@ -83,3 +83,27 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 		}
 	}
 `;
+
+export const GET_ALL_COMMENTS_BY_ADMIN = gql`
+	query GetAllCommentsByAdmin($input: AdminCommentsInquiry!) {
+		getAllCommentsByAdmin(input: $input) {
+			list {
+				_id
+				commentStatus
+				commentGroup
+				commentContent
+				commentRating
+				commentRefId
+				memberId
+				createdAt
+				memberData {
+					_id
+					memberNick
+					memberImage
+					memberType
+				}
+			}
+			metaCounter { total }
+		}
+	}
+`;

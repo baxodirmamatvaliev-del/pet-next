@@ -4,6 +4,7 @@ import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import PetsOutlinedIcon from '@mui/icons-material/PetsOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
+import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,6 +15,7 @@ const adminMenu = [
 	{ title: 'Pet listings', href: '/_admin/pets', icon: <PetsOutlinedIcon /> },
 	{ title: 'Orders', href: '/_admin/orders', icon: <ReceiptLongOutlinedIcon /> },
 	{ title: 'Members', href: '/_admin/users', icon: <Groups2OutlinedIcon /> },
+	{ title: 'Reviews & comments', href: '/_admin/comments', icon: <RateReviewOutlinedIcon /> },
 	{ title: 'Support requests', href: '/_admin/inquiries', icon: <SupportAgentOutlinedIcon /> },
 ];
 

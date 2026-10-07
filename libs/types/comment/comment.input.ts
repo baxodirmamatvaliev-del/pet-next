@@ -20,3 +20,14 @@ export interface CommentsInquiry {
 	direction?: Direction;
 	search: { commentRefId: string };
 }
+
+export interface AdminCommentsInquiry {
+	page: number;
+	limit: number;
+	sort?: string;
+	direction?: Direction;
+	search: {
+		commentGroup?: CommentGroup;
+		text?: string;
+	};
+}

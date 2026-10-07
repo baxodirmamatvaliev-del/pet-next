@@ -554,6 +554,32 @@
 		&--delete, &--block, &--cancelled { background: #ffeded; color: #bb3d4b; }
 		&--in_transit { background: #e7f1ff; color: #2562a5; }
 		&--sold, &--adopted { background: #f0eaff; color: #744ab0; }
+		&--product { background: #e8f4ec; color: #176243; }
+		&--pet { background: #fff3d9; color: #9a660d; }
+		&--member { background: #e7f1ff; color: #2562a5; }
+		&--article { background: #f0eaff; color: #744ab0; }
+	}
+
+	.admin-comment {
+		.admin-comment__meta {
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 7px;
+
+			a { color: #222222; text-decoration: none; transition: color 160ms ease; }
+			a:hover { color: $primary; }
+			p { overflow: visible; font-size: 11px; text-overflow: clip; white-space: normal; }
+			p:not(:last-child) { padding: 3px 7px; border-radius: 100px; background: #f1f5f2; color: $primary; font-weight: 800; }
+		}
+		.admin-comment__content {
+			overflow: visible;
+			color: #222222;
+			font-size: 14px;
+			line-height: 1.55;
+			text-overflow: clip;
+			white-space: normal;
+		}
+		.MuiRating-root { margin: 1px 0; }
 	}
 
 	.admin-list__actions {

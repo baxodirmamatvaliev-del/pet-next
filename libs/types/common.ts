@@ -21,10 +21,12 @@ export interface T {
 	getPaymentByOrderByAdmin?: Payment | null;
 	confirmPayment?: Payment;
 	getAllMembersByAdmin?: { list: Member[]; metaCounter: { total: number }[] };
+	getAllCommentsByAdmin?: Comments;
 	updateProductByAdmin?: Product;
 	updatePetByAdmin?: Pet;
 	updateOrderStatusByAdmin?: Order;
 	updateMemberByAdmin?: Member;
+	removeCommentByAdmin?: Comment;
 	signup?: Member;
 	login?: AuthPayload;
 	getMember?: Member;
