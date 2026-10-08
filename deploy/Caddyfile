@@ -1,0 +1,7 @@
+koreapet.tech, www.koreapet.tech {
+	reverse_proxy frontend:3000
+}
+
+api.koreapet.tech {
+	reverse_proxy backend:3002
+}

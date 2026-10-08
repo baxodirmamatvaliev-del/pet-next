@@ -1,0 +1,35 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: https://api.koreapet.tech
+        NEXT_PUBLIC_API_GRAPHQL_URL: https://api.koreapet.tech/graphql
+        NEXT_PUBLIC_API_SOCKET_URL: https://api.koreapet.tech
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ../pet-nest
+    env_file:
+      - path: ../pet-nest/.env.production
+        format: raw
+    restart: unless-stopped
+    volumes:
+      - backend_uploads:/app/uploads
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  backend_uploads:
+  caddy_data:
+  caddy_config:
