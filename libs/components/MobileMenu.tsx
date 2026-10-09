@@ -3,6 +3,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CrueltyFreeOutlinedIcon from '@mui/icons-material/CrueltyFreeOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
@@ -121,6 +122,10 @@ const MobileMenu = (props: MobileMenuProps) => {
 						<TrendingUpRoundedIcon />
 					</ListItemIcon>
 					<ListItemText primary="Best Sellers" />
+				</ListItemButton>
+				<ListItemButton component={Link} href="/pet" onClick={closeHandler}>
+					<ListItemIcon><GroupsOutlinedIcon /></ListItemIcon>
+					<ListItemText primary="Community" />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/agent" onClick={closeHandler}>
 					<ListItemIcon><StorefrontOutlinedIcon /></ListItemIcon>
