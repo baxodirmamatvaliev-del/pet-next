@@ -104,7 +104,8 @@
 				}
 			}
 		}
-		.best-sellers {
+		.best-sellers,
+		.community-pets {
 			margin-top: 46px;
 			.section-heading {
 				margin-bottom: 20px;
@@ -112,9 +113,26 @@
 					font-size: 28px;
 				}
 			}
+		}
+		.best-sellers {
 			.product-grid {
 				grid-template-columns: 1fr 1fr;
 				gap: 24px 12px;
+			}
+		}
+		.community-pets {
+			.section-heading {
+				gap: 12px;
+				> a {
+					flex-shrink: 0;
+				}
+				span {
+					font-size: 10px;
+				}
+			}
+			.community-pets__grid {
+				grid-template-columns: minmax(0, 1fr);
+				gap: 20px;
 			}
 		}
 		.shopping-benefits {

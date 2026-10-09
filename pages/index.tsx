@@ -4,6 +4,7 @@ import { Stack } from '@mui/material';
 import BestSellers from '../libs/components/homepage/BestSellers';
 import Benefits from '../libs/components/homepage/Benefits';
 import CategoryNavigation from '../libs/components/homepage/CategoryNavigation';
+import CommunityPets from '../libs/components/homepage/CommunityPets';
 import Hero from '../libs/components/homepage/Hero';
 import withLayoutHome from '../libs/components/layout/LayoutHome';
 import useDeviceDetect from '../libs/hooks/useDeviceDetect';
@@ -18,6 +19,7 @@ const Home: NextPage = () => {
 				<Hero />
 				<CategoryNavigation />
 				<BestSellers />
+				<CommunityPets />
 				<Benefits />
 			</Stack>
 		);
@@ -28,6 +30,7 @@ const Home: NextPage = () => {
 				<Hero />
 				<CategoryNavigation />
 				<BestSellers />
+				<CommunityPets />
 				<Benefits />
 			</Stack>
 		);
