@@ -12,6 +12,7 @@ import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } fr
 import { T } from '../../../types/common';
 import { Member } from '../../../types/member/member';
 import { MembersInquiry } from '../../../types/member/member.input';
+import { useTranslation } from '../../../i18n';
 
 const initialInquiry: MembersInquiry = {
 	page: 1,
@@ -22,6 +23,7 @@ const initialInquiry: MembersInquiry = {
 };
 
 const MemberList = () => {
+	const { t, label, errorText } = useTranslation();
 	/** STATES **/
 	const [inquiry, setInquiry] = useState<MembersInquiry>(initialInquiry);
 	const [members, setMembers] = useState<Member[]>([]);
@@ -63,12 +65,16 @@ const MemberList = () => {
 	const updateMemberHandler = async (member: Member, changes: { memberStatus?: MemberStatus; memberType?: MemberType }) => {
 		try {
 			const target = changes.memberStatus ?? changes.memberType;
-			if (!await sweetConfirmAlert(`Change ${member.memberNick} to ${target}?`)) return;
+			if (!await sweetConfirmAlert(
+				t('message.changeStatus', { name: member.memberNick, status: label(target) }),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 			await updateMemberByAdmin({ variables: { input: { _id: member._id, ...changes } } });
 			await getAllMembersByAdminRefetch({ input: inquiry });
-			await sweetTopSmallSuccessAlert('Member updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.memberUpdated'), 800);
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		}
 	};
 
@@ -78,20 +84,20 @@ const MemberList = () => {
 	return (
 		<Stack className="admin-list">
 			<Stack direction="row" className="admin-list__heading">
-				<Stack><Typography component="h1">Members</Typography><Typography>Manage access and seller roles.</Typography></Stack>
+				<Stack><Typography component="h1">{t('ui.members')}</Typography><Typography>{t('ui.manageAccessAndSellerRoles')}</Typography></Stack>
 				<Stack direction="row" className="admin-list__filters">
 					<Stack component="form" direction="row" className="admin-list__search" onSubmit={searchHandler}>
-						<TextField size="small" label="Search members" value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
-						<Button type="submit" variant="contained">Search</Button>
-						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>Clear</Button>}
+						<TextField size="small" label={t('ui.searchMembers')} value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
+						<Button type="submit" variant="contained">{t('ui.search')}</Button>
+						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>{t('ui.clear')}</Button>}
 					</Stack>
-					<TextField select size="small" label="Status" value={inquiry.search.memberStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
-						<MenuItem value="">All</MenuItem>
-						{Object.values(MemberStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
+					<TextField select size="small" label={t('ui.status')} value={inquiry.search.memberStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
+						<MenuItem value="">{t('ui.all')}</MenuItem>
+						{Object.values(MemberStatus).map((status) => <MenuItem value={status} key={status}>{label(status)}</MenuItem>)}
 					</TextField>
 				</Stack>
 			</Stack>
-			{getAllMembersByAdminError ? <Alert severity="error">Members could not be loaded.</Alert> : getAllMembersByAdminLoading && !members.length ? <CircularProgress /> : members.length ? (
+			{getAllMembersByAdminError ? <Alert severity="error">{t('ui.membersCouldNotBeLoaded')}</Alert> : getAllMembersByAdminLoading && !members.length ? <CircularProgress /> : members.length ? (
 				<>
 					<Stack className="admin-list__items">
 						{members.map((member) => (
@@ -99,13 +105,13 @@ const MemberList = () => {
 								<Avatar src={member.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : undefined} alt={member.memberNick} />
 								<Stack className="admin-list__details">
 									<Typography component="strong">{member.memberNick}</Typography>
-									<Typography>{member.memberPhone} · {member.memberType}</Typography>
+									<Typography>{member.memberPhone} · {label(member.memberType)}</Typography>
 								</Stack>
 								<Typography className={`admin-list__status admin-list__status--${member.memberStatus.toLowerCase()}`}>{member.memberStatus}</Typography>
 								{member.memberType !== MemberType.ADMIN && member._id !== user?.sub && member.memberStatus !== MemberStatus.DELETE && (
 									<Stack direction="row" className="admin-list__actions">
-										{member.memberStatus === MemberStatus.ACTIVE && <Button className={`admin-action admin-action--${member.memberType === MemberType.USER ? 'purple' : 'blue'}`} disabled={updateMemberLoading} onClick={() => updateMemberHandler(member, { memberType: member.memberType === MemberType.USER ? MemberType.AGENT : MemberType.USER })}>{member.memberType === MemberType.USER ? 'Make agent' : 'Make user'}</Button>}
-										<Button className={`admin-action admin-action--${member.memberStatus === MemberStatus.ACTIVE ? 'danger' : 'positive'}`} disabled={updateMemberLoading} onClick={() => updateMemberHandler(member, { memberStatus: member.memberStatus === MemberStatus.ACTIVE ? MemberStatus.BLOCK : MemberStatus.ACTIVE })}>{member.memberStatus === MemberStatus.ACTIVE ? 'Block' : 'Unblock'}</Button>
+										{member.memberStatus === MemberStatus.ACTIVE && <Button className={`admin-action admin-action--${member.memberType === MemberType.USER ? 'purple' : 'blue'}`} disabled={updateMemberLoading} onClick={() => updateMemberHandler(member, { memberType: member.memberType === MemberType.USER ? MemberType.AGENT : MemberType.USER })}>{member.memberType === MemberType.USER ? t('ui.makeAgent') : t('ui.makeUser')}</Button>}
+										<Button className={`admin-action admin-action--${member.memberStatus === MemberStatus.ACTIVE ? 'danger' : 'positive'}`} disabled={updateMemberLoading} onClick={() => updateMemberHandler(member, { memberStatus: member.memberStatus === MemberStatus.ACTIVE ? MemberStatus.BLOCK : MemberStatus.ACTIVE })}>{member.memberStatus === MemberStatus.ACTIVE ? t('ui.block') : t('ui.unblock')}</Button>
 									</Stack>
 								)}
 							</Stack>
@@ -113,7 +119,7 @@ const MemberList = () => {
 					</Stack>
 					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
 				</>
-			) : <Typography>No members found.</Typography>}
+			) : <Typography>{t('ui.noMembersFound')}</Typography>}
 		</Stack>
 	);
 };

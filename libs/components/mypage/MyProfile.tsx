@@ -26,6 +26,7 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAler
 import { T } from '../../types/common';
 import { Member } from '../../types/member/member';
 import { MemberUpdateInput } from '../../types/member/member.update';
+import { useTranslation } from '../../i18n';
 
 const initialMemberUpdate: MemberUpdateInput = {
 	memberFullName: '',
@@ -35,6 +36,7 @@ const initialMemberUpdate: MemberUpdateInput = {
 };
 
 const MyProfile = () => {
+	const { t, errorText } = useTranslation();
 	const device = useDeviceDetect();
 
 	/** STATES **/
@@ -107,10 +109,10 @@ const MyProfile = () => {
 			}
 
 			setMemberUpdate((prev) => ({ ...prev, memberImage: responseImage }));
-			await sweetTopSmallSuccessAlert('Profile image uploaded', 800);
+			await sweetTopSmallSuccessAlert(t('ui.profileImageUploaded'), 800);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setImageUploaderLoading(false);
 		}
@@ -132,10 +134,10 @@ const MyProfile = () => {
 			if (data.updateMember.accessToken) {
 				setJwtToken(data.updateMember.accessToken);
 			}
-			await sweetTopSmallSuccessAlert('Profile updated successfully', 800);
+			await sweetTopSmallSuccessAlert(t('ui.profileUpdatedSuccessfully'), 800);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -157,7 +159,7 @@ const MyProfile = () => {
 	}
 
 	if (getMemberError || !member) {
-		return <Alert severity="error">Profile information could not be loaded.</Alert>;
+		return <Alert severity="error">{t('ui.profileInformationCouldNotBeLoaded')}</Alert>;
 	}
 
 	if (device === 'mobile') {
@@ -165,30 +167,30 @@ const MyProfile = () => {
 		return (
 			<Box className="my-profile my-profile--mobile">
 				<Box className="my-profile__heading">
-					<Typography component="h1">My Profile</Typography>
-					<Typography>Keep your delivery and account information up to date.</Typography>
+					<Typography component="h1">{t('ui.myProfile')}</Typography>
+					<Typography>{t('ui.keepYourDeliveryAndAccountInformationUpTo')}</Typography>
 				</Box>
 				<Stack component="form" className="profile-form" onSubmit={updateMemberHandler}>
 					<Stack className="profile-photo profile-photo--mobile">
 						<Avatar src={imagePath} alt={member.memberNick}><PetsRoundedIcon /></Avatar>
 						<Box>
-							<Typography component="strong">Profile photo</Typography>
-							<Typography>JPG, JPEG or PNG image.</Typography>
+							<Typography component="strong">{t('ui.profilePhoto')}</Typography>
+							<Typography>{t('ui.jpgJpegOrPngImage')}</Typography>
 							<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />} disabled={imageUploaderLoading}>
-								{imageUploaderLoading ? 'Uploading...' : 'Upload image'}
+								{imageUploaderLoading ? t('ui.uploading') : t('ui.uploadImage')}
 								<Box component="input" className="profile-photo__input" type="file" accept="image/jpeg,image/png" onChange={uploadImageHandler} />
 							</Button>
 						</Box>
 					</Stack>
 					<Box className="profile-fields profile-fields--mobile">
-						<TextField label="Nickname" value={member.memberNick} disabled fullWidth />
-						<TextField label="Phone number" value={member.memberPhone} disabled fullWidth />
-						<TextField label="Full name" value={memberUpdate.memberFullName} onChange={(event) => inputChangeHandler('memberFullName', event.target.value)} slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }} fullWidth />
-						<TextField label="Address" value={memberUpdate.memberAddress} onChange={(event) => inputChangeHandler('memberAddress', event.target.value)} fullWidth />
-						<TextField className="profile-fields__wide" label="About me" value={memberUpdate.memberDesc} onChange={(event) => inputChangeHandler('memberDesc', event.target.value)} multiline rows={4} fullWidth />
+						<TextField label={t('ui.nickname')} value={member.memberNick} disabled fullWidth />
+						<TextField label={t('ui.phoneNumber')} value={member.memberPhone} disabled fullWidth />
+						<TextField label={t('ui.fullName')} value={memberUpdate.memberFullName} onChange={(event) => inputChangeHandler('memberFullName', event.target.value)} slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }} fullWidth />
+						<TextField label={t('ui.address')} value={memberUpdate.memberAddress} onChange={(event) => inputChangeHandler('memberAddress', event.target.value)} fullWidth />
+						<TextField className="profile-fields__wide" label={t('ui.aboutMe')} value={memberUpdate.memberDesc} onChange={(event) => inputChangeHandler('memberDesc', event.target.value)} multiline rows={4} fullWidth />
 					</Box>
 					<Button type="submit" variant="contained" startIcon={<SaveOutlinedIcon />} disabled={isUpdateDisabled}>
-						{updateMemberLoading ? 'Saving...' : 'Save changes'}
+						{updateMemberLoading ? t('ui.saving') : t('ui.saveChanges')}
 					</Button>
 				</Stack>
 			</Box>
@@ -198,8 +200,8 @@ const MyProfile = () => {
 		return (
 			<Box className="my-profile">
 				<Box className="my-profile__heading">
-					<Typography component="h1">My Profile</Typography>
-					<Typography>Keep your delivery and account information up to date.</Typography>
+					<Typography component="h1">{t('ui.myProfile')}</Typography>
+					<Typography>{t('ui.keepYourDeliveryAndAccountInformationUpTo')}</Typography>
 				</Box>
 
 				<Stack component="form" className="profile-form" onSubmit={updateMemberHandler}>
@@ -208,15 +210,15 @@ const MyProfile = () => {
 							<PetsRoundedIcon />
 						</Avatar>
 						<Box>
-							<Typography component="strong">Profile photo</Typography>
-							<Typography>JPG, JPEG or PNG image.</Typography>
+							<Typography component="strong">{t('ui.profilePhoto')}</Typography>
+							<Typography>{t('ui.jpgJpegOrPngImage')}</Typography>
 							<Button
 								component="label"
 								variant="outlined"
 								startIcon={<CloudUploadOutlinedIcon />}
 								disabled={imageUploaderLoading}
 							>
-								{imageUploaderLoading ? 'Uploading...' : 'Upload image'}
+								{imageUploaderLoading ? t('ui.uploading') : t('ui.uploadImage')}
 								<Box
 									component="input"
 									className="profile-photo__input"
@@ -229,24 +231,24 @@ const MyProfile = () => {
 					</Stack>
 
 					<Box className="profile-fields">
-						<TextField label="Nickname" value={member.memberNick} disabled fullWidth />
-						<TextField label="Phone number" value={member.memberPhone} disabled fullWidth />
+						<TextField label={t('ui.nickname')} value={member.memberNick} disabled fullWidth />
+						<TextField label={t('ui.phoneNumber')} value={member.memberPhone} disabled fullWidth />
 						<TextField
-							label="Full name"
+							label={t('ui.fullName')}
 							value={memberUpdate.memberFullName}
 							onChange={(event) => inputChangeHandler('memberFullName', event.target.value)}
 							slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }}
 							fullWidth
 						/>
 						<TextField
-							label="Address"
+							label={t('ui.address')}
 							value={memberUpdate.memberAddress}
 							onChange={(event) => inputChangeHandler('memberAddress', event.target.value)}
 							fullWidth
 						/>
 						<TextField
 							className="profile-fields__wide"
-							label="About me"
+							label={t('ui.aboutMe')}
 							value={memberUpdate.memberDesc}
 							onChange={(event) => inputChangeHandler('memberDesc', event.target.value)}
 							multiline
@@ -261,7 +263,7 @@ const MyProfile = () => {
 						startIcon={<SaveOutlinedIcon />}
 						disabled={isUpdateDisabled}
 					>
-						{updateMemberLoading ? 'Saving...' : 'Save changes'}
+						{updateMemberLoading ? t('ui.saving') : t('ui.saveChanges')}
 					</Button>
 				</Stack>
 			</Box>

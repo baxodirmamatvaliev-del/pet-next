@@ -9,8 +9,10 @@ import { GET_MY_INQUIRIES } from '../../../apollo/user/query';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { T } from '../../types/common';
 import { Inquiry } from '../../types/inquiry/inquiry';
+import { useTranslation } from '../../i18n';
 
 const MyInquiries = () => {
+	const { t, locale } = useTranslation();
 	const device = useDeviceDetect();
 	const router = useRouter();
 
@@ -36,13 +38,13 @@ const MyInquiries = () => {
 	/** COMPUTED VALUES **/
 	const content = !user?.sub ? (
 		<Stack className="cs-state">
-			<Typography component="h2">Sign in to view your requests</Typography>
+			<Typography component="h2">{t('ui.signInToViewYourRequests')}</Typography>
 			<Button component={Link} href="/account/join?referrer=%2Fcs%3Ftab%3Dmy" variant="contained">
-				Login or sign up
+				{t('ui.loginOrSignUp')}
 			</Button>
 		</Stack>
 	) : getMyInquiriesError ? (
-		<Alert severity="error">Your requests could not be loaded.</Alert>
+		<Alert severity="error">{t('ui.yourRequestsCouldNotBeLoaded')}</Alert>
 	) : getMyInquiriesLoading ? (
 		<Stack className="cs-state">
 			<CircularProgress />
@@ -55,11 +57,11 @@ const MyInquiries = () => {
 						<Box>
 							<Typography component="h2">{inquiry.inquiryTitle}</Typography>
 							<Typography>
-								To {inquiry.receiverNick} · {new Date(inquiry.createdAt).toLocaleDateString()}
+								{t('message.to', { name: inquiry.receiverNick })} · {new Date(inquiry.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' })}
 							</Typography>
 						</Box>
 						<Chip
-							label={inquiry.inquiryStatus === 'ANSWERED' ? 'Answered' : 'Waiting for reply'}
+							label={inquiry.inquiryStatus === 'ANSWERED' ? t('ui.answered') : t('ui.waitingForReply')}
 							color={inquiry.inquiryStatus === 'ANSWERED' ? 'success' : 'warning'}
 							size="small"
 						/>
@@ -67,7 +69,7 @@ const MyInquiries = () => {
 					<Typography className="cs-ticket__message">{inquiry.inquiryContent}</Typography>
 					{inquiry.inquiryAnswer && (
 						<Box className="cs-ticket__reply">
-							<Typography component="strong">Reply from {inquiry.receiverNick}</Typography>
+							<Typography component="strong">{t('message.replyFrom', { name: inquiry.receiverNick })}</Typography>
 							<Typography>{inquiry.inquiryAnswer}</Typography>
 						</Box>
 					)}
@@ -76,9 +78,9 @@ const MyInquiries = () => {
 		</Stack>
 	) : (
 		<Stack className="cs-state">
-			<Typography component="h2">No requests yet</Typography>
+			<Typography component="h2">{t('ui.noRequestsYet')}</Typography>
 			<Button component={Link} href="/cs?tab=ask" variant="outlined">
-				Ask for help
+				{t('ui.askForHelp')}
 			</Button>
 		</Stack>
 	);

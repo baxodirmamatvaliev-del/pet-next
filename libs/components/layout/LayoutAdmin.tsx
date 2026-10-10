@@ -15,9 +15,11 @@ import AdminMenuList from '../admin/AdminMenuList';
 import NotificationBell from '../NotificationBell';
 import ThemeToggle from '../ThemeToggle';
 import LanguageSwitcher from '../LanguageSwitcher';
+import { useTranslation } from '../../i18n';
 
 const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutAdmin(props: P) {
+		const { t } = useTranslation();
 		/** STATES **/
 		const authReady = useReactiveVar(authReadyVar);
 		const user = useReactiveVar(userVar);
@@ -40,7 +42,7 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 
 		return (
 			<>
-				<Head><title>Admin | PetNest Korea</title></Head>
+				<Head><title>{t('ui.adminPetnestKorea')}</title></Head>
 				<Box component="main" className="admin-page">
 					{!authReady || (user?.sub && getMemberLoading && !member) ? (
 						<Stack className="admin-page__state"><CircularProgress /></Stack>
@@ -48,39 +50,39 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 						<Stack className="admin-page__state">
 							<ThemeToggle />
 							<LanguageSwitcher />
-							<Alert severity="info">Sign in with an admin account to continue.</Alert>
-							<Button component={Link} href="/account/join?referrer=/_admin" variant="contained">Sign in</Button>
+							<Alert severity="info">{t('ui.signInWithAnAdminAccountToContinue')}</Alert>
+							<Button component={Link} href="/account/join?referrer=/_admin" variant="contained">{t('ui.signIn')}</Button>
 						</Stack>
 					) : getMemberError || !isAdmin ? (
 						<Stack className="admin-page__state">
-							<Alert severity="error">Admin access is required.</Alert>
-							<Button component={Link} href="/" variant="outlined">Back to shop</Button>
+							<Alert severity="error">{t('ui.adminAccessIsRequired')}</Alert>
+							<Button component={Link} href="/" variant="outlined">{t('ui.backToShop')}</Button>
 						</Stack>
 					) : (
 						<Stack direction="row" className="admin-page__layout">
 							<Box component="aside" className="admin-page__sidebar">
 								<Stack direction="row" component={Link} href="/" className="admin-page__brand">
 									<PetsRoundedIcon />
-									<Typography component="strong">PetNest <span>ADMIN</span></Typography>
+									<Typography component="strong">PetNest <span>{t('ui.admin')}</span></Typography>
 								</Stack>
-								<Typography className="admin-page__menu-label">MANAGEMENT</Typography>
+								<Typography className="admin-page__menu-label">{t('ui.management')}</Typography>
 								<AdminMenuList />
 								<Stack className="admin-page__sidebar-bottom">
 									<Stack direction="row" className="admin-page__member">
 										<Avatar src={memberImage} alt={member.memberNick} />
-										<Box><Typography component="strong">{member.memberNick}</Typography><Typography>Administrator</Typography></Box>
+										<Box><Typography component="strong">{member.memberNick}</Typography><Typography>{t('ui.administrator')}</Typography></Box>
 									</Stack>
-									<Button component={Link} href="/" startIcon={<ArrowBackRoundedIcon />}>Back to shop</Button>
+									<Button component={Link} href="/" startIcon={<ArrowBackRoundedIcon />}>{t('ui.backToShop')}</Button>
 								</Stack>
 							</Box>
 							<Box className="admin-page__content">
 								<Stack direction="row" className="admin-page__topbar">
-									<Stack><Typography component="strong">Control center</Typography><Typography>Everything happening at PetNest, in one place.</Typography></Stack>
+									<Stack><Typography component="strong">{t('ui.controlCenter')}</Typography><Typography>{t('ui.everythingHappeningAtPetnestInOnePlace')}</Typography></Stack>
 									<Stack direction="row" alignItems="center" spacing={1}>
 										<ThemeToggle />
 										<LanguageSwitcher />
 										<NotificationBell adminPanel />
-										<Chip icon={<VerifiedUserOutlinedIcon />} label="ADMIN ACCESS" />
+										<Chip icon={<VerifiedUserOutlinedIcon />} label={t('ui.adminAccess')} />
 									</Stack>
 								</Stack>
 								<Component {...props} />

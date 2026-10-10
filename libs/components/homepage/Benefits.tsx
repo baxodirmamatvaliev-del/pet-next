@@ -5,21 +5,23 @@ import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 import { Box, Stack, Typography } from '@mui/material';
 
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-
-const benefits = [
-	{ title: 'Free delivery', text: 'On orders over ₩30,000', icon: LocalShippingOutlinedIcon },
-	{ title: '1–2 day delivery', text: 'Fast nationwide shipping', icon: AccessTimeRoundedIcon },
-	{ title: 'Easy returns', text: '30-day return policy', icon: ReplayRoundedIcon },
-	{ title: 'Secure payments', text: 'Safe and trusted checkout', icon: VerifiedUserOutlinedIcon },
-];
+import { useTranslation } from '../../i18n';
 
 const Benefits = () => {
+	const { t } = useTranslation();
+	const benefits = [
+		{ title: t('ui.freeDelivery'), text: t('ui.onOrdersOver30000'), icon: LocalShippingOutlinedIcon },
+		{ title: t('ui.fastDelivery'), text: t('ui.fastNationwideShipping'), icon: AccessTimeRoundedIcon },
+		{ title: t('ui.easyReturns'), text: t('ui.returnPeriod'), icon: ReplayRoundedIcon },
+		{ title: t('ui.securePayments'), text: t('ui.safeAndTrustedCheckout'), icon: VerifiedUserOutlinedIcon },
+	];
+
 	const device = useDeviceDetect();
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
 		return (
-			<Stack component="section" className="shopping-benefits shopping-benefits--mobile container" aria-label="Shopping benefits">
+			<Stack component="section" className="shopping-benefits shopping-benefits--mobile container" aria-label={t('ui.shoppingBenefits')}>
 				{benefits.map(({ title, text, icon: Icon }) => (
 					<Stack direction="row" className="benefit" key={title}>
 						<Box component="span">
@@ -36,7 +38,7 @@ const Benefits = () => {
 	} else {
 		/** RENDER PC **/
 		return (
-			<Stack component="section" className="shopping-benefits shopping-benefits--pc container" aria-label="Shopping benefits">
+			<Stack component="section" className="shopping-benefits shopping-benefits--pc container" aria-label={t('ui.shoppingBenefits')}>
 				{benefits.map(({ title, text, icon: Icon }) => (
 					<Stack direction="row" className="benefit" key={title}>
 						<Box component="span">

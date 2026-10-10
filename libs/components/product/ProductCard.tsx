@@ -11,6 +11,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { CustomJwtPayload } from '../../types/customJwtPayload';
 import { Product } from '../../types/product/product';
 import { formatterStr } from '../../utils';
+import { useTranslation } from '../../i18n';
 
 interface ProductCardType {
 	product: Product;
@@ -19,6 +20,7 @@ interface ProductCardType {
 }
 
 const ProductCard = (props: ProductCardType) => {
+	const { t } = useTranslation();
 	const { product, showFavorite = true, likeTargetProduct } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
@@ -38,14 +40,14 @@ const ProductCard = (props: ProductCardType) => {
 		return (
 			<Stack component="article" className="product-card product-card--mobile">
 				{showFavorite && likeTargetProduct && (
-					<IconButton className={`product-card__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeTargetProduct(user, product._id)} aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+					<IconButton className={`product-card__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeTargetProduct(user, product._id)} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
 						{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 					</IconButton>
 				)}
 				<Box component={Link} href={{ pathname: '/product/detail', query: { id: product._id } }} className="product-card__image">
 					<Image src={imagePath} alt={product.productName} fill sizes="50vw" unoptimized />
 				</Box>
-				{isSoldOut && <Chip className="product-card__stock" label="Sold out" size="small" />}
+				{isSoldOut && <Chip className="product-card__stock" label={t('ui.soldOut')} size="small" />}
 				<Stack className="product-card__content">
 					<Box component={Link} href={{ pathname: '/product/detail', query: { id: product._id } }}>
 						<Typography component="h3">{product.productName}</Typography>
@@ -60,7 +62,7 @@ const ProductCard = (props: ProductCardType) => {
 		return (
 			<Stack component="article" className="product-card product-card--pc">
 				{showFavorite && likeTargetProduct && (
-					<IconButton className={`product-card__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeTargetProduct(user, product._id)} aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+					<IconButton className={`product-card__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeTargetProduct(user, product._id)} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
 						{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 					</IconButton>
 				)}
@@ -71,7 +73,7 @@ const ProductCard = (props: ProductCardType) => {
 				>
 					<Image src={imagePath} alt={product.productName} fill sizes="240px" unoptimized />
 				</Box>
-				{isSoldOut && <Chip className="product-card__stock" label="Sold out" size="small" />}
+				{isSoldOut && <Chip className="product-card__stock" label={t('ui.soldOut')} size="small" />}
 				<Stack className="product-card__content">
 					<Box component={Link} href={{ pathname: '/product/detail', query: { id: product._id } }}>
 						<Typography component="h3">{product.productName}</Typography>

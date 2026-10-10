@@ -2,8 +2,10 @@ import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import { Box, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import useDeviceDetect from '../hooks/useDeviceDetect';
+import { useTranslation } from '../i18n';
 
 const Footer = () => {
+	const { t } = useTranslation();
 	const device = useDeviceDetect();
 
 	if (device === 'mobile') {
@@ -19,24 +21,24 @@ const Footer = () => {
 								<Typography component="small">Korea</Typography>
 							</Stack>
 						</Stack>
-						<Typography>Everything they love. Happy pets, happy families.</Typography>
+						<Typography>{t('ui.everythingTheyLoveHappyPetsHappyFamilies')}</Typography>
 					</Stack>
 					<Stack className="footer-links">
-						<Typography component="strong">Shop</Typography>
-						<Link href="/product?category=DOG">Dogs</Link>
-						<Link href="/product?category=CAT">Cats</Link>
-						<Link href="/product?sort=productSold">Best Sellers</Link>
+						<Typography component="strong">{t('ui.shop')}</Typography>
+						<Link href="/product?category=DOG">{t('nav.dogs')}</Link>
+						<Link href="/product?category=CAT">{t('nav.cats')}</Link>
+						<Link href="/product?sort=productSold">{t('nav.best')}</Link>
 					</Stack>
 					<Stack className="footer-links">
-						<Typography component="strong">Explore</Typography>
-						<Link href="/pet">Community</Link>
-						<Link href="/agent">Agents</Link>
-						<Link href="/cs">Help Center</Link>
-						<Link href="/pet/create">Create listing</Link>
-						<Link href="/mypage?category=myOrders">My orders</Link>
+						<Typography component="strong">{t('ui.explore')}</Typography>
+						<Link href="/pet">{t('nav.community')}</Link>
+						<Link href="/agent">{t('nav.agents')}</Link>
+						<Link href="/cs">{t('nav.help')}</Link>
+						<Link href="/pet/create">{t('ui.createListing')}</Link>
+						<Link href="/mypage?category=myOrders">{t('ui.myOrders')}</Link>
 					</Stack>
 				</Box>
-				<Box className="container site-footer__bottom">© 2026 PetNest Korea. All rights reserved.</Box>
+				<Box className="container site-footer__bottom">{t('ui.2026PetnestKoreaAllRightsReserved')}</Box>
 			</Stack>
 		);
 	} else {
@@ -53,32 +55,31 @@ const Footer = () => {
 							</Stack>
 						</Stack>
 						<Typography>
-							Everything they love.
-							<br />
-							Happy pets, happy families.
+							{t('ui.everythingTheyLove')}<br />
+							{t('ui.happyPetsHappyFamilies')}
 						</Typography>
 					</Stack>
 					<Stack className="footer-links">
-						<Typography component="strong">Shop</Typography>
-						<Link href="/product?category=DOG">Dogs</Link>
-						<Link href="/product?category=CAT">Cats</Link>
-						<Link href="/product?sort=productSold">Best Sellers</Link>
+						<Typography component="strong">{t('ui.shop')}</Typography>
+						<Link href="/product?category=DOG">{t('nav.dogs')}</Link>
+						<Link href="/product?category=CAT">{t('nav.cats')}</Link>
+						<Link href="/product?sort=productSold">{t('nav.best')}</Link>
 					</Stack>
 					<Stack className="footer-links">
-						<Typography component="strong">Your account</Typography>
-						<Link href="/mypage?category=myOrders">My orders</Link>
-						<Link href="/mypage?category=myFavorites">Favorites</Link>
-						<Link href="/mypage?category=myProfile">My profile</Link>
+						<Typography component="strong">{t('ui.yourAccount')}</Typography>
+						<Link href="/mypage?category=myOrders">{t('ui.myOrders')}</Link>
+						<Link href="/mypage?category=myFavorites">{t('nav.favorites')}</Link>
+						<Link href="/mypage?category=myProfile">{t('ui.myProfile')}</Link>
 					</Stack>
 					<Stack className="footer-links">
-						<Typography component="strong">Explore</Typography>
-						<Link href="/pet">Community</Link>
-						<Link href="/agent">Agents</Link>
-						<Link href="/cs">Help Center</Link>
-						<Link href="/pet/create">Create listing</Link>
+						<Typography component="strong">{t('ui.explore')}</Typography>
+						<Link href="/pet">{t('nav.community')}</Link>
+						<Link href="/agent">{t('nav.agents')}</Link>
+						<Link href="/cs">{t('nav.help')}</Link>
+						<Link href="/pet/create">{t('ui.createListing')}</Link>
 					</Stack>
 				</Box>
-				<Box className="container site-footer__bottom">© 2026 PetNest Korea. All rights reserved.</Box>
+				<Box className="container site-footer__bottom">{t('ui.2026PetnestKoreaAllRightsReserved')}</Box>
 			</Stack>
 		);
 	}

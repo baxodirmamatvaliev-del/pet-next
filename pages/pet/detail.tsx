@@ -23,8 +23,10 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/swee
 import { T } from '../../libs/types/common';
 import { Pet } from '../../libs/types/pet/pet';
 import { formatterStr } from '../../libs/utils';
+import { useTranslation } from '../../libs/i18n';
 
 const PetDetail: NextPage = () => {
+	const { t, label, errorText } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 	const petId = typeof router.query.id === 'string' ? router.query.id : '';
@@ -67,10 +69,10 @@ const PetDetail: NextPage = () => {
 			setLikeLoading(true);
 			await likeTargetPet({ variables: { petId } });
 			await getPetRefetch({ petId });
-			await sweetTopSmallSuccessAlert('Favorite updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.favoriteUpdated'), 800);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setLikeLoading(false);
 		}
@@ -79,9 +81,9 @@ const PetDetail: NextPage = () => {
 	/** COMPUTED VALUES **/
 	const isFavorite = Boolean(pet?.meLiked?.some((item) => item.myFavorite));
 	const imagePath = slideImage ? `${REACT_APP_API_URL}/${slideImage}` : '/img/banner/home-hero.png';
-	const petAge = typeof pet?.petAgeMonths === 'number' ? `${pet.petAgeMonths} months` : 'Not listed';
+	const petAge = typeof pet?.petAgeMonths === 'number' ? t('message.ageMonths', { count: pet.petAgeMonths }) : t('ui.notListed');
 	const petPrice = pet?.petListingType === PetListingType.ADOPTION
-		? 'Free adoption'
+		? t('ui.freeAdoption')
 		: `₩${formatterStr(pet?.petPrice ?? 0)}`;
 
 	if (!router.isReady || !petId || (getPetLoading && !pet)) {
@@ -95,7 +97,7 @@ const PetDetail: NextPage = () => {
 	if (getPetError || !pet) {
 		return (
 			<Box className="pet-detail-state container">
-				<Alert severity="error">Pet listing could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.petListingCouldNotBeLoaded')}</Alert>
 			</Box>
 		);
 	}
@@ -105,7 +107,7 @@ const PetDetail: NextPage = () => {
 		return (
 			<Box component="main" className="pet-detail-page pet-detail-page--mobile container">
 				<Typography className="pet-detail-page__breadcrumb">
-					<Link href="/pet">Community</Link> / {pet.petName}
+					<Link href="/pet">{t('nav.community')}</Link> / {pet.petName}
 				</Typography>
 
 				<Box className="pet-detail pet-detail--mobile">
@@ -135,12 +137,12 @@ const PetDetail: NextPage = () => {
 
 					<Stack className="pet-detail__info">
 						<Stack direction="row" className="pet-detail__eyebrow">
-							<Typography>{pet.petListingType === PetListingType.ADOPTION ? 'ADOPTION' : 'FOR SALE'}</Typography>
+							<Typography>{pet.petListingType === PetListingType.ADOPTION ? t('ui.adoption') : t('ui.forSale')}</Typography>
 							<IconButton
 								className={isFavorite ? 'active' : ''}
 								onClick={likePetHandler}
 								disabled={likeLoading}
-								aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+								aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
 							>
 								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 							</IconButton>
@@ -152,11 +154,11 @@ const PetDetail: NextPage = () => {
 						<Stack className="pet-detail__facts">
 							<Stack direction="row">
 								<PetsOutlinedIcon />
-								<Typography>{pet.petBreed ?? pet.petType} · {pet.petGender} · {petAge}</Typography>
+								<Typography>{pet.petBreed ?? label(pet.petType)} · {label(pet.petGender)} · {petAge}</Typography>
 							</Stack>
 							<Stack direction="row">
 								<LocationOnOutlinedIcon />
-								<Typography>{pet.petLocation}, South Korea</Typography>
+								<Typography>{label(pet.petLocation)}{t('ui.southKorea')}</Typography>
 							</Stack>
 						</Stack>
 
@@ -166,17 +168,17 @@ const PetDetail: NextPage = () => {
 							onClick={likePetHandler}
 							disabled={likeLoading}
 						>
-							{isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+							{isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
 						</Button>
 
 						<Stack className="pet-detail__owner">
-							<Typography>Listed by</Typography>
-							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? 'PetNest member'}</Link>
+							<Typography>{t('ui.listedBy')}</Typography>
+							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? t('common.member')}</Link>
 						</Stack>
 
 						{pet.petDesc && (
 							<Box className="pet-detail__description">
-								<Typography component="strong">About {pet.petName}</Typography>
+								<Typography component="strong">{t('ui.about')} {pet.petName}</Typography>
 								<Typography>{pet.petDesc}</Typography>
 							</Box>
 						)}
@@ -190,7 +192,7 @@ const PetDetail: NextPage = () => {
 		return (
 			<Box component="main" className="pet-detail-page container">
 				<Typography className="pet-detail-page__breadcrumb">
-					<Link href="/">Home</Link> / <Link href="/pet">Community</Link> / {pet.petName}
+					<Link href="/">{t('ui.home')}</Link> / <Link href="/pet">{t('nav.community')}</Link> / {pet.petName}
 				</Typography>
 
 				<Box className="pet-detail">
@@ -220,12 +222,12 @@ const PetDetail: NextPage = () => {
 
 					<Stack className="pet-detail__info">
 						<Stack direction="row" className="pet-detail__eyebrow">
-							<Typography>{pet.petListingType === PetListingType.ADOPTION ? 'ADOPTION' : 'FOR SALE'}</Typography>
+							<Typography>{pet.petListingType === PetListingType.ADOPTION ? t('ui.adoption') : t('ui.forSale')}</Typography>
 							<IconButton
 								className={isFavorite ? 'active' : ''}
 								onClick={likePetHandler}
 								disabled={likeLoading}
-								aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+								aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
 							>
 								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 							</IconButton>
@@ -237,11 +239,11 @@ const PetDetail: NextPage = () => {
 						<Stack className="pet-detail__facts">
 							<Stack direction="row">
 								<PetsOutlinedIcon />
-								<Typography>{pet.petBreed ?? pet.petType} · {pet.petGender} · {petAge}</Typography>
+								<Typography>{pet.petBreed ?? label(pet.petType)} · {label(pet.petGender)} · {petAge}</Typography>
 							</Stack>
 							<Stack direction="row">
 								<LocationOnOutlinedIcon />
-								<Typography>{pet.petLocation}, South Korea</Typography>
+								<Typography>{label(pet.petLocation)}{t('ui.southKorea')}</Typography>
 							</Stack>
 						</Stack>
 
@@ -251,17 +253,17 @@ const PetDetail: NextPage = () => {
 							onClick={likePetHandler}
 							disabled={likeLoading}
 						>
-							{isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+							{isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
 						</Button>
 
 						<Stack className="pet-detail__owner">
-							<Typography>Listed by</Typography>
-							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? 'PetNest member'}</Link>
+							<Typography>{t('ui.listedBy')}</Typography>
+							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? t('common.member')}</Link>
 						</Stack>
 
 						{pet.petDesc && (
 							<Box className="pet-detail__description">
-								<Typography component="strong">About {pet.petName}</Typography>
+								<Typography component="strong">{t('ui.about')} {pet.petName}</Typography>
 								<Typography>{pet.petDesc}</Typography>
 							</Box>
 						)}

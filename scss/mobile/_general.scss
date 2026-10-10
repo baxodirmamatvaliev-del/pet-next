@@ -86,11 +86,11 @@
 		}
 		.home-categories {
 			margin-top: 12px;
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 10px;
 			.category-tile {
 				min-height: 94px;
-				grid-template-columns: 44px 1fr;
+				grid-template-columns: 44px minmax(0, 1fr);
 				gap: 10px;
 				padding: 14px;
 				.category-tile__icon {
@@ -136,7 +136,7 @@
 		}
 		.shopping-benefits {
 			margin-top: 42px;
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 24px 0;
 			padding: 26px 0;
 			.benefit {
@@ -205,6 +205,27 @@
 		.admin-comment .admin-list__status { margin-left: 62px; }
 	}
 	.admin-dashboard .admin-dashboard__summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 360px) {
+	.home-page {
+		.home-categories .category-tile {
+			grid-template-columns: 32px minmax(0, 1fr);
+			gap: 8px;
+			padding: 10px;
+			strong { overflow-wrap: anywhere; }
+			.category-tile__icon {
+				width: 32px;
+				height: 32px;
+				svg { font-size: 24px; }
+			}
+		}
+		.shopping-benefits .benefit {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 12px;
+		}
+	}
 }
 
 @media (max-width: 540px) {

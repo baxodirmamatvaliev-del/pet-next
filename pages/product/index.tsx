@@ -25,6 +25,7 @@ import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { Product } from '../../libs/types/product/product';
 import { CustomJwtPayload } from '../../libs/types/customJwtPayload';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { useTranslation } from '../../libs/i18n';
 
 interface ProductListProps {
 	initialInput?: ProductsInquiry;
@@ -33,6 +34,7 @@ interface ProductListProps {
 const productSorts = ['createdAt', 'productSold', 'productRating', 'productName'];
 
 const ProductList = (props: ProductListProps) => {
+	const { t, errorText } = useTranslation();
 	const { initialInput = ProductList.defaultProps.initialInput } = props;
 	const router = useRouter();
 	const device = useDeviceDetect();
@@ -135,10 +137,10 @@ const ProductList = (props: ProductListProps) => {
 			if (!user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
 			await likeTargetProduct({ variables: { productId } });
 			await getProductsRefetch({ input: searchFilter });
-			await sweetTopSmallSuccessAlert('Favorites updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.favoritesUpdated'), 800);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -151,17 +153,17 @@ const ProductList = (props: ProductListProps) => {
 			<Box component="main" className="product-list-page product-list-page--mobile container">
 				<Stack className="product-list-page__heading">
 					<Box>
-						<Typography>Home / Shop</Typography>
-						<Typography component="h1">All Pet Products</Typography>
+						<Typography>{t('ui.homeShop')}</Typography>
+						<Typography component="h1">{t('ui.allPetProducts')}</Typography>
 					</Box>
 					<Stack direction="row" component="label">
-						<Typography component="span">Sort by</Typography>
+						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
 							<Select value={searchFilter.sort} onChange={sortingHandler}>
-								<MenuItem value="createdAt">Newest</MenuItem>
-								<MenuItem value="productSold">Best selling</MenuItem>
-								<MenuItem value="productRating">Highest rated</MenuItem>
-								<MenuItem value="productName">Product name</MenuItem>
+								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
+								<MenuItem value="productSold">{t('ui.bestSelling')}</MenuItem>
+								<MenuItem value="productRating">{t('ui.highestRated')}</MenuItem>
+								<MenuItem value="productName">{t('ui.productName')}</MenuItem>
 							</Select>
 						</FormControl>
 					</Stack>
@@ -173,22 +175,22 @@ const ProductList = (props: ProductListProps) => {
 					initialInput={initialInput}
 				/>
 				<Box component="section" className="product-results" aria-live="polite">
-					<Typography className="product-results__count">{total} products</Typography>
+					<Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>
 					{getProductsLoading && !products.length ? (
-						<Typography className="product-results__message">Loading products...</Typography>
+						<Typography className="product-results__message">{t('ui.loadingProducts')}</Typography>
 					) : getProductsError ? (
-						<Typography className="product-results__message product-results__message--error">Products could not be loaded.</Typography>
+						<Typography className="product-results__message product-results__message--error">{t('ui.productsCouldNotBeLoaded')}</Typography>
 					) : products.length ? (
 						<Box className="product-results__grid">
 							{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 						</Box>
 					) : (
-						<Typography className="product-results__message">No products match your filters.</Typography>
+						<Typography className="product-results__message">{t('ui.noProductsMatchYourFilters')}</Typography>
 					)}
 					{products.length > 0 && totalPages > 0 && (
 						<Stack direction="row" className="product-pagination">
 							<Pagination page={searchFilter.page} count={totalPages} onChange={paginationChangeHandler} color="primary" shape="rounded" />
-							<Typography>{total} products available</Typography>
+							<Typography>{t('counts.products', { count: total })}</Typography>
 						</Stack>
 					)}
 				</Box>
@@ -200,17 +202,17 @@ const ProductList = (props: ProductListProps) => {
 			<Box component="main" className="product-list-page container">
 				<Stack direction="row" className="product-list-page__heading">
 					<Box>
-						<Typography>Home / Shop</Typography>
-						<Typography component="h1">All Pet Products</Typography>
+						<Typography>{t('ui.homeShop')}</Typography>
+						<Typography component="h1">{t('ui.allPetProducts')}</Typography>
 					</Box>
 					<Stack direction="row" component="label">
-						<Typography component="span">Sort by</Typography>
+						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
 							<Select value={searchFilter.sort} onChange={sortingHandler}>
-								<MenuItem value="createdAt">Newest</MenuItem>
-								<MenuItem value="productSold">Best selling</MenuItem>
-								<MenuItem value="productRating">Highest rated</MenuItem>
-								<MenuItem value="productName">Product name</MenuItem>
+								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
+								<MenuItem value="productSold">{t('ui.bestSelling')}</MenuItem>
+								<MenuItem value="productRating">{t('ui.highestRated')}</MenuItem>
+								<MenuItem value="productName">{t('ui.productName')}</MenuItem>
 							</Select>
 						</FormControl>
 					</Stack>
@@ -224,19 +226,19 @@ const ProductList = (props: ProductListProps) => {
 						initialInput={initialInput}
 					/>
 					<Box component="section" className="product-results" aria-live="polite">
-						<Typography className="product-results__count">{total} products</Typography>
+						<Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>
 						{getProductsLoading && !products.length ? (
-							<Typography className="product-results__message">Loading products...</Typography>
+							<Typography className="product-results__message">{t('ui.loadingProducts')}</Typography>
 						) : getProductsError ? (
 							<Typography className="product-results__message product-results__message--error">
-								Products could not be loaded.
+								{t('ui.productsCouldNotBeLoaded')}
 							</Typography>
 						) : products.length ? (
 							<Box className="product-results__grid">
 								{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 							</Box>
 						) : (
-							<Typography className="product-results__message">No products match your filters.</Typography>
+							<Typography className="product-results__message">{t('ui.noProductsMatchYourFilters')}</Typography>
 						)}
 						{products.length > 0 && totalPages > 0 && (
 							<Stack direction="row" className="product-pagination">
@@ -247,7 +249,7 @@ const ProductList = (props: ProductListProps) => {
 									color="primary"
 									shape="rounded"
 								/>
-								<Typography>{total} products available</Typography>
+								<Typography>{t('counts.products', { count: total })}</Typography>
 							</Stack>
 						)}
 					</Box>

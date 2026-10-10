@@ -22,6 +22,7 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAler
 import { T } from '../../types/common';
 import { Product } from '../../types/product/product';
 import { ProductInput, ProductUpdateInput, ProductVariantInput } from '../../types/product/product.input';
+import { useTranslation } from '../../i18n';
 
 interface CreateProductProps {
 	mode?: 'create' | 'edit';
@@ -58,6 +59,7 @@ const initialVariant: VariantFormData = {
 };
 
 const CreateProduct = (props: CreateProductProps) => {
+	const { t, label, errorText } = useTranslation();
 	const { mode = 'create' } = props;
 	const router = useRouter();
 	const device = useDeviceDetect();
@@ -145,11 +147,11 @@ const CreateProduct = (props: CreateProductProps) => {
 		event.target.value = '';
 
 		if (files.length > 10) {
-			await sweetMixinErrorAlert('You can upload up to 10 images.');
+			await sweetMixinErrorAlert(t('ui.youCanUploadUpTo10Images'));
 			return;
 		}
 		if (files.some((file) => !['image/jpeg', 'image/png'].includes(file.type))) {
-			await sweetMixinErrorAlert('Please choose JPG, JPEG, or PNG images.');
+			await sweetMixinErrorAlert(t('ui.pleaseChooseJpgJpegOrPngImages'));
 			return;
 		}
 
@@ -200,12 +202,12 @@ const CreateProduct = (props: CreateProductProps) => {
 		try {
 			const token = await getValidAccessToken();
 			if (!token || !user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
-			if (memberType !== MemberType.ADMIN && memberType !== MemberType.AGENT) throw new Error('Admin or agent access is required.');
-			if (isEdit && currentProduct?.memberId !== user.sub) throw new Error('You can only edit your own product.');
+			if (memberType !== MemberType.ADMIN && memberType !== MemberType.AGENT) throw new Error(t('ui.adminOrAgentAccessIsRequired'));
+			if (isEdit && currentProduct?.memberId !== user.sub) throw new Error(t('ui.youCanOnlyEditYourOwnProduct'));
 			const productType = productData.productType;
-			if (!productType) throw new Error('Please choose a product type.');
-			if (!selectedFiles.length && !currentProduct?.productImages.length) throw new Error('Please add at least one product image.');
-			if (!validVariants) throw new Error('Add valid variants with unique SKUs.');
+			if (!productType) throw new Error(t('ui.pleaseChooseAProductType'));
+			if (!selectedFiles.length && !currentProduct?.productImages.length) throw new Error(t('ui.pleaseAddAtLeastOneProductImage'));
+			if (!validVariants) throw new Error(t('ui.addValidVariantsWithUniqueSkus'));
 
 			setUploadLoading(true);
 			const productImages = selectedFiles.length
@@ -234,13 +236,13 @@ const CreateProduct = (props: CreateProductProps) => {
 			const savedProduct = isEdit ? data?.updateProduct : data?.createProduct;
 			if (!savedProduct?._id) throw new Error(Message.SOMETHING_WENT_WRONG);
 
-			await sweetTopSmallSuccessAlert(isEdit ? 'Product updated' : 'Product created', 800);
+			await sweetTopSmallSuccessAlert(isEdit ? t('ui.productUpdated') : t('ui.productCreated'), 800);
 			await router.push({ pathname: '/product/detail', query: { id: savedProduct._id } });
 		} catch (error) {
 			const message = axios.isAxiosError(error)
 				? error.response?.data?.errors?.[0]?.message ?? error.message
 				: error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setUploadLoading(false);
 		}
@@ -259,56 +261,55 @@ const CreateProduct = (props: CreateProductProps) => {
 	const canEdit = !isEdit || (currentProduct && currentProduct.memberId === user?.sub);
 	const productForm = (
 		<Stack component="form" className="product-create-form" onSubmit={submitProductHandler}>
-			<Typography component="h2">Product information</Typography>
+			<Typography component="h2">{t('ui.productInformation')}</Typography>
 			<Stack className="product-create-form__grid">
-				<TextField select label="For" value={productData.productCategory} onChange={(event) => inputChangeHandler('productCategory', event.target.value)}>
-					<MenuItem value={ProductCategory.DOG}>Dogs</MenuItem>
-					<MenuItem value={ProductCategory.CAT}>Cats</MenuItem>
+				<TextField select label={t('ui.for')} value={productData.productCategory} onChange={(event) => inputChangeHandler('productCategory', event.target.value)}>
+					<MenuItem value={ProductCategory.DOG}>{t('nav.dogs')}</MenuItem>
+					<MenuItem value={ProductCategory.CAT}>{t('nav.cats')}</MenuItem>
 				</TextField>
-				<TextField select label="Type" value={productData.productType} onChange={(event) => inputChangeHandler('productType', event.target.value)} required>
-					<MenuItem value="" disabled>Select product type</MenuItem>
-					{Object.values(ProductType).map((type) => <MenuItem value={type} key={type}>{type}</MenuItem>)}
+				<TextField select label={t('ui.type')} value={productData.productType} onChange={(event) => inputChangeHandler('productType', event.target.value)} required>
+					<MenuItem value="" disabled>{t('ui.selectProductType')}</MenuItem>
+					{Object.values(ProductType).map((type) => <MenuItem value={type} key={type}>{label(type)}</MenuItem>)}
 				</TextField>
-				<TextField className="product-create-form__wide" label="Product name" value={productData.productName} onChange={(event) => inputChangeHandler('productName', event.target.value)} required slotProps={{ htmlInput: { minLength: 3, maxLength: 100 } }} />
-				<TextField className="product-create-form__wide" label="Description (optional)" value={productData.productDesc} onChange={(event) => inputChangeHandler('productDesc', event.target.value)} multiline minRows={3} />
+				<TextField className="product-create-form__wide" label={t('ui.productName')} value={productData.productName} onChange={(event) => inputChangeHandler('productName', event.target.value)} required slotProps={{ htmlInput: { minLength: 3, maxLength: 100 } }} />
+				<TextField className="product-create-form__wide" label={t('ui.descriptionOptional')} value={productData.productDesc} onChange={(event) => inputChangeHandler('productDesc', event.target.value)} multiline minRows={3} />
 			</Stack>
 
 			<Stack className="product-create-form__section">
-				<Typography component="h2">Options and stock</Typography>
+				<Typography component="h2">{t('ui.optionsAndStock')}</Typography>
 				{variants.map((variant, index) => (
 					<Stack className="product-create-form__variant" key={index}>
 						<Stack direction="row" className="product-create-form__variant-heading">
-							<Typography component="strong">Option {index + 1}</Typography>
-							{variants.length > 1 && <Button color="error" onClick={() => removeVariantHandler(index)}>Remove</Button>}
+							<Typography component="strong">{t('message.optionNumber', { number: index + 1 })}</Typography>
+							{variants.length > 1 && <Button color="error" onClick={() => removeVariantHandler(index)}>{t('ui.remove')}</Button>}
 						</Stack>
 						<Stack className="product-create-form__grid">
-							<TextField label="SKU" value={variant.sku} onChange={(event) => variantChangeHandler(index, 'sku', event.target.value)} required />
-							<TextField label="Color (optional)" value={variant.color} onChange={(event) => variantChangeHandler(index, 'color', event.target.value)} />
-							<TextField label="Size (optional)" value={variant.size} onChange={(event) => variantChangeHandler(index, 'size', event.target.value)} />
-							<TextField label="Price (₩)" type="number" value={variant.price} onChange={(event) => variantChangeHandler(index, 'price', event.target.value)} required slotProps={{ htmlInput: { min: 0, step: 1 } }} />
-							<TextField label="Stock" type="number" value={variant.stock} onChange={(event) => variantChangeHandler(index, 'stock', event.target.value)} helperText="0 means Sold out" required slotProps={{ htmlInput: { min: 0, step: 1 } }} />
+							<TextField label={t('ui.sku')} value={variant.sku} onChange={(event) => variantChangeHandler(index, 'sku', event.target.value)} required />
+							<TextField label={t('ui.colorOptional')} value={variant.color} onChange={(event) => variantChangeHandler(index, 'color', event.target.value)} />
+							<TextField label={t('ui.sizeOptional')} value={variant.size} onChange={(event) => variantChangeHandler(index, 'size', event.target.value)} />
+							<TextField label={t('ui.priceWon')} type="number" value={variant.price} onChange={(event) => variantChangeHandler(index, 'price', event.target.value)} required slotProps={{ htmlInput: { min: 0, step: 1 } }} />
+							<TextField label={t('ui.stock')} type="number" value={variant.stock} onChange={(event) => variantChangeHandler(index, 'stock', event.target.value)} helperText={t('ui.zeroStockHint')} required slotProps={{ htmlInput: { min: 0, step: 1 } }} />
 						</Stack>
 					</Stack>
 				))}
-				<Button className="product-create-form__add" startIcon={<AddRoundedIcon />} onClick={addVariantHandler}>Add option</Button>
+				<Button className="product-create-form__add" startIcon={<AddRoundedIcon />} onClick={addVariantHandler}>{t('ui.addOption')}</Button>
 			</Stack>
 
 			<Stack className="product-create-form__section">
-				<Typography component="h2">Product photos</Typography>
-				<Typography>{isEdit ? 'Choose new images to replace the current photos, or leave them unchanged.' : 'Upload up to 10 JPG or PNG images. The first image appears in the catalog.'}</Typography>
+				<Typography component="h2">{t('ui.productPhotos')}</Typography>
+				<Typography>{isEdit ? t('ui.chooseNewImagesToReplaceTheCurrentPhotos') : t('ui.productImageHint')}</Typography>
 				<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />}>
-					Choose images
-					<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
+					{t('ui.chooseImages')}<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
 				</Button>
 				{imagePreviews.length > 0 && (
 					<Stack className="product-create-form__previews">
 						{imagePreviews.map((preview, index) => (
 							<Stack className="product-create-form__preview" key={preview}>
 								<Image src={preview} alt={selectedFiles[index].name} width={150} height={150} unoptimized />
-								<IconButton aria-label={`Remove ${selectedFiles[index].name}`} onClick={() => removeImageHandler(index)}>
+								<IconButton aria-label={t('message.removeFile', { name: selectedFiles[index].name })} onClick={() => removeImageHandler(index)}>
 									<CloseRoundedIcon fontSize="small" />
 								</IconButton>
-								<Typography title={selectedFiles[index].name}>{index === 0 ? 'Catalog image' : `Image ${index + 1}`} · {selectedFiles[index].name}</Typography>
+								<Typography title={selectedFiles[index].name}>{index === 0 ? t('ui.catalogImage') : t('message.imageNumber', { number: index + 1 })} · {selectedFiles[index].name}</Typography>
 							</Stack>
 						))}
 					</Stack>
@@ -318,7 +319,7 @@ const CreateProduct = (props: CreateProductProps) => {
 						{currentProduct.productImages.map((image, index) => (
 							<Stack className="product-create-form__preview" key={image}>
 								<Image src={`${REACT_APP_API_URL}/${image}`} alt={`${currentProduct.productName} ${index + 1}`} width={150} height={150} unoptimized />
-								<Typography>{index === 0 ? 'Catalog image' : `Image ${index + 1}`}</Typography>
+								<Typography>{index === 0 ? t('ui.catalogImage') : t('message.imageNumber', { number: index + 1 })}</Typography>
 							</Stack>
 						))}
 					</Stack>
@@ -326,27 +327,27 @@ const CreateProduct = (props: CreateProductProps) => {
 			</Stack>
 
 			<Stack direction="row" className="product-create-form__actions">
-				<Button component={Link} href={isEdit ? `/product/detail?id=${productId}` : '/product'} variant="outlined">Cancel</Button>
+				<Button component={Link} href={isEdit ? `/product/detail?id=${productId}` : '/product'} variant="outlined">{t('ui.cancel')}</Button>
 				<Button type="submit" variant="contained" disabled={isSubmitDisabled}>
-					{uploadLoading ? 'Uploading images...' : createProductLoading || updateProductLoading ? 'Saving...' : isEdit ? 'Save changes' : 'Create product'}
+					{uploadLoading ? t('ui.uploadingImages') : createProductLoading || updateProductLoading ? t('ui.saving') : isEdit ? t('ui.saveChanges') : t('ui.createProduct')}
 				</Button>
 			</Stack>
 		</Stack>
 	);
 	const pageContent = !user?.sub ? (
-		<Alert severity="info">Please <Link href={isEdit ? `/account/join?referrer=/product/edit?id=${productId}` : '/account/join?referrer=/product/create'}>sign in</Link> as an admin or agent.</Alert>
+		<Alert severity="info"><Link href={isEdit ? `/account/join?referrer=/product/edit?id=${productId}` : '/account/join?referrer=/product/create'}>{t('message.signInProduct')}</Link></Alert>
 	) : getMemberLoading ? (
 		<Stack className="product-create-page__state"><CircularProgress color="primary" /></Stack>
 	) : getMemberError ? (
-		<Alert severity="error">Account role could not be loaded.</Alert>
+		<Alert severity="error">{t('ui.accountRoleCouldNotBeLoaded')}</Alert>
 	) : !canCreate ? (
-		<Alert severity="warning">Only an admin or agent can manage products.</Alert>
+		<Alert severity="warning">{t('ui.onlyAnAdminOrAgentCanManageProducts')}</Alert>
 	) : isEdit && (!router.isReady || getProductLoading) ? (
 		<Stack className="product-create-page__state"><CircularProgress color="primary" /></Stack>
 	) : isEdit && (!productId || getProductError || !currentProduct) ? (
-		<Alert severity="error">Product could not be loaded.</Alert>
+		<Alert severity="error">{t('ui.productCouldNotBeLoaded')}</Alert>
 	) : !canEdit ? (
-		<Alert severity="warning">You can only edit your own product.</Alert>
+		<Alert severity="warning">{t('ui.youCanOnlyEditYourOwnProduct')}</Alert>
 	) : productForm;
 
 	if (device === 'mobile') {
@@ -354,8 +355,8 @@ const CreateProduct = (props: CreateProductProps) => {
 		return (
 			<Box component="main" className="product-create-page product-create-page--mobile container">
 				<Stack className="product-create-page__heading">
-					<Typography component="h1">{isEdit ? 'Edit product' : 'Create product'}</Typography>
-					<Typography>{isEdit ? 'Update product details and stock.' : 'Add a product to the PetNest catalog.'}</Typography>
+					<Typography component="h1">{isEdit ? t('ui.editProduct') : t('ui.createProduct')}</Typography>
+					<Typography>{isEdit ? t('ui.updateProductDetailsAndStock') : t('ui.addAProductToThePetnestCatalog')}</Typography>
 				</Stack>
 				{pageContent}
 			</Box>
@@ -365,8 +366,8 @@ const CreateProduct = (props: CreateProductProps) => {
 		return (
 			<Box component="main" className="product-create-page container">
 				<Stack className="product-create-page__heading">
-					<Typography component="h1">{isEdit ? 'Edit product' : 'Create product'}</Typography>
-					<Typography>{isEdit ? 'Update product details and stock.' : 'Add a product to the PetNest catalog.'}</Typography>
+					<Typography component="h1">{isEdit ? t('ui.editProduct') : t('ui.createProduct')}</Typography>
+					<Typography>{isEdit ? t('ui.updateProductDetailsAndStock') : t('ui.addAProductToThePetnestCatalog')}</Typography>
 				</Stack>
 				{pageContent}
 			</Box>

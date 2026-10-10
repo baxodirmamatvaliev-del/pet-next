@@ -13,12 +13,14 @@ import { T } from '../../types/common';
 import { Order } from '../../types/order/order';
 import { MyOrdersInquiry } from '../../types/order/order.input';
 import OrderCard from './OrderCard';
+import { useTranslation } from '../../i18n';
 
 interface MyOrdersProps {
 	initialInput?: MyOrdersInquiry;
 }
 
 const MyOrders = (props: MyOrdersProps) => {
+	const { t, errorText } = useTranslation();
 	const { initialInput = MyOrders.defaultProps.initialInput } = props;
 	const device = useDeviceDetect();
 
@@ -60,15 +62,19 @@ const MyOrders = (props: MyOrdersProps) => {
 
 	const cancelOrderHandler = async (orderId: string) => {
 		try {
-			const isConfirmed = await sweetConfirmAlert('Do you want to cancel this order?');
+			const isConfirmed = await sweetConfirmAlert(
+				t('ui.doYouWantToCancelThisOrder'),
+				t('common.confirm'),
+				t('ui.cancel'),
+			);
 			if (!isConfirmed) return;
 
 			await cancelOrder({ variables: { orderId } });
 			await getMyOrdersRefetch({ input: searchFilter });
-			await sweetTopSmallSuccessAlert('Order cancelled', 800);
+			await sweetTopSmallSuccessAlert(t('ui.orderCancelled'), 800);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -80,29 +86,29 @@ const MyOrders = (props: MyOrdersProps) => {
 	return (
 		<Box className="my-orders">
 			<Box className="my-orders__heading">
-				<Typography component="h1">My Orders</Typography>
-				<Typography>Track, review and manage all of your PetNest orders.</Typography>
+				<Typography component="h1">{t('ui.myOrders')}</Typography>
+				<Typography>{t('ui.trackReviewAndManageAllOfYourPetnest')}</Typography>
 			</Box>
 
 			{device === 'mobile' ? (
 				/** RENDER MOBILE ORDER FILTERS **/
 				<Stack direction="row" className="order-tabs order-tabs--mobile">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>All</Button>
-					<Button className={selectedStatus === OrderStatus.PENDING ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PENDING)}>Pending</Button>
-					<Button className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}>Demo confirmed</Button>
-					<Button className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}>Shipping</Button>
-					<Button className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}>Delivered</Button>
-					<Button className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}>Cancelled</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>{t('ui.all')}</Button>
+					<Button className={selectedStatus === OrderStatus.PENDING ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PENDING)}>{t('ui.pending')}</Button>
+					<Button className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}>{t('ui.demoConfirmed')}</Button>
+					<Button className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}>{t('ui.shipping')}</Button>
+					<Button className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}>{t('ui.delivered')}</Button>
+					<Button className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}>{t('ui.cancelled')}</Button>
 				</Stack>
 			) : (
 				/** RENDER PC ORDER FILTERS **/
 				<Stack direction="row" className="order-tabs order-tabs--pc">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>All</Button>
-					<Button className={selectedStatus === OrderStatus.PENDING ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PENDING)}>Pending</Button>
-					<Button className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}>Demo confirmed</Button>
-					<Button className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}>In transit</Button>
-					<Button className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}>Delivered</Button>
-					<Button className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}>Cancelled</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>{t('ui.all')}</Button>
+					<Button className={selectedStatus === OrderStatus.PENDING ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PENDING)}>{t('ui.pending')}</Button>
+					<Button className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}>{t('ui.demoConfirmed')}</Button>
+					<Button className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}>{t('ui.inTransit')}</Button>
+					<Button className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}>{t('ui.delivered')}</Button>
+					<Button className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}>{t('ui.cancelled')}</Button>
 				</Stack>
 			)}
 
@@ -111,7 +117,7 @@ const MyOrders = (props: MyOrdersProps) => {
 					<CircularProgress color="primary" />
 				</Stack>
 			) : getMyOrdersError ? (
-				<Alert severity="error">Orders could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.ordersCouldNotBeLoaded')}</Alert>
 			) : orders.length ? (
 				<Stack className="order-list">
 					{orders.map((order) => (
@@ -125,8 +131,8 @@ const MyOrders = (props: MyOrdersProps) => {
 				</Stack>
 			) : (
 				<Stack className="my-orders__state">
-					<Typography component="h2">No orders found</Typography>
-					<Typography>Your orders will appear here after checkout.</Typography>
+					<Typography component="h2">{t('ui.noOrdersFound')}</Typography>
+					<Typography>{t('ui.yourOrdersWillAppearHereAfterCheckout')}</Typography>
 				</Stack>
 			)}
 
@@ -139,7 +145,7 @@ const MyOrders = (props: MyOrdersProps) => {
 						color="primary"
 						shape="rounded"
 					/>
-					<Typography>{total} orders</Typography>
+					<Typography>{t('counts.orders', { count: total })}</Typography>
 				</Stack>
 			)}
 		</Box>

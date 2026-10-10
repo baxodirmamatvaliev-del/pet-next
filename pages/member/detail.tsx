@@ -25,6 +25,7 @@ import { PetsInquiry } from '../../libs/types/pet/pet.input';
 import { Product } from '../../libs/types/product/product';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { CustomJwtPayload } from '../../libs/types/customJwtPayload';
+import { useTranslation } from '../../libs/i18n';
 
 const initialInquiry: PetsInquiry = {
 	page: 1,
@@ -43,6 +44,7 @@ const initialProductsInquiry: ProductsInquiry = {
 };
 
 const MemberDetailContent = ({ memberId, category }: { memberId: string; category: string }) => {
+	const { t, errorText } = useTranslation();
 	const device = useDeviceDetect();
 
 	/** STATES **/
@@ -102,11 +104,11 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 				memberFollowers: previous.memberFollowers + 1,
 				meFollowed: [{ followerId: user.sub, followingId: memberId, myFollowing: true }],
 			} : previous);
-			await sweetTopSmallSuccessAlert('Followed!', 800);
+			await sweetTopSmallSuccessAlert(t('ui.followed'), 800);
 			const result = await getMemberRefetch({ memberId });
 			if (result.data?.getMember) setMember(result.data.getMember);
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		} finally {
 			setFollowLoading(false);
 		}
@@ -125,11 +127,11 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 				memberFollowers: Math.max(0, previous.memberFollowers - 1),
 				meFollowed: [],
 			} : previous);
-			await sweetTopSmallSuccessAlert('Unfollowed!', 800);
+			await sweetTopSmallSuccessAlert(t('ui.unfollowed'), 800);
 			const result = await getMemberRefetch({ memberId });
 			if (result.data?.getMember) setMember(result.data.getMember);
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		} finally {
 			setFollowLoading(false);
 		}
@@ -142,7 +144,7 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 			await likeTargetProduct({ variables: { productId } });
 			await getProductsRefetch({ input: productsInquiry });
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		}
 	};
 
@@ -156,26 +158,26 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 		<>
 			<Stack direction="row" className="member-detail__tabs">
 				{(member?.memberType === MemberType.AGENT || member?.memberType === MemberType.ADMIN) && (
-					<Button component={Link} href={`/member/detail?id=${memberId}&category=products`} className={activeCategory === 'products' ? 'active' : ''}>Products</Button>
+					<Button component={Link} href={`/member/detail?id=${memberId}&category=products`} className={activeCategory === 'products' ? 'active' : ''}>{t('ui.products')}</Button>
 				)}
-				<Button component={Link} href={`/member/detail?id=${memberId}`} className={activeCategory === 'pets' ? 'active' : ''}>Pet listings</Button>
-				<Button component={Link} href={`/member/detail?id=${memberId}&category=followers`} className={activeCategory === 'followers' ? 'active' : ''}>Followers</Button>
-				<Button component={Link} href={`/member/detail?id=${memberId}&category=followings`} className={activeCategory === 'followings' ? 'active' : ''}>Followings</Button>
+				<Button component={Link} href={`/member/detail?id=${memberId}`} className={activeCategory === 'pets' ? 'active' : ''}>{t('ui.petListings')}</Button>
+				<Button component={Link} href={`/member/detail?id=${memberId}&category=followers`} className={activeCategory === 'followers' ? 'active' : ''}>{t('ui.followers')}</Button>
+				<Button component={Link} href={`/member/detail?id=${memberId}&category=followings`} className={activeCategory === 'followings' ? 'active' : ''}>{t('ui.followings')}</Button>
 			</Stack>
 			{activeCategory === 'pets' ? (
 				<Stack className="member-detail__listings">
-					<Typography component="h2">Pet listings <span>({petTotal})</span></Typography>
-					{getPetsError ? <Alert severity="error">Listings could not be loaded.</Alert> : getPetsLoading ? <CircularProgress /> : pets.length ? (
+					<Typography component="h2">{t('ui.petListings')} <span>({petTotal})</span></Typography>
+					{getPetsError ? <Alert severity="error">{t('ui.listingsCouldNotBeLoaded')}</Alert> : getPetsLoading ? <CircularProgress /> : pets.length ? (
 						<Box className="member-detail__grid">{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}</Box>
-					) : <Typography>No active pet listings yet.</Typography>}
+					) : <Typography>{t('ui.noActivePetListingsYet')}</Typography>}
 					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
 				</Stack>
 			) : activeCategory === 'products' ? (
 				<Stack className="member-detail__listings">
-					<Typography component="h2">Products <span>({productTotal})</span></Typography>
-					{getProductsError ? <Alert severity="error">Products could not be loaded.</Alert> : getProductsLoading ? <CircularProgress /> : products.length ? (
+					<Typography component="h2">{t('ui.products')} <span>({productTotal})</span></Typography>
+					{getProductsError ? <Alert severity="error">{t('ui.productsCouldNotBeLoaded')}</Alert> : getProductsLoading ? <CircularProgress /> : products.length ? (
 						<Box className="member-detail__grid">{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}</Box>
-					) : <Typography>No active products yet.</Typography>}
+					) : <Typography>{t('ui.noActiveProductsYet')}</Typography>}
 					{productTotalPages > 1 && <Pagination page={productsInquiry.page} count={productTotalPages} onChange={(_event, page) => setProductsInquiry({ ...productsInquiry, page })} />}
 				</Stack>
 			) : (
@@ -187,18 +189,18 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 	);
 	const followButton = isOwnProfile ? null : user?.sub ? isFollowing ? (
 		<>
-			<Button className="member-detail__unfollow" variant="outlined" onClick={unsubscribeHandler} disabled={followLoading}>Unfollow</Button>
-			<Typography className="member-detail__following">Following</Typography>
+			<Button className="member-detail__unfollow" variant="outlined" onClick={unsubscribeHandler} disabled={followLoading}>{t('ui.unfollow')}</Button>
+			<Typography className="member-detail__following">{t('ui.following')}</Typography>
 		</>
 	) : (
-		<Button className="member-detail__follow" variant="contained" onClick={subscribeHandler} disabled={followLoading}>Follow</Button>
+		<Button className="member-detail__follow" variant="contained" onClick={subscribeHandler} disabled={followLoading}>{t('ui.follow')}</Button>
 	) : (
 		<Button component={Link} href={`/account/join?referrer=${encodeURIComponent(`/member/detail?id=${memberId}`)}`} variant="outlined">
-			Sign in to follow
+			{t('ui.signInToFollow')}
 		</Button>
 	);
 	const contactButton = member?.memberType === MemberType.AGENT && !isOwnProfile ? (
-		<Button component={Link} href={`/cs?tab=ask&recipient=${memberId}`} variant="outlined">Contact agent</Button>
+		<Button component={Link} href={`/cs?tab=ask&recipient=${memberId}`} variant="outlined">{t('ui.contactAgent')}</Button>
 	) : null;
 
 	if (!memberId || (member?._id !== memberId && !getMemberError)) {
@@ -206,7 +208,7 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 	}
 
 	if (getMemberError || !member || member._id !== memberId) {
-		return <Box className="member-detail-state container"><Alert severity="error">Member profile could not be loaded.</Alert></Box>;
+		return <Box className="member-detail-state container"><Alert severity="error">{t('ui.memberProfileCouldNotBeLoaded')}</Alert></Box>;
 	}
 
 	/** RENDER MOBILE **/
@@ -215,15 +217,15 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 			<>
 				<Head><title>{member.memberNick} | PetNest Korea</title></Head>
 				<Box component="main" className="member-detail-page member-detail-page--mobile container">
-					<Typography className="member-detail-page__breadcrumb"><Link href="/pet">Community</Link> / {member.memberNick}</Typography>
+					<Typography className="member-detail-page__breadcrumb"><Link href="/pet">{t('nav.community')}</Link> / {member.memberNick}</Typography>
 					<Stack className="member-detail__profile">
 						<Avatar src={memberImage} alt={member.memberNick} />
 						<Stack className="member-detail__intro">
 							<Typography component="h1">{member.memberNick}</Typography>
-							<Typography>{member.memberDesc || 'PetNest community member'}</Typography>
+							<Typography>{member.memberDesc || t('common.communityMember')}</Typography>
 							<Stack direction="row" className="member-detail__social">
-								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}><strong>{member.memberFollowers}</strong> followers</Typography>
-								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}><strong>{member.memberFollowings}</strong> following</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}>{t('counts.followers', { count: member.memberFollowers })}</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}>{t('counts.followings', { count: member.memberFollowings })}</Typography>
 								{followButton}
 								{contactButton}
 							</Stack>
@@ -239,15 +241,15 @@ const MemberDetailContent = ({ memberId, category }: { memberId: string; categor
 			<>
 				<Head><title>{member.memberNick} | PetNest Korea</title></Head>
 				<Box component="main" className="member-detail-page container">
-					<Typography className="member-detail-page__breadcrumb"><Link href="/pet">Community</Link> / {member.memberNick}</Typography>
+					<Typography className="member-detail-page__breadcrumb"><Link href="/pet">{t('nav.community')}</Link> / {member.memberNick}</Typography>
 					<Stack direction="row" className="member-detail__profile">
 						<Avatar src={memberImage} alt={member.memberNick} />
 						<Stack className="member-detail__intro">
 							<Typography component="h1">{member.memberNick}</Typography>
-							<Typography>{member.memberDesc || 'PetNest community member'}</Typography>
+							<Typography>{member.memberDesc || t('common.communityMember')}</Typography>
 							<Stack direction="row" className="member-detail__social">
-								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}><strong>{member.memberFollowers}</strong> followers</Typography>
-								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}><strong>{member.memberFollowings}</strong> following</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followers`}>{t('counts.followers', { count: member.memberFollowers })}</Typography>
+								<Typography component={Link} href={`/member/detail?id=${memberId}&category=followings`}>{t('counts.followings', { count: member.memberFollowings })}</Typography>
 								{followButton}
 								{contactButton}
 							</Stack>

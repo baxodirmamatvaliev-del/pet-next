@@ -14,12 +14,14 @@ import { T } from '../../types/common';
 import { Pet } from '../../types/pet/pet';
 import { MyPetsInquiry, PetUpdateInput } from '../../types/pet/pet.input';
 import MyPetCard from './MyPetCard';
+import { useTranslation } from '../../i18n';
 
 interface MyPetsProps {
 	initialInput?: MyPetsInquiry;
 }
 
 const MyPets = (props: MyPetsProps) => {
+	const { t, label, errorText } = useTranslation();
 	const { initialInput = MyPets.defaultProps.initialInput } = props;
 	const device = useDeviceDetect();
 
@@ -57,19 +59,20 @@ const MyPets = (props: MyPetsProps) => {
 
 	const updatePetStatusHandler = async (pet: Pet, petStatus: PetStatus) => {
 		try {
-			const actionName = petStatus === PetStatus.DELETE
-				? 'remove this listing'
-				: `change the status to ${petStatus.toLowerCase()}`;
-			const isConfirmed = await sweetConfirmAlert(`Are you sure you want to ${actionName}?`);
+			const isConfirmed = await sweetConfirmAlert(
+				petStatus === PetStatus.DELETE ? t('message.removeListing') : t('message.changeStatus', { name: pet.petName, status: label(petStatus) }),
+				t('common.confirm'),
+				t('ui.cancel'),
+			);
 			if (!isConfirmed) return;
 
 			const input: PetUpdateInput = { _id: pet._id, petStatus };
 			await updatePet({ variables: { input } });
 			await getMyPetsRefetch({ input: searchFilter });
-			await sweetTopSmallSuccessAlert('Pet listing updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.petListingUpdated'), 800);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -82,29 +85,29 @@ const MyPets = (props: MyPetsProps) => {
 		<Box className="my-pets">
 			<Stack direction="row" className="my-pets__heading">
 				<Box>
-					<Typography component="h1">My Pet Listings</Typography>
-					<Typography>Manage your adoption and sale listings.</Typography>
+					<Typography component="h1">{t('ui.myPetListings')}</Typography>
+					<Typography>{t('ui.manageYourAdoptionAndSaleListings')}</Typography>
 				</Box>
-				<Button component={Link} href="/pet/create" variant="contained">Create listing</Button>
+				<Button component={Link} href="/pet/create" variant="contained">{t('ui.createListing')}</Button>
 			</Stack>
 
 			{device === 'mobile' ? (
 				/** RENDER MOBILE PET FILTERS **/
 				<Stack direction="row" className="my-pets__tabs my-pets__tabs--mobile">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>All</Button>
-					<Button className={selectedStatus === PetStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ACTIVE)}>Active</Button>
-					<Button className={selectedStatus === PetStatus.RESERVED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.RESERVED)}>Reserved</Button>
-					<Button className={selectedStatus === PetStatus.SOLD ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.SOLD)}>Sold</Button>
-					<Button className={selectedStatus === PetStatus.ADOPTED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ADOPTED)}>Adopted</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>{t('ui.all')}</Button>
+					<Button className={selectedStatus === PetStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ACTIVE)}>{t('ui.active')}</Button>
+					<Button className={selectedStatus === PetStatus.RESERVED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.RESERVED)}>{t('ui.reserved')}</Button>
+					<Button className={selectedStatus === PetStatus.SOLD ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.SOLD)}>{t('ui.sold')}</Button>
+					<Button className={selectedStatus === PetStatus.ADOPTED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ADOPTED)}>{t('ui.adopted')}</Button>
 				</Stack>
 			) : (
 				/** RENDER PC PET FILTERS **/
 				<Stack direction="row" className="my-pets__tabs my-pets__tabs--pc">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>All listings</Button>
-					<Button className={selectedStatus === PetStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ACTIVE)}>Active</Button>
-					<Button className={selectedStatus === PetStatus.RESERVED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.RESERVED)}>Reserved</Button>
-					<Button className={selectedStatus === PetStatus.SOLD ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.SOLD)}>Sold</Button>
-					<Button className={selectedStatus === PetStatus.ADOPTED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ADOPTED)}>Adopted</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>{t('ui.allListings')}</Button>
+					<Button className={selectedStatus === PetStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ACTIVE)}>{t('ui.active')}</Button>
+					<Button className={selectedStatus === PetStatus.RESERVED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.RESERVED)}>{t('ui.reserved')}</Button>
+					<Button className={selectedStatus === PetStatus.SOLD ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.SOLD)}>{t('ui.sold')}</Button>
+					<Button className={selectedStatus === PetStatus.ADOPTED ? 'active' : ''} onClick={() => changeStatusHandler(PetStatus.ADOPTED)}>{t('ui.adopted')}</Button>
 				</Stack>
 			)}
 
@@ -113,7 +116,7 @@ const MyPets = (props: MyPetsProps) => {
 					<CircularProgress color="primary" />
 				</Stack>
 			) : getMyPetsError ? (
-				<Alert severity="error">Your pet listings could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.yourPetListingsCouldNotBeLoaded')}</Alert>
 			) : pets.length ? (
 				<>
 					<Box className="my-pets__grid">
@@ -135,15 +138,15 @@ const MyPets = (props: MyPetsProps) => {
 								color="primary"
 								shape="rounded"
 							/>
-							<Typography>{total} listings</Typography>
+							<Typography>{t('counts.listings', { count: total })}</Typography>
 						</Stack>
 					)}
 				</>
 			) : (
 				<Stack className="my-pets__state">
-					<Typography component="h2">No pet listings found</Typography>
-					<Typography>Your listings will appear here after you publish one.</Typography>
-					<Button component={Link} href="/pet/create" variant="outlined">Create a listing</Button>
+					<Typography component="h2">{t('ui.noPetListingsFound')}</Typography>
+					<Typography>{t('ui.yourListingsWillAppearHereAfterYouPublish')}</Typography>
+					<Button component={Link} href="/pet/create" variant="outlined">{t('ui.createAListing')}</Button>
 				</Stack>
 			)}
 		</Box>

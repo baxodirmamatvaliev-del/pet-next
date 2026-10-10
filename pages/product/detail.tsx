@@ -30,8 +30,10 @@ import { Member } from '../../libs/types/member/member';
 import { Product } from '../../libs/types/product/product';
 import { CustomJwtPayload } from '../../libs/types/customJwtPayload';
 import { formatterStr } from '../../libs/utils';
+import { useTranslation } from '../../libs/i18n';
 
 const ProductDetail: NextPage = () => {
+	const { t, label, errorText } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 	const productId = typeof router.query.id === 'string' ? router.query.id : '';
@@ -123,10 +125,10 @@ const ProductDetail: NextPage = () => {
 			};
 
 			await addToCart({ variables: { input } });
-			await sweetTopSmallSuccessAlert('Added to cart', 800);
+			await sweetTopSmallSuccessAlert(t('ui.addedToCart'), 800);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -143,7 +145,7 @@ const ProductDetail: NextPage = () => {
 			await getProductsRefetch();
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -157,7 +159,7 @@ const ProductDetail: NextPage = () => {
 	const imagePath = slideImage
 		? `${REACT_APP_API_URL}/${slideImage}`
 		: '/img/banner/home-hero.png';
-	const sellerName = seller && seller._id === product?.memberId ? seller.memberNick : 'Seller';
+	const sellerName = seller && seller._id === product?.memberId ? seller.memberNick : t('ui.seller');
 	const isFavorite = Boolean(product?.meLiked?.[0]?.myFavorite);
 
 	if (!router.isReady || !productId || (product?._id !== productId && !getProductError)) {
@@ -171,7 +173,7 @@ const ProductDetail: NextPage = () => {
 	if (getProductError || !product) {
 		return (
 			<Box className="product-detail-state container">
-				<Alert severity="error">Product could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.productCouldNotBeLoaded')}</Alert>
 			</Box>
 		);
 	}
@@ -181,7 +183,7 @@ const ProductDetail: NextPage = () => {
 		return (
 			<Box component="main" className="product-detail-page product-detail-page--mobile container">
 				<Typography className="product-detail-page__breadcrumb">
-					<Link href="/">Home</Link> / <Link href="/product">Shop</Link> / {product.productName}
+					<Link href="/">{t('ui.home')}</Link> / <Link href="/product">{t('ui.shop')}</Link> / {product.productName}
 				</Typography>
 
 				<Box className="product-detail product-detail--mobile">
@@ -204,18 +206,17 @@ const ProductDetail: NextPage = () => {
 
 					<Stack className="product-detail__info">
 						<Typography className="product-detail__category">
-							{product.productCategory} / {product.productType}
+							{label(product.productCategory)} / {label(product.productType)}
 						</Typography>
 						<Typography component="h1">{product.productName}</Typography>
 						<Typography className="product-detail__rating">
-							<Box component="span">★</Box> {product.productRating.toFixed(1)} ({product.productReviews} reviews)
-						</Typography>
+							<Box component="span">★</Box> {product.productRating.toFixed(1)} ({t('counts.reviews', { count: product.productReviews })})</Typography>
 						<Typography component="strong" className="product-detail__price">
 							₩{formatterStr(activeVariant?.price ?? 0)}
 						</Typography>
-						<Typography className="product-detail__seller">Sold by <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
+						<Typography className="product-detail__seller">{t('ui.soldBy')} <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
 						<Box className="product-variants">
-							<Typography component="strong">Choose an option</Typography>
+							<Typography component="strong">{t('ui.chooseAnOption')}</Typography>
 							<Stack direction="row">
 								{product.productVariants.map((variant) => (
 									<Button
@@ -227,34 +228,34 @@ const ProductDetail: NextPage = () => {
 									</Button>
 								))}
 							</Stack>
-							<Typography>{activeVariant?.stock ?? 0} items in stock</Typography>
+							<Typography>{t('counts.inStock', { count: activeVariant?.stock ?? 0 })}</Typography>
 						</Box>
 						<Stack direction="row" className="product-detail__cart-action">
 							<Stack direction="row" className="product-detail__quantity">
-								<IconButton onClick={decreaseQuantityHandler} disabled={quantity === 1 || isOutOfStock} aria-label="Decrease quantity">
+								<IconButton onClick={decreaseQuantityHandler} disabled={quantity === 1 || isOutOfStock} aria-label={t('ui.decreaseQuantity')}>
 									<RemoveRoundedIcon />
 								</IconButton>
 								<Typography>{quantity}</Typography>
-								<IconButton onClick={() => increaseQuantityHandler(activeVariant?.stock ?? 0)} disabled={quantity >= (activeVariant?.stock ?? 0)} aria-label="Increase quantity">
+								<IconButton onClick={() => increaseQuantityHandler(activeVariant?.stock ?? 0)} disabled={quantity >= (activeVariant?.stock ?? 0)} aria-label={t('ui.increaseQuantity')}>
 									<AddRoundedIcon />
 								</IconButton>
 							</Stack>
 							<Button variant="contained" startIcon={<ShoppingBagOutlinedIcon />} onClick={addToCartHandler} disabled={isOutOfStock || addToCartLoading}>
-								{addToCartLoading ? 'Adding...' : 'Add to cart'}
+								{addToCartLoading ? t('ui.adding') : t('ui.addToCart')}
 							</Button>
-							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
 								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 							</IconButton>
 						</Stack>
 						{product.productDesc && (
 							<Box className="product-detail__description">
-								<Typography component="strong">Product information</Typography>
+								<Typography component="strong">{t('ui.productInformation')}</Typography>
 								<Typography>{product.productDesc}</Typography>
 							</Box>
 						)}
 						{user?.sub === product.memberId && (
 							<Button component={Link} href={`/product/edit?id=${product._id}`} variant="outlined" className="product-detail__edit">
-								Edit product
+								{t('ui.editProduct')}
 							</Button>
 						)}
 					</Stack>
@@ -263,8 +264,8 @@ const ProductDetail: NextPage = () => {
 				{visibleRelatedProducts.length > 0 && (
 					<Box component="section" className="product-related">
 						<Stack direction="row" className="product-related__heading">
-							<Typography component="h2">You may also like</Typography>
-							<Link href="/product">View all products</Link>
+							<Typography component="h2">{t('ui.youMayAlsoLike')}</Typography>
+							<Link href="/product">{t('ui.viewAllProducts')}</Link>
 						</Stack>
 						<Box className="product-related__grid">
 							{visibleRelatedProducts.map((item) => <ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />)}
@@ -278,7 +279,7 @@ const ProductDetail: NextPage = () => {
 		return (
 			<Box component="main" className="product-detail-page container">
 				<Typography className="product-detail-page__breadcrumb">
-					<Link href="/">Home</Link> / <Link href="/product">Shop</Link> / {product.productName}
+					<Link href="/">{t('ui.home')}</Link> / <Link href="/product">{t('ui.shop')}</Link> / {product.productName}
 				</Typography>
 
 				<Box className="product-detail">
@@ -309,34 +310,33 @@ const ProductDetail: NextPage = () => {
 
 					<Stack className="product-detail__info">
 						<Typography className="product-detail__category">
-							{product.productCategory} / {product.productType}
+							{label(product.productCategory)} / {label(product.productType)}
 						</Typography>
 						<Typography component="h1">{product.productName}</Typography>
 						<Typography className="product-detail__rating">
-							<Box component="span">★</Box> {product.productRating.toFixed(1)} ({product.productReviews} reviews)
-						</Typography>
+							<Box component="span">★</Box> {product.productRating.toFixed(1)} ({t('counts.reviews', { count: product.productReviews })})</Typography>
 						<Typography component="strong" className="product-detail__price">
 							₩{formatterStr(activeVariant?.price ?? 0)}
 						</Typography>
-						<Typography className="product-detail__seller">Sold by <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
+						<Typography className="product-detail__seller">{t('ui.soldBy')} <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
 
 						<Stack className="product-detail__benefits">
 							<Stack direction="row">
 								<LocalShippingOutlinedIcon />
-								<Typography>Free delivery on orders over ₩30,000</Typography>
+								<Typography>{t('nav.delivery')}</Typography>
 							</Stack>
 							<Stack direction="row">
 								<ReplayRoundedIcon />
-								<Typography>30-day easy returns</Typography>
+								<Typography>{t('ui.easyReturnPolicy')}</Typography>
 							</Stack>
 							<Stack direction="row">
 								<VerifiedUserOutlinedIcon />
-								<Typography>Secure checkout</Typography>
+								<Typography>{t('ui.secureCheckout')}</Typography>
 							</Stack>
 						</Stack>
 
 						<Box className="product-variants">
-							<Typography component="strong">Choose an option</Typography>
+							<Typography component="strong">{t('ui.chooseAnOption')}</Typography>
 							<Stack direction="row">
 								{product.productVariants.map((variant) => (
 									<Button
@@ -348,7 +348,7 @@ const ProductDetail: NextPage = () => {
 									</Button>
 								))}
 							</Stack>
-							<Typography>{activeVariant?.stock ?? 0} items in stock</Typography>
+							<Typography>{t('counts.inStock', { count: activeVariant?.stock ?? 0 })}</Typography>
 						</Box>
 
 						<Stack direction="row" className="product-detail__cart-action">
@@ -356,7 +356,7 @@ const ProductDetail: NextPage = () => {
 								<IconButton
 									onClick={decreaseQuantityHandler}
 									disabled={quantity === 1 || isOutOfStock}
-									aria-label="Decrease quantity"
+									aria-label={t('ui.decreaseQuantity')}
 								>
 									<RemoveRoundedIcon />
 								</IconButton>
@@ -364,7 +364,7 @@ const ProductDetail: NextPage = () => {
 								<IconButton
 									onClick={() => increaseQuantityHandler(activeVariant?.stock ?? 0)}
 									disabled={quantity >= (activeVariant?.stock ?? 0)}
-									aria-label="Increase quantity"
+									aria-label={t('ui.increaseQuantity')}
 								>
 									<AddRoundedIcon />
 								</IconButton>
@@ -375,22 +375,22 @@ const ProductDetail: NextPage = () => {
 								onClick={addToCartHandler}
 								disabled={isOutOfStock || addToCartLoading}
 							>
-								{addToCartLoading ? 'Adding...' : 'Add to cart'}
+								{addToCartLoading ? t('ui.adding') : t('ui.addToCart')}
 							</Button>
-							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
 								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 							</IconButton>
 						</Stack>
 
 						{product.productDesc && (
 							<Box className="product-detail__description">
-								<Typography component="strong">Product information</Typography>
+								<Typography component="strong">{t('ui.productInformation')}</Typography>
 								<Typography>{product.productDesc}</Typography>
 							</Box>
 						)}
 						{user?.sub === product.memberId && (
 							<Button component={Link} href={`/product/edit?id=${product._id}`} variant="outlined" className="product-detail__edit">
-								Edit product
+								{t('ui.editProduct')}
 							</Button>
 						)}
 					</Stack>
@@ -399,8 +399,8 @@ const ProductDetail: NextPage = () => {
 				{visibleRelatedProducts.length > 0 && (
 					<Box component="section" className="product-related">
 						<Stack direction="row" className="product-related__heading">
-							<Typography component="h2">You may also like</Typography>
-							<Link href="/product">View all products</Link>
+							<Typography component="h2">{t('ui.youMayAlsoLike')}</Typography>
+							<Link href="/product">{t('ui.viewAllProducts')}</Link>
 						</Stack>
 						<Box className="product-related__grid">
 							{visibleRelatedProducts.map((item) => <ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />)}

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { PetListingType, PetStatus } from '../../enums/pet.enum';
 import { Pet } from '../../types/pet/pet';
 import PetCard from '../pet/PetCard';
+import { useTranslation } from '../../i18n';
 
 interface MyPetCardProps {
 	pet: Pet;
@@ -17,6 +18,7 @@ interface MyPetCardProps {
 }
 
 const MyPetCard = (props: MyPetCardProps) => {
+	const { t, label } = useTranslation();
 	const { pet, loading, updatePetStatusHandler } = props;
 	const canManage = pet.petStatus === PetStatus.ACTIVE || pet.petStatus === PetStatus.RESERVED;
 	const completedStatus = pet.petListingType === PetListingType.ADOPTION ? PetStatus.ADOPTED : PetStatus.SOLD;
@@ -26,12 +28,12 @@ const MyPetCard = (props: MyPetCardProps) => {
 		<Stack className="my-pet-card">
 			<PetCard pet={pet} />
 			<Stack className="my-pet-card__actions">
-				<Chip label={pet.petStatus.replace('_', ' ')} className={`my-pet-card__status my-pet-card__status--${pet.petStatus.toLowerCase()}`} />
+				<Chip label={label(pet.petStatus)} className={`my-pet-card__status my-pet-card__status--${pet.petStatus.toLowerCase()}`} />
 				{canManage && (
 					<Stack direction="row" className="my-pet-card__buttons">
 						{pet.petStatus === PetStatus.ACTIVE && (
 							<Button component={Link} href={`/pet/edit?id=${pet._id}`} variant="outlined" startIcon={<EditOutlinedIcon />}>
-								Edit
+								{t('ui.edit')}
 							</Button>
 						)}
 						<Button
@@ -45,7 +47,7 @@ const MyPetCard = (props: MyPetCardProps) => {
 							)}
 							disabled={loading}
 						>
-							{pet.petStatus === PetStatus.RESERVED ? 'Reactivate' : 'Reserve'}
+							{pet.petStatus === PetStatus.RESERVED ? t('ui.reactivate') : t('ui.reserve')}
 						</Button>
 						<Button
 							variant="contained"
@@ -53,7 +55,7 @@ const MyPetCard = (props: MyPetCardProps) => {
 							onClick={() => updatePetStatusHandler(pet, completedStatus)}
 							disabled={loading}
 						>
-							{completedStatus === PetStatus.ADOPTED ? 'Mark adopted' : 'Mark sold'}
+							{completedStatus === PetStatus.ADOPTED ? t('ui.markAdopted') : t('ui.markSold')}
 						</Button>
 						<Button
 							className="my-pet-card__remove"
@@ -61,7 +63,7 @@ const MyPetCard = (props: MyPetCardProps) => {
 							onClick={() => updatePetStatusHandler(pet, PetStatus.DELETE)}
 							disabled={loading}
 						>
-							Remove
+							{t('ui.remove')}
 						</Button>
 					</Stack>
 				)}

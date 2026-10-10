@@ -16,8 +16,10 @@ import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { T } from '../../libs/types/common';
 import { Order } from '../../libs/types/order/order';
+import { useTranslation } from '../../libs/i18n';
 
 const OrderDetail: NextPage = () => {
+	const { t, errorText } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 	const orderId = typeof router.query.id === 'string' ? router.query.id : '';
@@ -45,15 +47,19 @@ const OrderDetail: NextPage = () => {
 	/** HANDLERS **/
 	const cancelOrderHandler = async (id: string) => {
 		try {
-			const isConfirmed = await sweetConfirmAlert('Do you want to cancel this order?');
+			const isConfirmed = await sweetConfirmAlert(
+				t('ui.doYouWantToCancelThisOrder'),
+				t('common.confirm'),
+				t('ui.cancel'),
+			);
 			if (!isConfirmed) return;
 
 			await cancelOrder({ variables: { orderId: id } });
 			await getOrderRefetch({ orderId: id });
-			await sweetTopSmallSuccessAlert('Order cancelled', 800);
+			await sweetTopSmallSuccessAlert(t('ui.orderCancelled'), 800);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -63,35 +69,35 @@ const OrderDetail: NextPage = () => {
 		<Stack className="order-detail-page__state"><CircularProgress color="primary" /></Stack>
 	) : !user?.sub ? (
 		<Stack className="order-detail-page__state">
-			<Typography component="h1">Sign in to view your order</Typography>
-			<Button component={Link} href={signInHref} variant="contained">Login or sign up</Button>
+			<Typography component="h1">{t('ui.signInToViewYourOrder')}</Typography>
+			<Button component={Link} href={signInHref} variant="contained">{t('ui.loginOrSignUp')}</Button>
 		</Stack>
 	) : !orderId ? (
-		<Alert severity="warning">Choose an order from your order history.</Alert>
+		<Alert severity="warning">{t('ui.chooseAnOrderFromYourOrderHistory')}</Alert>
 	) : getOrderError ? (
-		<Alert severity="error">Order could not be loaded.</Alert>
+		<Alert severity="error">{t('ui.orderCouldNotBeLoaded')}</Alert>
 	) : getOrderLoading && order?._id !== orderId ? (
 		<Stack className="order-detail-page__state"><CircularProgress color="primary" /></Stack>
 	) : order?._id === orderId ? (
 		<>
 			<Stack className="order-detail-page__heading">
-				<Typography component="h1">Order #{order._id.slice(-8).toUpperCase()}</Typography>
-				<Typography>Review your items, delivery details and current order status.</Typography>
+				<Typography component="h1">{t('message.orderTitle', { id: order._id.slice(-8).toUpperCase() })}</Typography>
+				<Typography>{t('ui.reviewYourItemsDeliveryDetailsAndCurrentOrder')}</Typography>
 			</Stack>
 			<OrderCard order={order} cancelOrderHandler={cancelOrderHandler} cancelOrderLoading={cancelOrderLoading} showDetailsLink={false} />
 		</>
 	) : (
-		<Alert severity="error">Order could not be loaded.</Alert>
+		<Alert severity="error">{t('ui.orderCouldNotBeLoaded')}</Alert>
 	);
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
 		return (
 			<>
-				<Head><title>Order details | PetNest Korea</title></Head>
+				<Head><title>{t('ui.orderDetailsPetnestKorea')}</title></Head>
 				<Box component="main" id="my-page" className="order-detail-page order-detail-page--mobile">
 					<Box className="container">
-						<Button component={Link} href="/mypage?category=myOrders">← My orders</Button>
+						<Button component={Link} href="/mypage?category=myOrders">{t('ui.backToOrders')}</Button>
 						{orderContent}
 					</Box>
 				</Box>
@@ -101,10 +107,10 @@ const OrderDetail: NextPage = () => {
 		/** RENDER PC **/
 		return (
 			<>
-				<Head><title>Order details | PetNest Korea</title></Head>
+				<Head><title>{t('ui.orderDetailsPetnestKorea')}</title></Head>
 				<Box component="main" id="my-page" className="order-detail-page">
 					<Box className="container">
-						<Button component={Link} href="/mypage?category=myOrders">← My orders</Button>
+						<Button component={Link} href="/mypage?category=myOrders">{t('ui.backToOrders')}</Button>
 						{orderContent}
 					</Box>
 				</Box>

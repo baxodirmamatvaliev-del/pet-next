@@ -13,6 +13,7 @@ import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } fr
 import { Comment } from '../../../types/comment/comment';
 import { AdminCommentsInquiry } from '../../../types/comment/comment.input';
 import { T } from '../../../types/common';
+import { useTranslation } from '../../../i18n';
 
 const initialInquiry: AdminCommentsInquiry = {
 	page: 1,
@@ -23,6 +24,7 @@ const initialInquiry: AdminCommentsInquiry = {
 };
 
 const CommentList = () => {
+	const { t, locale, label, errorText } = useTranslation();
 	const device = useDeviceDetect();
 
 	/** STATES **/
@@ -68,7 +70,11 @@ const CommentList = () => {
 
 	const removeCommentHandler = async (comment: Comment) => {
 		try {
-			if (!await sweetConfirmAlert('Permanently remove this comment?')) return;
+			if (!await sweetConfirmAlert(
+				t('ui.permanentlyRemoveThisComment'),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 			await removeCommentByAdmin({ variables: { commentId: comment._id } });
 
 			if (comments.length === 1 && inquiry.page > 1) {
@@ -76,10 +82,10 @@ const CommentList = () => {
 			} else {
 				await getAllCommentsByAdminRefetch({ input: inquiry });
 			}
-			await sweetTopSmallSuccessAlert('Comment removed', 800);
+			await sweetTopSmallSuccessAlert(t('ui.commentRemoved'), 800);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -101,24 +107,24 @@ const CommentList = () => {
 		<>
 			<Stack direction="row" className="admin-list__heading">
 				<Stack>
-					<Typography component="h1">Reviews & comments</Typography>
-					<Typography>Review community content and remove inappropriate messages.</Typography>
+					<Typography component="h1">{t('ui.reviewsComments')}</Typography>
+					<Typography>{t('ui.reviewCommunityContentAndRemoveInappropriateMessages')}</Typography>
 				</Stack>
 				<Stack direction="row" className="admin-list__filters">
 					<Stack component="form" direction="row" className="admin-list__search" onSubmit={searchHandler}>
-						<TextField size="small" label="Search comments" value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
-						<Button type="submit" variant="contained">Search</Button>
-						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>Clear</Button>}
+						<TextField size="small" label={t('ui.searchComments')} value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
+						<Button type="submit" variant="contained">{t('ui.search')}</Button>
+						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>{t('ui.clear')}</Button>}
 					</Stack>
-					<TextField select size="small" label="Group" value={inquiry.search.commentGroup ?? ''} onChange={(event) => groupFilterHandler(event.target.value)}>
-						<MenuItem value="">All</MenuItem>
-						{Object.values(CommentGroup).map((group) => <MenuItem value={group} key={group}>{group}</MenuItem>)}
+					<TextField select size="small" label={t('ui.group')} value={inquiry.search.commentGroup ?? ''} onChange={(event) => groupFilterHandler(event.target.value)}>
+						<MenuItem value="">{t('ui.all')}</MenuItem>
+						{Object.values(CommentGroup).map((group) => <MenuItem value={group} key={group}>{label(group)}</MenuItem>)}
 					</TextField>
 				</Stack>
 			</Stack>
 
 			{getAllCommentsByAdminError ? (
-				<Alert severity="error">Reviews and comments could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.reviewsAndCommentsCouldNotBeLoaded')}</Alert>
 			) : getAllCommentsByAdminLoading && !comments.length ? (
 				<CircularProgress />
 			) : comments.length ? (
@@ -126,7 +132,7 @@ const CommentList = () => {
 					<Stack className="admin-list__items">
 						{comments.map((comment) => {
 							const member = comment.memberData;
-							const memberNick = member?.memberNick ?? 'PetNest member';
+							const memberNick = member?.memberNick ?? t('common.member');
 							const memberImage = member?.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : undefined;
 							const targetHref = getTargetHref(comment);
 
@@ -139,15 +145,15 @@ const CommentList = () => {
 										<Stack direction="row" className="admin-comment__meta">
 											<Typography component={Link} href={`/member/detail?id=${comment.memberId}`}><strong>{memberNick}</strong></Typography>
 											<Typography>{member?.memberType ?? 'USER'}</Typography>
-											<Typography>{new Date(comment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
+											<Typography>{new Date(comment.createdAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
 										</Stack>
 										{comment.commentGroup === CommentGroup.PRODUCT && <Rating value={comment.commentRating ?? 0} readOnly size="small" />}
 										<Typography className="admin-comment__content">{comment.commentContent}</Typography>
 									</Stack>
-									<Typography className={`admin-list__status admin-list__status--${comment.commentGroup.toLowerCase()}`}>{comment.commentGroup}</Typography>
+									<Typography className={`admin-list__status admin-list__status--${comment.commentGroup.toLowerCase()}`}>{label(comment.commentGroup)}</Typography>
 									<Stack direction="row" className="admin-list__actions">
-										{targetHref && <Button component={Link} href={targetHref} className="admin-action admin-action--blue">View</Button>}
-										<Button className="admin-action admin-action--danger" disabled={removeCommentByAdminLoading} onClick={() => removeCommentHandler(comment)}>Remove</Button>
+										{targetHref && <Button component={Link} href={targetHref} className="admin-action admin-action--blue">{t('ui.view')}</Button>}
+										<Button className="admin-action admin-action--danger" disabled={removeCommentByAdminLoading} onClick={() => removeCommentHandler(comment)}>{t('ui.remove')}</Button>
 									</Stack>
 								</Stack>
 							);
@@ -156,7 +162,7 @@ const CommentList = () => {
 					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={paginationHandler} />}
 				</>
 			) : (
-				<Typography>No reviews or comments found.</Typography>
+				<Typography>{t('ui.noReviewsOrCommentsFound')}</Typography>
 			)}
 		</>
 	);

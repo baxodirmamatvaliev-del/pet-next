@@ -14,6 +14,7 @@ import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Follow } from '../../types/follow/follow';
 import { FollowInquiry } from '../../types/follow/follow.input';
+import { useTranslation } from '../../i18n';
 
 interface MyFollowsProps {
 	category: 'followers' | 'followings';
@@ -21,6 +22,7 @@ interface MyFollowsProps {
 }
 
 const MyFollows = ({ category, memberId }: MyFollowsProps) => {
+	const { t, label, errorText } = useTranslation();
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const isFollowers = category === 'followers';
@@ -76,21 +78,21 @@ const MyFollows = ({ category, memberId }: MyFollowsProps) => {
 				await getFollowsRefetch({ input: followInquiry });
 			}
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		} finally {
 			setUpdatingMemberId('');
 		}
 	};
 
 	/** COMPUTED VALUES **/
-	const title = `${isOwnList ? 'My ' : ''}${isFollowers ? 'Followers' : 'Followings'}`;
+	const title = isOwnList ? t(isFollowers ? 'ui.myFollowers' : 'ui.myFollowings') : t(isFollowers ? 'ui.followers' : 'ui.followings');
 	const totalPages = Math.ceil(total / followInquiry.limit);
 	const listContent = (
 		<>
 			{getFollowsLoading && !members.length ? (
 				<Stack className="my-follows__state"><CircularProgress color="primary" /></Stack>
 			) : getFollowsError ? (
-				<Alert severity="error">{title} could not be loaded.</Alert>
+				<Alert severity="error">{t('message.followsLoadFailed')}</Alert>
 			) : members.length ? (
 				<>
 					<Stack className="my-follows__list">
@@ -106,12 +108,12 @@ const MyFollows = ({ category, memberId }: MyFollowsProps) => {
 										<Avatar src={image} alt={member.memberNick} />
 										<Stack>
 											<Typography component="strong">{member.memberNick}</Typography>
-											<Typography>{member.memberType}</Typography>
+											<Typography>{label(member.memberType)}</Typography>
 										</Stack>
 									</Stack>
 									<Stack direction="row" className="my-follows__counts">
-										<Typography><strong>{member.memberFollowers}</strong> followers</Typography>
-										<Typography><strong>{member.memberFollowings}</strong> following</Typography>
+										<Typography>{t('counts.followers', { count: member.memberFollowers })}</Typography>
+										<Typography>{t('counts.followings', { count: member.memberFollowings })}</Typography>
 									</Stack>
 									{member._id !== user?.sub && (user?.sub ? (
 										<Button
@@ -120,10 +122,10 @@ const MyFollows = ({ category, memberId }: MyFollowsProps) => {
 											onClick={() => followHandler(member._id, isFollowing)}
 											disabled={Boolean(updatingMemberId)}
 										>
-											{isFollowing ? 'Unfollow' : 'Follow'}
+											{isFollowing ? t('ui.unfollow') : t('ui.follow')}
 										</Button>
 					) : (
-						<Button component={Link} href={`/account/join?referrer=${encodeURIComponent(`/member/detail?id=${member._id}`)}`} variant="outlined">Sign in to follow</Button>
+						<Button component={Link} href={`/account/join?referrer=${encodeURIComponent(`/member/detail?id=${member._id}`)}`} variant="outlined">{t('ui.signInToFollow')}</Button>
 									))}
 								</Stack>
 							);
@@ -131,15 +133,15 @@ const MyFollows = ({ category, memberId }: MyFollowsProps) => {
 					</Stack>
 					<Stack direction="row" className="my-follows__pagination">
 						<Pagination page={followInquiry.page} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />
-						<Typography>{total} {category}</Typography>
+						<Typography>{t(isFollowers ? 'counts.followers' : 'counts.followings', { count: total })}</Typography>
 					</Stack>
 				</>
 			) : (
 				<Stack className="my-follows__state">
 					<PeopleOutlineRoundedIcon />
-					<Typography component="h2">No {category} yet</Typography>
-					<Typography>{isOwnList ? (isFollowers ? 'People who follow you will appear here.' : 'Members you follow will appear here.') : `This member has no ${category} yet.`}</Typography>
-					<Button component={Link} href="/pet" variant="contained">Explore community</Button>
+					<Typography component="h2">{t(isFollowers ? 'message.noFollowers' : 'message.noFollowings')}</Typography>
+					<Typography>{isOwnList ? (isFollowers ? t('ui.peopleWhoFollowYouWillAppearHere') : t('ui.membersYouFollowWillAppearHere')) : t(isFollowers ? 'message.memberNoFollowers' : 'message.memberNoFollowings')}</Typography>
+					<Button component={Link} href="/pet" variant="contained">{t('ui.exploreCommunity')}</Button>
 				</Stack>
 			)}
 		</>
@@ -147,10 +149,10 @@ const MyFollows = ({ category, memberId }: MyFollowsProps) => {
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
-		return <Box className="my-follows my-follows--mobile"><Box className="my-follows__heading"><Typography component="h1">{title}</Typography><Typography>Stay connected with the PetNest community.</Typography></Box>{listContent}</Box>;
+		return <Box className="my-follows my-follows--mobile"><Box className="my-follows__heading"><Typography component="h1">{title}</Typography><Typography>{t('ui.stayConnectedWithThePetnestCommunity')}</Typography></Box>{listContent}</Box>;
 	} else {
 		/** RENDER PC **/
-		return <Box className="my-follows my-follows--pc"><Box className="my-follows__heading"><Typography component="h1">{title}</Typography><Typography>Stay connected with the PetNest community.</Typography></Box>{listContent}</Box>;
+		return <Box className="my-follows my-follows--pc"><Box className="my-follows__heading"><Typography component="h1">{title}</Typography><Typography>{t('ui.stayConnectedWithThePetnestCommunity')}</Typography></Box>{listContent}</Box>;
 	}
 };
 

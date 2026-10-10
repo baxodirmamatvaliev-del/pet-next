@@ -9,6 +9,7 @@ import { REACT_APP_API_URL } from '../../config';
 import { OrderStatus } from '../../enums/order.enum';
 import { Order } from '../../types/order/order';
 import { formatterStr } from '../../utils';
+import { useTranslation } from '../../i18n';
 
 interface OrderCardProps {
 	order: Order;
@@ -18,26 +19,27 @@ interface OrderCardProps {
 }
 
 const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading, showDetailsLink = true }: OrderCardProps) => {
+	const { t, locale, label } = useTranslation();
 	/** COMPUTED VALUES **/
-	const orderDate = new Date(order.createdAt).toLocaleDateString('en-CA');
+	const orderDate = new Date(order.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' });
 	const orderStatus = order.orderStatus === OrderStatus.PAYMENT_CONFIRMED
-		? 'DEMO PAYMENT CONFIRMED'
-		: order.orderStatus.replaceAll('_', ' ');
+		? t('ui.demoPaymentConfirmed')
+		: label(order.orderStatus);
 
 	/** RENDER **/
 	return (
 		<Box className="order-card">
 			<Stack direction="row" className="order-card__header">
 				<Box>
-					<Typography component="span">ORDER</Typography>
+					<Typography component="span">{t('ui.orderLabel')}</Typography>
 					<Typography component="strong">#{order._id.slice(-8).toUpperCase()}</Typography>
 				</Box>
 				<Box>
-					<Typography component="span">PLACED ON</Typography>
+					<Typography component="span">{t('ui.placedOn')}</Typography>
 					<Typography>{orderDate}</Typography>
 				</Box>
 				<Box>
-					<Typography component="span">TOTAL</Typography>
+					<Typography component="span">{t('ui.total')}</Typography>
 					<Typography component="strong">₩{formatterStr(order.totalAmount)}</Typography>
 				</Box>
 				<Chip
@@ -69,7 +71,7 @@ const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading, showDetailsL
 									<Typography component={Link} href={`/product/detail?id=${orderItem.productId}`}>
 										{orderItem.productName}
 									</Typography>
-									<Typography>{orderItem.sku} · Qty {orderItem.quantity}</Typography>
+									<Typography>{orderItem.sku} {t('ui.qty')} {orderItem.quantity}</Typography>
 								</Box>
 								<Typography component="strong">₩{formatterStr(orderItem.subtotal)}</Typography>
 							</Stack>
@@ -81,19 +83,19 @@ const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading, showDetailsL
 					<Stack direction="row">
 						<LocationOnOutlinedIcon />
 						<Box>
-							<Typography component="strong">Delivery address</Typography>
+							<Typography component="strong">{t('ui.deliveryAddress')}</Typography>
 							<Typography>{order.deliveryAddress}</Typography>
 						</Box>
 					</Stack>
 					<Stack direction="row">
 						<AccessTimeRoundedIcon />
 						<Box>
-							<Typography component="strong">Recipient</Typography>
+							<Typography component="strong">{t('ui.recipient')}</Typography>
 							<Typography>{order.recipientName} · {order.recipientPhone}</Typography>
 						</Box>
 					</Stack>
 					{showDetailsLink && (
-						<Button component={Link} href={`/order/detail?id=${order._id}`} variant="outlined">View details</Button>
+						<Button component={Link} href={`/order/detail?id=${order._id}`} variant="outlined">{t('ui.viewDetails')}</Button>
 					)}
 					{order.orderStatus === OrderStatus.PENDING && (
 						<Button
@@ -102,7 +104,7 @@ const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading, showDetailsL
 							onClick={() => cancelOrderHandler(order._id)}
 							disabled={cancelOrderLoading}
 						>
-							Cancel order
+							{t('ui.cancelOrder')}
 						</Button>
 					)}
 				</Stack>

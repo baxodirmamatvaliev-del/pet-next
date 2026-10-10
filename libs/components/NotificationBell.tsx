@@ -15,10 +15,13 @@ import { getValidAccessToken } from '../auth';
 import { REACT_APP_API_SOCKET_URL } from '../config';
 import { T } from '../types/common';
 import { Notification } from '../types/notification/notification';
+import { useTranslation } from '../i18n';
+import { notificationText } from '../i18n/notifications';
 
 const initialInput = { page: 1, limit: 30, search: {} };
 
 const NotificationBell = ({ adminPanel = false }: { adminPanel?: boolean }) => {
+	const { t, locale } = useTranslation();
 	const router = useRouter();
 
 	/** STATES **/
@@ -92,7 +95,7 @@ const NotificationBell = ({ adminPanel = false }: { adminPanel?: boolean }) => {
 
 	return (
 		<>
-			<IconButton className="notification-bell" onClick={openHandler} aria-label={`Notifications, ${unreadCount} unread`} aria-haspopup="true">
+			<IconButton className="notification-bell" onClick={openHandler} aria-label={t('notification.unread', { count: unreadCount })} aria-haspopup="true">
 				<Badge badgeContent={unreadCount} color="error" max={29}>
 					<NotificationsNoneRoundedIcon />
 				</Badge>
@@ -107,37 +110,40 @@ const NotificationBell = ({ adminPanel = false }: { adminPanel?: boolean }) => {
 			>
 				<Stack direction="row" className="notification-panel__header">
 					<Box>
-						<Typography component="h2">Notifications</Typography>
-						<Typography component="p">Your latest PetNest updates</Typography>
+						<Typography component="h2">{t('ui.notifications')}</Typography>
+						<Typography component="p">{t('ui.yourLatestPetnestUpdates')}</Typography>
 					</Box>
-					{unreadCount > 0 && <Typography component="span" className="notification-panel__count">{unreadCount} new</Typography>}
+					{unreadCount > 0 && <Typography component="span" className="notification-panel__count">{t('counts.newNotifications', { count: unreadCount })}</Typography>}
 				</Stack>
 				{getMyNotificationsLoading && !notifications.length ? (
 					<Stack className="notification-panel__empty"><CircularProgress size={24} /></Stack>
-				) : notifications.length ? notifications.map((notification) => (
-					<Box
-						key={notification._id}
-						component="button"
-						type="button"
-						className={`notification-panel__item ${notification.notificationStatus === 'WAIT' ? 'notification-panel__item--unread' : ''}`}
-						onClick={() => void notificationClickHandler(notification)}
-					>
-						<Box className="notification-panel__icon">
-							{notification.notificationGroup === 'SUPPORT' ? <SupportAgentOutlinedIcon /> : notification.notificationType === 'FOLLOW' ? <PersonAddAltOutlinedIcon /> : <LocalShippingOutlinedIcon />}
+				) : notifications.length ? notifications.map((notification) => {
+					const { title, description } = notificationText(notification, t);
+					return (
+						<Box
+							key={notification._id}
+							component="button"
+							type="button"
+							className={`notification-panel__item ${notification.notificationStatus === 'WAIT' ? 'notification-panel__item--unread' : ''}`}
+							onClick={() => void notificationClickHandler(notification)}
+						>
+							<Box className="notification-panel__icon">
+								{notification.notificationGroup === 'SUPPORT' ? <SupportAgentOutlinedIcon /> : notification.notificationType === 'FOLLOW' ? <PersonAddAltOutlinedIcon /> : <LocalShippingOutlinedIcon />}
+							</Box>
+							<Box className="notification-panel__content">
+								<Stack direction="row" className="notification-panel__item-top">
+									<Typography component="strong">{title}</Typography>
+									{notification.notificationStatus === 'WAIT' && <Typography component="span" className="notification-panel__dot" aria-label={t('ui.unread')} />}
+								</Stack>
+								{description && <Typography component="p">{description}</Typography>}
+								<Stack direction="row" className="notification-panel__meta">
+									<Typography component="small">{new Date(notification.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' })}</Typography>
+									<Typography component="span">{notification.notificationStatus === 'WAIT' ? t('ui.unread') : t('ui.read')}</Typography>
+								</Stack>
+							</Box>
 						</Box>
-						<Box className="notification-panel__content">
-							<Stack direction="row" className="notification-panel__item-top">
-								<Typography component="strong">{notification.notificationTitle}</Typography>
-								{notification.notificationStatus === 'WAIT' && <Typography component="span" className="notification-panel__dot" aria-label="Unread" />}
-							</Stack>
-							{notification.notificationDesc && <Typography component="p">{notification.notificationDesc}</Typography>}
-							<Stack direction="row" className="notification-panel__meta">
-								<Typography component="small">{new Date(notification.createdAt).toLocaleDateString()}</Typography>
-								<Typography component="span">{notification.notificationStatus === 'WAIT' ? 'New' : 'Read'}</Typography>
-							</Stack>
-						</Box>
-					</Box>
-				)) : <Typography className="notification-panel__empty">No notifications yet.</Typography>}
+					);
+				}) : <Typography className="notification-panel__empty">{t('ui.noNotificationsYet')}</Typography>}
 			</Popover>
 		</>
 	);

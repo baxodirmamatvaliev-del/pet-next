@@ -15,12 +15,14 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAler
 import { T } from '../../types/common';
 import { Comment } from '../../types/comment/comment';
 import { CommentInput, CommentUpdateInput, CommentsInquiry } from '../../types/comment/comment.input';
+import { useTranslation } from '../../i18n';
 
 interface PetCommentsProps {
 	petId: string;
 }
 
 const PetComments = (props: PetCommentsProps) => {
+	const { t, locale, label, errorText } = useTranslation();
 	const { petId } = props;
 	const device = useDeviceDetect();
 
@@ -86,10 +88,10 @@ const PetComments = (props: PetCommentsProps) => {
 			await updateComment({ variables: { input } });
 			await getCommentsRefetch({ input: commentInquiry });
 			cancelEditHandler();
-			await sweetTopSmallSuccessAlert('Comment updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.commentUpdated'), 800);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -110,10 +112,10 @@ const PetComments = (props: PetCommentsProps) => {
 			setCommentText('');
 			if (commentPage > 1) setCommentPage(1);
 			else await getCommentsRefetch({ input: commentInquiry });
-			await sweetTopSmallSuccessAlert('Comment posted', 800);
+			await sweetTopSmallSuccessAlert(t('ui.commentPosted'), 800);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -124,10 +126,10 @@ const PetComments = (props: PetCommentsProps) => {
 		<>
 			<Stack direction="row" className="pet-comments__heading">
 				<Box>
-					<Typography component="h2">Community comments</Typography>
-					<Typography>Share a kind thought or ask about this pet.</Typography>
+					<Typography component="h2">{t('ui.communityComments')}</Typography>
+					<Typography>{t('ui.shareAKindThoughtOrAskAboutThis')}</Typography>
 				</Box>
-				<Typography component="span">{total} comments</Typography>
+				<Typography component="span">{t('counts.comments', { count: total })}</Typography>
 			</Stack>
 
 			{user?.sub ? (
@@ -135,32 +137,32 @@ const PetComments = (props: PetCommentsProps) => {
 					<TextField
 						value={commentText}
 						onChange={(event) => setCommentText(event.target.value)}
-						placeholder="Write a comment about this pet..."
+						placeholder={t('ui.writeACommentAboutThisPet')}
 						multiline
 						rows={3}
 						fullWidth
-						slotProps={{ htmlInput: { maxLength: 500, 'aria-label': 'Write a comment' } }}
+						slotProps={{ htmlInput: { maxLength: 500, 'aria-label': t('common.writeComment') } }}
 					/>
 					<Button type="submit" variant="contained" disabled={!commentText.trim() || createCommentLoading}>
-						{createCommentLoading ? 'Posting...' : 'Post comment'}
+						{createCommentLoading ? t('ui.posting') : t('ui.postComment')}
 					</Button>
 				</Stack>
 			) : (
 				<Stack direction="row" className="pet-comments__sign-in">
-					<Typography>Sign in to join the conversation.</Typography>
-					<Button component={Link} href={signInHref} variant="outlined">Sign in</Button>
+					<Typography>{t('ui.signInToJoinTheConversation')}</Typography>
+					<Button component={Link} href={signInHref} variant="outlined">{t('ui.signIn')}</Button>
 				</Stack>
 			)}
 
 			{getCommentsLoading && !comments.length ? (
 				<Stack className="pet-comments__state"><CircularProgress color="primary" /></Stack>
 			) : getCommentsError ? (
-				<Alert severity="error">Comments could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.commentsCouldNotBeLoaded')}</Alert>
 			) : comments.length ? (
 				<>
 					<Stack className="pet-comments__list">
 						{comments.map((comment) => {
-							const author = comment.memberData?.memberNick ?? 'PetNest member';
+							const author = comment.memberData?.memberNick ?? t('common.member');
 							const memberType = comment.memberData?.memberType;
 							const isOwner = user?.sub === comment.memberId;
 							const authorHref = isOwner ? '/mypage?category=myProfile' : `/member/detail?id=${comment.memberId}`;
@@ -176,21 +178,21 @@ const PetComments = (props: PetCommentsProps) => {
 										<Stack direction="row" className="pet-comments__author">
 											<Stack className="pet-comments__author-identity">
 												{(memberType === MemberType.ADMIN || memberType === MemberType.AGENT) && (
-													<Typography component="span" className={`pet-comments__role pet-comments__role--${memberType.toLowerCase()}`}>{memberType}</Typography>
+													<Typography component="span" className={`pet-comments__role pet-comments__role--${memberType.toLowerCase()}`}>{label(memberType)}</Typography>
 												)}
 												<Typography component={Link} href={authorHref} className="pet-comments__author-link">{author}</Typography>
 											</Stack>
 											<Stack direction="row" className="pet-comments__author-actions">
-												<Typography>{new Date(comment.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
-												{isOwner && !isEditing && <Button size="small" onClick={() => editCommentHandler(comment)}>Edit</Button>}
+												<Typography>{new Date(comment.createdAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
+												{isOwner && !isEditing && <Button size="small" onClick={() => editCommentHandler(comment)}>{t('ui.edit')}</Button>}
 											</Stack>
 										</Stack>
 										{isEditing ? (
 											<Stack component="form" className="pet-comments__edit-form" onSubmit={updateCommentHandler}>
-												<TextField value={editText} onChange={(event) => setEditText(event.target.value)} multiline rows={3} fullWidth slotProps={{ htmlInput: { maxLength: 500, 'aria-label': 'Edit comment' } }} />
+												<TextField value={editText} onChange={(event) => setEditText(event.target.value)} multiline rows={3} fullWidth slotProps={{ htmlInput: { maxLength: 500, 'aria-label': t('common.editComment') } }} />
 												<Stack direction="row" className="pet-comments__edit-actions">
-													<Button type="button" onClick={cancelEditHandler} disabled={updateCommentLoading}>Cancel</Button>
-													<Button type="submit" variant="contained" disabled={!editText.trim() || editText.trim() === comment.commentContent || updateCommentLoading}>{updateCommentLoading ? 'Saving...' : 'Save'}</Button>
+													<Button type="button" onClick={cancelEditHandler} disabled={updateCommentLoading}>{t('ui.cancel')}</Button>
+													<Button type="submit" variant="contained" disabled={!editText.trim() || editText.trim() === comment.commentContent || updateCommentLoading}>{updateCommentLoading ? t('ui.saving') : t('ui.save')}</Button>
 												</Stack>
 											</Stack>
 										) : (
@@ -206,7 +208,7 @@ const PetComments = (props: PetCommentsProps) => {
 					)}
 				</>
 			) : (
-				<Typography className="pet-comments__empty">No comments yet. Be the first to say hello.</Typography>
+				<Typography className="pet-comments__empty">{t('ui.noCommentsYetBeTheFirstToSay')}</Typography>
 			)}
 		</>
 	);

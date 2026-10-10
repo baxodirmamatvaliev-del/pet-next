@@ -15,6 +15,7 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { useTranslation } from '../../libs/i18n';
 
 interface AccountInput {
 	nick: string;
@@ -23,6 +24,7 @@ interface AccountInput {
 }
 
 const Join: NextPage = () => {
+	const { t, errorText } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 
@@ -58,11 +60,11 @@ const Join: NextPage = () => {
 		try {
 			setLoading(true);
 			await logIn(input.nick, input.password);
-			await sweetTopSmallSuccessAlert('Welcome back!', 800);
+			await sweetTopSmallSuccessAlert(t('ui.welcomeBack'), 800);
 			await redirectAfterAuthHandler();
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setLoading(false);
 		}
@@ -74,11 +76,11 @@ const Join: NextPage = () => {
 		try {
 			setLoading(true);
 			await signUp(input.nick, input.password, input.phone);
-			await sweetTopSmallSuccessAlert('Account created!', 800);
+			await sweetTopSmallSuccessAlert(t('ui.accountCreated'), 800);
 			await redirectAfterAuthHandler();
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setLoading(false);
 		}
@@ -88,7 +90,7 @@ const Join: NextPage = () => {
 		try {
 			await logOut();
 		} catch {
-			await sweetMixinErrorAlert('Logout failed. Please try again.');
+			await sweetMixinErrorAlert(t('ui.logoutFailedPleaseTryAgain'));
 		}
 	};
 
@@ -110,40 +112,40 @@ const Join: NextPage = () => {
 
 			{user?.sub ? (
 				<Stack className="join-session">
-					<Typography component="span">ACCOUNT</Typography>
-					<Typography component="h1">You are signed in</Typography>
-					<Typography>Your PetNest session is active and ready for shopping.</Typography>
+					<Typography component="span">{t('nav.accountSection')}</Typography>
+					<Typography component="h1">{t('ui.youAreSignedIn')}</Typography>
+					<Typography>{t('ui.yourPetnestSessionIsActiveAndReadyFor')}</Typography>
 					<Button
 						variant="contained"
 						startIcon={<LogoutRoundedIcon />}
 						onClick={logoutHandler}
 					>
-						Logout
+						{t('ui.logout')}
 					</Button>
 					<Button component={Link} href="/product" variant="outlined">
-						Continue shopping
+						{t('ui.continueShopping')}
 					</Button>
 				</Stack>
 			) : (
 				<>
 					<Box className="join-heading">
-						<Typography component="span">WELCOME TO PETNEST</Typography>
+						<Typography component="span">{t('ui.welcomeToPetnest')}</Typography>
 						<Typography component="h1">
-							{loginView ? 'Welcome back' : 'Create your account'}
+							{loginView ? t('ui.loginGreeting') : t('ui.createYourAccount')}
 						</Typography>
 						<Typography>
 							{loginView
-								? 'Login to manage your cart, favorites and orders.'
-								: 'Join PetNest and make shopping for your pet easier.'}
+								? t('ui.loginToManageYourCartFavoritesAndOrders')
+								: t('ui.joinPetnestAndMakeShoppingForYourPet')}
 						</Typography>
 					</Box>
 
 					<Stack direction="row" className="join-switch">
 						<Button className={loginView ? 'active' : ''} onClick={() => viewChangeHandler(true)}>
-							Login
+							{t('nav.login')}
 						</Button>
 						<Button className={!loginView ? 'active' : ''} onClick={() => viewChangeHandler(false)}>
-							Sign up
+							{t('ui.signUp')}
 						</Button>
 					</Stack>
 
@@ -153,16 +155,16 @@ const Join: NextPage = () => {
 						onSubmit={loginView ? loginHandler : signupHandler}
 					>
 						<TextField
-							label="Nickname"
-							placeholder="Enter your nickname"
+							label={t('ui.nickname')}
+							placeholder={t('ui.enterYourNickname')}
 							value={input.nick}
 							onChange={(event) => inputChangeHandler('nick', event.target.value)}
 							required
 							fullWidth
 						/>
 						<TextField
-							label="Password"
-							placeholder="At least 8 characters"
+							label={t('ui.password')}
+							placeholder={t('ui.atLeast8Characters')}
 							type="password"
 							value={input.password}
 							onChange={(event) => inputChangeHandler('password', event.target.value)}
@@ -172,7 +174,7 @@ const Join: NextPage = () => {
 						/>
 						{!loginView && (
 							<TextField
-								label="Phone number"
+								label={t('ui.phoneNumber')}
 								placeholder="010-0000-0000"
 								type="tel"
 								value={input.phone}
@@ -187,7 +189,7 @@ const Join: NextPage = () => {
 							endIcon={<ArrowForwardRoundedIcon />}
 							disabled={isSubmitDisabled}
 						>
-							{loading ? 'Please wait...' : loginView ? 'Login' : 'Create account'}
+							{loading ? t('ui.pleaseWait') : loginView ? t('nav.login') : t('ui.createAccount')}
 						</Button>
 					</Stack>
 				</>
@@ -200,8 +202,8 @@ const Join: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>Account | PetNest Korea</title>
-					<meta name="title" content="Account | PetNest Korea" />
+					<title>{t('ui.accountPetnestKorea')}</title>
+					<meta name="title" content={t('ui.accountPetnestKorea')} />
 				</Head>
 				<Box component="main" className="join-page join-page--mobile">
 					<Box className="container">
@@ -217,8 +219,8 @@ const Join: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>Account | PetNest Korea</title>
-					<meta name="title" content="Account | PetNest Korea" />
+					<title>{t('ui.accountPetnestKorea')}</title>
+					<meta name="title" content={t('ui.accountPetnestKorea')} />
 				</Head>
 				<Box component="main" className="join-page join-page--pc">
 					<Box className="container">
@@ -226,10 +228,10 @@ const Join: NextPage = () => {
 							{joinForm}
 							<Stack className="join-side">
 								<PetsRoundedIcon />
-								<Typography component="span">PETNEST MEMBERSHIP</Typography>
-								<Typography component="h2">Everything they love, all in one place.</Typography>
+								<Typography component="span">{t('ui.petnestMembership')}</Typography>
+								<Typography component="h2">{t('ui.everythingTheyLoveAllInOnePlace')}</Typography>
 								<Typography>
-									Save favorites, build your cart and keep every order close at hand.
+									{t('ui.saveFavoritesBuildYourCartAndKeepEvery')}
 								</Typography>
 							</Stack>
 						</Box>

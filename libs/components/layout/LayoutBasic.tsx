@@ -5,9 +5,11 @@ import React from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Footer from '../Footer';
 import Top from '../Top';
+import { useTranslation } from '../../i18n';
 
 const withLayoutBasic = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutBasic(props: P) {
+		const { t } = useTranslation();
 		const device = useDeviceDetect();
 
 		if (device === 'mobile') {
@@ -15,8 +17,8 @@ const withLayoutBasic = <P extends object>(Component: React.ComponentType<P>) =>
 			return (
 				<>
 					<Head>
-						<title>Shop | PetNest Korea</title>
-						<meta name="title" content="Shop | PetNest Korea" />
+						<title>{t('ui.shopPetnestKorea')}</title>
+						<meta name="title" content={t('ui.shopPetnestKorea')} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id="top"><Top /></Stack>
@@ -30,8 +32,8 @@ const withLayoutBasic = <P extends object>(Component: React.ComponentType<P>) =>
 			return (
 				<>
 					<Head>
-						<title>Shop | PetNest Korea</title>
-						<meta name="title" content="Shop | PetNest Korea" />
+						<title>{t('ui.shopPetnestKorea')}</title>
+						<meta name="title" content={t('ui.shopPetnestKorea')} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id="top"><Top /></Stack>

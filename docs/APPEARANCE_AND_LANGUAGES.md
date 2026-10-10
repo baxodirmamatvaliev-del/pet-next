@@ -143,3 +143,77 @@ ushbu lug‘atlar orqali avtomatik tarjima qilinmaydi.
 - Dark mode saqlandi; gorizontal overflow, hydration va ushlanmagan JavaScript xatolari kuzatilmadi.
 
 Commit: `feat(i18n): add English Uzbek Korean and Russian support`
+
+## 4-bosqichni review qilish
+
+Sahifalar, formalar, bo‘sh ro‘yxat va xato holatlari EN / UZ / KO / RU lug‘atlariga ulandi.
+Bunga bosh sahifa, katalog, jonivorlar, agentlar, savat, checkout, profil, yordam markazi
+va admin kiradi. Yangi dependency qo‘shilmadi.
+
+1. `libs/i18n/locales/` — oddiy matnlar va to‘liq jumlalar.
+   Ko‘p o‘zgarish aynan shu lug‘atlarda: har bir matnning to‘rtta nusxasi kerak.
+   `ui.*` — tugma va sarlavhalar, `message.*` — o‘zgaruvchi qatnashgan jumlalar,
+   `counts.*` — sonlar, `notification.*` — tizim bildirishnomalari.
+2. `libs/i18n/index.ts` — mavjud `t()` ga ikkita kichik yordamchi qo‘shildi:
+   `label()` enumning ekrandagi nomini, `errorText()` backend xabarini tarjima qiladi.
+3. `libs/i18n/labels.ts` — enum va tarjima kaliti orasidagi oddiy jadval.
+   Masalan, `<MenuItem value={status}>{label(status)}</MenuItem>` ichida
+   foydalanuvchi «Faol»ni ko‘radi, backendga esa `ACTIVE` yuboriladi.
+4. `libs/i18n/errors.ts` — ma’lum backend xatolari, masalan noto‘g‘ri parol yoki
+   yetarli zaxira yo‘qligi. Noma’lum xatoga UZ / KO / RU da umumiy xabar chiqadi;
+   inglizcha rejimda asl xabar saqlanadi.
+5. `libs/i18n/notifications.ts` — backendning tayyor bildirishnoma sarlavhalarini tarjima qiladi.
+   Agent ismi, yordam so‘rovi mavzusi va foydalanuvchi yozgan matn saqlanadi.
+   Noma’lum bildirishnoma ham asl holicha chiqadi.
+6. `libs/sweetAlert.ts` — tasdiqlash va bekor qilish tugmalari matnini chaqiruvchi komponent beradi.
+   Sanalar joriy `locale` bilan, Koreya vaqt mintaqasida ko‘rsatiladi.
+   `scss/MaterialTheme/index.ts` sahifalash va yulduzli baho accessibility yozuvlarini ham tarjima qiladi;
+   `_app.tsx` temani til o‘zgargandagina qayta yaratadi.
+
+Masalan, e’lon holatini o‘zgartirishda:
+
+```tsx
+const { t, label } = useTranslation();
+
+const question = t('message.changeStatus', {
+  name: pet.petName,
+  status: label(petStatus),
+});
+```
+
+UZ da: «Bori holatini “Band qilingan”ga o‘zgartirasizmi?».
+Ism va holat alohida joylashtiriladi; boshqa til o‘z lug‘atida ularning tartibini belgilaydi.
+Mahsulot nomi, tavsif, sharh va foydalanuvchi xabarlari avtomatik tarjima qilinmaydi.
+Narxlar barcha tillarda Koreya vonida qoladi. Sinov to‘lovlarida haqiqiy pul yechilmasligi
+haqidagi yozuvlar to‘rtta tilda ham saqlangan.
+
+### Qo‘lda tekshirish
+
+1. Tilni almashtirib, katalog, Help Center va login formasini oching: matn va formalar o‘zgaradi.
+2. Hisobingizda sevimlilar, kuzatuvchilar, buyurtmalar va bo‘sh ro‘yxat holatlarini ko‘ring.
+3. Jonivor yoki mahsulot formasida dropdown matnini almashtiring: yuboriladigan enum o‘zgarmaydi.
+4. Buyurtmani bekor qilish oynasini oching: savol va ikkala tugma tanlangan tilda chiqadi.
+5. Dark mode’da boshqa tilni tanlang: tema va joriy sahifa saqlanadi.
+
+320px ekranda uzun tarjimalar sig‘ishi uchun bosh sahifa kartalari va checkout gridlari ham
+moslandi (`scss/mobile/_general.scss`, `scss/mobile/_checkout.scss`).
+
+Avtomatik lug‘at va bildirishnoma tekshiruvi: `yarn test:i18n`.
+
+### 4-bosqich tekshiruvi
+
+- TypeScript, ESLint va production build o‘tdi; 108 ta statik sahifa yaratildi.
+- Auth testlari: 12/12. Lug‘at kalitlari, jumla parametrlari va bildirishnoma testlari: 3/3.
+- Desktopda 34 ta sahifa/tab to‘rtta tilda, mobilda shu ekranlar UZ / KO / RU da
+  320px va 390px o‘lchamlarda ochib tekshirildi.
+- Bosh sahifa va checkoutdagi mobil kengayish tuzatildi va ikkala o‘lchamda,
+  to‘rtta tilda, yorug‘ va to‘q rejimlarda qayta tekshirildi.
+- Til selector’i, query/hash, server HTML’i, cookie va dark mode saqlanishi tekshirildi.
+- Kirilgan hisob, admin va buyurtma holatlari test javoblari bilan tekshirildi;
+  haqiqiy backendga ma’lumot yozilmadi.
+- To‘rtta tilda buyurtma natijasi, to‘lovni qayta urinish xabari, admin to‘lov oynasi,
+  bo‘sh sevimlilar va backendga yuboriladigan enumlar tekshirildi.
+  Noto‘g‘ri parol xabari UZ login formasida ham tekshirildi.
+- Hydration va ushlanmagan JavaScript xatolari kuzatilmadi.
+
+Commit: `feat(i18n): translate application pages and forms`

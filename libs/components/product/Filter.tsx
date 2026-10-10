@@ -17,6 +17,7 @@ import {
 import { ProductCategory, ProductType } from '../../enums/product.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { ProductsInquiry } from '../../types/product/product.input';
+import { useTranslation } from '../../i18n';
 
 interface FilterType {
 	searchFilter: ProductsInquiry;
@@ -24,21 +25,21 @@ interface FilterType {
 	initialInput: ProductsInquiry;
 }
 
-const categoryOptions = [
-	{ label: 'Dogs', value: ProductCategory.DOG },
-	{ label: 'Cats', value: ProductCategory.CAT },
-];
-
-const typeOptions = [
-	{ label: 'Food', value: ProductType.FOOD },
-	{ label: 'Toys', value: ProductType.TOY },
-	{ label: 'Beds', value: ProductType.BED },
-	{ label: 'Harnesses', value: ProductType.HARNESS },
-	{ label: 'Accessories', value: ProductType.ACCESSORY },
-	{ label: 'Other', value: ProductType.OTHER },
-];
-
 const Filter = (props: FilterType) => {
+	const { t } = useTranslation();
+	const categoryOptions = [
+		{ label: t('nav.dogs'), value: ProductCategory.DOG },
+		{ label: t('nav.cats'), value: ProductCategory.CAT },
+	];
+	const typeOptions = [
+		{ label: t('ui.food'), value: ProductType.FOOD },
+		{ label: t('ui.toys'), value: ProductType.TOY },
+		{ label: t('ui.beds'), value: ProductType.BED },
+		{ label: t('ui.harnesses'), value: ProductType.HARNESS },
+		{ label: t('ui.accessories'), value: ProductType.ACCESSORY },
+		{ label: t('ui.other'), value: ProductType.OTHER },
+	];
+
 	const { searchFilter, updateSearchFilter, initialInput } = props;
 	const device = useDeviceDetect();
 
@@ -106,16 +107,16 @@ const Filter = (props: FilterType) => {
 						type="search"
 						value={searchText}
 						onChange={(event) => setSearchText(event.target.value)}
-						placeholder="Search products"
+						placeholder={t('nav.search')}
 						slotProps={{
-							htmlInput: { 'aria-label': 'Search products' },
-							input: { endAdornment: <InputAdornment position="end"><IconButton type="submit" edge="end" aria-label="Submit search"><SearchRoundedIcon /></IconButton></InputAdornment> },
+							htmlInput: { 'aria-label': t('nav.search') },
+							input: { endAdornment: <InputAdornment position="end"><IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}><SearchRoundedIcon /></IconButton></InputAdornment> },
 						}}
 					/>
 				</Box>
 				<Stack direction="row" className="product-filter__mobile-groups">
 					<FormControl className="product-filter__group">
-						<FormLabel>Pet</FormLabel>
+						<FormLabel>{t('ui.pet')}</FormLabel>
 						<FormGroup>
 							{categoryOptions.map(({ label, value }) => (
 								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.categoryList?.includes(value) ?? false} onChange={() => categorySelectHandler(value)} />} />
@@ -123,7 +124,7 @@ const Filter = (props: FilterType) => {
 						</FormGroup>
 					</FormControl>
 					<FormControl className="product-filter__group">
-						<FormLabel>Product type</FormLabel>
+						<FormLabel>{t('ui.productType')}</FormLabel>
 						<FormGroup>
 							{typeOptions.map(({ label, value }) => (
 								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.typeList?.includes(value) ?? false} onChange={() => typeSelectHandler(value)} />} />
@@ -131,7 +132,7 @@ const Filter = (props: FilterType) => {
 						</FormGroup>
 					</FormControl>
 				</Stack>
-				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>Reset filters</Button>
+				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>{t('ui.resetFilters')}</Button>
 			</Stack>
 		);
 	} else {
@@ -145,13 +146,13 @@ const Filter = (props: FilterType) => {
 						type="search"
 						value={searchText}
 						onChange={(event) => setSearchText(event.target.value)}
-						placeholder="Search products"
+						placeholder={t('nav.search')}
 						slotProps={{
-							htmlInput: { 'aria-label': 'Search products' },
+							htmlInput: { 'aria-label': t('nav.search') },
 							input: {
 								endAdornment: (
 									<InputAdornment position="end">
-										<IconButton type="submit" edge="end" aria-label="Submit search">
+										<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}>
 											<SearchRoundedIcon />
 										</IconButton>
 									</InputAdornment>
@@ -162,7 +163,7 @@ const Filter = (props: FilterType) => {
 				</Box>
 
 				<FormControl className="product-filter__group">
-					<FormLabel>Pet</FormLabel>
+					<FormLabel>{t('ui.pet')}</FormLabel>
 					<FormGroup>
 						{categoryOptions.map(({ label, value }) => (
 							<FormControlLabel
@@ -181,7 +182,7 @@ const Filter = (props: FilterType) => {
 				</FormControl>
 
 				<FormControl className="product-filter__group">
-					<FormLabel>Product type</FormLabel>
+					<FormLabel>{t('ui.productType')}</FormLabel>
 					<FormGroup>
 						{typeOptions.map(({ label, value }) => (
 							<FormControlLabel
@@ -200,7 +201,7 @@ const Filter = (props: FilterType) => {
 				</FormControl>
 
 				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>
-					Reset filters
+					{t('ui.resetFilters')}
 				</Button>
 			</Box>
 		);

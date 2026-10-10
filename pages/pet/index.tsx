@@ -14,12 +14,14 @@ import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { T } from '../../libs/types/common';
 import { PetsInquiry } from '../../libs/types/pet/pet.input';
 import { Pet } from '../../libs/types/pet/pet';
+import { useTranslation } from '../../libs/i18n';
 
 interface PetListProps {
 	initialInput?: PetsInquiry;
 }
 
 const PetList = (props: PetListProps) => {
+	const { t } = useTranslation();
 	const { initialInput = PetList.defaultProps.initialInput } = props;
 	const router = useRouter();
 	const device = useDeviceDetect();
@@ -80,18 +82,18 @@ const PetList = (props: PetListProps) => {
 			<Box component="main" className="pet-list-page pet-list-page--mobile container">
 				<Stack className="pet-list-page__heading">
 					<Box>
-						<Typography>Home / Community</Typography>
-						<Typography component="h1">Find your new best friend</Typography>
-						<Typography>Meet pets looking for loving homes across South Korea.</Typography>
+						<Typography>{t('ui.homeCommunity')}</Typography>
+						<Typography component="h1">{t('ui.findYourNewBestFriend')}</Typography>
+						<Typography>{t('ui.meetPetsLookingForLovingHomesAcrossSouth')}</Typography>
 					</Box>
 					<Stack direction="row" component="label">
-						<Typography component="span">Sort by</Typography>
+						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
 							<Select value={searchFilter.sort} onChange={sortingHandler}>
-								<MenuItem value="createdAt">Newest</MenuItem>
-								<MenuItem value="petLikes">Most liked</MenuItem>
-								<MenuItem value="petViews">Most viewed</MenuItem>
-								<MenuItem value="petPrice">Price</MenuItem>
+								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
+								<MenuItem value="petLikes">{t('ui.mostLiked')}</MenuItem>
+								<MenuItem value="petViews">{t('ui.mostViewed')}</MenuItem>
+								<MenuItem value="petPrice">{t('ui.price')}</MenuItem>
 							</Select>
 						</FormControl>
 					</Stack>
@@ -99,26 +101,26 @@ const PetList = (props: PetListProps) => {
 				<PetFilter searchFilter={searchFilter} updateSearchFilter={updateSearchFilterHandler} />
 				<Box component="section" className="pet-results" aria-live="polite">
 					<Stack direction="row" className="pet-results__toolbar">
-						<Typography className="pet-results__count">{total} pets available</Typography>
+						<Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>
 						<Button component={Link} href="/pet/create" className="pet-results__create" startIcon={<AddRoundedIcon />}>
-							Create listing
+							{t('ui.createListing')}
 						</Button>
 					</Stack>
 					{getPetsLoading && !pets.length ? (
-						<Typography className="pet-results__message">Loading pets...</Typography>
+						<Typography className="pet-results__message">{t('ui.loadingPets')}</Typography>
 					) : getPetsError ? (
-						<Typography className="pet-results__message pet-results__message--error">Pets could not be loaded.</Typography>
+						<Typography className="pet-results__message pet-results__message--error">{t('ui.petsCouldNotBeLoaded')}</Typography>
 					) : pets.length ? (
 						<Box className="pet-results__grid">
 							{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
 						</Box>
 					) : (
-						<Typography className="pet-results__message">No pets match your filters.</Typography>
+						<Typography className="pet-results__message">{t('ui.noPetsMatchYourFilters')}</Typography>
 					)}
 					{pets.length > 0 && totalPages > 0 && (
 						<Stack direction="row" className="pet-pagination">
 							<Pagination page={searchFilter.page} count={totalPages} onChange={paginationChangeHandler} color="primary" shape="rounded" />
-							<Typography>{total} pets available</Typography>
+							<Typography>{t('counts.pets', { count: total })}</Typography>
 						</Stack>
 					)}
 				</Box>
@@ -130,18 +132,18 @@ const PetList = (props: PetListProps) => {
 			<Box component="main" className="pet-list-page container">
 				<Stack direction="row" className="pet-list-page__heading">
 					<Box>
-						<Typography>Home / Community</Typography>
-						<Typography component="h1">Find your new best friend</Typography>
-						<Typography>Meet pets looking for loving homes across South Korea.</Typography>
+						<Typography>{t('ui.homeCommunity')}</Typography>
+						<Typography component="h1">{t('ui.findYourNewBestFriend')}</Typography>
+						<Typography>{t('ui.meetPetsLookingForLovingHomesAcrossSouth')}</Typography>
 					</Box>
 					<Stack direction="row" component="label">
-						<Typography component="span">Sort by</Typography>
+						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
 							<Select value={searchFilter.sort} onChange={sortingHandler}>
-								<MenuItem value="createdAt">Newest</MenuItem>
-								<MenuItem value="petLikes">Most liked</MenuItem>
-								<MenuItem value="petViews">Most viewed</MenuItem>
-								<MenuItem value="petPrice">Price</MenuItem>
+								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
+								<MenuItem value="petLikes">{t('ui.mostLiked')}</MenuItem>
+								<MenuItem value="petViews">{t('ui.mostViewed')}</MenuItem>
+								<MenuItem value="petPrice">{t('ui.price')}</MenuItem>
 							</Select>
 						</FormControl>
 					</Stack>
@@ -151,28 +153,28 @@ const PetList = (props: PetListProps) => {
 
 				<Box component="section" className="pet-results" aria-live="polite">
 					<Stack direction="row" className="pet-results__toolbar">
-						<Typography className="pet-results__count">{total} pets available</Typography>
+						<Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>
 						<Button
 							component={Link}
 							href="/pet/create"
 							className="pet-results__create"
 							startIcon={<AddRoundedIcon />}
 						>
-							Create listing
+							{t('ui.createListing')}
 						</Button>
 					</Stack>
 					{getPetsLoading && !pets.length ? (
-						<Typography className="pet-results__message">Loading pets...</Typography>
+						<Typography className="pet-results__message">{t('ui.loadingPets')}</Typography>
 					) : getPetsError ? (
 						<Typography className="pet-results__message pet-results__message--error">
-							Pets could not be loaded.
+							{t('ui.petsCouldNotBeLoaded')}
 						</Typography>
 					) : pets.length ? (
 						<Box className="pet-results__grid">
 							{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
 						</Box>
 					) : (
-						<Typography className="pet-results__message">No pets match your filters.</Typography>
+						<Typography className="pet-results__message">{t('ui.noPetsMatchYourFilters')}</Typography>
 					)}
 					{pets.length > 0 && totalPages > 0 && (
 						<Stack direction="row" className="pet-pagination">
@@ -183,7 +185,7 @@ const PetList = (props: PetListProps) => {
 								color="primary"
 								shape="rounded"
 							/>
-							<Typography>{total} pets available</Typography>
+							<Typography>{t('counts.pets', { count: total })}</Typography>
 						</Stack>
 					)}
 				</Box>

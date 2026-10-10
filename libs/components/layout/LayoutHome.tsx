@@ -5,9 +5,11 @@ import React from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Footer from '../Footer';
 import Top from '../Top';
+import { useTranslation } from '../../i18n';
 
 const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutHome(props: P) {
+		const { t } = useTranslation();
 		const device = useDeviceDetect();
 
 		if (device === 'mobile') {
@@ -15,8 +17,8 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 			return (
 				<>
 					<Head>
-						<title>PetNest Korea — Everything they love</title>
-						<meta name="title" content="PetNest Korea — Everything they love" />
+						<title>{t('ui.petnestKoreaEverythingTheyLove')}</title>
+						<meta name="title" content={t('ui.petnestKoreaEverythingTheyLove')} />
 						<meta name="viewport" content="width=device-width, initial-scale=1" />
 					</Head>
 					<Stack id="mobile-wrap">
@@ -31,8 +33,8 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 			return (
 				<>
 					<Head>
-						<title>PetNest Korea — Everything they love</title>
-						<meta name="title" content="PetNest Korea — Everything they love" />
+						<title>{t('ui.petnestKoreaEverythingTheyLove')}</title>
+						<meta name="title" content={t('ui.petnestKoreaEverythingTheyLove')} />
 						<meta name="viewport" content="width=device-width, initial-scale=1" />
 					</Head>
 					<Stack id="pc-wrap">

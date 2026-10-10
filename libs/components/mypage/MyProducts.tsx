@@ -14,12 +14,14 @@ import { T } from '../../types/common';
 import { Product } from '../../types/product/product';
 import { MyProductsInquiry, ProductUpdateInput } from '../../types/product/product.input';
 import MyProductCard from './MyProductCard';
+import { useTranslation } from '../../i18n';
 
 interface MyProductsProps {
 	initialInput?: MyProductsInquiry;
 }
 
 const MyProducts = (props: MyProductsProps) => {
+	const { t, errorText } = useTranslation();
 	const { initialInput = MyProducts.defaultProps.initialInput } = props;
 	const device = useDeviceDetect();
 
@@ -59,29 +61,36 @@ const MyProducts = (props: MyProductsProps) => {
 
 	const updateProductStatusHandler = async (product: Product, productStatus: ProductStatus) => {
 		try {
-			const action = productStatus === ProductStatus.HIDDEN ? 'hide' : 'show';
-			if (!await sweetConfirmAlert(`Are you sure you want to ${action} this product?`)) return;
+			if (!await sweetConfirmAlert(
+				t(productStatus === ProductStatus.HIDDEN ? 'message.hideProduct' : 'message.showProduct'),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 
 			const input: ProductUpdateInput = { _id: product._id, productStatus };
 			await updateProduct({ variables: { input } });
 			await getMyProductsRefetch({ input: searchFilter });
-			await sweetTopSmallSuccessAlert('Product updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.productUpdated'), 800);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
 	const removeProductHandler = async (product: Product) => {
 		try {
-			if (!await sweetConfirmAlert('Are you sure you want to remove this product?')) return;
+			if (!await sweetConfirmAlert(
+				t('ui.areYouSureYouWantToRemoveThis'),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 
 			await removeProduct({ variables: { productId: product._id } });
 			await getMyProductsRefetch({ input: searchFilter });
-			await sweetTopSmallSuccessAlert('Product removed', 800);
+			await sweetTopSmallSuccessAlert(t('ui.productRemoved'), 800);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -92,7 +101,7 @@ const MyProducts = (props: MyProductsProps) => {
 	const productsContent = getMyProductsLoading && !products.length ? (
 		<Stack className="my-products__state"><CircularProgress color="primary" /></Stack>
 	) : getMyProductsError ? (
-		<Alert severity="error">Your products could not be loaded.</Alert>
+		<Alert severity="error">{t('ui.yourProductsCouldNotBeLoaded')}</Alert>
 	) : products.length ? (
 		<>
 			<Stack className="my-products__list">
@@ -109,15 +118,15 @@ const MyProducts = (props: MyProductsProps) => {
 			{totalPages > 1 && (
 			<Stack direction="row" className="my-products__pagination">
 				<Pagination page={searchFilter.page} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />
-				<Typography>{total} products</Typography>
+				<Typography>{t('counts.products', { count: total })}</Typography>
 			</Stack>
 			)}
 		</>
 	) : (
 		<Stack className="my-products__state">
-			<Typography component="h2">No products found</Typography>
-			<Typography>Your products will appear here after you create one.</Typography>
-			<Button component={Link} href="/product/create" variant="outlined">Create a product</Button>
+			<Typography component="h2">{t('ui.noProductsFound')}</Typography>
+			<Typography>{t('ui.yourProductsWillAppearHereAfterYouCreate')}</Typography>
+			<Button component={Link} href="/product/create" variant="outlined">{t('ui.createAProduct')}</Button>
 		</Stack>
 	);
 
@@ -126,14 +135,14 @@ const MyProducts = (props: MyProductsProps) => {
 		return (
 			<Box className="my-products my-products--mobile">
 				<Stack className="my-products__heading">
-					<Typography component="h1">My Products</Typography>
-					<Typography>Manage your product listings and stock.</Typography>
-					<Button component={Link} href="/product/create" variant="contained">Create product</Button>
+					<Typography component="h1">{t('ui.myProducts')}</Typography>
+					<Typography>{t('ui.manageYourProductListingsAndStock')}</Typography>
+					<Button component={Link} href="/product/create" variant="contained">{t('ui.createProduct')}</Button>
 				</Stack>
 				<Stack direction="row" className="my-products__tabs">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>All</Button>
-					<Button className={selectedStatus === ProductStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.ACTIVE)}>Active</Button>
-					<Button className={selectedStatus === ProductStatus.HIDDEN ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.HIDDEN)}>Hidden</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>{t('ui.all')}</Button>
+					<Button className={selectedStatus === ProductStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.ACTIVE)}>{t('ui.active')}</Button>
+					<Button className={selectedStatus === ProductStatus.HIDDEN ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.HIDDEN)}>{t('ui.hidden')}</Button>
 				</Stack>
 				{productsContent}
 			</Box>
@@ -144,15 +153,15 @@ const MyProducts = (props: MyProductsProps) => {
 			<Box className="my-products">
 				<Stack direction="row" className="my-products__heading">
 					<Box>
-						<Typography component="h1">My Products</Typography>
-						<Typography>Manage your product listings and stock.</Typography>
+						<Typography component="h1">{t('ui.myProducts')}</Typography>
+						<Typography>{t('ui.manageYourProductListingsAndStock')}</Typography>
 					</Box>
-					<Button component={Link} href="/product/create" variant="contained">Create product</Button>
+					<Button component={Link} href="/product/create" variant="contained">{t('ui.createProduct')}</Button>
 				</Stack>
 				<Stack direction="row" className="my-products__tabs">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>All products</Button>
-					<Button className={selectedStatus === ProductStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.ACTIVE)}>Active</Button>
-					<Button className={selectedStatus === ProductStatus.HIDDEN ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.HIDDEN)}>Hidden</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => changeStatusHandler()}>{t('ui.allProducts')}</Button>
+					<Button className={selectedStatus === ProductStatus.ACTIVE ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.ACTIVE)}>{t('ui.active')}</Button>
+					<Button className={selectedStatus === ProductStatus.HIDDEN ? 'active' : ''} onClick={() => changeStatusHandler(ProductStatus.HIDDEN)}>{t('ui.hidden')}</Button>
 				</Stack>
 				{productsContent}
 			</Box>

@@ -15,8 +15,10 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { MemberType } from '../../libs/enums/member.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { T } from '../../libs/types/common';
+import { useTranslation } from '../../libs/i18n';
 
 const CS: NextPage = () => {
+	const { t } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 
@@ -38,17 +40,17 @@ const CS: NextPage = () => {
 		<>
 			<Stack direction="row" className="cs-page__tabs">
 				<Button component={Link} href="/cs?tab=faq" className={tab === 'faq' ? 'active' : ''}>
-					FAQ
+					{t('ui.faq')}
 				</Button>
 				<Button component={Link} href="/cs?tab=ask" className={tab === 'ask' ? 'active' : ''}>
-					Ask for help
+					{t('ui.askForHelp')}
 				</Button>
 				<Button component={Link} href="/cs?tab=my" className={tab === 'my' ? 'active' : ''}>
-					My requests
+					{t('ui.myRequests')}
 				</Button>
 				{isAgent && (
 					<Button component={Link} href="/cs?tab=inbox" className={tab === 'inbox' ? 'active' : ''}>
-						Agent inbox
+						{t('ui.agentInbox')}
 					</Button>
 				)}
 			</Stack>
@@ -64,7 +66,7 @@ const CS: NextPage = () => {
 				) : isAgent ? (
 					<InquiryInbox />
 				) : (
-					<Alert severity="error">Agent access is required.</Alert>
+					<Alert severity="error">{t('ui.agentAccessIsRequired')}</Alert>
 				)
 			) : (
 				<Faq />
@@ -77,15 +79,15 @@ const CS: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>Help Center | PetNest Korea</title>
+					<title>{t('ui.helpCenterPetnestKorea')}</title>
 				</Head>
 				<Box component="main" className="cs-page cs-page--mobile container">
 					<Typography component="span" className="cs-page__eyebrow">
-						WE ARE HERE TO HELP
+						{t('ui.weAreHereToHelp')}
 					</Typography>
-					<Typography component="h1">Help Center</Typography>
+					<Typography component="h1">{t('nav.help')}</Typography>
 					<Typography className="cs-page__intro">
-						Find an answer or contact a PetNest agent or admin directly.
+						{t('ui.findAnAnswerOrContactAPetnestAgent')}
 					</Typography>
 					{content}
 				</Box>
@@ -96,15 +98,15 @@ const CS: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>Help Center | PetNest Korea</title>
+					<title>{t('ui.helpCenterPetnestKorea')}</title>
 				</Head>
 				<Box component="main" className="cs-page cs-page--pc container">
 					<Typography component="span" className="cs-page__eyebrow">
-						WE ARE HERE TO HELP
+						{t('ui.weAreHereToHelp')}
 					</Typography>
-					<Typography component="h1">Help Center</Typography>
+					<Typography component="h1">{t('nav.help')}</Typography>
 					<Typography className="cs-page__intro">
-						Find an answer or contact a PetNest agent or admin directly.
+						{t('ui.findAnAnswerOrContactAPetnestAgent')}
 					</Typography>
 					{content}
 				</Box>

@@ -14,10 +14,12 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { InquiryInput, SupportRecipient } from '../../types/inquiry/inquiry';
+import { useTranslation } from '../../i18n';
 
 const initialInput: InquiryInput = { receiverId: '', inquiryTitle: '', inquiryContent: '' };
 
 const Inquiry = () => {
+	const { t, errorText } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 
@@ -67,10 +69,10 @@ const Inquiry = () => {
 					},
 				},
 			});
-			await sweetTopSmallSuccessAlert('Request sent', 800);
+			await sweetTopSmallSuccessAlert(t('ui.requestSent'), 800);
 			void router.push('/cs?tab=my');
 		} catch (err) {
-			await sweetMixinErrorAlert(err instanceof Error ? err.message : 'Request could not be sent.');
+			await sweetMixinErrorAlert(errorText(err instanceof Error ? err.message : t('ui.requestCouldNotBeSent')));
 		}
 	};
 
@@ -78,17 +80,17 @@ const Inquiry = () => {
 	const visibleRecipients = recipients.filter((item) => item.memberType === recipientType && item._id !== user?.sub);
 	const content = !user?.sub ? (
 		<Stack className="cs-state">
-			<Typography component="h2">Sign in to send a request</Typography>
-			<Typography>Your request and its reply will stay in your account.</Typography>
+			<Typography component="h2">{t('ui.signInToSendARequest')}</Typography>
+			<Typography>{t('ui.yourRequestAndItsReplyWillStayIn')}</Typography>
 			<Button component={Link} href="/account/join?referrer=%2Fcs%3Ftab%3Dask" variant="contained">
-				Login or sign up
+				{t('ui.loginOrSignUp')}
 			</Button>
 		</Stack>
 	) : (
 		<Stack component="form" className="cs-inquiry" onSubmit={createInquiryHandler}>
-			<Typography component="h2">Who would you like to contact?</Typography>
+			<Typography component="h2">{t('ui.whoWouldYouLikeToContact')}</Typography>
 			<Typography className="cs-inquiry__hint">
-				Choose an agent for seller or listing questions, or admin for account and platform issues.
+				{t('ui.chooseAnAgentForSellerOrListingQuestions')}
 			</Typography>
 			<Stack direction="row" className="cs-inquiry__roles">
 				<Button
@@ -96,20 +98,20 @@ const Inquiry = () => {
 					startIcon={<SupportAgentOutlinedIcon />}
 					onClick={() => recipientTypeHandler(MemberType.AGENT)}
 				>
-					Agents
+					{t('nav.agents')}
 				</Button>
 				<Button
 					className={recipientType === MemberType.ADMIN ? 'active' : ''}
 					startIcon={<AdminPanelSettingsOutlinedIcon />}
 					onClick={() => recipientTypeHandler(MemberType.ADMIN)}
 				>
-					Admin
+					{t('ui.admin')}
 				</Button>
 			</Stack>
-			{getSupportRecipientsError && <Alert severity="error">Support contacts could not be loaded.</Alert>}
+			{getSupportRecipientsError && <Alert severity="error">{t('ui.supportContactsCouldNotBeLoaded')}</Alert>}
 			<TextField
 				select
-				label={recipientType === MemberType.AGENT ? 'Choose an agent' : 'Choose an admin'}
+				label={recipientType === MemberType.AGENT ? t('ui.chooseAnAgent') : t('ui.chooseAnAdmin')}
 				value={input.receiverId}
 				onChange={(event) => inputChangeHandler('receiverId', event.target.value)}
 				required
@@ -124,11 +126,11 @@ const Inquiry = () => {
 			{getSupportRecipientsLoading && <CircularProgress size={22} />}
 			{!getSupportRecipientsLoading && !getSupportRecipientsError && !visibleRecipients.length && (
 				<Alert severity="info">
-					No active {recipientType === MemberType.AGENT ? 'agents' : 'admins'} are available right now.
+					{t(recipientType === MemberType.AGENT ? 'message.noAgents' : 'message.noAdmins')}
 				</Alert>
 			)}
 			<TextField
-				label="Subject"
+				label={t('ui.subject')}
 				value={input.inquiryTitle}
 				onChange={(event) => inputChangeHandler('inquiryTitle', event.target.value)}
 				inputProps={{ maxLength: 100, minLength: 3 }}
@@ -136,7 +138,7 @@ const Inquiry = () => {
 				fullWidth
 			/>
 			<TextField
-				label="Describe your issue"
+				label={t('ui.describeYourIssue')}
 				value={input.inquiryContent}
 				onChange={(event) => inputChangeHandler('inquiryContent', event.target.value)}
 				inputProps={{ maxLength: 3000, minLength: 10 }}
@@ -147,7 +149,7 @@ const Inquiry = () => {
 			/>
 			<Box className="cs-inquiry__actions">
 				<Button type="submit" variant="contained" disabled={createInquiryLoading || !input.receiverId}>
-					{createInquiryLoading ? 'Sending...' : 'Send request'}
+					{createInquiryLoading ? t('ui.sending') : t('ui.sendRequest')}
 				</Button>
 			</Box>
 		</Stack>

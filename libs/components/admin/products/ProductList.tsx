@@ -12,6 +12,7 @@ import { T } from '../../../types/common';
 import { Product } from '../../../types/product/product';
 import { AdminProductsInquiry } from '../../../types/product/product.input';
 import { formatterStr } from '../../../utils';
+import { useTranslation } from '../../../i18n';
 
 const initialInquiry: AdminProductsInquiry = {
 	page: 1,
@@ -22,6 +23,7 @@ const initialInquiry: AdminProductsInquiry = {
 };
 
 const ProductList = () => {
+	const { t, label, errorText } = useTranslation();
 	/** STATES **/
 	const [inquiry, setInquiry] = useState<AdminProductsInquiry>(initialInquiry);
 	const [products, setProducts] = useState<Product[]>([]);
@@ -61,12 +63,16 @@ const ProductList = () => {
 
 	const updateProductStatusHandler = async (product: Product, productStatus: ProductStatus) => {
 		try {
-			if (!await sweetConfirmAlert(`Change ${product.productName} to ${productStatus.toLowerCase()}?`)) return;
+			if (!await sweetConfirmAlert(
+				t('message.changeStatus', { name: product.productName, status: label(productStatus) }),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 			await updateProductByAdmin({ variables: { input: { _id: product._id, productStatus } } });
 			await getAllProductsByAdminRefetch({ input: inquiry });
-			await sweetTopSmallSuccessAlert('Product updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.productUpdated'), 800);
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		}
 	};
 
@@ -76,20 +82,20 @@ const ProductList = () => {
 	return (
 		<Stack className="admin-list">
 			<Stack direction="row" className="admin-list__heading">
-				<Stack><Typography component="h1">Products</Typography><Typography>Review and manage catalog visibility.</Typography></Stack>
+				<Stack><Typography component="h1">{t('ui.products')}</Typography><Typography>{t('ui.reviewAndManageCatalogVisibility')}</Typography></Stack>
 				<Stack direction="row" className="admin-list__filters">
 					<Stack component="form" direction="row" className="admin-list__search" onSubmit={searchHandler}>
-						<TextField size="small" label="Search products" value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
-						<Button type="submit" variant="contained">Search</Button>
-						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>Clear</Button>}
+						<TextField size="small" label={t('nav.search')} value={searchText} onChange={(event) => setSearchText(event.target.value)} slotProps={{ htmlInput: { maxLength: 100 } }} />
+						<Button type="submit" variant="contained">{t('ui.search')}</Button>
+						{inquiry.search.text && <Button type="button" onClick={clearSearchHandler}>{t('ui.clear')}</Button>}
 					</Stack>
-					<TextField select size="small" label="Status" value={inquiry.search.productStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
-						<MenuItem value="">All</MenuItem>
-						{Object.values(ProductStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
+					<TextField select size="small" label={t('ui.status')} value={inquiry.search.productStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
+						<MenuItem value="">{t('ui.all')}</MenuItem>
+						{Object.values(ProductStatus).map((status) => <MenuItem value={status} key={status}>{label(status)}</MenuItem>)}
 					</TextField>
 				</Stack>
 			</Stack>
-			{getAllProductsByAdminError ? <Alert severity="error">Products could not be loaded.</Alert> : getAllProductsByAdminLoading && !products.length ? <CircularProgress /> : products.length ? (
+			{getAllProductsByAdminError ? <Alert severity="error">{t('ui.productsCouldNotBeLoaded')}</Alert> : getAllProductsByAdminLoading && !products.length ? <CircularProgress /> : products.length ? (
 				<>
 					<Stack className="admin-list__items">
 						{products.map((product) => (
@@ -97,21 +103,21 @@ const ProductList = () => {
 								<Avatar variant="rounded" src={product.productImages[0] ? `${REACT_APP_API_URL}/${product.productImages[0]}` : undefined} alt={product.productName} />
 								<Stack className="admin-list__details">
 									<Typography component="strong">{product.productName}</Typography>
-									<Typography>{product.productCategory} · {product.productType} · ₩{formatterStr(product.productVariants[0]?.price ?? 0)}</Typography>
-									<Typography>Owner: {product.memberId}</Typography>
+									<Typography>{label(product.productCategory)} · {label(product.productType)} · ₩{formatterStr(product.productVariants[0]?.price ?? 0)}</Typography>
+									<Typography>{t('ui.owner')} {product.memberId}</Typography>
 								</Stack>
-								<Typography className={`admin-list__status admin-list__status--${product.productStatus.toLowerCase()}`}>{product.productStatus}</Typography>
+								<Typography className={`admin-list__status admin-list__status--${product.productStatus.toLowerCase()}`}>{label(product.productStatus)}</Typography>
 								<Stack direction="row" className="admin-list__actions">
-									{product.productStatus !== ProductStatus.ACTIVE && <Button className="admin-action admin-action--positive" disabled={updateProductLoading} onClick={() => updateProductStatusHandler(product, ProductStatus.ACTIVE)}>{product.productStatus === ProductStatus.DELETE ? 'Restore' : 'Show'}</Button>}
-									{product.productStatus === ProductStatus.ACTIVE && <Button className="admin-action admin-action--warning" disabled={updateProductLoading} onClick={() => updateProductStatusHandler(product, ProductStatus.HIDDEN)}>Hide</Button>}
-									{product.productStatus !== ProductStatus.DELETE && <Button className="admin-action admin-action--danger" disabled={updateProductLoading} onClick={() => updateProductStatusHandler(product, ProductStatus.DELETE)}>Remove</Button>}
+									{product.productStatus !== ProductStatus.ACTIVE && <Button className="admin-action admin-action--positive" disabled={updateProductLoading} onClick={() => updateProductStatusHandler(product, ProductStatus.ACTIVE)}>{product.productStatus === ProductStatus.DELETE ? t('ui.restore') : t('ui.show')}</Button>}
+									{product.productStatus === ProductStatus.ACTIVE && <Button className="admin-action admin-action--warning" disabled={updateProductLoading} onClick={() => updateProductStatusHandler(product, ProductStatus.HIDDEN)}>{t('ui.hide')}</Button>}
+									{product.productStatus !== ProductStatus.DELETE && <Button className="admin-action admin-action--danger" disabled={updateProductLoading} onClick={() => updateProductStatusHandler(product, ProductStatus.DELETE)}>{t('ui.remove')}</Button>}
 								</Stack>
 							</Stack>
 						))}
 					</Stack>
 					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
 				</>
-			) : <Typography>No products found.</Typography>}
+			) : <Typography>{t('ui.noProductsFound')}</Typography>}
 		</Stack>
 	);
 };

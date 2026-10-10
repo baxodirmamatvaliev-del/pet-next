@@ -24,13 +24,14 @@ export const sweetTopSmallSuccessAlert = async (msg: string, duration: number = 
 	});
 };
 
-export const sweetConfirmAlert = async (msg: string): Promise<boolean> => {
+export const sweetConfirmAlert = async (msg: string, confirmText: string, cancelText: string): Promise<boolean> => {
 	const result = await Swal.fire({
 		icon: 'question',
 		title: msg,
 		showCancelButton: true,
 		confirmButtonColor: '#174f3f',
-		confirmButtonText: 'Confirm',
+		confirmButtonText: confirmText,
+		cancelButtonText: cancelText,
 	});
 
 	return result.isConfirmed;

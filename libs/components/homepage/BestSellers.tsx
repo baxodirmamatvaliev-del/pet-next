@@ -14,12 +14,14 @@ import { Product } from '../../types/product/product';
 import { ProductsInquiry } from '../../types/product/product.input';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ProductCard from '../product/ProductCard';
+import { useTranslation } from '../../i18n';
 
 interface BestSellersProps {
 	initialInput?: ProductsInquiry;
 }
 
 const BestSellers = (props: BestSellersProps) => {
+	const { t, errorText } = useTranslation();
 	const { initialInput = BestSellers.defaultProps.initialInput } = props;
 	const device = useDeviceDetect();
 
@@ -50,21 +52,21 @@ const BestSellers = (props: BestSellersProps) => {
 			await getProductsRefetch({ input: initialInput });
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
 	/** COMPUTED VALUES **/
 	const productContent = getProductsLoading && !products.length ? (
-		<Typography className="product-message">Loading products...</Typography>
+		<Typography className="product-message">{t('ui.loadingProducts')}</Typography>
 	) : getProductsError ? (
-		<Typography className="product-message product-message--error">Products could not be loaded.</Typography>
+		<Typography className="product-message product-message--error">{t('ui.productsCouldNotBeLoaded')}</Typography>
 	) : products.length ? (
 		<Box className={`product-grid product-grid--${device}`}>
 			{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 		</Box>
 	) : (
-		<Typography className="product-message">No products available yet.</Typography>
+		<Typography className="product-message">{t('ui.noProductsAvailableYet')}</Typography>
 	);
 
 	if (device === 'mobile') {
@@ -73,11 +75,11 @@ const BestSellers = (props: BestSellersProps) => {
 			<Stack component="section" className="best-sellers best-sellers--mobile container">
 				<Stack direction="row" className="section-heading">
 					<Box>
-						<Typography component="span">Customer favorites</Typography>
-						<Typography component="h2">Best Sellers</Typography>
+						<Typography component="span">{t('ui.customerFavorites')}</Typography>
+						<Typography component="h2">{t('nav.best')}</Typography>
 					</Box>
 					<Stack direction="row" component={Link} href="/product?sort=productSold">
-						View all <ArrowForwardRoundedIcon />
+						{t('ui.viewAll')}<ArrowForwardRoundedIcon />
 					</Stack>
 				</Stack>
 				{productContent}
@@ -89,11 +91,11 @@ const BestSellers = (props: BestSellersProps) => {
 			<Stack component="section" className="best-sellers best-sellers--pc container">
 				<Stack direction="row" className="section-heading">
 					<Box>
-						<Typography component="span">Customer favorites</Typography>
-						<Typography component="h2">Best Sellers</Typography>
+						<Typography component="span">{t('ui.customerFavorites')}</Typography>
+						<Typography component="h2">{t('nav.best')}</Typography>
 					</Box>
 					<Stack direction="row" component={Link} href="/product?sort=productSold">
-						View all <ArrowForwardRoundedIcon />
+						{t('ui.viewAll')}<ArrowForwardRoundedIcon />
 					</Stack>
 				</Stack>
 				{productContent}

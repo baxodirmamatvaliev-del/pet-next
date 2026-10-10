@@ -25,8 +25,10 @@ import { MemberType } from '../../enums/member.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
+import { useTranslation } from '../../i18n';
 
 const MyMenu = () => {
+	const { t, label } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
@@ -45,24 +47,28 @@ const MyMenu = () => {
 	const memberImage = member?.memberImage ? `${REACT_APP_API_URL}/${member.memberImage}` : '';
 	const profileHeader = (
 		<Stack direction="row" className="my-menu__profile">
-			<Avatar src={memberImage} alt={member?.memberNick ?? 'PetNest Member'}>
+			<Avatar src={memberImage} alt={member?.memberNick ?? t('common.member')}>
 				<PetsRoundedIcon />
 			</Avatar>
 			<Stack>
-				<Typography component="strong">{member?.memberNick ?? 'PetNest Member'}</Typography>
-				<Typography>{member?.memberType}</Typography>
+				<Typography component="strong">{member?.memberNick ?? t('common.member')}</Typography>
+				<Typography>{label(member?.memberType)}</Typography>
 			</Stack>
 		</Stack>
 	);
 
 	/** HANDLERS **/
 	const logoutHandler = async () => {
-		const isConfirmed = await sweetConfirmAlert('Do you want to logout?');
+		const isConfirmed = await sweetConfirmAlert(
+			t('ui.doYouWantToLogout'),
+			t('common.confirm'),
+			t('ui.cancel'),
+		);
 		if (!isConfirmed) return;
 		try {
 			await logOut();
 		} catch {
-			await sweetMixinErrorAlert('Logout failed. Please try again.');
+			await sweetMixinErrorAlert(t('ui.logoutFailedPleaseTryAgain'));
 		}
 	};
 
@@ -75,56 +81,56 @@ const MyMenu = () => {
 					{member?.memberType === MemberType.ADMIN && (
 						<ListItemButton component={Link} href="/_admin" className="my-menu__admin-link">
 							<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
-							<ListItemText primary="Admin panel" />
+							<ListItemText primary={t('ui.adminPanel')} />
 						</ListItemButton>
 					)}
 					{member?.memberType === MemberType.AGENT && (
 						<ListItemButton component={Link} href="/cs?tab=inbox">
 							<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
-							<ListItemText primary="Support inbox" />
+							<ListItemText primary={t('ui.supportInbox')} />
 						</ListItemButton>
 					)}
 					<ListItemButton component={Link} href="/mypage?category=myProfile" className={category === 'myProfile' ? 'active' : ''}>
 						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
-						<ListItemText primary="Profile" />
+						<ListItemText primary={t('ui.profile')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=myFavorites" className={category === 'myFavorites' ? 'active' : ''}>
 						<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
-						<ListItemText primary="Favorites" />
+						<ListItemText primary={t('nav.favorites')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=followers" className={category === 'followers' ? 'active' : ''}>
 						<ListItemIcon><PeopleOutlineRoundedIcon /></ListItemIcon>
-						<ListItemText primary="Followers" />
+						<ListItemText primary={t('ui.followers')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=followings" className={category === 'followings' ? 'active' : ''}>
 						<ListItemIcon><PersonAddAltOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="Followings" />
+						<ListItemText primary={t('ui.followings')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=recentlyVisited" className={category === 'recentlyVisited' ? 'active' : ''}>
 						<ListItemIcon><HistoryRoundedIcon /></ListItemIcon>
-						<ListItemText primary="History" />
+						<ListItemText primary={t('ui.history')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=myPets" className={category === 'myPets' ? 'active' : ''}>
 						<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="Pet listings" />
+						<ListItemText primary={t('ui.petListings')} />
 					</ListItemButton>
 					{canManageProducts && (
 						<ListItemButton component={Link} href="/mypage?category=myProducts" className={category === 'myProducts' ? 'active' : ''}>
 							<ListItemIcon><Inventory2OutlinedIcon /></ListItemIcon>
-							<ListItemText primary="Products" />
+							<ListItemText primary={t('ui.products')} />
 						</ListItemButton>
 					)}
 					<ListItemButton component={Link} href="/mypage?category=myOrders" className={category === 'myOrders' ? 'active' : ''}>
 						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="Orders" />
+						<ListItemText primary={t('ui.orders')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/cart">
 						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="Cart" />
+						<ListItemText primary={t('nav.cart')} />
 					</ListItemButton>
 					<ListItemButton onClick={logoutHandler}>
 						<ListItemIcon><LogoutRoundedIcon /></ListItemIcon>
-						<ListItemText primary="Log out" />
+						<ListItemText primary={t('ui.logOut')} />
 					</ListItemButton>
 				</List>
 			</Stack>
@@ -137,27 +143,27 @@ const MyMenu = () => {
 
 				{member?.memberType === MemberType.ADMIN && (
 					<>
-						<Typography className="my-menu__label">MANAGEMENT</Typography>
+						<Typography className="my-menu__label">{t('ui.management')}</Typography>
 						<List disablePadding>
 							<ListItemButton component={Link} href="/_admin" className="my-menu__admin-link">
 								<ListItemIcon><AdminPanelSettingsOutlinedIcon /></ListItemIcon>
-								<ListItemText primary="Admin Panel" />
+								<ListItemText primary={t('ui.adminPanel')} />
 							</ListItemButton>
 						</List>
 					</>
 				)}
 				{member?.memberType === MemberType.AGENT && (
 					<>
-						<Typography className="my-menu__label">SUPPORT</Typography>
+						<Typography className="my-menu__label">{t('ui.support')}</Typography>
 						<List disablePadding>
 							<ListItemButton component={Link} href="/cs?tab=inbox">
 								<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
-								<ListItemText primary="Support Inbox" />
+								<ListItemText primary={t('ui.supportInbox')} />
 							</ListItemButton>
 						</List>
 					</>
 				)}
-				<Typography className="my-menu__label">MY ACCOUNT</Typography>
+				<Typography className="my-menu__label">{t('ui.myAccount')}</Typography>
 				<List disablePadding>
 					<ListItemButton
 						component={Link}
@@ -165,7 +171,7 @@ const MyMenu = () => {
 						className={category === 'myProfile' ? 'active' : ''}
 					>
 						<ListItemIcon><PersonOutlineRoundedIcon /></ListItemIcon>
-						<ListItemText primary="My Profile" />
+						<ListItemText primary={t('ui.myProfile')} />
 					</ListItemButton>
 					<ListItemButton
 						component={Link}
@@ -173,15 +179,15 @@ const MyMenu = () => {
 						className={category === 'myFavorites' ? 'active' : ''}
 					>
 						<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
-						<ListItemText primary="My Favorites" />
+						<ListItemText primary={t('ui.myFavorites')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=followers" className={category === 'followers' ? 'active' : ''}>
 						<ListItemIcon><PeopleOutlineRoundedIcon /></ListItemIcon>
-						<ListItemText primary="My Followers" />
+						<ListItemText primary={t('ui.myFollowers')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/mypage?category=followings" className={category === 'followings' ? 'active' : ''}>
 						<ListItemIcon><PersonAddAltOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="My Followings" />
+						<ListItemText primary={t('ui.myFollowings')} />
 					</ListItemButton>
 					<ListItemButton
 						component={Link}
@@ -189,35 +195,35 @@ const MyMenu = () => {
 						className={category === 'recentlyVisited' ? 'active' : ''}
 					>
 						<ListItemIcon><HistoryRoundedIcon /></ListItemIcon>
-						<ListItemText primary="Recently Visited" />
+						<ListItemText primary={t('ui.recentlyVisited')} />
 					</ListItemButton>
-					<ListSubheader className="my-menu__section-label" disableSticky>MY LISTINGS</ListSubheader>
+					<ListSubheader className="my-menu__section-label" disableSticky>{t('ui.myListings')}</ListSubheader>
 					<ListItemButton
 						component={Link}
 						href="/mypage?category=myPets"
 						className={category === 'myPets' ? 'active' : ''}
 					>
 						<ListItemIcon><ListAltOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="My Pet Listings" />
+						<ListItemText primary={t('ui.myPetListings')} />
 					</ListItemButton>
 					{canManageProducts && (
 						<ListItemButton component={Link} href="/mypage?category=myProducts" className={category === 'myProducts' ? 'active' : ''}>
 							<ListItemIcon><Inventory2OutlinedIcon /></ListItemIcon>
-							<ListItemText primary="My Products" />
+							<ListItemText primary={t('ui.myProducts')} />
 						</ListItemButton>
 					)}
-					<ListSubheader className="my-menu__section-label" disableSticky>SHOPPING</ListSubheader>
+					<ListSubheader className="my-menu__section-label" disableSticky>{t('ui.shopping')}</ListSubheader>
 					<ListItemButton component={Link} href="/mypage?category=myOrders" className={category === 'myOrders' ? 'active' : ''}>
 						<ListItemIcon><ReceiptLongOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="My Orders" />
+						<ListItemText primary={t('ui.myOrders')} />
 					</ListItemButton>
 					<ListItemButton component={Link} href="/cart">
 						<ListItemIcon><ShoppingBagOutlinedIcon /></ListItemIcon>
-						<ListItemText primary="Shopping Cart" />
+						<ListItemText primary={t('nav.shoppingCart')} />
 					</ListItemButton>
 					<ListItemButton onClick={logoutHandler}>
 						<ListItemIcon><LogoutRoundedIcon /></ListItemIcon>
-						<ListItemText primary="Logout" />
+						<ListItemText primary={t('ui.logout')} />
 					</ListItemButton>
 				</List>
 			</Stack>

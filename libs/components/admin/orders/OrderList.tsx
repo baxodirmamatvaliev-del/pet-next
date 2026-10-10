@@ -12,10 +12,12 @@ import { T } from '../../../types/common';
 import { Order } from '../../../types/order/order';
 import { AdminOrdersInquiry } from '../../../types/order/order.input';
 import { formatterStr } from '../../../utils';
+import { useTranslation } from '../../../i18n';
 
 const initialInquiry: AdminOrdersInquiry = { page: 1, limit: 10, search: {} };
 
 const OrderList = () => {
+	const { t, label, errorText } = useTranslation();
 	/** STATES **/
 	const [inquiry, setInquiry] = useState<AdminOrdersInquiry>(initialInquiry);
 	const [orders, setOrders] = useState<Order[]>([]);
@@ -55,26 +57,34 @@ const OrderList = () => {
 
 	const updateOrderHandler = async (order: Order, orderStatus: OrderStatus) => {
 		try {
-			if (!await sweetConfirmAlert(`Move order #${order._id.slice(-8).toUpperCase()} to ${orderStatus.replaceAll('_', ' ').toLowerCase()}?`)) return;
+			if (!await sweetConfirmAlert(
+				t('message.changeOrderStatus', { id: order._id.slice(-8).toUpperCase(), status: label(orderStatus) }),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 			await updateOrderStatusByAdmin({ variables: { input: { _id: order._id, orderStatus } } });
 			await getAllOrdersByAdminRefetch({ input: inquiry });
-			await sweetTopSmallSuccessAlert('Order updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.orderUpdated'), 800);
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		}
 	};
 
 	const confirmPaymentHandler = async () => {
 		try {
 			if (!selectedOrder || !selectedPayment || selectedPayment.paymentStatus !== PaymentStatus.PENDING) return;
-			if (!await sweetConfirmAlert('No real charge was made. Confirm this demo payment and move the order to paid?')) return;
+			if (!await sweetConfirmAlert(
+				t('ui.noRealChargeWasMadeConfirmThisDemo'),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 
 			await confirmPayment({ variables: { input: { paymentId: selectedPayment._id } } });
 			await getAllOrdersByAdminRefetch({ input: inquiry });
 			setSelectedOrder(null);
-			await sweetTopSmallSuccessAlert('Demo payment confirmed', 800);
+			await sweetTopSmallSuccessAlert(t('ui.demoPaymentConfirmed'), 800);
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		}
 	};
 
@@ -86,13 +96,13 @@ const OrderList = () => {
 	return (
 		<Stack className="admin-list">
 			<Stack direction="row" className="admin-list__heading">
-				<Stack><Typography component="h1">Orders</Typography><Typography>Review demo payment requests, shipments and deliveries.</Typography></Stack>
-				<TextField select size="small" label="Status" value={inquiry.search.orderStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
-					<MenuItem value="">All</MenuItem>
-					{Object.values(OrderStatus).map((status) => <MenuItem value={status} key={status}>{status.replaceAll('_', ' ')}</MenuItem>)}
+				<Stack><Typography component="h1">{t('ui.orders')}</Typography><Typography>{t('ui.reviewDemoPaymentRequestsShipmentsAndDeliveries')}</Typography></Stack>
+				<TextField select size="small" label={t('ui.status')} value={inquiry.search.orderStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
+					<MenuItem value="">{t('ui.all')}</MenuItem>
+					{Object.values(OrderStatus).map((status) => <MenuItem value={status} key={status}>{label(status)}</MenuItem>)}
 				</TextField>
 			</Stack>
-			{getAllOrdersByAdminError ? <Alert severity="error">Orders could not be loaded.</Alert> : getAllOrdersByAdminLoading && !orders.length ? <CircularProgress /> : orders.length ? (
+			{getAllOrdersByAdminError ? <Alert severity="error">{t('ui.ordersCouldNotBeLoaded')}</Alert> : getAllOrdersByAdminLoading && !orders.length ? <CircularProgress /> : orders.length ? (
 				<>
 					<Stack className="admin-list__items">
 						{orders.map((order) => (
@@ -100,41 +110,41 @@ const OrderList = () => {
 								<Stack className="admin-list__details">
 									<Typography component="strong">#{order._id.slice(-8).toUpperCase()} · {order.recipientName}</Typography>
 									<Typography>{order.orderItems.map((item) => `${item.productName} ×${item.quantity}`).join(', ')}</Typography>
-									<Typography>Customer: {order.memberId} · ₩{formatterStr(order.totalAmount)}</Typography>
+									<Typography>{t('ui.customer')} {order.memberId} · ₩{formatterStr(order.totalAmount)}</Typography>
 								</Stack>
-								<Typography className={`admin-list__status admin-list__status--${order.orderStatus.toLowerCase()}`}>{order.orderStatus === OrderStatus.PAYMENT_CONFIRMED ? 'Demo confirmed' : order.orderStatus.replaceAll('_', ' ')}</Typography>
+								<Typography className={`admin-list__status admin-list__status--${order.orderStatus.toLowerCase()}`}>{order.orderStatus === OrderStatus.PAYMENT_CONFIRMED ? t('ui.demoConfirmed') : label(order.orderStatus)}</Typography>
 								<Stack direction="row" className="admin-list__actions">
-									{order.orderStatus === OrderStatus.PENDING && <Button className="admin-action admin-action--warning" onClick={() => setSelectedOrder(order)}>Review demo payment</Button>}
-									{order.orderStatus === OrderStatus.PAYMENT_CONFIRMED && <Button className="admin-action admin-action--blue" disabled={updateOrderLoading} onClick={() => updateOrderHandler(order, OrderStatus.IN_TRANSIT)}>Mark in transit</Button>}
-									{order.orderStatus === OrderStatus.IN_TRANSIT && <Button className="admin-action admin-action--positive" disabled={updateOrderLoading} onClick={() => updateOrderHandler(order, OrderStatus.DELIVERED_TO_CUSTOMER)}>Mark delivered</Button>}
+									{order.orderStatus === OrderStatus.PENDING && <Button className="admin-action admin-action--warning" onClick={() => setSelectedOrder(order)}>{t('ui.reviewDemoPayment')}</Button>}
+									{order.orderStatus === OrderStatus.PAYMENT_CONFIRMED && <Button className="admin-action admin-action--blue" disabled={updateOrderLoading} onClick={() => updateOrderHandler(order, OrderStatus.IN_TRANSIT)}>{t('ui.markInTransit')}</Button>}
+									{order.orderStatus === OrderStatus.IN_TRANSIT && <Button className="admin-action admin-action--positive" disabled={updateOrderLoading} onClick={() => updateOrderHandler(order, OrderStatus.DELIVERED_TO_CUSTOMER)}>{t('ui.markDelivered')}</Button>}
 								</Stack>
 							</Stack>
 						))}
 					</Stack>
 					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
 				</>
-			) : <Typography>No orders found.</Typography>}
+			) : <Typography>{t('ui.noOrdersFound')}</Typography>}
 			<Dialog open={Boolean(selectedOrder)} onClose={() => !confirmPaymentLoading && setSelectedOrder(null)} fullWidth maxWidth="xs">
-				<DialogTitle>Review demo payment</DialogTitle>
+				<DialogTitle>{t('ui.reviewDemoPayment')}</DialogTitle>
 				<DialogContent>
 					<Stack spacing={2} sx={{ pt: 1 }}>
-						<Alert severity="warning">No card or Kakao payment has been charged. Confirmation is for this demo order only.</Alert>
-						<Typography>Order #{selectedOrder?._id.slice(-8).toUpperCase()} · ₩{formatterStr(selectedOrder?.totalAmount ?? 0)}</Typography>
+						<Alert severity="warning">{t('ui.noCardOrKakaoPaymentHasBeenCharged')}</Alert>
+						<Typography>{t('message.orderTitle', { id: selectedOrder?._id.slice(-8).toUpperCase() ?? '' })} · ₩{formatterStr(selectedOrder?.totalAmount ?? 0)}</Typography>
 						{getPaymentLoading ? <CircularProgress size={24} /> : getPaymentError ? (
-							<Alert severity="error">Payment request could not be loaded.</Alert>
+							<Alert severity="error">{t('ui.paymentRequestCouldNotBeLoaded')}</Alert>
 						) : selectedPayment ? (
 							<Stack spacing={0.5}>
-								<Typography>Method: {selectedPayment.paymentMethod.replaceAll('_', ' ')}</Typography>
-								<Typography>Status: {selectedPayment.paymentStatus}</Typography>
-								<Typography>Amount: ₩{formatterStr(selectedPayment.paymentAmount)}</Typography>
+								<Typography>{t('ui.method')} {label(selectedPayment.paymentMethod)}</Typography>
+								<Typography>{t('ui.statusLabel')} {label(selectedPayment.paymentStatus)}</Typography>
+								<Typography>{t('ui.amount')}{formatterStr(selectedPayment.paymentAmount)}</Typography>
 							</Stack>
-						) : <Alert severity="info">No payment request exists for this order yet.</Alert>}
+						) : <Alert severity="info">{t('ui.noPaymentRequestExistsForThisOrderYet')}</Alert>}
 					</Stack>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={() => setSelectedOrder(null)} disabled={confirmPaymentLoading}>Close</Button>
+					<Button onClick={() => setSelectedOrder(null)} disabled={confirmPaymentLoading}>{t('ui.close')}</Button>
 					<Button variant="contained" onClick={confirmPaymentHandler} disabled={confirmPaymentLoading || getPaymentLoading || !selectedPayment || selectedPayment.paymentStatus !== PaymentStatus.PENDING || selectedPayment.paymentAmount !== selectedOrder?.totalAmount}>
-						{confirmPaymentLoading ? 'Confirming...' : 'Confirm demo payment'}
+						{confirmPaymentLoading ? t('ui.confirming') : t('ui.confirmDemoPayment')}
 					</Button>
 				</DialogActions>
 			</Dialog>

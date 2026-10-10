@@ -16,8 +16,10 @@ import { FavoriteInquiry } from '../../types/like/like.input';
 import { Pet } from '../../types/pet/pet';
 import { Product } from '../../types/product/product';
 import ProductCard from '../product/ProductCard';
+import { useTranslation } from '../../i18n';
 
 const MyFavorites = () => {
+	const { t, errorText } = useTranslation();
 	const device = useDeviceDetect();
 
 	/** STATES **/
@@ -81,7 +83,7 @@ const MyFavorites = () => {
 			}
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setRemovingId('');
 		}
@@ -101,7 +103,7 @@ const MyFavorites = () => {
 			}
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setRemovingId('');
 		}
@@ -121,13 +123,13 @@ const MyFavorites = () => {
 	const favoritesContent = (
 		<>
 			<Stack direction="row" className="my-favorites__tabs">
-				<Button className={favoriteType === 'products' ? 'active' : ''} onClick={() => favoriteTypeHandler('products')}>Products</Button>
-				<Button className={favoriteType === 'pets' ? 'active' : ''} onClick={() => favoriteTypeHandler('pets')}>Pet listings</Button>
+				<Button className={favoriteType === 'products' ? 'active' : ''} onClick={() => favoriteTypeHandler('products')}>{t('ui.products')}</Button>
+				<Button className={favoriteType === 'pets' ? 'active' : ''} onClick={() => favoriteTypeHandler('pets')}>{t('ui.petListings')}</Button>
 			</Stack>
 			{getFavoritesLoading && !activeItems.length ? (
 				<Stack className="my-favorites__state"><CircularProgress color="primary" /></Stack>
 			) : getFavoritesError ? (
-				<Alert severity="error">Favorites could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.favoritesCouldNotBeLoaded')}</Alert>
 			) : activeItems.length ? (
 				<>
 					<Box className="my-favorites__grid">
@@ -140,14 +142,14 @@ const MyFavorites = () => {
 									onClick={() => removeFavoriteHandler(pet._id)}
 									disabled={Boolean(removingId)}
 								>
-									{removingId === pet._id ? 'Removing...' : 'Remove from favorites'}
+									{removingId === pet._id ? t('ui.removing') : t('ui.removeFromFavorites')}
 								</Button>
 							</Stack>
 						)) : favoriteProducts.map((product) => (
 							<Stack className="my-favorites__item" key={product._id}>
 								<ProductCard product={product} showFavorite={false} />
 								<Button variant="outlined" startIcon={<FavoriteRoundedIcon />} onClick={() => removeFavoriteProductHandler(product._id)} disabled={Boolean(removingId)}>
-									{removingId === product._id ? 'Removing...' : 'Remove from favorites'}
+									{removingId === product._id ? t('ui.removing') : t('ui.removeFromFavorites')}
 								</Button>
 							</Stack>
 						))}
@@ -155,16 +157,16 @@ const MyFavorites = () => {
 					{totalPages > 0 && (
 						<Stack direction="row" className="my-favorites__pagination">
 							<Pagination page={searchFavorites.page} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />
-							<Typography>{total} saved {favoriteType === 'products' ? 'products' : 'pets'}</Typography>
+							<Typography>{t('counts.saved', { count: total })}</Typography>
 						</Stack>
 					)}
 				</>
 			) : (
 				<Stack className="my-favorites__state">
 					<FavoriteRoundedIcon />
-					<Typography component="h2">No favorite {favoriteType === 'products' ? 'products' : 'pets'} yet</Typography>
-					<Typography>Items you save will appear here.</Typography>
-					<Button component={Link} href={favoriteType === 'products' ? '/product' : '/pet'} variant="contained">Explore {favoriteType}</Button>
+					<Typography component="h2">{t(favoriteType === 'products' ? 'message.noFavoriteProducts' : 'message.noFavoritePets')}</Typography>
+					<Typography>{t('ui.itemsYouSaveWillAppearHere')}</Typography>
+					<Button component={Link} href={favoriteType === 'products' ? '/product' : '/pet'} variant="contained">{t(favoriteType === 'products' ? 'ui.browseProducts' : 'ui.exploreCommunity')}</Button>
 				</Stack>
 			)}
 		</>
@@ -175,8 +177,8 @@ const MyFavorites = () => {
 		return (
 			<Box className="my-favorites my-favorites--mobile">
 				<Box className="my-favorites__heading">
-					<Typography component="h1">My Favorites</Typography>
-					<Typography>Products and pet listings you saved.</Typography>
+					<Typography component="h1">{t('ui.myFavorites')}</Typography>
+					<Typography>{t('ui.productsAndPetListingsYouSaved')}</Typography>
 				</Box>
 				{favoritesContent}
 			</Box>
@@ -186,8 +188,8 @@ const MyFavorites = () => {
 		return (
 			<Box className="my-favorites my-favorites--pc">
 				<Box className="my-favorites__heading">
-					<Typography component="h1">My Favorites</Typography>
-					<Typography>Products and pet listings you saved.</Typography>
+					<Typography component="h1">{t('ui.myFavorites')}</Typography>
+					<Typography>{t('ui.productsAndPetListingsYouSaved')}</Typography>
 				</Box>
 				{favoritesContent}
 			</Box>

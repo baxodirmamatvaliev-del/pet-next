@@ -25,6 +25,7 @@ import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { T } from '../../libs/types/common';
 import { Member } from '../../libs/types/member/member';
 import { AgentsInquiry } from '../../libs/types/member/member.input';
+import { useTranslation } from '../../libs/i18n';
 
 const initialInput: AgentsInquiry = {
 	page: 1,
@@ -36,6 +37,7 @@ const initialInput: AgentsInquiry = {
 const agentSorts = ['createdAt', 'memberLikes', 'memberViews', 'memberRank'];
 
 const AgentList: NextPage = () => {
+	const { t } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 
@@ -115,22 +117,22 @@ const AgentList: NextPage = () => {
 						name="agentSearch"
 						defaultValue={searchFilter.search.text ?? ''}
 						inputProps={{ maxLength: 100 }}
-						placeholder="Search agents"
+						placeholder={t('ui.searchAgents')}
 						size="small"
 					/>
-					<Box component="button" type="submit" aria-label="Search agents">
+					<Box component="button" type="submit" aria-label={t('ui.searchAgents')}>
 						<SearchRoundedIcon />
 					</Box>
 				</Box>
-				<Select size="small" value={searchFilter.sort ?? 'createdAt'} onChange={sortHandler} aria-label="Sort sellers">
-					<MenuItem value="createdAt">Newest</MenuItem>
-					<MenuItem value="memberLikes">Most liked</MenuItem>
-					<MenuItem value="memberViews">Most viewed</MenuItem>
-					<MenuItem value="memberRank">Top ranked</MenuItem>
+				<Select size="small" value={searchFilter.sort ?? 'createdAt'} onChange={sortHandler} aria-label={t('ui.sortSellers')}>
+					<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
+					<MenuItem value="memberLikes">{t('ui.mostLiked')}</MenuItem>
+					<MenuItem value="memberViews">{t('ui.mostViewed')}</MenuItem>
+					<MenuItem value="memberRank">{t('ui.topRanked')}</MenuItem>
 				</Select>
 			</Stack>
 			{getAgentsError ? (
-				<Alert severity="error">Agents could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.agentsCouldNotBeLoaded')}</Alert>
 			) : !router.isReady || getAgentsLoading ? (
 				<Stack className="agent-page__state">
 					<CircularProgress />
@@ -142,7 +144,7 @@ const AgentList: NextPage = () => {
 					))}
 				</Box>
 			) : (
-				<Typography className="agent-page__state">No agents found.</Typography>
+				<Typography className="agent-page__state">{t('ui.noAgentsFound')}</Typography>
 			)}
 			{totalPages > 1 && <Pagination page={searchFilter.page} count={totalPages} onChange={pageHandler} />}
 		</>
@@ -153,15 +155,15 @@ const AgentList: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>PetNest Agents | PetNest Korea</title>
+					<title>{t('ui.petnestAgentsPetnestKorea')}</title>
 				</Head>
 				<Box component="main" className="agent-page agent-page--mobile container">
 					<Typography component="span" className="agent-page__eyebrow">
-						PETNEST COMMUNITY
+						{t('ui.petnestCommunity')}
 					</Typography>
-					<Typography component="h1">Meet our agents</Typography>
+					<Typography component="h1">{t('ui.meetOurAgents')}</Typography>
 					<Typography component="p" className="agent-page__intro">
-						Find an agent, explore their products, or contact them for help.
+						{t('ui.findAnAgentExploreTheirProductsOrContact')}
 					</Typography>
 					{content}
 				</Box>
@@ -172,15 +174,15 @@ const AgentList: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>PetNest Agents | PetNest Korea</title>
+					<title>{t('ui.petnestAgentsPetnestKorea')}</title>
 				</Head>
 				<Box component="main" className="agent-page agent-page--pc container">
 					<Typography component="span" className="agent-page__eyebrow">
-						PETNEST COMMUNITY
+						{t('ui.petnestCommunity')}
 					</Typography>
-					<Typography component="h1">Meet our agents</Typography>
+					<Typography component="h1">{t('ui.meetOurAgents')}</Typography>
 					<Typography component="p" className="agent-page__intro">
-						Find an agent, explore their products, or contact them for help.
+						{t('ui.findAnAgentExploreTheirProductsOrContact')}
 					</Typography>
 					{content}
 				</Box>

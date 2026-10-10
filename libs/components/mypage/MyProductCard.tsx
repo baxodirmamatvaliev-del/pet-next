@@ -10,6 +10,7 @@ import { REACT_APP_API_URL } from '../../config';
 import { ProductStatus } from '../../enums/product.enum';
 import { Product } from '../../types/product/product';
 import { formatterStr } from '../../utils';
+import { useTranslation } from '../../i18n';
 
 interface MyProductCardProps {
 	product: Product;
@@ -19,6 +20,7 @@ interface MyProductCardProps {
 }
 
 const MyProductCard = (props: MyProductCardProps) => {
+	const { t, label } = useTranslation();
 	const { product, loading, updateProductStatusHandler, removeProductHandler } = props;
 	const isActive = product.productStatus === ProductStatus.ACTIVE;
 	const imagePath = product.productImages[0]
@@ -38,14 +40,14 @@ const MyProductCard = (props: MyProductCardProps) => {
 			<Stack className="my-product-card__content">
 				<Stack direction="row" className="my-product-card__title">
 					<Typography component="h2">{product.productName}</Typography>
-					<Chip label={isActive ? 'Active' : 'Hidden'} size="small" className={isActive ? 'active' : 'hidden'} />
+					<Chip label={isActive ? t('ui.active') : t('ui.hidden')} size="small" className={isActive ? 'active' : 'hidden'} />
 				</Stack>
-				<Typography>{product.productType} · ₩{formatterStr(price)} · {stock} in stock</Typography>
+				<Typography>{label(product.productType)} · ₩{formatterStr(price)} · {t('counts.inStock', { count: stock })}</Typography>
 				<Stack direction="row" className="my-product-card__actions">
 					{isActive && (
 						<>
-							<Button component={Link} href={`/product/detail?id=${product._id}`} startIcon={<VisibilityOutlinedIcon />}>View</Button>
-							<Button component={Link} href={`/product/edit?id=${product._id}`} startIcon={<EditOutlinedIcon />}>Edit</Button>
+							<Button component={Link} href={`/product/detail?id=${product._id}`} startIcon={<VisibilityOutlinedIcon />}>{t('ui.view')}</Button>
+							<Button component={Link} href={`/product/edit?id=${product._id}`} startIcon={<EditOutlinedIcon />}>{t('ui.edit')}</Button>
 						</>
 					)}
 					<Button
@@ -53,10 +55,10 @@ const MyProductCard = (props: MyProductCardProps) => {
 						onClick={() => updateProductStatusHandler(product, isActive ? ProductStatus.HIDDEN : ProductStatus.ACTIVE)}
 						disabled={loading}
 					>
-						{isActive ? 'Hide' : 'Show'}
+						{isActive ? t('ui.hide') : t('ui.show')}
 					</Button>
 					<Button className="my-product-card__remove" startIcon={<DeleteOutlineRoundedIcon />} onClick={() => removeProductHandler(product)} disabled={loading}>
-						Remove
+						{t('ui.remove')}
 					</Button>
 				</Stack>
 			</Stack>

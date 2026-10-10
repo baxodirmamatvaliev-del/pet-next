@@ -17,8 +17,10 @@ import { OrdinaryInquiry } from '../../types/pet/pet.input';
 import { Product } from '../../types/product/product';
 import PetCard from '../pet/PetCard';
 import ProductCard from '../product/ProductCard';
+import { useTranslation } from '../../i18n';
 
 const RecentlyVisited = () => {
+	const { t, errorText } = useTranslation();
 	const device = useDeviceDetect();
 
 	/** STATES **/
@@ -78,7 +80,7 @@ const RecentlyVisited = () => {
 			await getVisitedProductsRefetch({ input: searchVisited });
 		} catch (error) {
 			const message = error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -91,13 +93,13 @@ const RecentlyVisited = () => {
 	const visitedContent = (
 		<>
 			<Stack direction="row" className="recently-visited__tabs">
-				<Button className={visitedType === 'products' ? 'active' : ''} onClick={() => visitedTypeHandler('products')}>Products</Button>
-				<Button className={visitedType === 'pets' ? 'active' : ''} onClick={() => visitedTypeHandler('pets')}>Pet listings</Button>
+				<Button className={visitedType === 'products' ? 'active' : ''} onClick={() => visitedTypeHandler('products')}>{t('ui.products')}</Button>
+				<Button className={visitedType === 'pets' ? 'active' : ''} onClick={() => visitedTypeHandler('pets')}>{t('ui.petListings')}</Button>
 			</Stack>
 			{getVisitedLoading && !activeItems.length ? (
 				<Stack className="recently-visited__state"><CircularProgress color="primary" /></Stack>
 			) : getVisitedError ? (
-				<Alert severity="error">Recently visited items could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.recentlyVisitedItemsCouldNotBeLoaded')}</Alert>
 			) : activeItems.length ? (
 				<>
 					<Box className="recently-visited__grid">
@@ -114,16 +116,16 @@ const RecentlyVisited = () => {
 								color="primary"
 								shape="rounded"
 							/>
-							<Typography>{total} visited {visitedType === 'products' ? 'products' : 'pets'}</Typography>
+							<Typography>{t('counts.viewed', { count: total })}</Typography>
 						</Stack>
 					)}
 				</>
 			) : (
 				<Stack className="recently-visited__state">
 					<HistoryRoundedIcon />
-					<Typography component="h2">No visited {visitedType === 'products' ? 'products' : 'pets'} yet</Typography>
-					<Typography>Items you open will appear here.</Typography>
-					<Button component={Link} href={visitedType === 'products' ? '/product' : '/pet'} variant="contained">Explore {visitedType}</Button>
+					<Typography component="h2">{t(visitedType === 'products' ? 'message.noVisitedProducts' : 'message.noVisitedPets')}</Typography>
+					<Typography>{t('ui.itemsYouOpenWillAppearHere')}</Typography>
+					<Button component={Link} href={visitedType === 'products' ? '/product' : '/pet'} variant="contained">{t(visitedType === 'products' ? 'ui.browseProducts' : 'ui.exploreCommunity')}</Button>
 				</Stack>
 			)}
 		</>
@@ -134,8 +136,8 @@ const RecentlyVisited = () => {
 		return (
 			<Box className="recently-visited recently-visited--mobile">
 				<Box className="recently-visited__heading">
-					<Typography component="h1">Recently Visited</Typography>
-					<Typography>Products and pet listings you viewed recently.</Typography>
+					<Typography component="h1">{t('ui.recentlyVisited')}</Typography>
+					<Typography>{t('ui.productsAndPetListingsYouViewedRecently')}</Typography>
 				</Box>
 				{visitedContent}
 			</Box>
@@ -145,8 +147,8 @@ const RecentlyVisited = () => {
 		return (
 			<Box className="recently-visited recently-visited--pc">
 				<Box className="recently-visited__heading">
-					<Typography component="h1">Recently Visited</Typography>
-					<Typography>Products and pet listings you viewed recently.</Typography>
+					<Typography component="h1">{t('ui.recentlyVisited')}</Typography>
+					<Typography>{t('ui.productsAndPetListingsYouViewedRecently')}</Typography>
 				</Box>
 				{visitedContent}
 			</Box>

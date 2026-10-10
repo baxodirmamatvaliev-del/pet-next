@@ -9,8 +9,10 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Inquiry } from '../../types/inquiry/inquiry';
+import { useTranslation } from '../../i18n';
 
 const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
+	const { t, locale, errorText } = useTranslation();
 	const device = useDeviceDetect();
 	const router = useRouter();
 
@@ -52,17 +54,17 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 			await getAssignedInquiriesRefetch();
 			setActiveId('');
 			setAnswerText('');
-			await sweetTopSmallSuccessAlert('Reply sent', 800);
+			await sweetTopSmallSuccessAlert(t('ui.replySent'), 800);
 		} catch (err) {
-			await sweetMixinErrorAlert(err instanceof Error ? err.message : 'Reply could not be sent.');
+			await sweetMixinErrorAlert(errorText(err instanceof Error ? err.message : t('ui.replyCouldNotBeSent')));
 		}
 	};
 
 	/** COMPUTED VALUES **/
 	const content = !enabled ? (
-		<Alert severity="error">Agent or admin access is required.</Alert>
+		<Alert severity="error">{t('ui.agentOrAdminAccessIsRequired')}</Alert>
 	) : getAssignedInquiriesError ? (
-		<Alert severity="error">Inbox could not be loaded.</Alert>
+		<Alert severity="error">{t('ui.inboxCouldNotBeLoaded')}</Alert>
 	) : getAssignedInquiriesLoading && !inquiries.length ? (
 		<Stack className="cs-state">
 			<CircularProgress />
@@ -75,11 +77,11 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 						<Box>
 							<Typography component="h2">{inquiry.inquiryTitle}</Typography>
 							<Typography>
-								From {inquiry.senderNick} · {new Date(inquiry.createdAt).toLocaleDateString()}
+								{t('message.from', { name: inquiry.senderNick })} · {new Date(inquiry.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' })}
 							</Typography>
 						</Box>
 						<Chip
-							label={inquiry.inquiryStatus === 'ANSWERED' ? 'Answered' : 'Needs reply'}
+							label={inquiry.inquiryStatus === 'ANSWERED' ? t('ui.answered') : t('ui.needsReply')}
 							color={inquiry.inquiryStatus === 'ANSWERED' ? 'success' : 'warning'}
 							size="small"
 						/>
@@ -87,13 +89,13 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 					<Typography className="cs-ticket__message">{inquiry.inquiryContent}</Typography>
 					{inquiry.inquiryAnswer ? (
 						<Box className="cs-ticket__reply">
-							<Typography component="strong">Your reply</Typography>
+							<Typography component="strong">{t('ui.yourReply')}</Typography>
 							<Typography>{inquiry.inquiryAnswer}</Typography>
 						</Box>
 					) : activeId === inquiry._id ? (
 						<Stack className="cs-ticket__answer">
 							<TextField
-								label="Your reply"
+								label={t('ui.yourReply')}
 								value={answerText}
 								onChange={(event) => setAnswerText(event.target.value)}
 								inputProps={{ maxLength: 3000 }}
@@ -106,9 +108,9 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 									variant="contained"
 									disabled={answerInquiryLoading || answerText.trim().length < 2}
 								>
-									Send reply
+									{t('ui.sendReply')}
 								</Button>
-								<Button onClick={() => setActiveId('')}>Cancel</Button>
+								<Button onClick={() => setActiveId('')}>{t('ui.cancel')}</Button>
 							</Stack>
 						</Stack>
 					) : (
@@ -117,7 +119,7 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 							onClick={() => openAnswerHandler(inquiry._id)}
 							variant="outlined"
 						>
-							Reply
+							{t('ui.reply')}
 						</Button>
 					)}
 				</Box>
@@ -125,8 +127,8 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 		</Stack>
 	) : (
 		<Stack className="cs-state">
-			<Typography component="h2">Inbox is clear</Typography>
-			<Typography>New requests addressed to you will appear here.</Typography>
+			<Typography component="h2">{t('ui.inboxIsClear')}</Typography>
+			<Typography>{t('ui.newRequestsAddressedToYouWillAppearHere')}</Typography>
 		</Stack>
 	);
 

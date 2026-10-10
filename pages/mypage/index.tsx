@@ -18,8 +18,10 @@ import MyProfile from '../../libs/components/mypage/MyProfile';
 import MyProducts from '../../libs/components/mypage/MyProducts';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
+import { useTranslation } from '../../libs/i18n';
 
 const MyPage: NextPage = () => {
+	const { t } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
 
@@ -45,18 +47,18 @@ const MyPage: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>My Account | PetNest Korea</title>
-					<meta name="title" content="My Account | PetNest Korea" />
+					<title>{t('ui.myAccountPetnestKorea')}</title>
+					<meta name="title" content={t('ui.myAccountPetnestKorea')} />
 				</Head>
 				<Box component="main" id="my-page" className="mypage-page--mobile">
 					<Box className="container">
 						{!user?.sub ? (
 							<Stack className="mypage-state">
 								<LockOutlinedIcon />
-								<Typography component="h1">Sign in to view your account</Typography>
-								<Typography>Manage your PetNest orders from one secure place.</Typography>
+								<Typography component="h1">{t('ui.signInToViewYourAccount')}</Typography>
+								<Typography>{t('ui.manageYourPetnestOrdersFromOneSecurePlace')}</Typography>
 								<Button component={Link} href={accountHref} variant="contained">
-									Login or sign up
+									{t('ui.loginOrSignUp')}
 								</Button>
 							</Stack>
 						) : (
@@ -74,8 +76,8 @@ const MyPage: NextPage = () => {
 		return (
 			<>
 				<Head>
-					<title>My Account | PetNest Korea</title>
-					<meta name="title" content="My Account | PetNest Korea" />
+					<title>{t('ui.myAccountPetnestKorea')}</title>
+					<meta name="title" content={t('ui.myAccountPetnestKorea')} />
 				</Head>
 
 				<Box component="main" id="my-page">
@@ -83,10 +85,10 @@ const MyPage: NextPage = () => {
 						{!user?.sub ? (
 							<Stack className="mypage-state">
 								<LockOutlinedIcon />
-								<Typography component="h1">Sign in to view your account</Typography>
-								<Typography>Manage your PetNest orders from one secure place.</Typography>
+								<Typography component="h1">{t('ui.signInToViewYourAccount')}</Typography>
+								<Typography>{t('ui.manageYourPetnestOrdersFromOneSecurePlace')}</Typography>
 								<Button component={Link} href={accountHref} variant="contained">
-									Login or sign up
+									{t('ui.loginOrSignUp')}
 								</Button>
 							</Stack>
 						) : (

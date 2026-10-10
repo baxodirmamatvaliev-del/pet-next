@@ -11,6 +11,7 @@ import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } fr
 import { T } from '../../../types/common';
 import { Pet } from '../../../types/pet/pet';
 import { AdminPetsInquiry } from '../../../types/pet/pet.input';
+import { useTranslation } from '../../../i18n';
 
 const initialInquiry: AdminPetsInquiry = {
 	page: 1,
@@ -21,6 +22,7 @@ const initialInquiry: AdminPetsInquiry = {
 };
 
 const PetList = () => {
+	const { t, label, errorText } = useTranslation();
 	/** STATES **/
 	const [inquiry, setInquiry] = useState<AdminPetsInquiry>(initialInquiry);
 	const [pets, setPets] = useState<Pet[]>([]);
@@ -57,12 +59,16 @@ const PetList = () => {
 
 	const updatePetStatusHandler = async (pet: Pet, petStatus: PetStatus) => {
 		try {
-			if (!await sweetConfirmAlert(`Change ${pet.petName} to ${petStatus.toLowerCase()}?`)) return;
+			if (!await sweetConfirmAlert(
+				t('message.changeStatus', { name: pet.petName, status: label(petStatus) }),
+				t('common.confirm'),
+				t('ui.cancel'),
+			)) return;
 			await updatePetByAdmin({ variables: { input: { _id: pet._id, petStatus } } });
 			await getAllPetsByAdminRefetch({ input: inquiry });
-			await sweetTopSmallSuccessAlert('Pet listing updated', 800);
+			await sweetTopSmallSuccessAlert(t('ui.petListingUpdated'), 800);
 		} catch (error) {
-			await sweetMixinErrorAlert(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG);
+			await sweetMixinErrorAlert(errorText(error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG));
 		}
 	};
 
@@ -72,23 +78,23 @@ const PetList = () => {
 	return (
 		<Stack className="admin-list">
 			<Stack direction="row" className="admin-list__heading">
-				<Stack><Typography component="h1">Pet listings</Typography><Typography>Moderate community listings and their status.</Typography></Stack>
+				<Stack><Typography component="h1">{t('ui.petListings')}</Typography><Typography>{t('ui.moderateCommunityListingsAndTheirStatus')}</Typography></Stack>
 				<Stack direction="row" className="admin-list__filters">
-					<TextField select size="small" label="Pet" value={inquiry.search.typeList?.[0] ?? ''} onChange={(event) => typeFilterHandler(event.target.value)}>
-						<MenuItem value="">All pets</MenuItem>
-						{Object.values(PetType).map((type) => <MenuItem value={type} key={type}>{type}</MenuItem>)}
+					<TextField select size="small" label={t('ui.pet')} value={inquiry.search.typeList?.[0] ?? ''} onChange={(event) => typeFilterHandler(event.target.value)}>
+						<MenuItem value="">{t('ui.allPets')}</MenuItem>
+						{Object.values(PetType).map((type) => <MenuItem value={type} key={type}>{label(type)}</MenuItem>)}
 					</TextField>
-					<TextField select size="small" label="Location" value={inquiry.search.locationList?.[0] ?? ''} onChange={(event) => locationFilterHandler(event.target.value)}>
-						<MenuItem value="">All locations</MenuItem>
-						{Object.values(PetLocation).map((location) => <MenuItem value={location} key={location}>{location}</MenuItem>)}
+					<TextField select size="small" label={t('ui.location')} value={inquiry.search.locationList?.[0] ?? ''} onChange={(event) => locationFilterHandler(event.target.value)}>
+						<MenuItem value="">{t('ui.allLocations')}</MenuItem>
+						{Object.values(PetLocation).map((location) => <MenuItem value={location} key={location}>{label(location)}</MenuItem>)}
 					</TextField>
-					<TextField select size="small" label="Status" value={inquiry.search.petStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
-						<MenuItem value="">All statuses</MenuItem>
-						{Object.values(PetStatus).map((status) => <MenuItem value={status} key={status}>{status}</MenuItem>)}
+					<TextField select size="small" label={t('ui.status')} value={inquiry.search.petStatus ?? ''} onChange={(event) => statusFilterHandler(event.target.value)}>
+						<MenuItem value="">{t('ui.allStatuses')}</MenuItem>
+						{Object.values(PetStatus).map((status) => <MenuItem value={status} key={status}>{label(status)}</MenuItem>)}
 					</TextField>
 				</Stack>
 			</Stack>
-			{getAllPetsByAdminError ? <Alert severity="error">Pet listings could not be loaded.</Alert> : getAllPetsByAdminLoading && !pets.length ? <CircularProgress /> : pets.length ? (
+			{getAllPetsByAdminError ? <Alert severity="error">{t('ui.petListingsCouldNotBeLoaded')}</Alert> : getAllPetsByAdminLoading && !pets.length ? <CircularProgress /> : pets.length ? (
 				<>
 					<Stack className="admin-list__items">
 						{pets.map((pet) => {
@@ -100,15 +106,15 @@ const PetList = () => {
 									<Avatar variant="rounded" src={pet.petImages[0] ? `${REACT_APP_API_URL}/${pet.petImages[0]}` : undefined} alt={pet.petName} />
 									<Stack className="admin-list__details">
 										<Typography component="strong">{pet.petTitle}</Typography>
-										<Typography>{pet.petName} · {pet.petType} · {pet.petListingType}</Typography>
-										<Typography>Owner: {pet.memberId}</Typography>
+										<Typography>{pet.petName} · {label(pet.petType)} · {label(pet.petListingType)}</Typography>
+										<Typography>{t('ui.owner')} {pet.memberId}</Typography>
 									</Stack>
-									<Typography className={`admin-list__status admin-list__status--${pet.petStatus.toLowerCase()}`}>{pet.petStatus}</Typography>
+									<Typography className={`admin-list__status admin-list__status--${pet.petStatus.toLowerCase()}`}>{label(pet.petStatus)}</Typography>
 									{canManage && (
 										<Stack direction="row" className="admin-list__actions">
-											<Button className={`admin-action admin-action--${pet.petStatus === PetStatus.ACTIVE ? 'warning' : 'positive'}`} disabled={updatePetLoading} onClick={() => updatePetStatusHandler(pet, pet.petStatus === PetStatus.ACTIVE ? PetStatus.RESERVED : PetStatus.ACTIVE)}>{pet.petStatus === PetStatus.ACTIVE ? 'Reserve' : 'Reactivate'}</Button>
-											<Button className="admin-action admin-action--purple" disabled={updatePetLoading} onClick={() => updatePetStatusHandler(pet, completedStatus)}>{completedStatus === PetStatus.ADOPTED ? 'Adopted' : 'Sold'}</Button>
-											<Button className="admin-action admin-action--danger" disabled={updatePetLoading} onClick={() => updatePetStatusHandler(pet, PetStatus.DELETE)}>Remove</Button>
+											<Button className={`admin-action admin-action--${pet.petStatus === PetStatus.ACTIVE ? 'warning' : 'positive'}`} disabled={updatePetLoading} onClick={() => updatePetStatusHandler(pet, pet.petStatus === PetStatus.ACTIVE ? PetStatus.RESERVED : PetStatus.ACTIVE)}>{pet.petStatus === PetStatus.ACTIVE ? t('ui.reserve') : t('ui.reactivate')}</Button>
+											<Button className="admin-action admin-action--purple" disabled={updatePetLoading} onClick={() => updatePetStatusHandler(pet, completedStatus)}>{completedStatus === PetStatus.ADOPTED ? t('ui.adopted') : t('ui.sold')}</Button>
+											<Button className="admin-action admin-action--danger" disabled={updatePetLoading} onClick={() => updatePetStatusHandler(pet, PetStatus.DELETE)}>{t('ui.remove')}</Button>
 										</Stack>
 									)}
 								</Stack>
@@ -117,7 +123,7 @@ const PetList = () => {
 					</Stack>
 					{totalPages > 1 && <Pagination page={inquiry.page} count={totalPages} onChange={(_event, page) => setInquiry({ ...inquiry, page })} />}
 				</>
-			) : <Typography>No pet listings found.</Typography>}
+			) : <Typography>{t('ui.noPetListingsFound')}</Typography>}
 		</Stack>
 	);
 };

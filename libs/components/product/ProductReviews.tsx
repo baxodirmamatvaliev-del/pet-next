@@ -14,6 +14,7 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAler
 import { Comment } from '../../types/comment/comment';
 import { CommentInput, CommentsInquiry } from '../../types/comment/comment.input';
 import { T } from '../../types/common';
+import { useTranslation } from '../../i18n';
 
 interface ProductReviewsProps {
 	productId: string;
@@ -22,6 +23,7 @@ interface ProductReviewsProps {
 }
 
 const ProductReviews = (props: ProductReviewsProps) => {
+	const { t, locale, errorText } = useTranslation();
 	const { productId, ownerId, onReviewCreated } = props;
 	const device = useDeviceDetect();
 
@@ -77,10 +79,10 @@ const ProductReviews = (props: ProductReviewsProps) => {
 			if (reviewPage > 1) setReviewPage(1);
 			else await getCommentsRefetch({ input: reviewInquiry });
 			await onReviewCreated();
-			await sweetTopSmallSuccessAlert('Review posted', 800);
+			await sweetTopSmallSuccessAlert(t('ui.reviewPosted'), 800);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		}
 	};
 
@@ -96,49 +98,49 @@ const ProductReviews = (props: ProductReviewsProps) => {
 		<>
 			<Stack direction="row" className="product-reviews__heading">
 				<Box>
-					<Typography component="h2">Customer reviews</Typography>
-					<Typography>Share your experience with this product.</Typography>
+					<Typography component="h2">{t('ui.customerReviews')}</Typography>
+					<Typography>{t('ui.shareYourExperienceWithThisProduct')}</Typography>
 				</Box>
-				<Typography component="span">{reviewTotal} reviews</Typography>
+				<Typography component="span">{t('counts.reviews', { count: reviewTotal })}</Typography>
 			</Stack>
 
 			{canWriteReview ? (
 				<Stack component="form" className="product-reviews__form" onSubmit={reviewSubmitHandler}>
 					<Stack direction="row" className="product-reviews__rating-input">
-						<Typography component="strong">Your rating</Typography>
+						<Typography component="strong">{t('ui.yourRating')}</Typography>
 						<Rating value={reviewRating} onChange={(_event, value) => setReviewRating(value)} />
 					</Stack>
 					<TextField
 						value={reviewText}
 						onChange={(event) => setReviewText(event.target.value)}
-						placeholder="What did you like about this product?"
+						placeholder={t('ui.whatDidYouLikeAboutThisProduct')}
 						multiline
 						rows={3}
 						fullWidth
-						slotProps={{ htmlInput: { maxLength: 500, 'aria-label': 'Write a product review' } }}
+						slotProps={{ htmlInput: { maxLength: 500, 'aria-label': t('common.writeReview') } }}
 					/>
 					<Button type="submit" variant="contained" disabled={!reviewRating || !reviewText.trim() || createCommentLoading}>
-						{createCommentLoading ? 'Posting...' : 'Post review'}
+						{createCommentLoading ? t('ui.posting') : t('ui.postReview')}
 					</Button>
 				</Stack>
 			) : !user?.sub ? (
 				<Stack direction="row" className="product-reviews__sign-in">
-					<Typography>Sign in to review this product.</Typography>
-					<Button component={Link} href={signInHref} variant="outlined">Sign in</Button>
+					<Typography>{t('ui.signInToReviewThisProduct')}</Typography>
+					<Button component={Link} href={signInHref} variant="outlined">{t('ui.signIn')}</Button>
 				</Stack>
 			) : (
-				<Alert severity="info">You cannot review your own product.</Alert>
+				<Alert severity="info">{t('ui.youCannotReviewYourOwnProduct')}</Alert>
 			)}
 
 			{getCommentsLoading && !reviews.length ? (
 				<Stack className="product-reviews__state"><CircularProgress color="primary" /></Stack>
 			) : getCommentsError ? (
-				<Alert severity="error">Reviews could not be loaded.</Alert>
+				<Alert severity="error">{t('ui.reviewsCouldNotBeLoaded')}</Alert>
 			) : reviews.length ? (
 				<>
 					<Stack className="product-reviews__list">
 						{reviews.map((review) => {
-							const author = review.memberData?.memberNick ?? 'PetNest member';
+							const author = review.memberData?.memberNick ?? t('common.member');
 							const avatar = review.memberData?.memberImage
 								? `${REACT_APP_API_URL}/${review.memberData.memberImage}`
 								: undefined;
@@ -151,7 +153,7 @@ const ProductReviews = (props: ProductReviewsProps) => {
 									<Box>
 										<Stack direction="row" className="product-reviews__author">
 											<Typography component={Link} href={`/member/detail?id=${review.memberId}`}>{author}</Typography>
-											<Typography>{new Date(review.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
+											<Typography>{new Date(review.createdAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
 										</Stack>
 										<Rating value={review.commentRating ?? 0} readOnly size="small" />
 										<Typography className="product-reviews__text">{review.commentContent}</Typography>
@@ -163,7 +165,7 @@ const ProductReviews = (props: ProductReviewsProps) => {
 					{totalPages > 1 && <Pagination page={reviewPage} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />}
 				</>
 			) : (
-				<Typography className="product-reviews__empty">No reviews yet. Be the first to share your experience.</Typography>
+				<Typography className="product-reviews__empty">{t('ui.noReviewsYetBeTheFirstToShare')}</Typography>
 			)}
 		</>
 	);

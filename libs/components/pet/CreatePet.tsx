@@ -21,6 +21,7 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAler
 import { T } from '../../types/common';
 import { Pet } from '../../types/pet/pet';
 import { PetInput, PetUpdateInput } from '../../types/pet/pet.input';
+import { useTranslation } from '../../i18n';
 
 interface CreatePetProps {
 	mode?: 'create' | 'edit';
@@ -53,6 +54,7 @@ const initialPetData: PetFormData = {
 };
 
 const CreatePet = (props: CreatePetProps) => {
+	const { t, label, errorText } = useTranslation();
 	const { mode = 'create' } = props;
 	const router = useRouter();
 	const device = useDeviceDetect();
@@ -112,11 +114,11 @@ const CreatePet = (props: CreatePetProps) => {
 		event.target.value = '';
 
 		if (files.length > 10) {
-			await sweetMixinErrorAlert('You can upload up to 10 images.');
+			await sweetMixinErrorAlert(t('ui.youCanUploadUpTo10Images'));
 			return;
 		}
 		if (files.some((file) => !['image/jpeg', 'image/png'].includes(file.type))) {
-			await sweetMixinErrorAlert('Please choose JPG, JPEG, or PNG images.');
+			await sweetMixinErrorAlert(t('ui.pleaseChooseJpgJpegOrPngImages'));
 			return;
 		}
 
@@ -167,8 +169,8 @@ const CreatePet = (props: CreatePetProps) => {
 		try {
 			const token = await getValidAccessToken();
 			if (!token || !user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
-			if (isEdit && currentPet?.memberId !== user.sub) throw new Error('You can only edit your own listing.');
-			if (!selectedFiles.length && !currentPet?.petImages.length) throw new Error('Please add at least one pet image.');
+			if (isEdit && currentPet?.memberId !== user.sub) throw new Error(t('ui.youCanOnlyEditYourOwnListing'));
+			if (!selectedFiles.length && !currentPet?.petImages.length) throw new Error(t('ui.pleaseAddAtLeastOnePetImage'));
 
 			setUploadLoading(true);
 			const petImages = selectedFiles.length
@@ -196,13 +198,13 @@ const CreatePet = (props: CreatePetProps) => {
 			const savedPet = isEdit ? data?.updatePet : data?.createPet;
 			if (!savedPet?._id) throw new Error(Message.SOMETHING_WENT_WRONG);
 
-			await sweetTopSmallSuccessAlert(isEdit ? 'Pet listing updated' : 'Pet listing created', 800);
+			await sweetTopSmallSuccessAlert(isEdit ? t('ui.petListingUpdated') : t('ui.petListingCreated'), 800);
 			await router.push({ pathname: '/pet/detail', query: { id: savedPet._id } });
 		} catch (error) {
 			const message = axios.isAxiosError(error)
 				? error.response?.data?.errors?.[0]?.message ?? error.message
 				: error instanceof Error ? error.message : Message.SOMETHING_WENT_WRONG;
-			await sweetMixinErrorAlert(message);
+			await sweetMixinErrorAlert(errorText(message));
 		} finally {
 			setUploadLoading(false);
 		}
@@ -218,11 +220,11 @@ const CreatePet = (props: CreatePetProps) => {
 			{imagePreviews.map((preview, index) => (
 				<Box className="pet-create-form__preview" key={preview}>
 					<Image src={preview} alt={selectedFiles[index].name} width={150} height={150} unoptimized />
-					<IconButton aria-label={`Remove ${selectedFiles[index].name}`} onClick={() => removeImageHandler(index)}>
+					<IconButton aria-label={t('message.removeFile', { name: selectedFiles[index].name })} onClick={() => removeImageHandler(index)}>
 						<CloseRoundedIcon fontSize="small" />
 					</IconButton>
 					<Typography title={selectedFiles[index].name}>
-						{index === 0 ? 'Cover · ' : ''}{selectedFiles[index].name}
+						{index === 0 ? t('ui.cover') : ''}{selectedFiles[index].name}
 					</Typography>
 				</Box>
 			))}
@@ -233,7 +235,7 @@ const CreatePet = (props: CreatePetProps) => {
 			{currentPet.petImages.map((image, index) => (
 				<Box className="pet-create-form__preview" key={image}>
 					<Image src={`${REACT_APP_API_URL}/${image}`} alt={`${currentPet.petName} ${index + 1}`} width={150} height={150} unoptimized />
-					<Typography>{index === 0 ? 'Cover image' : `Image ${index + 1}`}</Typography>
+					<Typography>{index === 0 ? t('ui.coverImage') : t('message.imageNumber', { number: index + 1 })}</Typography>
 				</Box>
 			))}
 		</Stack>
@@ -245,7 +247,7 @@ const CreatePet = (props: CreatePetProps) => {
 			<Box component="main" className={`pet-create-page container${device === 'mobile' ? ' pet-create-page--mobile' : ''}`}>
 				{getPetLoading ? <CircularProgress color="primary" /> : (
 					<Alert severity={currentPet && currentPet.memberId !== user?.sub ? 'warning' : 'error'}>
-						{currentPet && currentPet.memberId !== user?.sub ? 'You can only edit your own listing.' : 'Pet listing could not be loaded.'}
+						{currentPet && currentPet.memberId !== user?.sub ? t('ui.youCanOnlyEditYourOwnListing') : t('ui.petListingCouldNotBeLoaded')}
 					</Alert>
 				)}
 			</Box>
@@ -257,55 +259,53 @@ const CreatePet = (props: CreatePetProps) => {
 		return (
 			<Box component="main" className="pet-create-page pet-create-page--mobile container">
 			<Stack className="pet-create-page__heading">
-					<Typography>COMMUNITY</Typography>
-					<Typography component="h1">{isEdit ? 'Edit pet listing' : 'Create a pet listing'}</Typography>
-					<Typography>{isEdit ? 'Update your pet listing details and photos.' : 'Share your pet with people looking to adopt or welcome a new companion.'}</Typography>
+					<Typography>{t('nav.community')}</Typography>
+					<Typography component="h1">{isEdit ? t('ui.editPetListing') : t('ui.createAPetListing')}</Typography>
+					<Typography>{isEdit ? t('ui.updateYourPetListingDetailsAndPhotos') : t('ui.shareYourPetWithPeopleLookingToAdopt')}</Typography>
 				</Stack>
 				{!user?.sub && (
 					<Alert severity="info" className="pet-create-page__auth">
-						Please <Link href={isEdit ? `/account/join?referrer=/pet/edit?id=${petId}` : '/account/join?referrer=/pet/create'}>sign in</Link> to manage this listing.
-					</Alert>
+						<Link href={isEdit ? `/account/join?referrer=/pet/edit?id=${petId}` : '/account/join?referrer=/pet/create'}>{t('message.signInListing')}</Link></Alert>
 				)}
 				<Stack component="form" className="pet-create-form pet-create-form--mobile" onSubmit={submitPetHandler}>
 					<Stack direction="row" className="pet-create-form__section-heading">
 						<PetsRoundedIcon />
-						<Typography component="h2">Pet information</Typography>
+						<Typography component="h2">{t('ui.petInformation')}</Typography>
 					</Stack>
 					<Stack className="pet-create-form__grid">
-						<TextField select label="Pet type" value={petData.petType} onChange={(event) => inputChangeHandler('petType', event.target.value)}>
-							{Object.values(PetType).map((value) => <MenuItem value={value} key={value}>{value}</MenuItem>)}
+						<TextField select label={t('ui.petType')} value={petData.petType} onChange={(event) => inputChangeHandler('petType', event.target.value)}>
+							{Object.values(PetType).map((value) => <MenuItem value={value} key={value}>{label(value)}</MenuItem>)}
 						</TextField>
-						<TextField select label="Listing type" value={petData.petListingType} onChange={(event) => inputChangeHandler('petListingType', event.target.value)}>
-							<MenuItem value={PetListingType.ADOPTION}>Adoption</MenuItem>
-							<MenuItem value={PetListingType.SALE}>For sale</MenuItem>
+						<TextField select label={t('ui.listingType')} value={petData.petListingType} onChange={(event) => inputChangeHandler('petListingType', event.target.value)}>
+							<MenuItem value={PetListingType.ADOPTION}>{t('ui.adoption')}</MenuItem>
+							<MenuItem value={PetListingType.SALE}>{t('ui.saleListingType')}</MenuItem>
 						</TextField>
-						<TextField label="Pet name" value={petData.petName} onChange={(event) => inputChangeHandler('petName', event.target.value)} required inputProps={{ maxLength: 50 }} />
-						<TextField label="Listing title" value={petData.petTitle} onChange={(event) => inputChangeHandler('petTitle', event.target.value)} required inputProps={{ minLength: 3, maxLength: 100 }} />
-						<TextField label="Breed (optional)" value={petData.petBreed} onChange={(event) => inputChangeHandler('petBreed', event.target.value)} />
-						<TextField select label="Gender" value={petData.petGender} onChange={(event) => inputChangeHandler('petGender', event.target.value)}>
-							{Object.values(PetGender).map((value) => <MenuItem value={value} key={value}>{value}</MenuItem>)}
+						<TextField label={t('ui.petName')} value={petData.petName} onChange={(event) => inputChangeHandler('petName', event.target.value)} required inputProps={{ maxLength: 50 }} />
+						<TextField label={t('ui.listingTitle')} value={petData.petTitle} onChange={(event) => inputChangeHandler('petTitle', event.target.value)} required inputProps={{ minLength: 3, maxLength: 100 }} />
+						<TextField label={t('ui.breedOptional')} value={petData.petBreed} onChange={(event) => inputChangeHandler('petBreed', event.target.value)} />
+						<TextField select label={t('ui.gender')} value={petData.petGender} onChange={(event) => inputChangeHandler('petGender', event.target.value)}>
+							{Object.values(PetGender).map((value) => <MenuItem value={value} key={value}>{label(value)}</MenuItem>)}
 						</TextField>
-						<TextField select label="Location" value={petData.petLocation} onChange={(event) => inputChangeHandler('petLocation', event.target.value)}>
-							{Object.values(PetLocation).map((value) => <MenuItem value={value} key={value}>{value}</MenuItem>)}
+						<TextField select label={t('ui.location')} value={petData.petLocation} onChange={(event) => inputChangeHandler('petLocation', event.target.value)}>
+							{Object.values(PetLocation).map((value) => <MenuItem value={value} key={value}>{label(value)}</MenuItem>)}
 						</TextField>
-						<TextField label="Age in months (optional)" type="number" value={petData.petAgeMonths} onChange={(event) => inputChangeHandler('petAgeMonths', event.target.value)} inputProps={{ min: 0, step: 1 }} />
-						{isSale && <TextField label="Price (₩)" type="number" value={petData.petPrice} onChange={(event) => inputChangeHandler('petPrice', event.target.value)} required inputProps={{ min: 1, step: 1000 }} />}
+						<TextField label={t('ui.ageInMonthsOptional')} type="number" value={petData.petAgeMonths} onChange={(event) => inputChangeHandler('petAgeMonths', event.target.value)} inputProps={{ min: 0, step: 1 }} />
+						{isSale && <TextField label={t('ui.priceWon')} type="number" value={petData.petPrice} onChange={(event) => inputChangeHandler('petPrice', event.target.value)} required inputProps={{ min: 1, step: 1000 }} />}
 					</Stack>
-					<TextField label="Description (optional)" value={petData.petDesc} onChange={(event) => inputChangeHandler('petDesc', event.target.value)} multiline minRows={5} className="pet-create-form__description" />
+					<TextField label={t('ui.descriptionOptional')} value={petData.petDesc} onChange={(event) => inputChangeHandler('petDesc', event.target.value)} multiline minRows={5} className="pet-create-form__description" />
 					<Stack className="pet-create-form__images">
-						<Typography component="strong">Pet photos</Typography>
-						<Typography>{isEdit ? 'Choose new images to replace the current photos, or leave them unchanged.' : 'Upload up to 10 JPG or PNG images. Add at least one photo.'}</Typography>
+						<Typography component="strong">{t('ui.petPhotos')}</Typography>
+						<Typography>{isEdit ? t('ui.chooseNewImagesToReplaceTheCurrentPhotos') : t('ui.uploadUpTo10JpgOrPngImages')}</Typography>
 						<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />}>
-							Choose images
-							<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
+							{t('ui.chooseImages')}<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
 						</Button>
 						{imagePreview}
 						{existingImages}
 					</Stack>
 					<Stack direction="row" className="pet-create-form__actions">
-						<Button component={Link} href={isEdit ? `/pet/detail?id=${petId}` : '/pet'} variant="outlined">Cancel</Button>
+						<Button component={Link} href={isEdit ? `/pet/detail?id=${petId}` : '/pet'} variant="outlined">{t('ui.cancel')}</Button>
 						<Button type="submit" variant="contained" disabled={isSubmitDisabled}>
-							{uploadLoading ? 'Uploading images...' : createPetLoading || updatePetLoading ? 'Saving...' : isEdit ? 'Save changes' : 'Publish listing'}
+							{uploadLoading ? t('ui.uploadingImages') : createPetLoading || updatePetLoading ? t('ui.saving') : isEdit ? t('ui.saveChanges') : t('ui.publishListing')}
 						</Button>
 					</Stack>
 				</Stack>
@@ -316,83 +316,82 @@ const CreatePet = (props: CreatePetProps) => {
 		return (
 			<Box component="main" className="pet-create-page container">
 			<Stack className="pet-create-page__heading">
-					<Typography>COMMUNITY</Typography>
-					<Typography component="h1">{isEdit ? 'Edit pet listing' : 'Create a pet listing'}</Typography>
-					<Typography>{isEdit ? 'Update your pet listing details and photos.' : 'Share your pet with people looking to adopt or welcome a new companion.'}</Typography>
+					<Typography>{t('nav.community')}</Typography>
+					<Typography component="h1">{isEdit ? t('ui.editPetListing') : t('ui.createAPetListing')}</Typography>
+					<Typography>{isEdit ? t('ui.updateYourPetListingDetailsAndPhotos') : t('ui.shareYourPetWithPeopleLookingToAdopt')}</Typography>
 				</Stack>
 
 				{!user?.sub && (
 					<Alert severity="info" className="pet-create-page__auth">
-						Please <Link href={isEdit ? `/account/join?referrer=/pet/edit?id=${petId}` : '/account/join?referrer=/pet/create'}>sign in</Link> to manage this listing.
-					</Alert>
+						<Link href={isEdit ? `/account/join?referrer=/pet/edit?id=${petId}` : '/account/join?referrer=/pet/create'}>{t('message.signInListing')}</Link></Alert>
 				)}
 
 				<Stack component="form" className="pet-create-form" onSubmit={submitPetHandler}>
 					<Stack direction="row" className="pet-create-form__section-heading">
 						<PetsRoundedIcon />
-						<Typography component="h2">Pet information</Typography>
+						<Typography component="h2">{t('ui.petInformation')}</Typography>
 					</Stack>
 					<Stack className="pet-create-form__grid">
 						<TextField
 							select
-							label="Pet type"
+							label={t('ui.petType')}
 							value={petData.petType}
 							onChange={(event) => inputChangeHandler('petType', event.target.value)}
 						>
 							{Object.values(PetType).map((value) => (
-								<MenuItem value={value} key={value}>{value}</MenuItem>
+								<MenuItem value={value} key={value}>{label(value)}</MenuItem>
 							))}
 						</TextField>
 						<TextField
 							select
-							label="Listing type"
+							label={t('ui.listingType')}
 							value={petData.petListingType}
 							onChange={(event) => inputChangeHandler('petListingType', event.target.value)}
 						>
-							<MenuItem value={PetListingType.ADOPTION}>Adoption</MenuItem>
-							<MenuItem value={PetListingType.SALE}>For sale</MenuItem>
+							<MenuItem value={PetListingType.ADOPTION}>{t('ui.adoption')}</MenuItem>
+							<MenuItem value={PetListingType.SALE}>{t('ui.saleListingType')}</MenuItem>
 						</TextField>
 						<TextField
-							label="Pet name"
+							label={t('ui.petName')}
 							value={petData.petName}
 							onChange={(event) => inputChangeHandler('petName', event.target.value)}
 							required
 							inputProps={{ maxLength: 50 }}
 						/>
 						<TextField
-							label="Listing title"
+							label={t('ui.listingTitle')}
 							value={petData.petTitle}
 							onChange={(event) => inputChangeHandler('petTitle', event.target.value)}
 							required
 							inputProps={{ minLength: 3, maxLength: 100 }}
 						/>
 						<TextField
-							label="Breed (optional)"
+							label={t('ui.breedOptional')}
 							value={petData.petBreed}
 							onChange={(event) => inputChangeHandler('petBreed', event.target.value)}
 						/>
 						<TextField
 							select
-							label="Gender"
+							label={t('ui.gender')}
 							value={petData.petGender}
 							onChange={(event) => inputChangeHandler('petGender', event.target.value)}
 						>
 							{Object.values(PetGender).map((value) => (
-								<MenuItem value={value} key={value}>{value}</MenuItem>
+								<MenuItem value={value} key={value}>{label(value)}</MenuItem>
 							))}
 						</TextField>
 						<TextField
 							select
-							label="Location"
+							label={t('ui.location')}
 							value={petData.petLocation}
 							onChange={(event) => inputChangeHandler('petLocation', event.target.value)}
 						>
 							{Object.values(PetLocation).map((value) => (
-								<MenuItem value={value} key={value}>{value}</MenuItem>
+								<MenuItem value={value} key={value}>{label(value)}</MenuItem>
 							))}
 						</TextField>
 						<TextField
-							label="Age in months (optional)"
+							label={t('ui.ageInMonthsOptional')}
 							type="number"
 							value={petData.petAgeMonths}
 							onChange={(event) => inputChangeHandler('petAgeMonths', event.target.value)}
@@ -400,7 +399,7 @@ const CreatePet = (props: CreatePetProps) => {
 						/>
 						{isSale && (
 							<TextField
-								label="Price (₩)"
+								label={t('ui.priceWon')}
 								type="number"
 								value={petData.petPrice}
 								onChange={(event) => inputChangeHandler('petPrice', event.target.value)}
@@ -411,7 +410,7 @@ const CreatePet = (props: CreatePetProps) => {
 					</Stack>
 
 					<TextField
-						label="Description (optional)"
+						label={t('ui.descriptionOptional')}
 						value={petData.petDesc}
 						onChange={(event) => inputChangeHandler('petDesc', event.target.value)}
 						multiline
@@ -420,20 +419,19 @@ const CreatePet = (props: CreatePetProps) => {
 					/>
 
 					<Stack className="pet-create-form__images">
-						<Typography component="strong">Pet photos</Typography>
-						<Typography>{isEdit ? 'Choose new images to replace the current photos, or leave them unchanged.' : 'Upload up to 10 JPG or PNG images. Add at least one photo.'}</Typography>
+						<Typography component="strong">{t('ui.petPhotos')}</Typography>
+						<Typography>{isEdit ? t('ui.chooseNewImagesToReplaceTheCurrentPhotos') : t('ui.uploadUpTo10JpgOrPngImages')}</Typography>
 						<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />}>
-							Choose images
-							<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
+							{t('ui.chooseImages')}<input hidden type="file" accept="image/jpeg,image/png" multiple onChange={imageChangeHandler} />
 						</Button>
 						{imagePreview}
 						{existingImages}
 					</Stack>
 
 					<Stack direction="row" className="pet-create-form__actions">
-						<Button component={Link} href={isEdit ? `/pet/detail?id=${petId}` : '/pet'} variant="outlined">Cancel</Button>
+						<Button component={Link} href={isEdit ? `/pet/detail?id=${petId}` : '/pet'} variant="outlined">{t('ui.cancel')}</Button>
 						<Button type="submit" variant="contained" disabled={isSubmitDisabled}>
-							{uploadLoading ? 'Uploading images...' : createPetLoading || updatePetLoading ? 'Saving...' : isEdit ? 'Save changes' : 'Publish listing'}
+							{uploadLoading ? t('ui.uploadingImages') : createPetLoading || updatePetLoading ? t('ui.saving') : isEdit ? t('ui.saveChanges') : t('ui.publishListing')}
 						</Button>
 					</Stack>
 				</Stack>
