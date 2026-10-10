@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 import { CREATE_PET, UPDATE_PET } from '../../../apollo/user/mutation';
 import { GET_PET } from '../../../apollo/user/query';
-import { getJwtToken } from '../../auth';
+import { getValidAccessToken } from '../../auth';
 import { REACT_APP_API_GRAPHQL_URL, REACT_APP_API_URL } from '../../config';
 import { Message } from '../../enums/common.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
@@ -165,7 +165,7 @@ const CreatePet = (props: CreatePetProps) => {
 		event.preventDefault();
 
 		try {
-			const token = getJwtToken();
+			const token = await getValidAccessToken();
 			if (!token || !user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
 			if (isEdit && currentPet?.memberId !== user.sub) throw new Error('You can only edit your own listing.');
 			if (!selectedFiles.length && !currentPet?.petImages.length) throw new Error('Please add at least one pet image.');

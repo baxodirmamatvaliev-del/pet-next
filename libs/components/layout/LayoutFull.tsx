@@ -1,8 +1,7 @@
 import { Stack } from '@mui/material';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { getJwtToken, updateUserInfo } from '../../auth';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Footer from '../Footer';
 import Top from '../Top';
@@ -10,12 +9,6 @@ import Top from '../Top';
 const withLayoutFull = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutFull(props: P) {
 		const device = useDeviceDetect();
-
-		/** LIFECYCLES **/
-		useEffect(() => {
-			const token = getJwtToken();
-			if (token) updateUserInfo(token);
-		}, []);
 
 		if (device === 'mobile') {
 			/** RENDER MOBILE **/

@@ -1,46 +1,60 @@
+//— cookie yuborish, tokenni headerga qo‘shish va xato bo‘lsa so‘rovni bir marta qaytarish.//
+
 import {
 	ApolloClient,
 	ApolloLink,
 	InMemoryCache,
 	NormalizedCacheObject,
 	from,
+	fromPromise,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 import { useMemo } from 'react';
 
-import { clearAuthSession, getJwtToken } from '../libs/auth';
+import { clearAuthSession, getJwtToken, getValidAccessToken, isAuthError, refreshAccessToken } from '../libs/auth/session';
 import { REACT_APP_API_GRAPHQL_URL } from '../libs/config';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function getHeaders() {
-	const token = getJwtToken();
-
-	return token ? { Authorization: `Bearer ${token}` } : {};
-}
-
 function createIsomorphicLink() {
+	// Har so‘rovdan oldin yaroqli access tokenni Authorization headerga qo‘shamiz.
 	const authLink = new ApolloLink((operation, forward) => {
-		operation.setContext(({ headers = {} }) => ({
-			headers: { ...headers, ...getHeaders() },
-		}));
-
-		return forward(operation);
+		if (typeof window === 'undefined') return forward(operation);
+		const tokenPromise = operation.getContext().skipRefresh
+			? Promise.resolve(getJwtToken()) : getValidAccessToken();
+		return fromPromise(tokenPromise).flatMap((token) => {
+			operation.setContext(({ headers = {} }) => ({
+				headers: { ...headers, Authorization: token ? `Bearer ${token}` : '' },
+			}));
+			return forward(operation);
+		});
 	});
 
-	const errorLink = onError(({ graphQLErrors, networkError }) => {
-		graphQLErrors?.forEach(({ message }) => {
-			console.error(`[GraphQL error]: ${message}`);
+	// Server tokenni rad etsa, refresh qilib so‘rovni faqat bir marta qaytaramiz.
+	const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+		const unauthenticated = graphQLErrors?.some(isAuthError)
+			|| (networkError && isAuthError(networkError));
+		if (!unauthenticated || typeof window === 'undefined' || operation.getContext().skipRefresh) return;
+		if (operation.getContext().authRetried) {
+			clearAuthSession();
+			return;
+		}
+		operation.setContext({ authRetried: true });
+		// Boshqa so‘rov allaqachon yangilagan bo‘lsa, yana refresh qilmaymiz.
+		const sentToken = operation.getContext().headers?.Authorization;
+		const tokenPromise = getJwtToken() && sentToken !== `Bearer ${getJwtToken()}`
+			? Promise.resolve(getJwtToken()) : refreshAccessToken();
+		return fromPromise(tokenPromise).flatMap(() => forward(operation)).map((result) => {
+			// Qayta yuborilgan so‘rov ham rad etilsa, login holatini tozalaymiz.
+			if (result.errors?.some(isAuthError)) clearAuthSession();
+			return result;
 		});
-		const unauthenticated = graphQLErrors?.some(({ extensions }) => extensions?.code === 'UNAUTHENTICATED');
-		if (unauthenticated) clearAuthSession();
-
-		if (networkError) console.error(`[Network error]: ${networkError.message}`);
 	});
 
 	const uploadLink = createUploadLink({
 		uri: REACT_APP_API_GRAPHQL_URL,
+		credentials: 'include', // Login/refresh cookie’larini brauzer qabul qilsin va yuborsin.
 	});
 
 	return from([errorLink, authLink, uploadLink]);

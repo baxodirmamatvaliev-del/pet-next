@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
-import { userVar } from '../../apollo/store';
+import { authReadyVar, userVar } from '../../apollo/store';
 import { logIn, logOut, signUp } from '../../libs/auth';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Message } from '../../libs/enums/common.enum';
@@ -31,6 +31,7 @@ const Join: NextPage = () => {
 	const [loginView, setLoginView] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const user = useReactiveVar(userVar);
+	const authReady = useReactiveVar(authReadyVar);
 
 	/** HANDLERS **/
 	const viewChangeHandler = (state: boolean) => {
@@ -83,12 +84,16 @@ const Join: NextPage = () => {
 		}
 	};
 
-	const logoutHandler = () => {
-		logOut();
+	const logoutHandler = async () => {
+		try {
+			await logOut();
+		} catch {
+			await sweetMixinErrorAlert('Logout failed. Please try again.');
+		}
 	};
 
 	/** COMPUTED VALUES **/
-	const isSubmitDisabled = loading
+	const isSubmitDisabled = !authReady || loading
 		|| !input.nick.trim()
 		|| input.password.length < 8
 		|| (!loginView && !input.phone.trim());

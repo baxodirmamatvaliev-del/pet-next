@@ -4,3 +4,6 @@ import { CustomJwtPayload } from '../libs/types/customJwtPayload';
 
 export const userVar = makeVar<CustomJwtPayload | null>(null);
 export const cartCountVar = makeVar<number>(0);
+
+// Cookie orqali login holati tekshirilmaguncha auth formalar kutadi.
+export const authReadyVar = makeVar(false);

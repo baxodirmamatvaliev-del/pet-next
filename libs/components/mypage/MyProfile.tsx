@@ -18,7 +18,7 @@ import {
 import { userVar } from '../../../apollo/store';
 import { UPDATE_MEMBER } from '../../../apollo/user/mutation';
 import { GET_MEMBER } from '../../../apollo/user/query';
-import { getJwtToken, updateStorage, updateUserInfo } from '../../auth';
+import { getValidAccessToken, setJwtToken } from '../../auth';
 import { REACT_APP_API_GRAPHQL_URL, REACT_APP_API_URL } from '../../config';
 import { Message } from '../../enums/common.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
@@ -75,7 +75,7 @@ const MyProfile = () => {
 		try {
 			const image = event.target.files?.[0];
 			if (!image) return;
-			const token = getJwtToken();
+			const token = await getValidAccessToken();
 			if (!token) throw new Error(Message.NOT_AUTHENTICATED);
 
 			setImageUploaderLoading(true);
@@ -130,8 +130,7 @@ const MyProfile = () => {
 
 			setMember(data.updateMember);
 			if (data.updateMember.accessToken) {
-				updateStorage({ jwtToken: data.updateMember.accessToken });
-				updateUserInfo(data.updateMember.accessToken);
+				setJwtToken(data.updateMember.accessToken);
 			}
 			await sweetTopSmallSuccessAlert('Profile updated successfully', 800);
 		} catch (err) {

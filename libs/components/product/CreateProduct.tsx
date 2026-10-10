@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 import { CREATE_PRODUCT, UPDATE_PRODUCT } from '../../../apollo/user/mutation';
 import { GET_MEMBER, GET_PRODUCT } from '../../../apollo/user/query';
-import { getJwtToken } from '../../auth';
+import { getValidAccessToken } from '../../auth';
 import { REACT_APP_API_GRAPHQL_URL, REACT_APP_API_URL } from '../../config';
 import { Message } from '../../enums/common.enum';
 import { MemberType } from '../../enums/member.enum';
@@ -198,7 +198,7 @@ const CreateProduct = (props: CreateProductProps) => {
 		event.preventDefault();
 
 		try {
-			const token = getJwtToken();
+			const token = await getValidAccessToken();
 			if (!token || !user?.sub) throw new Error(Message.NOT_AUTHENTICATED);
 			if (memberType !== MemberType.ADMIN && memberType !== MemberType.AGENT) throw new Error('Admin or agent access is required.');
 			if (isEdit && currentProduct?.memberId !== user.sub) throw new Error('You can only edit your own product.');

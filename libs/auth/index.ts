@@ -1,120 +1,40 @@
-import { jwtDecode } from 'jwt-decode';
-
+//— login/signup/logout.//
 import { initializeApollo } from '../../apollo/client';
-import { cartCountVar, userVar } from '../../apollo/store';
 import { LOGIN, SIGN_UP } from '../../apollo/user/mutation';
 import { Message } from '../enums/common.enum';
-import { T } from '../types/common';
-import { CustomJwtPayload } from '../types/customJwtPayload';
-import { LoginInput, MemberInput } from '../types/member/member.input';
+import { endSession, restoreSession, setJwtToken } from './session';
 
-export function getJwtToken(): string {
-	if (typeof window === 'undefined') return '';
+export { getJwtToken, getValidAccessToken, setJwtToken } from './session';
 
-	return window.localStorage.getItem('accessToken') ?? '';
-}
-
-export function setJwtToken(token: string) {
-	window.localStorage.setItem('accessToken', token);
-}
-
-export function updateUserInfo(token: string): boolean {
-	try {
-		const claims = jwtDecode<CustomJwtPayload>(token);
-		const currentTime = Math.floor(Date.now() / 1000);
-
-		if (!claims?.sub || (claims.exp && claims.exp <= currentTime)) {
-			throw new Error('Invalid or expired token');
-		}
-
-		userVar(claims);
-		return true;
-	} catch {
-		clearAuthSession();
-		return false;
-	}
-}
-
-export const logIn = async (nick: string, password: string): Promise<void> => {
-	const { jwtToken } = await requestJwtToken({ nick, password });
-
-	if (!jwtToken) throw new Error(Message.SOMETHING_WENT_WRONG);
-
-	updateStorage({ jwtToken });
-	updateUserInfo(jwtToken);
-};
-
-const requestJwtToken = async ({
-	nick,
-	password,
-}: {
-	nick: string;
-	password: string;
-}): Promise<{ jwtToken: string }> => {
-	const apolloClient = initializeApollo();
-	const input: LoginInput = {
-		memberNick: nick,
-		memberPassword: password,
-	};
-	const result = await apolloClient.mutate({
+// Login javobidagi access token xotiraga, refresh cookie esa brauzerga yoziladi.
+export async function logIn(nick: string, password: string): Promise<void> {
+	await restoreSession();
+	const { data } = await initializeApollo().mutate<{ login: { accessToken: string } }>({
 		mutation: LOGIN,
-		variables: { input },
-		fetchPolicy: 'network-only',
+		variables: { input: { memberNick: nick, memberPassword: password } },
+		context: { skipRefresh: true },
 	});
-	const data = result.data as T | null | undefined;
-
-	return { jwtToken: data?.login?.accessToken ?? '' };
-};
-
-export const signUp = async (nick: string, password: string, phone: string): Promise<void> => {
-	const { jwtToken } = await requestSignUpJwtToken({ nick, password, phone });
-
-	if (!jwtToken) throw new Error(Message.SOMETHING_WENT_WRONG);
-
-	updateStorage({ jwtToken });
-	updateUserInfo(jwtToken);
-};
-
-const requestSignUpJwtToken = async ({
-	nick,
-	password,
-	phone,
-}: {
-	nick: string;
-	password: string;
-	phone: string;
-}): Promise<{ jwtToken: string }> => {
-	const apolloClient = initializeApollo();
-	const input: MemberInput = {
-		memberNick: nick,
-		memberPassword: password,
-		memberPhone: phone,
-	};
-	const result = await apolloClient.mutate({
-		mutation: SIGN_UP,
-		variables: { input },
-		fetchPolicy: 'network-only',
-	});
-	const data = result.data as T | null | undefined;
-
-	return { jwtToken: data?.signup?.accessToken ?? '' };
-};
-
-export const updateStorage = ({ jwtToken }: { jwtToken: string }) => {
-	setJwtToken(jwtToken);
-	window.localStorage.setItem('login', Date.now().toString());
-};
-
-export function clearAuthSession() {
-	if (typeof window !== 'undefined') {
-		window.localStorage.removeItem('accessToken');
-		window.localStorage.setItem('logout', Date.now().toString());
-	}
-	cartCountVar(0);
-	userVar(null);
+	if (!data?.login.accessToken) throw new Error(Message.SOMETHING_WENT_WRONG);
+	await initializeApollo().clearStore(); // Oldingi akkaunt ma’lumotlari cache’da qolmasin.
+	setJwtToken(data.login.accessToken);
 }
 
-export function logOut() {
-	clearAuthSession();
+// Signup ham login kabi access token va refresh cookie beradi.
+export async function signUp(nick: string, password: string, phone: string): Promise<void> {
+	await restoreSession();
+	const { data } = await initializeApollo().mutate<{ signup: { accessToken: string } }>({
+		mutation: SIGN_UP,
+		variables: { input: { memberNick: nick, memberPassword: password, memberPhone: phone } },
+		context: { skipRefresh: true },
+	});
+	if (!data?.signup.accessToken) throw new Error(Message.SOMETHING_WENT_WRONG);
+	await initializeApollo().clearStore();
+	setJwtToken(data.signup.accessToken);
+}
+
+// Server sessiyasi yopilgach, eski foydalanuvchi cache’ini ham tozalaymiz.
+export async function logOut(): Promise<void> {
+	await endSession();
+	await initializeApollo().clearStore();
 	window.location.reload();
 }

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
@@ -7,9 +6,8 @@ import { Alert, Avatar, Box, Button, Chip, CircularProgress, Stack, Typography }
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { userVar } from '../../../apollo/store';
+import { authReadyVar, userVar } from '../../../apollo/store';
 import { GET_MEMBER } from '../../../apollo/user/query';
-import { getJwtToken, updateUserInfo } from '../../auth';
 import { REACT_APP_API_URL } from '../../config';
 import { MemberType } from '../../enums/member.enum';
 import { T } from '../../types/common';
@@ -19,7 +17,7 @@ import NotificationBell from '../NotificationBell';
 const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutAdmin(props: P) {
 		/** STATES **/
-		const [authReady, setAuthReady] = useState(() => Boolean(userVar()?.sub));
+		const authReady = useReactiveVar(authReadyVar);
 		const user = useReactiveVar(userVar);
 
 		/** APOLLO REQUESTS **/
@@ -32,20 +30,6 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 			variables: { memberId: user?.sub ?? '' },
 			skip: !authReady || !user?.sub,
 		});
-
-		/** LIFECYCLES **/
-		useEffect(() => {
-			const token = getJwtToken();
-			if (!token) userVar(null);
-			else if (!userVar()?.sub) {
-				try {
-					updateUserInfo(token);
-				} catch {
-					userVar(null);
-				}
-			}
-			setAuthReady(true);
-		}, []);
 
 		/** COMPUTED VALUES **/
 		const member = (getMemberData as T | undefined)?.getMember;

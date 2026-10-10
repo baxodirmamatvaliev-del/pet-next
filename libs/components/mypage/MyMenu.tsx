@@ -23,7 +23,7 @@ import { logOut } from '../../auth';
 import { REACT_APP_API_URL } from '../../config';
 import { MemberType } from '../../enums/member.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { sweetConfirmAlert } from '../../sweetAlert';
+import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 
 const MyMenu = () => {
@@ -58,7 +58,12 @@ const MyMenu = () => {
 	/** HANDLERS **/
 	const logoutHandler = async () => {
 		const isConfirmed = await sweetConfirmAlert('Do you want to logout?');
-		if (isConfirmed) logOut();
+		if (!isConfirmed) return;
+		try {
+			await logOut();
+		} catch {
+			await sweetMixinErrorAlert('Logout failed. Please try again.');
+		}
 	};
 
 	if (device === 'mobile') {

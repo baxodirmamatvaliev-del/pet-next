@@ -1,3 +1,13 @@
+/** TUSHUN TIRISH refresh token
+ * Access token xotirada, refresh token HttpOnly cookie’da turadi. 
+ * Token tugaganda bitta refresh so‘rovi orqali yangilanadi. 
+ * Parallel so‘rovlar shu natijani kutadi.
+ *  Logout backend sessiyasini bekor qilib,
+ *  frontend xotirasi va cache’ini tozalaydi.
+ **/
+
+import { useEffect } from 'react';
+import { restoreSession, clearAuthSession } from '../libs/auth/session';
 import { ApolloProvider } from '@apollo/client';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -10,12 +20,26 @@ import '../scss/app.scss';
 import '../scss/pc/main.scss';
 import '../scss/mobile/main.scss';
 
+
+
 const theme = createTheme(light);
 const socialDescription = 'Shop quality products for dogs and cats, and meet pets in the PetNest Korea community.';
 const socialImage = 'https://koreapet.tech/og-petnest-korea.jpg';
 
 const App = ({ Component, pageProps }: AppProps) => {
 	const client = useApollo(pageProps.initialApolloState);
+    //— sahifa qayta ochilganda sessiyani tiklash.
+	// Ilova ochilganda sessiyani tiklaymiz; boshqa tabdagi logoutni ham qabul qilamiz.
+	useEffect(() => {
+		void restoreSession();
+		const onLogout = (event: StorageEvent) => {
+			if (event.key !== 'logout') return;
+			clearAuthSession();
+			void client.clearStore();
+		};
+		window.addEventListener('storage', onLogout);
+		return () => window.removeEventListener('storage', onLogout);
+	}, [client]);
 
 	return (
 		<ApolloProvider client={client}>

@@ -11,7 +11,7 @@ import { io } from 'socket.io-client';
 import { userVar } from '../../apollo/store';
 import { READ_NOTIFICATION } from '../../apollo/user/mutation';
 import { GET_MY_NOTIFICATIONS } from '../../apollo/user/query';
-import { getJwtToken } from '../auth';
+import { getValidAccessToken } from '../auth';
 import { REACT_APP_API_SOCKET_URL } from '../config';
 import { T } from '../types/common';
 import { Notification } from '../types/notification/notification';
@@ -44,15 +44,18 @@ const NotificationBell = ({ adminPanel = false }: { adminPanel?: boolean }) => {
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (!user?.sub) return;
-		const token = getJwtToken();
-		if (!token) return;
-
-		const socket = io(REACT_APP_API_SOCKET_URL, { auth: { token } });
+		// Socket qayta ulanganda ham yaroqli access token bilan kiradi.
+		const socket = io(REACT_APP_API_SOCKET_URL, {
+			auth: (callback) => {
+				void getValidAccessToken().then((token) => callback({ token }))
+					.catch(() => socket.disconnect());
+			},
+		});
 		socket.on('notification', () => {
 			void getMyNotificationsRefetch({ input: initialInput });
 		});
 		return () => { socket.disconnect(); };
-	}, [user?.sub, getMyNotificationsRefetch]);
+	}, [user, getMyNotificationsRefetch]);
 
 	/** HANDLERS **/
 	const openHandler = (event: MouseEvent<HTMLElement>) => {

@@ -33,6 +33,20 @@ export const READ_NOTIFICATION = gql`
  *         MEMBER         *
  *************************/
 
+// Cookie orqali yangi access token olamiz; refresh token javobda berilmaydi.
+export const REFRESH_TOKEN = gql`
+	mutation RefreshToken {
+		refreshToken { accessToken }
+	}
+`;
+
+// Backenddagi joriy refresh sessiyani bekor qilamiz.
+export const LOGOUT = gql`
+	mutation Logout {
+		logout
+	}
+`;
+
 export const SIGN_UP = gql`
 	mutation Signup($input: MemberInput!) {
 		signup(input: $input) {
