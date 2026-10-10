@@ -113,7 +113,7 @@
 		padding: 64px;
 		background:
 			radial-gradient(circle at 78% 18%, rgb(255 255 255 / 20%) 0 90px, transparent 91px),
-			linear-gradient(145deg, var(--pet-primary) 0%, $primary-dark 80%);
+			linear-gradient(145deg, var(--pet-primary-fill) 0%, $primary-dark 80%);
 		color: var(--pet-on-dark);
 		> svg {
 			position: absolute;

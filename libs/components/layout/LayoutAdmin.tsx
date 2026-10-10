@@ -13,6 +13,7 @@ import { MemberType } from '../../enums/member.enum';
 import { T } from '../../types/common';
 import AdminMenuList from '../admin/AdminMenuList';
 import NotificationBell from '../NotificationBell';
+import ThemeToggle from '../ThemeToggle';
 
 const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutAdmin(props: P) {
@@ -44,6 +45,7 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 						<Stack className="admin-page__state"><CircularProgress /></Stack>
 					) : !user?.sub ? (
 						<Stack className="admin-page__state">
+							<ThemeToggle />
 							<Alert severity="info">Sign in with an admin account to continue.</Alert>
 							<Button component={Link} href="/account/join?referrer=/_admin" variant="contained">Sign in</Button>
 						</Stack>
@@ -73,6 +75,7 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 								<Stack direction="row" className="admin-page__topbar">
 									<Stack><Typography component="strong">Control center</Typography><Typography>Everything happening at PetNest, in one place.</Typography></Stack>
 									<Stack direction="row" alignItems="center" spacing={1}>
+										<ThemeToggle />
 										<NotificationBell adminPanel />
 										<Chip icon={<VerifiedUserOutlinedIcon />} label="ADMIN ACCESS" />
 									</Stack>

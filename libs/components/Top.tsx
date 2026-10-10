@@ -16,6 +16,7 @@ import { T } from '../types/common';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import MobileMenu from './MobileMenu';
 import NotificationBell from './NotificationBell';
+import ThemeToggle from './ThemeToggle';
 
 const Top = () => {
 	const router = useRouter();
@@ -76,6 +77,7 @@ const Top = () => {
 						</Stack>
 					</Stack>
 					<Stack direction="row" component="nav" className="header-actions" aria-label="Shopping actions">
+						<ThemeToggle />
 						<NotificationBell />
 						<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
 							<LocalMallOutlinedIcon />
@@ -129,6 +131,7 @@ const Top = () => {
 						/>
 					</Box>
 					<Stack direction="row" component="nav" className="header-actions" aria-label="Account navigation">
+						<ThemeToggle />
 						<NotificationBell />
 						<Stack component={Link} href="/mypage?category=myFavorites" aria-label="Favorites">
 							<FavoriteBorderRoundedIcon />

@@ -1,9 +1,11 @@
 // MUI va SCSS bir xil ranglardan foydalanadi. Dark mode uchun ham shu nomlar saqlanadi.
 export const colors = {
 	primary: '#174f3f',
+	'primary-fill': '#174f3f',
 	'primary-dark': '#103d31',
 	'primary-hover': '#277657',
 	secondary: '#c14d36',
+	'secondary-fill': '#c14d36',
 	canvas: '#fbfaf7',
 	surface: '#ffffff',
 	'surface-muted': '#f6f4ef',
@@ -15,6 +17,7 @@ export const colors = {
 	sage: '#e6f0e8',
 	cream: '#fff9ef',
 	'on-dark': '#ffffff',
+	'on-status': '#ffffff',
 	'success-bg': '#e8f4ec',
 	'success-text': '#176243',
 	'warning-bg': '#fff3d9',
@@ -34,7 +37,48 @@ export const colors = {
 	'surface-rgb': '255 255 255',
 } as const;
 
+// Matn yorqin, fon esa to‘q bo‘ladi. Rasmlar va PetNest yashil uslubi saqlanadi.
+export const darkColors: Record<keyof typeof colors, string> = {
+	...colors,
+	primary: '#8bd4b5',
+	'primary-fill': '#286b50',
+	'primary-dark': '#0b211b',
+	'primary-hover': '#327f60',
+	secondary: '#ffae98',
+	'secondary-fill': '#b94c3a',
+	canvas: '#131e1b',
+	surface: '#1e2d27',
+	'surface-muted': '#26382f',
+	ink: '#edf5f0',
+	muted: '#b8c9bf',
+	'text-disabled': '#94aa9d',
+	border: '#3b5145',
+	'border-strong': '#688d78',
+	sage: '#243c30',
+	cream: '#1c2a23',
+	'on-status': '#131e1b',
+	'success-bg': '#203d2d',
+	'success-text': '#9cdbb5',
+	'warning-bg': '#3b301a',
+	'warning-text': '#f1cd83',
+	'error-bg': '#40272c',
+	'error-text': '#ffadb5',
+	'info-bg': '#213749',
+	'info-text': '#a3ccff',
+	'purple-bg': '#342b46',
+	'purple-text': '#d4baff',
+	'accent-bg': '#3d2c26',
+	'accent-text': '#ffb99d',
+	'olive-bg': '#303925',
+	'olive-text': '#c4d596',
+	rating: '#edc877',
+	'hero-rgb': '19 30 27',
+	'surface-rgb': '30 45 39',
+};
+
+const cssVariables = (palette: Record<keyof typeof colors, string>) =>
+	Object.entries(palette).map(([name, value]) => `--pet-${name}:${value}`).join(';');
+
 // Server HTML’iga qo‘shiladi: sahifa ochilishi bilanoq barcha CSS ranglari mavjud bo‘ladi.
-export const colorVariables = `:root{${Object.entries(colors)
-	.map(([name, value]) => `--pet-${name}:${value}`)
-	.join(';')}}`;
+export const colorVariables = `:root{${cssVariables(colors)};color-scheme:light}
+[data-mui-color-scheme="dark"]{${cssVariables(darkColors)};color-scheme:dark}`;

@@ -11,7 +11,7 @@
 	align-items: center;
 	justify-content: center;
 	gap: 14px;
-	background: $primary;
+	background: $primary-fill;
 	color: var(--pet-on-dark);
 	font-size: 12px;
 	font-weight: 700;
@@ -117,7 +117,7 @@
 			display: grid;
 			place-items: center;
 			border-radius: 50%;
-			background: $secondary;
+			background: $secondary-fill;
 			color: var(--pet-on-dark);
 			font-size: 10px;
 		}
@@ -144,7 +144,7 @@
 		justify-content: space-between;
 		gap: 12px;
 		padding: 19px 20px 18px;
-		background: linear-gradient(115deg, $primary-dark, $primary);
+		background: linear-gradient(115deg, $primary-dark, $primary-fill);
 		color: var(--pet-on-dark);
 		h2 {
 			font-family: Georgia, 'Times New Roman', serif;
@@ -153,14 +153,14 @@
 		}
 		p {
 			margin-top: 3px;
-			color: rgb(var(--pet-surface-rgb) / 72%);
+			color: rgb(255 255 255 / 72%);
 			font-size: 12px;
 		}
 		.notification-panel__count {
 			flex-shrink: 0;
 			padding: 5px 9px;
 			border-radius: 99px;
-			background: $secondary;
+			background: $secondary-fill;
 			font-size: 11px;
 			font-weight: 800;
 		}
@@ -195,11 +195,11 @@
 				background: var(--pet-sage);
 			}
 			.notification-panel__icon {
-				background: $primary;
+				background: $primary-fill;
 				color: var(--pet-on-dark);
 			}
 			.notification-panel__content strong {
-				color: $primary-dark;
+				color: $primary;
 				font-weight: 800;
 			}
 			.notification-panel__meta span {
@@ -247,7 +247,7 @@
 		flex-shrink: 0;
 		margin-top: 5px;
 		border-radius: 50%;
-		background: $secondary;
+		background: $secondary-fill;
 		box-shadow: 0 0 0 4px rgb(255 112 87 / 14%);
 	}
 	.notification-panel__meta {
@@ -299,11 +299,11 @@
 		box-shadow: 0 10px 25px rgb(23 79 63 / 16%);
 	}
 	&.button--primary {
-		background: $primary;
+		background: $primary-fill;
 		color: var(--pet-on-dark);
 	}
 	&.button--secondary {
-		background: $secondary;
+		background: $secondary-fill;
 		color: var(--pet-on-dark);
 	}
 	svg {
@@ -347,6 +347,12 @@
 	}
 }
 
+// Tema tugmasi qo‘shilganda planshetda header uchun yetarli joy qoldiramiz.
+@media (min-width: 761px) and (max-width: 1100px) {
+	.header-main { grid-template-columns: 145px minmax(140px, 1fr) auto; gap: 18px; }
+	.header-actions { gap: 14px; }
+}
+
 /* ADMIN PANEL */
 .admin-page {
 	min-height: 100vh;
@@ -376,7 +382,7 @@
 		height: 100vh;
 		flex-shrink: 0;
 		padding: 30px 18px 22px;
-		background: linear-gradient(165deg, var(--pet-primary) 0%, #0c332b 65%, #08271f 100%);
+		background: linear-gradient(165deg, var(--pet-primary-fill) 0%, #0c332b 65%, #08271f 100%);
 		box-shadow: 8px 0 28px #133b2c14;
 	}
 
@@ -424,8 +430,8 @@
 			.MuiListItemIcon-root { min-width: 22px; color: inherit; }
 			.MuiListItemText-primary { font-size: 14px; font-weight: 600; }
 			&:hover { transform: translateX(3px); background: #ffffff20; color: var(--pet-on-dark); }
-			&.Mui-selected { border-color: #ffffff2e; background: #ffffffeb; color: $primary; box-shadow: 0 8px 22px #021c1740; }
-			&.Mui-selected:hover { background: var(--pet-surface); color: $primary-dark; }
+			&.Mui-selected { border-color: #ffffff2e; background: var(--pet-surface); color: $primary; box-shadow: 0 8px 22px #021c1740; }
+			&.Mui-selected:hover { background: var(--pet-surface); color: $primary; }
 		}
 	}
 
@@ -509,7 +515,7 @@
 		gap: 8px;
 		.MuiTextField-root { min-width: 210px; }
 		.MuiButton-root { min-height: 40px; border-radius: 10px; font-weight: 700; text-transform: none; }
-		.MuiButton-contained { background: $primary; box-shadow: none; &:hover { background: var(--pet-primary-hover); box-shadow: 0 6px 14px #17624338; } }
+		.MuiButton-contained { background: $primary-fill; box-shadow: none; &:hover { background: var(--pet-primary-hover); box-shadow: 0 6px 14px #17624338; } }
 		.MuiButton-text { color: $muted; &:hover { background: var(--pet-success-bg); color: $primary; } }
 	}
 
@@ -602,15 +608,15 @@
 			&:focus-visible { outline: 2px solid $primary; outline-offset: 2px; }
 			&:disabled { opacity: 0.45; }
 			&--positive { background: var(--pet-success-bg); color: var(--pet-success-text); }
-			&--positive:hover { background: var(--pet-success-text); color: var(--pet-on-dark); box-shadow: 0 6px 14px #17624338; }
+			&--positive:hover { background: var(--pet-success-text); color: var(--pet-on-status); box-shadow: 0 6px 14px #17624338; }
 			&--warning { background: var(--pet-warning-bg); color: var(--pet-warning-text); }
-			&--warning:hover { background: var(--pet-warning-text); color: var(--pet-on-dark); box-shadow: 0 6px 14px #d7981938; }
+			&--warning:hover { background: var(--pet-warning-text); color: var(--pet-on-status); box-shadow: 0 6px 14px #d7981938; }
 			&--danger { background: var(--pet-error-bg); color: var(--pet-error-text); }
-			&--danger:hover { background: var(--pet-error-text); color: var(--pet-on-dark); box-shadow: 0 6px 14px #d34b5538; }
+			&--danger:hover { background: var(--pet-error-text); color: var(--pet-on-status); box-shadow: 0 6px 14px #d34b5538; }
 			&--blue { background: var(--pet-info-bg); color: var(--pet-info-text); }
-			&--blue:hover { background: var(--pet-info-text); color: var(--pet-on-dark); box-shadow: 0 6px 14px #3678b938; }
+			&--blue:hover { background: var(--pet-info-text); color: var(--pet-on-status); box-shadow: 0 6px 14px #3678b938; }
 			&--purple { background: var(--pet-purple-bg); color: var(--pet-purple-text); }
-			&--purple:hover { background: var(--pet-purple-text); color: var(--pet-on-dark); box-shadow: 0 6px 14px #8056ba38; }
+			&--purple:hover { background: var(--pet-purple-text); color: var(--pet-on-status); box-shadow: 0 6px 14px #8056ba38; }
 		}
 	}
 
@@ -620,7 +626,7 @@
 			border-radius: 9px;
 			transition: background 180ms ease, color 180ms ease, transform 180ms ease;
 			&:hover { transform: translateY(-2px); background: var(--pet-sage); color: $primary; }
-			&.Mui-selected { background: $primary; color: var(--pet-on-dark); }
+			&.Mui-selected { background: $primary-fill; color: var(--pet-on-dark); }
 			&.Mui-selected:hover { background: $primary-dark; }
 		}
 	}

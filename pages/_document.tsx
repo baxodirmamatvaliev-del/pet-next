@@ -1,8 +1,9 @@
 import { Head, Html, Main, NextScript } from 'next/document';
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { colors, colorVariables } from '../libs/theme/colors';
 
 const Document = () => (
-	<Html lang="en" data-scroll-behavior="smooth">
+	<Html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
 		<Head>
 			{/* MUI va SCSS uchun umumiy rang o‘zgaruvchilari. */}
 			<style id="pet-colors">{colorVariables}</style>
@@ -26,6 +27,8 @@ const Document = () => (
 			/>
 		</Head>
 		<body>
+			{/* Sahifa ko‘rinishidan oldin saqlangan tema yoki tizim tanlovini qo‘llaymiz. */}
+			<InitColorSchemeScript defaultMode="system" modeStorageKey="pet-theme" />
 			<Main />
 			<NextScript />
 		</body>

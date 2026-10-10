@@ -241,7 +241,7 @@
 				font-size: 11px;
 				white-space: nowrap;
 				&.active {
-					background: $primary;
+					background: $primary-fill;
 					color: var(--pet-on-dark);
 				}
 			}
@@ -475,7 +475,7 @@
 				font-size: 11px;
 				white-space: nowrap;
 				&.active {
-					background: $primary;
+					background: $primary-fill;
 					color: var(--pet-on-dark);
 				}
 			}
@@ -601,7 +601,7 @@
 				font-size: 11px;
 				text-transform: none;
 				&.active {
-					background: $primary;
+					background: $primary-fill;
 					color: var(--pet-on-dark);
 				}
 			}

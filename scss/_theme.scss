@@ -1,0 +1,22 @@
+// Bitta tugma desktop, mobil va admin headerida ishlatiladi.
+.theme-toggle.MuiIconButton-root {
+	width: 40px;
+	height: 40px;
+	flex-shrink: 0;
+	border: 1px solid var(--pet-border);
+	background: var(--pet-surface);
+	color: var(--pet-primary);
+	&:hover { background: var(--pet-sage); }
+	&:focus-visible { outline: 2px solid var(--pet-primary); outline-offset: 3px; }
+}
+
+// SweetAlert portallari ham tanlangan tema ranglaridan foydalanadi.
+.swal2-popup {
+	background: var(--pet-surface);
+	color: var(--pet-ink);
+	.swal2-timer-progress-bar { background: var(--pet-primary); }
+}
+
+@media (max-width: 760px) {
+	.theme-toggle.MuiIconButton-root { width: 36px; height: 36px; }
+}

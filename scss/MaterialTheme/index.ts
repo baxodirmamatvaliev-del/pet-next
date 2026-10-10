@@ -1,29 +1,37 @@
-import type { ThemeOptions } from '@mui/material/styles';
-import { colors } from '../../libs/theme/colors';
+import { createTheme } from '@mui/material/styles';
+import type { PaletteOptions } from '@mui/material/styles';
+import { colors, darkColors } from '../../libs/theme/colors';
 
-export const light: ThemeOptions = {
-	palette: {
-		mode: 'light',
-		divider: colors.border,
-		success: { main: colors['success-text'] },
-		warning: { main: colors['warning-text'] },
-		error: { main: colors['error-text'] },
-		info: { main: colors['info-text'] },
-		primary: {
-			main: colors.primary,
-			contrastText: colors['on-dark'],
-		},
-		secondary: {
-			main: colors.secondary,
-		},
-		background: {
-			default: colors.canvas,
-			paper: colors.surface,
-		},
-		text: {
-			primary: colors.ink,
-			secondary: colors.muted,
-		},
+// Ikkala tema MUI komponentlari va SCSS uchun bir xil palette’dan olinadi.
+const palette = (values: Record<keyof typeof colors, string>): PaletteOptions => ({
+	divider: values.border,
+	success: { main: values['success-text'] },
+	warning: { main: values['warning-text'] },
+	error: { main: values['error-text'] },
+	info: { main: values['info-text'] },
+	primary: {
+		main: values.primary,
+		contrastText: values.canvas,
+	},
+	secondary: {
+		main: values.secondary,
+	},
+	background: {
+		default: values.canvas,
+		paper: values.surface,
+	},
+	text: {
+		primary: values.ink,
+		secondary: values.muted,
+		disabled: values['text-disabled'],
+	},
+});
+
+export const theme = createTheme({
+	cssVariables: { colorSchemeSelector: '[data-mui-color-scheme="%s"]' },
+	colorSchemes: {
+		light: { palette: palette(colors) },
+		dark: { palette: palette(darkColors) },
 	},
 	typography: {
 		fontFamily: 'Arial, Helvetica, sans-serif',
@@ -34,6 +42,15 @@ export const light: ThemeOptions = {
 				root: {
 					textTransform: 'none',
 					boxShadow: 'none',
+				},
+				containedPrimary: {
+					backgroundColor: 'var(--pet-primary-fill)',
+					color: 'var(--pet-on-dark)',
+					'&:hover': { backgroundColor: 'var(--pet-primary-hover)' },
+				},
+				containedSecondary: {
+					backgroundColor: 'var(--pet-secondary-fill)',
+					color: 'var(--pet-on-dark)',
 				},
 			},
 		},
@@ -49,5 +66,8 @@ export const light: ThemeOptions = {
 				color: 'primary',
 			},
 		},
+		MuiPaper: {
+			styleOverrides: { root: { backgroundImage: 'none' } },
+		},
 	},
-};
+});

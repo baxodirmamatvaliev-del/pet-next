@@ -15,7 +15,7 @@
 	.header-main {
 		height: 72px;
 		grid-template-columns: 1fr auto auto;
-		gap: 14px;
+		gap: 8px;
 		.brand {
 			.brand__mark {
 				font-size: 34px !important;
@@ -33,7 +33,7 @@
 			display: none;
 		}
 		.header-actions {
-			gap: 12px;
+			gap: 6px;
 			.notification-bell {
 				padding: 5px;
 			}

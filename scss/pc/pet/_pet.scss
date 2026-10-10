@@ -71,7 +71,7 @@
 					text-transform: none;
 					&.Mui-selected {
 						border-color: $primary;
-						background: $primary;
+						background: $primary-fill;
 						color: var(--pet-on-dark);
 					}
 				}
@@ -92,7 +92,7 @@
 				padding: 0 13px;
 				border: 1px solid $primary;
 				border-radius: 9px;
-				background: $primary;
+				background: $primary-fill;
 				color: var(--pet-on-dark);
 				font-size: 12px;
 				font-weight: 700;
@@ -108,7 +108,7 @@
 				&:hover {
 					transform: translateY(-2px);
 					border-color: $secondary;
-					background: $secondary;
+					background: $secondary-fill;
 					box-shadow: 0 6px 14px rgb(255 112 87 / 24%);
 				}
 				&:active {
@@ -176,7 +176,7 @@
 			top: 14px;
 			left: 14px;
 			height: 28px;
-			background: rgb(255 255 255 / 92%);
+			background: rgb(var(--pet-surface-rgb) / 92%);
 			color: $primary;
 			font-size: 11px;
 			font-weight: 800;

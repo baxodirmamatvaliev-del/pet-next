@@ -93,7 +93,7 @@
 			}
 			&.active {
 				border-color: $primary;
-				background: $primary;
+				background: $primary-fill;
 				color: var(--pet-on-dark);
 			}
 		}
