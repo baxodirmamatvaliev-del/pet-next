@@ -1,10 +1,13 @@
 import type { NextConfig } from 'next';
+import { defaultLocale, locales } from './libs/i18n/config';
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
 	poweredByHeader: false,
 	compress: true,
 	output: 'standalone',
+	// Til prefiksi va NEXT_LOCALE cookie’sini Next.js boshqaradi.
+	i18n: { locales, defaultLocale },
 	async headers() {
 		return [
 			{

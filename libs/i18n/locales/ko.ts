@@ -1,0 +1,37 @@
+import type { Dictionary } from './en';
+
+const ko: Dictionary = {
+	'nav.home': 'PetNest Korea 홈',
+	'nav.delivery': '30,000원 이상 주문 시 무료배송',
+	'nav.products': '전체 상품',
+	'nav.dogs': '강아지',
+	'nav.cats': '고양이',
+	'nav.new': '신상품',
+	'nav.newProducts': '신상품',
+	'nav.best': '베스트 상품',
+	'nav.agents': '에이전트',
+	'nav.community': '커뮤니티',
+	'nav.help': '고객센터',
+	'nav.favorites': '찜 목록',
+	'nav.account': '마이페이지',
+	'nav.login': '로그인',
+	'nav.loginOrJoin': '로그인 / 회원가입',
+	'nav.cart': '장바구니',
+	'nav.shoppingCart': '장바구니',
+	'nav.itemCount': '상품: {count}개',
+	'nav.shop': '쇼핑',
+	'nav.accountSection': '계정',
+	'nav.shoppingActions': '쇼핑 메뉴',
+	'nav.accountNavigation': '계정 메뉴',
+	'nav.categories': '상품 카테고리',
+	'nav.openMenu': '메뉴 열기',
+	'nav.closeMenu': '메뉴 닫기',
+	'nav.search': '상품 검색',
+	'nav.searchPlaceholder': '상품 검색...',
+	'nav.submitSearch': '검색',
+	'preferences.language': '언어',
+	'preferences.lightMode': '라이트 모드로 전환',
+	'preferences.darkMode': '다크 모드로 전환',
+};
+
+export default ko;

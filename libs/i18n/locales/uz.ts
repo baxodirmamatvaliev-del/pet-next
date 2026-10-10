@@ -1,0 +1,37 @@
+import type { Dictionary } from './en';
+
+const uz: Dictionary = {
+	'nav.home': 'PetNest Korea bosh sahifasi',
+	'nav.delivery': '₩30,000 dan ortiq buyurtmalarga bepul yetkazib berish',
+	'nav.products': 'Barcha mahsulotlar',
+	'nav.dogs': 'Itlar',
+	'nav.cats': 'Mushuklar',
+	'nav.new': 'Yangiliklar',
+	'nav.newProducts': 'Yangi mahsulotlar',
+	'nav.best': 'Eng ko‘p sotilganlar',
+	'nav.agents': 'Agentlar',
+	'nav.community': 'Hamjamiyat',
+	'nav.help': 'Yordam markazi',
+	'nav.favorites': 'Sevimlilar',
+	'nav.account': 'Profilim',
+	'nav.login': 'Kirish',
+	'nav.loginOrJoin': 'Kirish yoki ro‘yxatdan o‘tish',
+	'nav.cart': 'Savat',
+	'nav.shoppingCart': 'Xarid savati',
+	'nav.itemCount': 'Mahsulotlar: {count}',
+	'nav.shop': 'DO‘KON',
+	'nav.accountSection': 'HISOB',
+	'nav.shoppingActions': 'Xarid amallari',
+	'nav.accountNavigation': 'Hisob menyusi',
+	'nav.categories': 'Mahsulot toifalari',
+	'nav.openMenu': 'Menyuni ochish',
+	'nav.closeMenu': 'Menyuni yopish',
+	'nav.search': 'Mahsulot qidirish',
+	'nav.searchPlaceholder': 'Mahsulot qidirish...',
+	'nav.submitSearch': 'Qidirish',
+	'preferences.language': 'Til',
+	'preferences.lightMode': 'Yorug‘ rejimga o‘tish',
+	'preferences.darkMode': 'To‘q rejimga o‘tish',
+};
+
+export default uz;

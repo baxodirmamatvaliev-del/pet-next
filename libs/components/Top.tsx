@@ -17,10 +17,13 @@ import useDeviceDetect from '../hooks/useDeviceDetect';
 import MobileMenu from './MobileMenu';
 import NotificationBell from './NotificationBell';
 import ThemeToggle from './ThemeToggle';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from '../i18n';
 
 const Top = () => {
 	const router = useRouter();
 	const device = useDeviceDetect();
+	const { t } = useTranslation();
 
 	/** STATES **/
 	const searchInputRef = useRef<HTMLInputElement>(null);
@@ -65,27 +68,26 @@ const Top = () => {
 		return (
 			<Stack component="header" className="site-header site-header--mobile">
 				<Stack direction="row" className="announcement">
-					<Typography component="span">Free delivery on all orders over ₩30,000</Typography>
-					<Typography component="span" className="announcement__kr">30,000원 이상 주문 시 무료배송</Typography>
+					<Typography component="span">{t('nav.delivery')}</Typography>
 				</Stack>
 				<Box className="header-main container">
-					<Stack direction="row" component={Link} href="/" className="brand" aria-label="PetNest Korea home">
+					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
 						<PetsRoundedIcon className="brand__mark" />
 						<Stack component="span" className="brand__text">
 							<Typography component="strong">PetNest</Typography>
 							<Typography component="small">Korea</Typography>
 						</Stack>
 					</Stack>
-					<Stack direction="row" component="nav" className="header-actions" aria-label="Shopping actions">
+					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.shoppingActions')}>
 						<ThemeToggle />
 						<NotificationBell />
-						<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
+						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
 							<LocalMallOutlinedIcon />
-							<Typography component="span">Cart</Typography>
+							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>
 						</Stack>
 					</Stack>
-					<IconButton className="mobile-menu" onClick={mobileMenuOpenHandler} aria-label="Open menu" aria-expanded={mobileMenuOpen}>
+					<IconButton className="mobile-menu" onClick={mobileMenuOpenHandler} aria-label={t('nav.openMenu')} aria-expanded={mobileMenuOpen}>
 						<MenuRoundedIcon />
 					</IconButton>
 				</Box>
@@ -103,11 +105,10 @@ const Top = () => {
 		return (
 			<Stack component="header" className="site-header site-header--pc">
 				<Stack direction="row" className="announcement">
-					<Typography component="span">Free delivery on all orders over ₩30,000</Typography>
-					<Typography component="span" className="announcement__kr">30,000원 이상 주문 시 무료배송</Typography>
+					<Typography component="span">{t('nav.delivery')}</Typography>
 				</Stack>
 				<Box className="header-main container">
-					<Stack direction="row" component={Link} href="/" className="brand" aria-label="PetNest Korea home">
+					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
 						<PetsRoundedIcon className="brand__mark" />
 						<Stack component="span" className="brand__text">
 							<Typography component="strong">PetNest</Typography>
@@ -121,43 +122,44 @@ const Top = () => {
 							type="search"
 							inputRef={searchInputRef}
 							defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
-							placeholder="Search products..."
-							inputProps={{ 'aria-label': 'Search products' }}
+							placeholder={t('nav.searchPlaceholder')}
+							inputProps={{ 'aria-label': t('nav.search') }}
 							endAdornment={(
 								<InputAdornment position="end">
-									<IconButton type="submit" edge="end" aria-label="Submit search"><SearchRoundedIcon /></IconButton>
+									<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}><SearchRoundedIcon /></IconButton>
 								</InputAdornment>
 							)}
 						/>
 					</Box>
-					<Stack direction="row" component="nav" className="header-actions" aria-label="Account navigation">
+					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.accountNavigation')}>
 						<ThemeToggle />
+						<LanguageSwitcher />
 						<NotificationBell />
-						<Stack component={Link} href="/mypage?category=myFavorites" aria-label="Favorites">
+						<Stack component={Link} href="/mypage?category=myFavorites" aria-label={t('nav.favorites')}>
 							<FavoriteBorderRoundedIcon />
-							<Typography component="span">Favorites</Typography>
+							<Typography component="span">{t('nav.favorites')}</Typography>
 						</Stack>
-						<Stack component={Link} href={user?.sub ? '/mypage' : '/account/join'} aria-label={user?.sub ? 'My account' : 'Login'}>
+						<Stack component={Link} href={user?.sub ? '/mypage' : '/account/join'} aria-label={t(user?.sub ? 'nav.account' : 'nav.login')}>
 							<PersonOutlineRoundedIcon />
-							<Typography component="span">{user?.sub ? 'My Account' : 'Login'}</Typography>
+							<Typography component="span">{t(user?.sub ? 'nav.account' : 'nav.login')}</Typography>
 						</Stack>
-						<Stack component={Link} href="/cart" aria-label="Shopping cart" className="cart-link">
+						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
 							<LocalMallOutlinedIcon />
-							<Typography component="span">Cart</Typography>
+							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>
 						</Stack>
 					</Stack>
 				</Box>
-				<Box component="nav" className="category-nav" aria-label="Product categories">
+				<Box component="nav" className="category-nav" aria-label={t('nav.categories')}>
 					<Stack direction="row" className="container category-nav__inner">
-						<Link href="/product">All Products</Link>
-						<Link href="/product?category=DOG">Dogs</Link>
-						<Link href="/product?category=CAT">Cats</Link>
-						<Link href="/product?sort=createdAt">New</Link>
-						<Link href="/product?sort=productSold">Best Sellers</Link>
-						<Link href="/agent">Agents</Link>
-						<Link href="/pet">Community</Link>
-						<Link href="/cs">Help Center</Link>
+						<Link href="/product">{t('nav.products')}</Link>
+						<Link href="/product?category=DOG">{t('nav.dogs')}</Link>
+						<Link href="/product?category=CAT">{t('nav.cats')}</Link>
+						<Link href="/product?sort=createdAt">{t('nav.new')}</Link>
+						<Link href="/product?sort=productSold">{t('nav.best')}</Link>
+						<Link href="/agent">{t('nav.agents')}</Link>
+						<Link href="/pet">{t('nav.community')}</Link>
+						<Link href="/cs">{t('nav.help')}</Link>
 					</Stack>
 				</Box>
 			</Stack>

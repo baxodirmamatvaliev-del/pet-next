@@ -3,7 +3,7 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { colors, colorVariables } from '../libs/theme/colors';
 
 const Document = () => (
-	<Html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+	<Html data-scroll-behavior="smooth" suppressHydrationWarning>
 		<Head>
 			{/* MUI va SCSS uchun umumiy rang o‘zgaruvchilari. */}
 			<style id="pet-colors">{colorVariables}</style>

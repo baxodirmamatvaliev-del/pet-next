@@ -1,0 +1,37 @@
+import type { Dictionary } from './en';
+
+const ru: Dictionary = {
+	'nav.home': 'Главная PetNest Korea',
+	'nav.delivery': 'Бесплатная доставка при заказе от ₩30,000',
+	'nav.products': 'Все товары',
+	'nav.dogs': 'Собаки',
+	'nav.cats': 'Кошки',
+	'nav.new': 'Новинки',
+	'nav.newProducts': 'Новые товары',
+	'nav.best': 'Хиты продаж',
+	'nav.agents': 'Агенты',
+	'nav.community': 'Сообщество',
+	'nav.help': 'Центр помощи',
+	'nav.favorites': 'Избранное',
+	'nav.account': 'Мой профиль',
+	'nav.login': 'Войти',
+	'nav.loginOrJoin': 'Вход / Регистрация',
+	'nav.cart': 'Корзина',
+	'nav.shoppingCart': 'Корзина покупок',
+	'nav.itemCount': 'Товаров: {count}',
+	'nav.shop': 'МАГАЗИН',
+	'nav.accountSection': 'АККАУНТ',
+	'nav.shoppingActions': 'Меню покупок',
+	'nav.accountNavigation': 'Меню аккаунта',
+	'nav.categories': 'Категории товаров',
+	'nav.openMenu': 'Открыть меню',
+	'nav.closeMenu': 'Закрыть меню',
+	'nav.search': 'Поиск товаров',
+	'nav.searchPlaceholder': 'Поиск товаров...',
+	'nav.submitSearch': 'Найти',
+	'preferences.language': 'Язык',
+	'preferences.lightMode': 'Включить светлую тему',
+	'preferences.darkMode': 'Включить тёмную тему',
+};
+
+export default ru;

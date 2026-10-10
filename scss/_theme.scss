@@ -10,6 +10,18 @@
 	&:focus-visible { outline: 2px solid var(--pet-primary); outline-offset: 3px; }
 }
 
+.language-switcher.MuiInputBase-root {
+	width: 76px;
+	height: 40px;
+	flex-shrink: 0;
+	background: var(--pet-surface);
+	color: var(--pet-primary);
+	font-size: 12px;
+	font-weight: 700;
+	.MuiOutlinedInput-notchedOutline { border-color: var(--pet-border); }
+	.MuiSelect-icon { color: var(--pet-primary); }
+}
+
 // SweetAlert portallari ham tanlangan tema ranglaridan foydalanadi.
 .swal2-popup {
 	background: var(--pet-surface);

@@ -4,12 +4,11 @@
 	}
 	.announcement {
 		height: 34px;
+		padding-inline: 14px;
+		text-align: center;
 		font-size: 10px;
 		.MuiTypography-root {
 			font-size: 10px;
-		}
-		.announcement__kr {
-			display: none;
 		}
 	}
 	.header-main {
@@ -193,7 +192,7 @@
 			> .MuiButton-root { align-self: flex-start; }
 		}
 		.admin-page__content { width: 100%; padding: 18px 16px 48px; }
-		.admin-page__topbar { margin-bottom: 26px; padding: 14px 16px; }
+		.admin-page__topbar { flex-wrap: wrap; margin-bottom: 26px; padding: 14px 16px; }
 	}
 
 	.admin-list {

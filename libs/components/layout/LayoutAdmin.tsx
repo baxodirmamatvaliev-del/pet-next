@@ -14,6 +14,7 @@ import { T } from '../../types/common';
 import AdminMenuList from '../admin/AdminMenuList';
 import NotificationBell from '../NotificationBell';
 import ThemeToggle from '../ThemeToggle';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) => {
 	return function LayoutAdmin(props: P) {
@@ -46,6 +47,7 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 					) : !user?.sub ? (
 						<Stack className="admin-page__state">
 							<ThemeToggle />
+							<LanguageSwitcher />
 							<Alert severity="info">Sign in with an admin account to continue.</Alert>
 							<Button component={Link} href="/account/join?referrer=/_admin" variant="contained">Sign in</Button>
 						</Stack>
@@ -76,6 +78,7 @@ const withAdminLayout = <P extends object>(Component: React.ComponentType<P>) =>
 									<Stack><Typography component="strong">Control center</Typography><Typography>Everything happening at PetNest, in one place.</Typography></Stack>
 									<Stack direction="row" alignItems="center" spacing={1}>
 										<ThemeToggle />
+										<LanguageSwitcher />
 										<NotificationBell adminPanel />
 										<Chip icon={<VerifiedUserOutlinedIcon />} label="ADMIN ACCESS" />
 									</Stack>

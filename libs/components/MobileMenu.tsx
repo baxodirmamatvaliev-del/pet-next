@@ -26,6 +26,8 @@ import {
 	Typography,
 } from '@mui/material';
 import Link from 'next/link';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from '../i18n';
 
 interface MobileMenuProps {
 	open: boolean;
@@ -37,6 +39,7 @@ interface MobileMenuProps {
 
 const MobileMenu = (props: MobileMenuProps) => {
 	const { open, authenticated, cartCount, closeHandler, searchProductsHandler } = props;
+	const { t } = useTranslation();
 
 	/** STATES **/
 	const [searchText, setSearchText] = useState('');
@@ -64,9 +67,13 @@ const MobileMenu = (props: MobileMenuProps) => {
 						<Typography component="small">Korea</Typography>
 					</Box>
 				</Stack>
-				<IconButton onClick={closeHandler} aria-label="Close menu">
+				<IconButton onClick={closeHandler} aria-label={t('nav.closeMenu')}>
 					<CloseRoundedIcon />
 				</IconButton>
+			</Stack>
+			<Stack direction="row" className="mobile-drawer__language">
+				<Typography>{t('preferences.language')}</Typography>
+				<LanguageSwitcher />
 			</Stack>
 
 			<Box component="form" className="mobile-drawer__search" onSubmit={searchHandler}>
@@ -76,12 +83,13 @@ const MobileMenu = (props: MobileMenuProps) => {
 					type="search"
 					value={searchText}
 					onChange={(event) => setSearchText(event.target.value)}
-					placeholder="Search products..."
+					placeholder={t('nav.searchPlaceholder')}
 					slotProps={{
+						htmlInput: { 'aria-label': t('nav.search') },
 						input: {
 							endAdornment: (
 								<InputAdornment position="end">
-									<IconButton type="submit" edge="end" aria-label="Submit search">
+									<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}>
 										<SearchRoundedIcon />
 									</IconButton>
 								</InputAdornment>
@@ -91,54 +99,54 @@ const MobileMenu = (props: MobileMenuProps) => {
 				/>
 			</Box>
 
-			<Typography className="mobile-drawer__label">SHOP</Typography>
+			<Typography className="mobile-drawer__label">{t('nav.shop')}</Typography>
 			<List disablePadding>
 				<ListItemButton component={Link} href="/product" onClick={closeHandler}>
 					<ListItemIcon>
 						<StorefrontOutlinedIcon />
 					</ListItemIcon>
-					<ListItemText primary="All Products" />
+					<ListItemText primary={t('nav.products')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/product?category=DOG" onClick={closeHandler}>
 					<ListItemIcon>
 						<PetsRoundedIcon />
 					</ListItemIcon>
-					<ListItemText primary="Dogs" />
+					<ListItemText primary={t('nav.dogs')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/product?category=CAT" onClick={closeHandler}>
 					<ListItemIcon>
 						<CrueltyFreeOutlinedIcon />
 					</ListItemIcon>
-					<ListItemText primary="Cats" />
+					<ListItemText primary={t('nav.cats')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/product?sort=createdAt" onClick={closeHandler}>
 					<ListItemIcon>
 						<NewReleasesOutlinedIcon />
 					</ListItemIcon>
-					<ListItemText primary="New Products" />
+					<ListItemText primary={t('nav.newProducts')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/product?sort=productSold" onClick={closeHandler}>
 					<ListItemIcon>
 						<TrendingUpRoundedIcon />
 					</ListItemIcon>
-					<ListItemText primary="Best Sellers" />
+					<ListItemText primary={t('nav.best')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/pet" onClick={closeHandler}>
 					<ListItemIcon><GroupsOutlinedIcon /></ListItemIcon>
-					<ListItemText primary="Community" />
+					<ListItemText primary={t('nav.community')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/agent" onClick={closeHandler}>
 					<ListItemIcon><StorefrontOutlinedIcon /></ListItemIcon>
-					<ListItemText primary="Agents" />
+					<ListItemText primary={t('nav.agents')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/cs" onClick={closeHandler}>
 					<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
-					<ListItemText primary="Help Center" />
+					<ListItemText primary={t('nav.help')} />
 				</ListItemButton>
 			</List>
 
 			<Divider />
-			<Typography className="mobile-drawer__label">ACCOUNT</Typography>
+			<Typography className="mobile-drawer__label">{t('nav.accountSection')}</Typography>
 			<List disablePadding>
 				<ListItemButton
 					component={Link}
@@ -148,17 +156,17 @@ const MobileMenu = (props: MobileMenuProps) => {
 					<ListItemIcon>
 						<AccountCircleOutlinedIcon />
 					</ListItemIcon>
-					<ListItemText primary={authenticated ? 'My Account' : 'Login or Sign up'} />
+					<ListItemText primary={t(authenticated ? 'nav.account' : 'nav.loginOrJoin')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/cart" onClick={closeHandler}>
 					<ListItemIcon>
 						<LocalMallOutlinedIcon />
 					</ListItemIcon>
-					<ListItemText primary="Shopping Cart" secondary={`${cartCount} items`} />
+					<ListItemText primary={t('nav.shoppingCart')} secondary={t('nav.itemCount', { count: cartCount })} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/mypage?category=myFavorites" onClick={closeHandler}>
 					<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
-					<ListItemText primary="Favorites" />
+					<ListItemText primary={t('nav.favorites')} />
 				</ListItemButton>
 			</List>
 		</Drawer>

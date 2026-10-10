@@ -81,3 +81,65 @@ Yangi dependency qo‘shilmagan. MUI’ning mavjud
 - Production HTML’da saqlangan dark tema ilova JavaScript’i yuklanishidan oldin qo‘llanishi tekshirildi.
 
 Commit: `feat(theme): add persistent light and dark mode`
+
+## 3-bosqichni review qilish
+
+1. `libs/i18n/config.ts` — qo‘llab-quvvatlanadigan tillar: `en`, `uz`, `ko`, `ru`.
+   `next.config.ts` shu ro‘yxatni Next.js’ning tayyor i18n routingiga beradi.
+   Inglizcha sahifa `/cs`, qolgan tillar `/uz/cs`, `/ko/cs`, `/ru/cs` bo‘ladi.
+2. `libs/i18n/locales/` — har tilning alohida lug‘ati.
+   Inglizcha lug‘at tarjima kalitlarini belgilaydi; qolgan uchalasida kalit
+   yetishmasa yoki ortiqcha kalit yozilsa, TypeScript xato beradi.
+3. `libs/i18n/index.ts` — `useTranslation()` URL’dagi tilni olib, tegishli lug‘atni tanlaydi.
+   Alohida React state yoki provider yo‘q: joriy tilni Next.js boshqaradi.
+4. `libs/components/LanguageSwitcher.tsx` — `router.replace()` bilan faqat tilni almashtiradi.
+   Sahifa, query, hash va scroll saqlanadi. Muvaffaqiyatli almashgach,
+   `NEXT_LOCALE` cookie’siga tilni bir yilga yozadi.
+5. Desktopda selector headerda, mobilda menyuning yuqori qismida, adminda tema tugmasi yonida.
+   Header, mobil menyu, qidiruv yozuvlari va tema tugmasining tooltip’i tarjimaga ulangan.
+6. `pages/_document.tsx` ichidagi doimiy `lang="en"` olib tashlandi:
+   `<html lang>` atributini Next.js joriy tilga mos beradi.
+
+Saytning `/` manziliga qaytganda Next.js avval `NEXT_LOCALE` cookie’sini,
+u bo‘lmasa brauzer tilini tekshiradi. Mos til topilmasa inglizchani ochadi.
+Til prefiksi bor manzilni, masalan `/ru/cs` ni ochish shu sahifani ruscha ko‘rsatadi.
+Cookie faqat til tanlovi uchun, auth tokenlariga aloqasi yo‘q.
+
+### Kodda ishlatish
+
+```tsx
+const { locale, t } = useTranslation();
+
+<span>{t('nav.help')}</span>
+<span>{t('nav.itemCount', { count: 3 })}</span>
+```
+
+`uz` tanlanganda natija `Yordam markazi` va `Mahsulotlar: 3` bo‘ladi.
+Yangi matn uchun avval `en.ts` ga kalit, keyin `uz.ts`, `ko.ts`, `ru.ts` ga tarjima qo‘shiladi.
+Komponentdagi matn `t('kalit')` bilan almashtiriladi. Matnlar oddiy React string sifatida chiqariladi.
+
+Yangi dependency qo‘shilmagan. Qolgan sahifalar, formalar, bildirishnomalar va admin matnlari
+4-bosqichda shu tizimga ulanadi. Foydalanuvchilar yozgan mahsulot nomi, xabar va tavsiflar
+ushbu lug‘atlar orqali avtomatik tarjima qilinmaydi.
+
+### Qo‘lda tekshirish
+
+1. Desktop headerdan EN / UZ / KO / RU ni tanlang; navigatsiya va qidiruv yozuvlari o‘zgaradi.
+2. `/cs?tab=faq` da tilni almashtiring: `tab=faq` saqlanadi.
+3. Sahifani yangilang: til URL orqali saqlanadi. Saytning `/` manzilini yangi tabda oching:
+   oxirgi tanlangan til cookie orqali tiklanadi.
+4. Mobilda menyuni oching va yuqoridagi selector orqali tilni almashtiring.
+5. Dark mode’ni yoqing va tilni almashtiring: tema saqlanadi.
+
+### 3-bosqich tekshiruvi
+
+- TypeScript, ESLint va production build o‘tdi; to‘rtta til uchun 108 ta statik sahifa yaratildi.
+- Production standalone versiyada to‘rtta tilning headeri ilova JavaScript’i yuklanishidan
+  oldin ham server HTML’ida to‘g‘ri chiqishi tekshirildi.
+- Til selector’i, query/hash, lokal linklar, qayta yuklash va keyingi tashrifdagi cookie ishlashi tekshirildi.
+- Brauzer tilini aniqlash, qo‘lda tanlangan tilning ustunligi va admin kirish oynasidagi selector tekshirildi.
+- 1440px desktop, 900px/761px planshet va 390px/320px mobil ko‘rinishlar tekshirildi.
+  Login holatidagi tekshiruvlar sun’iy sessiya bilan bajarildi; backendga ma’lumot yozilmadi.
+- Dark mode saqlandi; gorizontal overflow, hydration va ushlanmagan JavaScript xatolari kuzatilmadi.
+
+Commit: `feat(i18n): add English Uzbek Korean and Russian support`

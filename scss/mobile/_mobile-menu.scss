@@ -38,6 +38,11 @@
 				}
 			}
 		}
+		.mobile-drawer__language {
+			align-items: center;
+			justify-content: space-between;
+			padding: 16px 20px 0;
+		}
 		.mobile-drawer__search {
 			padding: 20px;
 			.MuiOutlinedInput-root {
