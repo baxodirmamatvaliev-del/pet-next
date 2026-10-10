@@ -3,7 +3,7 @@
 #my-page {
 	min-height: 620px;
 	padding-block: 48px 80px;
-	background: #fbfaf7;
+	background: var(--pet-canvas);
 	&.order-detail-page {
 		.order-detail-page__heading {
 			gap: 8px;
@@ -60,7 +60,7 @@
 		overflow: hidden;
 		border: 1px solid $border;
 		border-radius: 14px;
-		background: #ffffff;
+		background: var(--pet-surface);
 		.my-menu__profile {
 			align-items: center;
 			gap: 12px;
@@ -111,11 +111,11 @@
 			border-radius: 9px;
 			color: $muted;
 			&.my-menu__admin-link {
-				background: #fff3eb;
-				color: #a74420;
+				background: var(--pet-accent-bg);
+				color: var(--pet-accent-text);
 				&:hover {
-					background: #ffe4d3;
-					color: #872e10;
+					background: var(--pet-accent-bg);
+					color: var(--pet-accent-text);
 				}
 			}
 			&.active {
@@ -140,7 +140,7 @@
 		padding: 30px;
 		border: 1px solid $border;
 		border-radius: 14px;
-		background: #ffffff;
+		background: var(--pet-surface);
 	}
 	@at-root #my-page .my-follows, .member-detail-page .my-follows {
 		.my-follows__heading {
@@ -194,9 +194,9 @@
 			&:hover { background: #e84e0a; }
 		}
 		.my-follows__unfollow {
-			border-color: #b9b9b9;
-			color: #666666;
-			&:hover { border-color: #777777; background: #f2f2f2; }
+			border-color: var(--pet-text-disabled);
+			color: var(--pet-muted);
+			&:hover { border-color: var(--pet-muted); background: var(--pet-surface-muted); }
 		}
 		.my-follows__state {
 			min-height: 340px;
@@ -242,7 +242,7 @@
 				white-space: nowrap;
 				&.active {
 					background: $primary;
-					color: #ffffff;
+					color: var(--pet-on-dark);
 				}
 			}
 		}
@@ -476,7 +476,7 @@
 				white-space: nowrap;
 				&.active {
 					background: $primary;
-					color: #ffffff;
+					color: var(--pet-on-dark);
 				}
 			}
 		}
@@ -539,13 +539,13 @@
 					color: $primary;
 				}
 				&.my-pet-card__status--reserved {
-					background: #fff0c9;
-					color: #8b6500;
+					background: var(--pet-warning-bg);
+					color: var(--pet-warning-text);
 				}
 				&.my-pet-card__status--sold,
 				&.my-pet-card__status--adopted {
-					background: #e5f0fd;
-					color: #3554d1;
+					background: var(--pet-info-bg);
+					color: var(--pet-info-text);
 				}
 			}
 			.my-pet-card__buttons {
@@ -602,7 +602,7 @@
 				text-transform: none;
 				&.active {
 					background: $primary;
-					color: #ffffff;
+					color: var(--pet-on-dark);
 				}
 			}
 		}
@@ -653,7 +653,7 @@
 			overflow: hidden;
 			flex: 0 0 126px;
 			border-radius: 9px;
-			background: #f6f4ef;
+			background: var(--pet-surface-muted);
 			img {
 				object-fit: cover;
 			}
@@ -682,8 +682,8 @@
 					color: $primary;
 				}
 				&.hidden {
-					background: #f4eee4;
-					color: #805f32;
+					background: var(--pet-surface-muted);
+					color: var(--pet-accent-text);
 				}
 			}
 		}
@@ -735,24 +735,24 @@
 				font-size: 9px;
 				font-weight: 800;
 				&.order-status--pending {
-					background: #fff0c9;
-					color: #8b6500;
+					background: var(--pet-warning-bg);
+					color: var(--pet-warning-text);
 				}
 				&.order-status--payment_confirmed {
-					background: #dff0e5;
+					background: var(--pet-sage);
 					color: $primary;
 				}
 				&.order-status--in_transit {
-					background: #dceeff;
-					color: #245c8c;
+					background: var(--pet-info-bg);
+					color: var(--pet-info-text);
 				}
 				&.order-status--delivered_to_customer {
 					background: $sage;
 					color: $primary;
 				}
 				&.order-status--cancelled {
-					background: #f9e2e0;
-					color: #a34036;
+					background: var(--pet-error-bg);
+					color: var(--pet-error-text);
 				}
 			}
 		}
@@ -775,7 +775,7 @@
 				overflow: hidden;
 				flex: 0 0 66px;
 				border-radius: 8px;
-				background: #f6f4ef;
+				background: var(--pet-surface-muted);
 				img {
 					object-fit: cover;
 				}

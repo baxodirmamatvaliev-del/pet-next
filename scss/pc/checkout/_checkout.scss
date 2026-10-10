@@ -61,7 +61,7 @@
 		padding: 28px;
 		border: 1px solid $border;
 		border-radius: 14px;
-		background: #ffffff;
+		background: var(--pet-surface);
 		.checkout-section__title {
 			align-items: flex-start;
 			gap: 14px;
@@ -73,7 +73,7 @@
 				place-items: center;
 				border-radius: 50%;
 				background: $primary;
-				color: #ffffff;
+				color: var(--pet-on-dark);
 				font-size: 12px;
 				font-weight: 800;
 			}
@@ -140,7 +140,7 @@
 						place-items: center;
 						border-radius: 7px;
 						background: #fee500;
-						color: #191919;
+						color: var(--pet-ink);
 						font-size: 14px;
 					}
 					strong {
@@ -183,7 +183,7 @@
 				overflow: hidden;
 				flex: 0 0 58px;
 				border-radius: 8px;
-				background: #f6f4ef;
+				background: var(--pet-surface-muted);
 				img {
 					object-fit: cover;
 				}
@@ -274,7 +274,7 @@
 			margin-top: 28px;
 			padding: 18px;
 			border-radius: 10px;
-			background: #ffffff;
+			background: var(--pet-surface);
 			.MuiStack-root {
 				align-items: center;
 				justify-content: space-between;

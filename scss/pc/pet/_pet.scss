@@ -37,7 +37,7 @@
 			}
 			.MuiOutlinedInput-root {
 				height: 42px;
-				background: #ffffff;
+				background: var(--pet-surface);
 				color: $ink;
 				font-size: 13px;
 			}
@@ -72,7 +72,7 @@
 					&.Mui-selected {
 						border-color: $primary;
 						background: $primary;
-						color: #ffffff;
+						color: var(--pet-on-dark);
 					}
 				}
 			}
@@ -93,7 +93,7 @@
 				border: 1px solid $primary;
 				border-radius: 9px;
 				background: $primary;
-				color: #ffffff;
+				color: var(--pet-on-dark);
 				font-size: 12px;
 				font-weight: 700;
 				text-transform: none;
@@ -157,7 +157,7 @@
 	overflow: hidden;
 	border: 1px solid $border;
 	border-radius: 16px;
-	background: #ffffff;
+	background: var(--pet-surface);
 	transition: transform 180ms ease, box-shadow 180ms ease;
 	&:hover {
 		transform: translateY(-3px);
@@ -167,7 +167,7 @@
 		position: relative;
 		aspect-ratio: 4 / 3;
 		overflow: hidden;
-		background: #f6f4ef;
+		background: var(--pet-surface-muted);
 		img {
 			object-fit: cover;
 		}
@@ -300,7 +300,7 @@
 				padding: 0;
 				border: 2px solid transparent;
 				border-radius: 10px;
-				background: #f6f4ef;
+				background: var(--pet-surface-muted);
 				&.active {
 					border-color: $primary;
 				}
@@ -314,7 +314,7 @@
 			aspect-ratio: 1 / 1;
 			overflow: hidden;
 			border-radius: 18px;
-			background: #f6f4ef;
+			background: var(--pet-surface-muted);
 			img {
 				object-fit: cover;
 			}
@@ -426,7 +426,7 @@
 		padding: 30px;
 		border: 1px solid $border;
 		border-radius: 16px;
-		background: #ffffff;
+		background: var(--pet-surface);
 		.pet-comments__heading {
 			align-items: flex-end;
 			justify-content: space-between;
@@ -504,12 +504,12 @@
 					letter-spacing: 0.08em;
 					animation: petCommentRolePulse 2.4s ease-in-out infinite;
 					&--admin {
-						background: #fff0d9;
-						color: #a45b00;
+						background: var(--pet-warning-bg);
+						color: var(--pet-warning-text);
 					}
 					&--agent {
-						background: #e5f2ec;
-						color: #146c4b;
+						background: var(--pet-sage);
+						color: var(--pet-success-text);
 					}
 				}
 				.pet-comments__author-actions {
@@ -628,17 +628,17 @@
 				&.MuiButton-outlined { border-color: $primary; color: $primary; &:hover { background: $sage; } }
 				&.member-detail__follow {
 					background: #ff5d18;
-					color: #ffffff;
+					color: var(--pet-on-dark);
 					&:hover { background: #e84d0c; }
 				}
 				&.member-detail__unfollow {
-					border-color: #b9b9b9;
-					background: #b9b9b9;
-					color: #181a20;
-					&:hover { border-color: #a5a5a5; background: #a5a5a5; }
+					border-color: var(--pet-text-disabled);
+					background: var(--pet-text-disabled);
+					color: var(--pet-ink);
+					&:hover { border-color: var(--pet-text-disabled); background: var(--pet-text-disabled); }
 				}
 			}
-			.member-detail__following { color: #b9b9b9; font-style: italic; }
+			.member-detail__following { color: var(--pet-text-disabled); font-style: italic; }
 		}
 	}
 	.member-detail__tabs {
@@ -725,7 +725,7 @@
 		padding: 30px;
 		border: 1px solid $border;
 		border-radius: 16px;
-		background: #ffffff;
+		background: var(--pet-surface);
 		.pet-create-form__section-heading {
 			align-items: center;
 			gap: 10px;
@@ -743,12 +743,12 @@
 			grid-template-columns: 1fr 1fr;
 			gap: 18px;
 			.MuiInputBase-root {
-				background: #ffffff;
+				background: var(--pet-surface);
 			}
 		}
 		.pet-create-form__description {
 			.MuiInputBase-root {
-				background: #ffffff;
+				background: var(--pet-surface);
 			}
 		}
 		.pet-create-form__images {
@@ -789,11 +789,11 @@
 					top: 6px;
 					right: 6px;
 					padding: 4px;
-					background: #ffffff;
+					background: var(--pet-surface);
 					color: $ink;
 					box-shadow: 0 1px 5px #00000026;
 					&:hover {
-						background: #f6f4ef;
+						background: var(--pet-surface-muted);
 					}
 				}
 				p {

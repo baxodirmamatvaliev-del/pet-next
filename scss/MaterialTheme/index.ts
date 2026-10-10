@@ -1,22 +1,28 @@
 import type { ThemeOptions } from '@mui/material/styles';
+import { colors } from '../../libs/theme/colors';
 
 export const light: ThemeOptions = {
 	palette: {
 		mode: 'light',
+		divider: colors.border,
+		success: { main: colors['success-text'] },
+		warning: { main: colors['warning-text'] },
+		error: { main: colors['error-text'] },
+		info: { main: colors['info-text'] },
 		primary: {
-			main: '#174f3f',
-			contrastText: '#ffffff',
+			main: colors.primary,
+			contrastText: colors['on-dark'],
 		},
 		secondary: {
-			main: '#ff7057',
+			main: colors.secondary,
 		},
 		background: {
-			default: '#ffffff',
-			paper: '#ffffff',
+			default: colors.canvas,
+			paper: colors.surface,
 		},
 		text: {
-			primary: '#202421',
-			secondary: '#6d756f',
+			primary: colors.ink,
+			secondary: colors.muted,
 		},
 	},
 	typography: {

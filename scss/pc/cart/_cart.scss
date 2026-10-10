@@ -64,14 +64,14 @@
 		padding: 14px;
 		border: 1px solid $border;
 		border-radius: 14px;
-		background: #ffffff;
+		background: var(--pet-surface);
 		.cart-item__image {
 			position: relative;
 			width: 118px;
 			aspect-ratio: 1 / 1;
 			overflow: hidden;
 			border-radius: 10px;
-			background: #f6f4ef;
+			background: var(--pet-surface-muted);
 			img {
 				object-fit: cover;
 			}

@@ -1,11 +1,14 @@
 import { Head, Html, Main, NextScript } from 'next/document';
+import { colors, colorVariables } from '../libs/theme/colors';
 
 const Document = () => (
 	<Html lang="en" data-scroll-behavior="smooth">
 		<Head>
+			{/* MUI va SCSS uchun umumiy rang o‘zgaruvchilari. */}
+			<style id="pet-colors">{colorVariables}</style>
 			<meta name="robots" content="index,follow" />
 			<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
-			<meta name="theme-color" content="#174f3f" />
+			<meta name="theme-color" content={colors.primary} />
 
 			{/* SEO */}
 			<meta

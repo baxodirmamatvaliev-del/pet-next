@@ -10,8 +10,8 @@
 		background-color: $cream;
 		background-image: linear-gradient(
 				90deg,
-				rgb(255 249 239 / 98%) 0%,
-				rgb(255 249 239 / 82%) 35%,
+				rgb(var(--pet-hero-rgb) / 98%) 0%,
+				rgb(var(--pet-hero-rgb) / 82%) 35%,
 				transparent 63%
 			),
 			url('/img/banner/home-hero.png');
@@ -77,20 +77,20 @@
 				box-shadow: 0 14px 34px rgb(32 36 33 / 9%);
 			}
 			&.category-tile--green {
-				background: #e9f2eb;
+				background: var(--pet-sage);
 				color: $primary;
 			}
 			&.category-tile--coral {
-				background: #fff0eb;
+				background: var(--pet-accent-bg);
 				color: $secondary;
 			}
 			&.category-tile--yellow {
-				background: #fff7d8;
-				color: #b78308;
+				background: var(--pet-warning-bg);
+				color: var(--pet-rating);
 			}
 			&.category-tile--sage {
-				background: #edf2e8;
-				color: #6e843b;
+				background: var(--pet-olive-bg);
+				color: var(--pet-olive-text);
 			}
 			.category-tile__icon {
 				width: 56px;
@@ -98,7 +98,7 @@
 				display: grid;
 				place-items: center;
 				border-radius: 50%;
-				background: rgb(255 255 255 / 72%);
+				background: rgb(var(--pet-surface-rgb) / 72%);
 				svg {
 					font-size: 30px;
 				}

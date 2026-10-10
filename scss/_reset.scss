@@ -9,8 +9,8 @@ html {
 }
 
 body {
-	background: #ffffff;
-	color: #202421;
+	background: var(--pet-canvas);
+	color: var(--pet-ink);
 	font-family: Arial, Helvetica, sans-serif;
 	-webkit-font-smoothing: antialiased;
 }

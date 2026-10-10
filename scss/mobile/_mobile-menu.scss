@@ -3,7 +3,7 @@
 @media (max-width: 760px) {
 	.mobile-drawer {
 		width: min(88vw, 360px);
-		background: #ffffff;
+		background: var(--pet-surface);
 		.mobile-drawer__header {
 			height: 82px;
 			display: flex;
@@ -42,7 +42,7 @@
 			padding: 20px;
 			.MuiOutlinedInput-root {
 				border-radius: 10px;
-				background: #fbfaf7;
+				background: var(--pet-canvas);
 			}
 		}
 		.mobile-drawer__label {
