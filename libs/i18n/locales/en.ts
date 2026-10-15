@@ -1,5 +1,17 @@
 // Yangi kalit avval shu yerga, keyin qolgan uchta lug‘atga qo‘shiladi.
 const en = {
+	"chat.title": "Community chat",
+	"chat.open": "Open live chat",
+	"chat.close": "Close live chat",
+	"chat.online": "{count} online",
+	"chat.connecting": "Connecting…",
+	"chat.welcome": "A little hello goes a long way.",
+	"chat.description": "Share pet stories, ask a question, or say hello.",
+	"chat.guest": "Guest",
+	"chat.you": "You",
+	"chat.message": "Write a message…",
+	"chat.send": "Send message",
+
 	'nav.home': 'PetNest Korea home',
 	'nav.delivery': 'Free delivery on orders over ₩30,000',
 	'nav.products': 'All Products',

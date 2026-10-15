@@ -4,6 +4,7 @@
 		&.order-detail-page .order-detail-page__heading h1 {
 			font-size: 26px;
 		}
+
 		.mypage-state {
 			min-height: 380px;
 			padding-inline: 24px;
@@ -11,60 +12,95 @@
 				font-size: 26px;
 			}
 		}
+
 		.mypage-content {
 			grid-template-columns: 1fr;
 			gap: 18px;
 		}
+
 		.my-menu {
 			position: static;
 			.my-menu__profile {
 				padding: 18px;
 			}
+
 			.my-menu__label {
 				display: none;
 			}
+
 			.my-menu__section-label {
 				display: none;
 			}
+
 			.MuiList-root {
 				display: flex;
 				overflow-x: auto;
 				padding: 8px;
 			}
+
 			.MuiListItemButton-root {
 				min-width: max-content;
 				margin: 0;
 			}
 		}
+
 		.mypage-main {
 			padding: 20px 14px;
 		}
-		@at-root #my-page .my-follows, .member-detail-page .my-follows {
-			.my-follows__heading h1 { font-size: 27px; }
-			.my-follows__member { flex-wrap: wrap; gap: 12px; }
-			.my-follows__identity { flex: 1 1 100%; }
-			.my-follows__counts { gap: 12px; margin-left: 0; }
+
+		@at-root #my-page .my-follows,
+			.member-detail-page .my-follows {
+			.my-follows__heading h1 {
+				font-size: 27px;
+			}
+
+			.my-follows__member {
+				flex-wrap: wrap;
+				gap: 12px;
+			}
+
+			.my-follows__identity {
+				flex: 1 1 100%;
+			}
+
+			.my-follows__counts {
+				gap: 12px;
+				margin-left: 0;
+			}
+
 			.my-follows__follow,
-			.my-follows__unfollow { margin-left: auto; }
-			.my-follows__pagination { flex-direction: column; align-items: flex-start; gap: 12px; }
+			.my-follows__unfollow {
+				margin-left: auto;
+			}
+
+			.my-follows__pagination {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 12px;
+			}
 		}
+
 		.my-orders {
 			.my-orders__heading h1 {
 				font-size: 27px;
 			}
+
 			.order-tabs {
 				margin-top: 20px;
 			}
+
 			.my-orders__pagination {
 				align-items: flex-start;
 				flex-direction: column;
 				gap: 12px;
 			}
 		}
+
 		.my-profile {
 			.my-profile__heading h1 {
 				font-size: 27px;
 			}
+
 			.profile-form {
 				.profile-photo {
 					align-items: flex-start;
@@ -74,28 +110,33 @@
 						height: 70px;
 					}
 				}
+
 				.profile-fields {
 					grid-template-columns: 1fr;
 					.profile-fields__wide {
 						grid-column: auto;
 					}
 				}
+
 				> .MuiButton-root {
 					width: 100%;
 				}
 			}
 		}
+
 		.my-favorites,
 		.recently-visited {
 			.my-favorites__heading h1,
 			.recently-visited__heading h1 {
 				font-size: 27px;
 			}
+
 			.my-favorites__grid,
 			.recently-visited__grid {
 				grid-template-columns: 1fr;
 				gap: 18px;
 			}
+
 			.my-favorites__pagination,
 			.recently-visited__pagination {
 				align-items: flex-start;
@@ -103,6 +144,7 @@
 				gap: 12px;
 			}
 		}
+
 		.my-pets {
 			.my-pets__heading {
 				align-items: flex-start;
@@ -110,23 +152,28 @@
 				h1 {
 					font-size: 27px;
 				}
+
 				.MuiButton-root {
 					width: 100%;
 				}
 			}
+
 			.my-pets__tabs {
 				margin-top: 18px;
 			}
+
 			.my-pets__grid {
 				grid-template-columns: 1fr;
 				gap: 18px;
 			}
+
 			.my-pets__pagination {
 				align-items: flex-start;
 				flex-direction: column;
 				gap: 12px;
 			}
 		}
+
 		.my-products {
 			.my-products__heading {
 				align-items: flex-start;
@@ -134,19 +181,23 @@
 				h1 {
 					font-size: 27px;
 				}
+
 				.MuiButton-root {
 					width: 100%;
 				}
 			}
+
 			.my-products__tabs {
 				margin-top: 18px;
 			}
+
 			.my-products__pagination {
 				align-items: flex-start;
 				flex-direction: column;
 				gap: 12px;
 			}
 		}
+
 		.my-product-card {
 			flex-direction: column;
 			.my-product-card__image {
@@ -156,6 +207,7 @@
 				flex-basis: auto;
 			}
 		}
+
 		.order-card {
 			.order-card__header {
 				align-items: flex-start;
@@ -165,16 +217,19 @@
 					margin-left: 0;
 				}
 			}
+
 			.order-card__body {
 				grid-template-columns: 1fr;
 				gap: 18px;
 			}
+
 			.order-card__delivery {
 				padding-top: 18px;
 				padding-left: 0;
 				border-top: 1px solid var(--pet-border);
 				border-left: 0;
 			}
+
 			.order-product {
 				.order-product__image {
 					width: 58px;

@@ -1,0 +1,343 @@
+@use '../../variables' as *;
+
+.admin-list {
+	gap: 26px;
+
+	.admin-list__heading {
+		align-items: flex-end;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 20px;
+		padding: 0 4px 2px;
+
+		h1 {
+			font-size: clamp(32px, 3vw, 42px);
+			font-weight: 800;
+			letter-spacing: -0.05em;
+			line-height: 1.1;
+		}
+
+		p {
+			margin-top: 8px;
+			color: $muted;
+			font-size: 14px;
+		}
+
+		.MuiTextField-root {
+			min-width: 170px;
+			border-radius: 11px;
+			background: var(--pet-surface);
+		}
+
+		.MuiOutlinedInput-root {
+			border-radius: 11px;
+			&:hover .MuiOutlinedInput-notchedOutline {
+				border-color: $primary;
+			}
+
+			&.Mui-focused .MuiOutlinedInput-notchedOutline {
+				border-width: 2px;
+			}
+		}
+	}
+
+	.admin-list__filters {
+		align-items: center;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 10px;
+	}
+
+	.admin-list__search {
+		align-items: center;
+		gap: 8px;
+		.MuiTextField-root {
+			min-width: 210px;
+		}
+
+		.MuiButton-root {
+			min-height: 40px;
+			border-radius: 10px;
+			font-weight: 700;
+			text-transform: none;
+		}
+
+		.MuiButton-contained {
+			background: $primary-fill;
+			box-shadow: none;
+			&:hover {
+				background: var(--pet-primary-hover);
+				box-shadow: 0 6px 14px #17624338;
+			}
+		}
+
+		.MuiButton-text {
+			color: $muted;
+			&:hover {
+				background: var(--pet-success-bg);
+				color: $primary;
+			}
+		}
+	}
+
+	.admin-list__items {
+		gap: 12px;
+	}
+
+	.admin-list__item {
+		align-items: center;
+		gap: 18px;
+		min-height: 104px;
+		padding: 18px 20px;
+		border: 1px solid var(--pet-border);
+		border-radius: 16px;
+		background: var(--pet-surface);
+		box-shadow: 0 4px 18px #174f3f08;
+		transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+
+		&:hover {
+			transform: translateY(-2px);
+			border-color: var(--pet-border-strong);
+			box-shadow: 0 12px 28px #174f3f12;
+		}
+
+		.MuiAvatar-root {
+			width: 62px;
+			height: 62px;
+			flex-shrink: 0;
+			border: 3px solid var(--pet-sage);
+			box-shadow: 0 2px 8px #174f3f17;
+		}
+	}
+
+	.admin-list__details {
+		min-width: 0;
+		flex: 1;
+		gap: 4px;
+		strong {
+			font-size: 15px;
+			font-weight: 800;
+		}
+
+		p {
+			overflow: hidden;
+			color: $muted;
+			font-size: 12px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+
+	.admin-list__status {
+		min-width: 98px;
+		padding: 7px 10px;
+		border-radius: 100px;
+		background: var(--pet-success-bg);
+		color: var(--pet-success-text);
+		font-size: 11px;
+		font-weight: 800;
+		text-align: center;
+		text-transform: capitalize;
+		white-space: nowrap;
+
+		&--hidden,
+		&--reserved,
+		&--pending {
+			background: var(--pet-warning-bg);
+			color: var(--pet-warning-text);
+		}
+
+		&--delete,
+		&--block,
+		&--cancelled {
+			background: var(--pet-error-bg);
+			color: var(--pet-error-text);
+		}
+
+		&--in_transit {
+			background: var(--pet-info-bg);
+			color: var(--pet-info-text);
+		}
+
+		&--sold,
+		&--adopted {
+			background: var(--pet-purple-bg);
+			color: var(--pet-purple-text);
+		}
+
+		&--product {
+			background: var(--pet-success-bg);
+			color: var(--pet-success-text);
+		}
+
+		&--pet {
+			background: var(--pet-warning-bg);
+			color: var(--pet-warning-text);
+		}
+
+		&--member {
+			background: var(--pet-info-bg);
+			color: var(--pet-info-text);
+		}
+
+		&--article {
+			background: var(--pet-purple-bg);
+			color: var(--pet-purple-text);
+		}
+	}
+
+	.admin-comment {
+		.admin-comment__meta {
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 7px;
+
+			a {
+				color: var(--pet-ink);
+				text-decoration: none;
+				transition: color 160ms ease;
+			}
+
+			a:hover {
+				color: $primary;
+			}
+
+			p {
+				overflow: visible;
+				font-size: 11px;
+				text-overflow: clip;
+				white-space: normal;
+			}
+
+			p:not(:last-child) {
+				padding: 3px 7px;
+				border-radius: 100px;
+				background: var(--pet-sage);
+				color: $primary;
+				font-weight: 800;
+			}
+		}
+
+		.admin-comment__content {
+			overflow: visible;
+			color: var(--pet-ink);
+			font-size: 14px;
+			line-height: 1.55;
+			text-overflow: clip;
+			white-space: normal;
+		}
+
+		.MuiRating-root {
+			margin: 1px 0;
+		}
+	}
+
+	.admin-list__actions {
+		justify-content: flex-end;
+		gap: 8px;
+		min-width: 190px;
+
+		.admin-action {
+			min-height: 36px;
+			padding: 7px 13px;
+			border: 1px solid transparent;
+			border-radius: 9px;
+			font-size: 11px;
+			font-weight: 800;
+			text-transform: none;
+			white-space: nowrap;
+			transition: transform 180ms ease, background 180ms ease, color 180ms ease,
+				box-shadow 180ms ease;
+
+			&:hover:not(:disabled) {
+				transform: translateY(-2px);
+			}
+
+			&:focus-visible {
+				outline: 2px solid $primary;
+				outline-offset: 2px;
+			}
+
+			&:disabled {
+				opacity: 0.45;
+			}
+
+			&--positive {
+				background: var(--pet-success-bg);
+				color: var(--pet-success-text);
+			}
+
+			&--positive:hover {
+				background: var(--pet-success-text);
+				color: var(--pet-on-status);
+				box-shadow: 0 6px 14px #17624338;
+			}
+
+			&--warning {
+				background: var(--pet-warning-bg);
+				color: var(--pet-warning-text);
+			}
+
+			&--warning:hover {
+				background: var(--pet-warning-text);
+				color: var(--pet-on-status);
+				box-shadow: 0 6px 14px #d7981938;
+			}
+
+			&--danger {
+				background: var(--pet-error-bg);
+				color: var(--pet-error-text);
+			}
+
+			&--danger:hover {
+				background: var(--pet-error-text);
+				color: var(--pet-on-status);
+				box-shadow: 0 6px 14px #d34b5538;
+			}
+
+			&--blue {
+				background: var(--pet-info-bg);
+				color: var(--pet-info-text);
+			}
+
+			&--blue:hover {
+				background: var(--pet-info-text);
+				color: var(--pet-on-status);
+				box-shadow: 0 6px 14px #3678b938;
+			}
+
+			&--purple {
+				background: var(--pet-purple-bg);
+				color: var(--pet-purple-text);
+			}
+
+			&--purple:hover {
+				background: var(--pet-purple-text);
+				color: var(--pet-on-status);
+				box-shadow: 0 6px 14px #8056ba38;
+			}
+		}
+	}
+
+	.MuiPagination-root {
+		align-self: flex-end;
+		.MuiPaginationItem-root {
+			border-radius: 9px;
+			transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+			&:hover {
+				transform: translateY(-2px);
+				background: var(--pet-sage);
+				color: $primary;
+			}
+
+			&.Mui-selected {
+				background: $primary-fill;
+				color: var(--pet-on-dark);
+			}
+
+			&.Mui-selected:hover {
+				background: $primary-dark;
+			}
+		}
+	}
+}

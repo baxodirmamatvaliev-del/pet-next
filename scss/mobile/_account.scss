@@ -6,6 +6,7 @@
 			grid-template-columns: minmax(0, 1fr);
 			border-radius: 16px;
 		}
+
 		.join-form {
 			min-width: 0;
 			padding: 34px 22px 40px;
@@ -14,6 +15,7 @@
 				min-width: 0;
 				width: 100%;
 			}
+
 			.join-heading,
 			.join-session {
 				margin-top: 32px;
@@ -22,6 +24,7 @@
 				}
 			}
 		}
+
 		.join-side {
 			display: none;
 		}

@@ -12,15 +12,18 @@
 			color: $muted;
 			font-size: 12px;
 		}
+
 		h1 {
 			font-family: Georgia, 'Times New Roman', serif;
 			font-size: 38px;
 		}
+
 		> .MuiButton-root {
 			color: $muted;
 			font-size: 12px;
 		}
 	}
+
 	.cart-state {
 		min-height: 420px;
 		align-items: center;
@@ -30,21 +33,25 @@
 			color: $primary;
 			font-size: 58px;
 		}
+
 		h2 {
 			margin-top: 18px;
 			font-family: Georgia, 'Times New Roman', serif;
 			font-size: 28px;
 		}
+
 		p {
 			margin-top: 8px;
 			color: $muted;
 			font-size: 13px;
 		}
+
 		.MuiButton-root {
 			margin-top: 24px;
 			padding-inline: 28px;
 		}
 	}
+
 	.cart-content {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) 340px;
@@ -52,9 +59,11 @@
 		gap: 36px;
 		padding-top: 30px;
 	}
+
 	.cart-items {
 		gap: 14px;
 	}
+
 	.cart-item {
 		position: relative;
 		display: grid;
@@ -76,6 +85,7 @@
 				object-fit: cover;
 			}
 		}
+
 		.cart-item__info {
 			align-items: flex-start;
 			gap: 8px;
@@ -86,15 +96,18 @@
 					color: $primary;
 				}
 			}
+
 			> p {
 				color: $muted;
 				font-size: 12px;
 			}
+
 			.MuiChip-root {
 				height: 23px;
 				font-size: 10px;
 			}
 		}
+
 		.cart-item__quantity {
 			align-items: center;
 			justify-content: space-between;
@@ -107,6 +120,7 @@
 					font-size: 18px;
 				}
 			}
+
 			p {
 				min-width: 24px;
 				text-align: center;
@@ -114,21 +128,25 @@
 				font-weight: 700;
 			}
 		}
+
 		.cart-item__price {
 			align-items: flex-end;
 			strong {
 				font-size: 15px;
 			}
+
 			p {
 				margin-top: 5px;
 				color: $muted;
 				font-size: 11px;
 			}
 		}
+
 		.cart-item__remove {
 			color: $muted;
 		}
 	}
+
 	.cart-summary {
 		position: sticky;
 		top: 20px;
@@ -142,23 +160,28 @@
 			font-family: Georgia, 'Times New Roman', serif;
 			font-size: 23px;
 		}
+
 		> .MuiStack-root {
 			justify-content: space-between;
 			p {
 				font-size: 13px;
 			}
 		}
+
 		.cart-summary__free {
 			color: $primary;
 			font-weight: 700;
 		}
+
 		.cart-summary__total p {
 			font-size: 17px;
 			font-weight: 800;
 		}
+
 		.MuiAlert-root {
 			font-size: 11px;
 		}
+
 		.MuiButton-root {
 			min-height: 46px;
 			font-size: 12px;

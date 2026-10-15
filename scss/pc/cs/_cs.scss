@@ -8,15 +8,18 @@
 		font-weight: 800;
 		letter-spacing: 0.14em;
 	}
+
 	h1 {
 		margin-top: 8px;
 		font-family: Georgia, 'Times New Roman', serif;
 		font-size: 44px;
 	}
+
 	.cs-page__intro {
 		margin-top: 10px;
 		color: $muted;
 	}
+
 	.cs-page__tabs {
 		gap: 10px;
 		margin: 30px 0 26px;
@@ -50,9 +53,11 @@
 		&::before {
 			display: none;
 		}
+
 		.MuiAccordionSummary-root {
 			min-height: 58px;
 		}
+
 		.MuiAccordionDetails-root {
 			color: $muted;
 			line-height: 1.65;
@@ -72,11 +77,13 @@
 	h2 {
 		font-size: 23px;
 	}
+
 	.cs-inquiry__hint {
 		margin-top: -12px;
 		color: $muted;
 		font-size: 13px;
 	}
+
 	.cs-inquiry__roles {
 		gap: 12px;
 		.MuiButton-root {
@@ -91,6 +98,7 @@
 				border-color: $primary;
 				background: $sage;
 			}
+
 			&.active {
 				border-color: $primary;
 				background: $primary-fill;
@@ -98,6 +106,7 @@
 			}
 		}
 	}
+
 	.cs-inquiry__actions {
 		display: flex;
 		justify-content: flex-end;
@@ -118,6 +127,7 @@
 		font-family: Georgia, 'Times New Roman', serif;
 		font-size: 27px;
 	}
+
 	p {
 		color: $muted;
 	}
@@ -126,6 +136,7 @@
 .cs-tickets {
 	gap: 18px;
 }
+
 .cs-ticket {
 	padding: 22px;
 	border: 1px solid $border;
@@ -135,6 +146,7 @@
 		border-color: $primary;
 		box-shadow: 0 0 0 3px rgba(24, 79, 64, 0.12);
 	}
+
 	.cs-ticket__heading {
 		align-items: flex-start;
 		justify-content: space-between;
@@ -142,17 +154,20 @@
 		h2 {
 			font-size: 17px;
 		}
+
 		p {
 			margin-top: 5px;
 			color: $muted;
 			font-size: 12px;
 		}
 	}
+
 	.cs-ticket__message {
 		margin-top: 16px;
 		white-space: pre-wrap;
 		line-height: 1.6;
 	}
+
 	.cs-ticket__reply {
 		margin-top: 18px;
 		padding: 16px;
@@ -163,15 +178,18 @@
 			color: $primary;
 			font-size: 13px;
 		}
+
 		p {
 			margin-top: 8px;
 			white-space: pre-wrap;
 		}
 	}
+
 	.cs-ticket__answer {
 		gap: 12px;
 		margin-top: 16px;
 	}
+
 	.cs-ticket__reply-button {
 		margin-top: 16px;
 		text-transform: none;
@@ -183,10 +201,12 @@
 		font-family: Georgia, 'Times New Roman', serif;
 		font-size: 34px;
 	}
+
 	> p {
 		margin: 8px 0 24px;
 		color: $muted;
 	}
+
 	.cs-panel {
 		max-width: none;
 	}

@@ -4,14 +4,17 @@
 		.checkout-page__heading h1 {
 			font-size: 30px;
 		}
+
 		.checkout-state {
 			min-height: 340px;
 			padding-inline: 24px;
 		}
+
 		.checkout-content {
 			grid-template-columns: minmax(0, 1fr);
 			gap: 24px;
 		}
+
 		.checkout-section {
 			padding: 20px;
 			.checkout-fields {
@@ -20,15 +23,18 @@
 					grid-column: auto;
 				}
 			}
+
 			.payment-methods {
 				.MuiRadioGroup-root {
 					grid-template-columns: minmax(0, 1fr);
 				}
 			}
 		}
+
 		.checkout-summary {
 			position: static;
 		}
+
 		.checkout-success {
 			min-height: 400px;
 			padding: 28px 20px;

@@ -1,6 +1,6 @@
 # Live chat
 
-The desktop Home, Basic and Full layouts include the nestar-style public chat. Its appearance matches nestar: a floating button, sliding 380 × 500 panel, online count, avatars, message bubbles and Enter/send controls. Mobile and admin layouts follow nestar and do not render chat.
+The desktop Home, Basic and Full layouts include the nestar-style public chat. The floating launcher opens a 380px community panel with member names, online connection status, avatars and Enter/send controls. The panel uses PetNest theme colors and translations in all four languages. Mobile and admin layouts follow nestar and do not render chat.
 
 `libs/components/Chat.tsx` uses native WebSocket, independently of Socket.IO notifications. The chat URL comes from `NEXT_PUBLIC_API_SOCKET_URL` (falling back to `NEXT_PUBLIC_API_URL`), with HTTP/HTTPS converted to WS/WSS. Existing deployment variables cover both connections.
 

@@ -1,6 +1,18 @@
 import type { Dictionary } from './en';
 
 const uz: Dictionary = {
+	"chat.title": "Hamjamiyat chati",
+	"chat.open": "Chatni ochish",
+	"chat.close": "Chatni yopish",
+	"chat.online": "{count} onlayn",
+	"chat.connecting": "Ulanmoqda…",
+	"chat.welcome": "Suhbat salomdan boshlanadi.",
+	"chat.description": "Uy hayvoningiz haqida yozing, savol bering yoki salomlashing.",
+	"chat.guest": "Mehmon",
+	"chat.you": "Siz",
+	"chat.message": "Xabar yozing…",
+	"chat.send": "Xabar yuborish",
+
 	'nav.home': 'PetNest Korea bosh sahifasi',
 	'nav.delivery': '₩30,000 dan ortiq buyurtmalarga bepul yetkazib berish',
 	'nav.products': 'Barcha mahsulotlar',

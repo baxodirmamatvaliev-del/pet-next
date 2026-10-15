@@ -7,19 +7,23 @@
 			h1 {
 				font-size: 28px;
 			}
+
 			> div > p:last-child {
 				max-width: 250px;
 				font-size: 12px;
 			}
+
 			label {
 				span {
 					display: none;
 				}
+
 				.MuiFormControl-root {
 					min-width: 120px;
 				}
 			}
 		}
+
 		.pet-filter {
 			align-items: flex-start;
 			flex-direction: column;
@@ -36,22 +40,26 @@
 				}
 			}
 		}
+
 		.pet-results {
 			.pet-results__toolbar {
 				gap: 10px;
 				.pet-results__count {
 					font-size: 11px;
 				}
+
 				.pet-results__create {
 					flex-shrink: 0;
 					padding: 0 10px;
 					font-size: 11px;
 				}
 			}
+
 			.pet-results__grid {
 				grid-template-columns: 1fr;
 				gap: 20px;
 			}
+
 			.pet-pagination {
 				align-items: flex-start;
 				flex-direction: column;
@@ -60,15 +68,18 @@
 			}
 		}
 	}
+
 	.pet-detail-state {
 		min-height: 360px;
 	}
+
 	.pet-detail-page {
 		padding-top: 18px;
 		.pet-detail {
 			grid-template-columns: 1fr;
 			gap: 28px;
 		}
+
 		.pet-gallery {
 			grid-template-columns: 1fr;
 			.pet-gallery__thumbs {
@@ -81,12 +92,14 @@
 				}
 			}
 		}
+
 		.pet-detail__info {
 			padding-top: 0;
 			h1 {
 				font-size: 30px;
 			}
 		}
+
 		.pet-comments {
 			margin-top: 32px;
 			padding: 20px 16px;
@@ -97,13 +110,16 @@
 					font-size: 24px;
 				}
 			}
+
 			.pet-comments__sign-in {
 				align-items: flex-start;
 				flex-direction: column;
 			}
+
 			.pet-comments__form .MuiButton-root {
 				width: 100%;
 			}
+
 			.pet-comments__author {
 				align-items: flex-start;
 				flex-direction: column;
@@ -111,6 +127,7 @@
 			}
 		}
 	}
+
 	.pet-create-page {
 		padding-block: 30px 48px;
 		.pet-create-page__heading {
@@ -118,6 +135,7 @@
 				font-size: 30px;
 			}
 		}
+
 		.pet-create-form {
 			gap: 20px;
 			padding: 20px 16px;
@@ -125,6 +143,7 @@
 				grid-template-columns: 1fr;
 				gap: 16px;
 			}
+
 			.pet-create-form__images .pet-create-form__preview {
 				width: 120px;
 				img {
@@ -132,6 +151,7 @@
 					height: 120px;
 				}
 			}
+
 			.pet-create-form__actions {
 				flex-direction: column-reverse;
 				.MuiButton-root {
@@ -140,13 +160,20 @@
 			}
 		}
 	}
+
 	.member-detail-page {
 		padding-block: 18px 48px;
 		.member-detail__tabs {
 			overflow-x: auto;
-			.MuiButton-root { white-space: nowrap; }
+			.MuiButton-root {
+				white-space: nowrap;
+			}
 		}
-		.member-detail__follows { padding: 18px 14px; }
+
+		.member-detail__follows {
+			padding: 18px 14px;
+		}
+
 		.member-detail__profile {
 			align-items: flex-start;
 			padding: 22px;
@@ -154,12 +181,19 @@
 				width: 76px;
 				height: 76px;
 			}
-			h1 { font-size: 29px; }
+
+			h1 {
+				font-size: 29px;
+			}
 		}
+
 		.member-detail__listings {
 			margin-top: 36px;
-			h2 { font-size: 25px; }
+			h2 {
+				font-size: 25px;
+			}
 		}
+
 		.member-detail__grid {
 			grid-template-columns: 1fr;
 			gap: 20px;

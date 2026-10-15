@@ -1,6 +1,18 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
+	"chat.title": "함께 나누는 이야기",
+	"chat.open": "채팅 열기",
+	"chat.close": "채팅 닫기",
+	"chat.online": "{count}명 접속 중",
+	"chat.connecting": "연결 중…",
+	"chat.welcome": "작은 인사로 시작해 보세요.",
+	"chat.description": "반려동물 이야기를 나누고, 궁금한 점을 물어보세요.",
+	"chat.guest": "게스트",
+	"chat.you": "나",
+	"chat.message": "메시지를 입력하세요…",
+	"chat.send": "메시지 보내기",
+
 	'nav.home': 'PetNest Korea 홈',
 	'nav.delivery': '30,000원 이상 주문 시 무료배송',
 	'nav.products': '전체 상품',

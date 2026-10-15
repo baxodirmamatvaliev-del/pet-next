@@ -1,0 +1,115 @@
+@use '../../variables' as *;
+
+.category-nav {
+	border-block: 1px solid $border;
+	.category-nav__inner {
+		height: 48px;
+		display: flex;
+		align-items: center;
+		gap: 42px;
+		font-size: 14px;
+		font-weight: 700;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+	a:hover {
+		color: $secondary;
+	}
+}
+
+.mobile-menu {
+	display: none;
+	background: transparent;
+	color: $primary;
+}
+
+.button {
+	height: 50px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 0 25px;
+	border-radius: 10px;
+	font-size: 15px;
+	font-weight: 800;
+	transition: transform 160ms ease, box-shadow 160ms ease;
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 10px 25px rgb(23 79 63 / 16%);
+	}
+
+	&.button--primary {
+		background: $primary-fill;
+		color: var(--pet-on-dark);
+	}
+
+	&.button--secondary {
+		background: $secondary-fill;
+		color: var(--pet-on-dark);
+	}
+
+	svg {
+		font-size: 19px;
+	}
+}
+
+.site-footer {
+	margin-top: 72px;
+	background: $primary-dark;
+	color: var(--pet-on-dark);
+	.site-footer__inner {
+		display: grid;
+		grid-template-columns: 1.5fr 1fr 1fr 1fr;
+		gap: 54px;
+		padding-block: 58px 42px;
+	}
+
+	.footer-brand p {
+		margin-top: 20px;
+		color: rgb(255 255 255 / 68%);
+		font-size: 13px;
+		line-height: 1.7;
+	}
+
+	.footer-links {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		font-size: 13px;
+		strong {
+			margin-bottom: 5px;
+		}
+
+		a {
+			color: rgb(255 255 255 / 68%);
+		}
+	}
+
+	.site-footer__bottom {
+		padding: 22px 0 30px;
+		border-top: 1px solid rgb(255 255 255 / 14%);
+		color: rgb(255 255 255 / 52%);
+		font-size: 12px;
+	}
+}
+
+// Til va tema tugmalariga planshetda ham joy qoldiramiz.
+@media (min-width: 761px) and (max-width: 1100px) {
+	.header-main {
+		grid-template-columns: 145px minmax(140px, 1fr) auto;
+		gap: 18px;
+	}
+
+	.header-actions {
+		gap: 14px;
+	}
+
+	.header-actions a {
+		min-width: 36px;
+		span {
+			display: none;
+		}
+	}
+}

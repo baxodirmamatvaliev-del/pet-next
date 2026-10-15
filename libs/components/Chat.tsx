@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReactiveVar } from '@apollo/client';
-import { Avatar, Badge, Box, Stack } from '@mui/material';
+import { Avatar, Box, Stack } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import MarkChatUnreadIcon from '@mui/icons-material/MarkChatUnread';
-import { styled } from '@mui/material/styles';
+import { useTranslation } from '../i18n';
 import { authReadyVar, userVar } from '../../apollo/store';
 import { getValidAccessToken } from '../auth';
 import { REACT_APP_API_URL, REACT_APP_API_WS } from '../config';
@@ -24,21 +25,8 @@ const isMessage = (value: unknown): value is ChatMessage => {
 			(message.memberData.memberNick == null || typeof message.memberData.memberNick === 'string')));
 };
 
-const RippleBadge = styled(Badge)({
-	'& .MuiBadge-badge': {
-		backgroundColor: '#b4dcff8f', color: '#2c40bdd6',
-		'&::after': {
-			position: 'absolute', inset: 0, borderRadius: '50%',
-			animation: 'chat-ripple 1.2s infinite ease-in-out', border: '2px solid #32c2c1', content: '""',
-		},
-	},
-	'@keyframes chat-ripple': {
-		'0%': { transform: 'scale(.8)', opacity: 1 },
-		'100%': { transform: 'scale(2.4)', opacity: 0 },
-	},
-});
-
 export default function Chat() {
+	const { t } = useTranslation();
 	const user = useReactiveVar(userVar);
 	const authReady = useReactiveVar(authReadyVar);
 	const socketRef = useRef<WebSocket | null>(null);
@@ -122,33 +110,37 @@ export default function Chat() {
 
 	return (
 		<Stack className="chatting">
-			<button className="chat-button" onClick={() => setOpen((value) => !value)} aria-label={open ? 'Close live chat' : 'Open live chat'} aria-expanded={open} aria-controls="live-chat">
-				{open ? <CloseFullscreenIcon /> : <MarkChatUnreadIcon />}
+			<button className="chat-button" onClick={() => setOpen((value) => !value)} aria-label={open ? t('chat.close') : t('chat.open')} aria-expanded={open} aria-controls="live-chat">
+				{open ? <CloseRoundedIcon /> : <MarkChatUnreadIcon />}
+				{!open && <span className="chat-launcher-dot" />}
 			</button>
 			<Stack id="live-chat" className={`chat-frame ${open ? 'open' : ''}`} inert={!open} aria-hidden={!open}>
 				<Box className="chat-top">
-					<div style={{ fontFamily: 'Nunito' }}>Online Chat</div>
-					<RippleBadge style={{ margin: '-18px 0 0 21px' }} badgeContent={onlineUsers} showZero />
+					<div className="chat-brand"><PetsRoundedIcon /></div>
+					<div className="chat-heading"><span className="chat-eyebrow">PETNEST COMMUNITY</span><h2>{t('chat.title')}</h2>
+						<span className={`chat-status ${connected ? 'is-connected' : ''}`} role="status"><i />{connected ? t('chat.online', { count: onlineUsers }) : t('chat.connecting')}</span>
+					</div>
+					<button type="button" className="chat-close" aria-label={t('chat.close')} onClick={() => setOpen(false)}><CloseRoundedIcon /></button>
 				</Box>
-				<Box className="chat-content" ref={contentRef} role="log" aria-label="Live chat messages" aria-live="polite">
+				<Box className="chat-content" ref={contentRef} role="log" aria-label={t('chat.title')} aria-live="polite">
 					<Stack className="chat-main">
-						<Box display="flex" sx={{ m: '10px 0' }}><div className="welcome">Welcome to Live chat!</div></Box>
+						<div className="chat-intro"><span>{t('chat.welcome')}</span><p>{t('chat.description')}</p></div>
 						{messages.map((message, index) => {
 							const member = message.memberData;
 							const own = Boolean(user?.sub && member?._id === user.sub);
 							const image = member?.memberImage
 								? (/^https?:\/\//.test(member.memberImage) ? member.memberImage : `${REACT_APP_API_URL}/${member.memberImage.replace(/^\//, '')}`)
 								: '/img/profile/defaultUser.svg';
-							return <Box key={index} display="flex" justifyContent={own ? 'flex-end' : 'flex-start'} alignItems="flex-end" sx={{ m: '10px 0' }}>
-								{!own && <Avatar alt={member?.memberNick ?? 'Guest'} src={image} />}
-								<div className={own ? 'msg-right' : 'msg-left'}>{message.text}</div>
+							return <Box key={index} className={`chat-message ${own ? 'is-own' : ''}`}>
+								{!own && <Avatar alt={member?.memberNick ?? t('chat.guest')} src={image} />}
+								<div className="chat-message-body"><span className="chat-author">{own ? t('chat.you') : member?.memberNick ?? t('chat.guest')}</span><div className={own ? 'msg-right' : 'msg-left'}>{message.text}</div></div>
 							</Box>;
 						})}
 					</Stack>
 				</Box>
 				<Box className="chat-bott" component="form" onSubmit={(event) => { event.preventDefault(); sendMessage(); }}>
-					<input className="msg-input" name="message" aria-label="Message" type="text" placeholder="Type message" value={messageInput} onChange={(event) => setMessageInput(event.target.value)} />
-					<button type="submit" className="send-msg-btn" aria-label="Send message" disabled={!connected}><SendIcon style={{ color: '#fff' }} /></button>
+					<input className="msg-input" name="message" aria-label={t('chat.message')} type="text" placeholder={t('chat.message')} value={messageInput} onChange={(event) => setMessageInput(event.target.value)} />
+					<button type="submit" className="send-msg-btn" aria-label={t('chat.send')} disabled={!connected || !messageInput.trim()}><SendIcon /></button>
 				</Box>
 			</Stack>
 		</Stack>

@@ -46,6 +46,7 @@ function chat({ ready = true, user = null, token = '' } = {}) {
     '@mui/material/styles': { styled: () => () => 'RippleBadge' },
     '../../apollo/store': { userVar, authReadyVar },
     '../auth': { getValidAccessToken: async () => token },
+    '../i18n': { useTranslation: () => ({ t: key => key }) },
     '../config': { REACT_APP_API_URL: 'https://api.test', REACT_APP_API_WS: 'wss://api.test/' },
   };
   const compiledModule = { exports: {} };

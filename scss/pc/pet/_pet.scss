@@ -14,16 +14,19 @@
 				color: $muted;
 				font-size: 12px;
 			}
+
 			> p:last-child {
 				margin-top: 10px;
 				color: $muted;
 				font-size: 14px;
 			}
 		}
+
 		h1 {
 			font-family: Georgia, 'Times New Roman', serif;
 			font-size: 38px;
 		}
+
 		label {
 			display: flex;
 			align-items: center;
@@ -32,9 +35,11 @@
 				color: $muted;
 				font-size: 12px;
 			}
+
 			.MuiFormControl-root {
 				min-width: 150px;
 			}
+
 			.MuiOutlinedInput-root {
 				height: 42px;
 				background: var(--pet-surface);
@@ -43,6 +48,7 @@
 			}
 		}
 	}
+
 	.pet-filter {
 		display: flex;
 		align-items: center;
@@ -58,6 +64,7 @@
 				letter-spacing: 0.08em;
 				text-transform: uppercase;
 			}
+
 			.MuiToggleButtonGroup-root {
 				gap: 8px;
 				.MuiToggleButtonGroup-grouped {
@@ -78,6 +85,7 @@
 			}
 		}
 	}
+
 	.pet-results {
 		.pet-results__toolbar {
 			align-items: center;
@@ -86,6 +94,7 @@
 			.pet-results__count {
 				margin: 0;
 			}
+
 			.pet-results__create {
 				min-width: 0;
 				min-height: 36px;
@@ -97,7 +106,8 @@
 				font-size: 12px;
 				font-weight: 700;
 				text-transform: none;
-				transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+				transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease,
+					transform 160ms ease;
 				.MuiButton-startIcon {
 					margin-right: 5px;
 					margin-left: 0;
@@ -105,27 +115,32 @@
 						font-size: 18px;
 					}
 				}
+
 				&:hover {
 					transform: translateY(-2px);
 					border-color: $secondary;
 					background: $secondary-fill;
 					box-shadow: 0 6px 14px rgb(255 112 87 / 24%);
 				}
+
 				&:active {
 					transform: translateY(0);
 					box-shadow: none;
 				}
 			}
 		}
+
 		.pet-results__count {
 			color: $muted;
 			font-size: 12px;
 		}
+
 		.pet-results__grid {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 			gap: 28px 20px;
 		}
+
 		.pet-results__message {
 			min-height: 360px;
 			display: grid;
@@ -138,6 +153,7 @@
 				color: $secondary;
 			}
 		}
+
 		.pet-pagination {
 			align-items: center;
 			justify-content: space-between;
@@ -163,6 +179,7 @@
 		transform: translateY(-3px);
 		box-shadow: 0 14px 34px rgb(23 79 63 / 10%);
 	}
+
 	.pet-card__image {
 		position: relative;
 		aspect-ratio: 4 / 3;
@@ -171,6 +188,7 @@
 		img {
 			object-fit: cover;
 		}
+
 		.pet-card__status {
 			position: absolute;
 			top: 14px;
@@ -182,6 +200,7 @@
 			font-weight: 800;
 		}
 	}
+
 	.pet-card__content {
 		padding: 18px;
 		.pet-card__heading {
@@ -192,17 +211,20 @@
 				font-family: Georgia, 'Times New Roman', serif;
 				font-size: 22px;
 			}
+
 			p {
 				margin-top: 4px;
 				color: $muted;
 				font-size: 12px;
 			}
+
 			strong {
 				flex-shrink: 0;
 				color: $primary;
 				font-size: 14px;
 			}
 		}
+
 		.pet-card__title {
 			margin-top: 14px;
 			overflow: hidden;
@@ -211,6 +233,7 @@
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+
 		.pet-card__meta {
 			align-items: center;
 			justify-content: space-between;
@@ -226,6 +249,7 @@
 				}
 			}
 		}
+
 		.pet-card__stats {
 			align-items: center;
 			flex-wrap: wrap;
@@ -243,6 +267,7 @@
 					font-size: 15px;
 				}
 			}
+
 			.pet-card__owner {
 				display: inline-flex;
 				align-items: center;
@@ -256,9 +281,21 @@
 				text-underline-offset: 4px;
 				cursor: pointer;
 				transition: color 180ms ease, text-decoration-color 180ms ease;
-				&::after { content: '↗'; font-size: 13px; line-height: 1; }
-				&:hover { color: $secondary; text-decoration-color: $secondary; }
-				&:focus-visible { outline: 2px solid $primary; outline-offset: 2px; }
+				&::after {
+					content: '↗';
+					font-size: 13px;
+					line-height: 1;
+				}
+
+				&:hover {
+					color: $secondary;
+					text-decoration-color: $secondary;
+				}
+
+				&:focus-visible {
+					outline: 2px solid $primary;
+					outline-offset: 2px;
+				}
 			}
 		}
 	}
@@ -281,11 +318,13 @@
 			color: $primary;
 		}
 	}
+
 	.pet-detail {
 		display: grid;
 		grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
 		gap: 48px;
 	}
+
 	.pet-gallery {
 		display: grid;
 		grid-template-columns: 82px minmax(0, 1fr);
@@ -304,11 +343,13 @@
 				&.active {
 					border-color: $primary;
 				}
+
 				img {
 					object-fit: cover;
 				}
 			}
 		}
+
 		.pet-gallery__main {
 			position: relative;
 			aspect-ratio: 1 / 1;
@@ -320,6 +361,7 @@
 			}
 		}
 	}
+
 	.pet-detail__info {
 		align-items: flex-start;
 		padding-top: 8px;
@@ -333,6 +375,7 @@
 				font-weight: 800;
 				letter-spacing: 0.08em;
 			}
+
 			.MuiIconButton-root {
 				border: 1px solid $border;
 				color: $muted;
@@ -341,20 +384,24 @@
 				}
 			}
 		}
+
 		h1 {
 			margin-top: 12px;
 			font-family: Georgia, 'Times New Roman', serif;
 			font-size: 38px;
 		}
+
 		.pet-detail__title {
 			margin-top: 8px;
 			color: $muted;
 			font-size: 15px;
 		}
+
 		.pet-detail__price {
 			margin-top: 22px;
 			font-size: 28px;
 		}
+
 		.pet-detail__facts {
 			width: 100%;
 			gap: 12px;
@@ -369,14 +416,17 @@
 					color: $primary;
 					font-size: 20px;
 				}
+
 				p {
 					font-size: 13px;
 				}
 			}
 		}
+
 		> .MuiButton-root {
 			width: 100%;
 		}
+
 		.pet-detail__owner {
 			width: 100%;
 			gap: 6px;
@@ -385,6 +435,7 @@
 				color: $muted;
 				font-size: 12px;
 			}
+
 			a {
 				display: inline-flex;
 				align-self: flex-start;
@@ -398,11 +449,24 @@
 				text-underline-offset: 5px;
 				cursor: pointer;
 				transition: color 180ms ease, text-decoration-color 180ms ease;
-				&::after { content: '↗'; font-size: 16px; line-height: 1; }
-				&:hover { color: $secondary; text-decoration-color: $secondary; }
-				&:focus-visible { outline: 2px solid $primary; outline-offset: 3px; }
+				&::after {
+					content: '↗';
+					font-size: 16px;
+					line-height: 1;
+				}
+
+				&:hover {
+					color: $secondary;
+					text-decoration-color: $secondary;
+				}
+
+				&:focus-visible {
+					outline: 2px solid $primary;
+					outline-offset: 3px;
+				}
 			}
 		}
+
 		.pet-detail__description {
 			width: 100%;
 			margin-top: 26px;
@@ -411,6 +475,7 @@
 			strong {
 				font-size: 15px;
 			}
+
 			p {
 				margin-top: 10px;
 				color: $muted;
@@ -420,6 +485,7 @@
 			}
 		}
 	}
+
 	.pet-comments {
 		max-width: 900px;
 		margin: 48px auto 0;
@@ -435,16 +501,19 @@
 				font-family: Georgia, 'Times New Roman', serif;
 				font-size: 27px;
 			}
+
 			p,
 			span {
 				margin-top: 6px;
 				color: $muted;
 				font-size: 12px;
 			}
+
 			span {
 				white-space: nowrap;
 			}
 		}
+
 		.pet-comments__form {
 			gap: 12px;
 			margin-top: 24px;
@@ -452,6 +521,7 @@
 				align-self: flex-end;
 			}
 		}
+
 		.pet-comments__sign-in {
 			align-items: center;
 			justify-content: space-between;
@@ -464,14 +534,17 @@
 				font-size: 13px;
 			}
 		}
+
 		.pet-comments__state {
 			min-height: 120px;
 			align-items: center;
 			justify-content: center;
 		}
+
 		.pet-comments__list {
 			margin-top: 24px;
 		}
+
 		.pet-comments__item {
 			gap: 14px;
 			padding: 20px 0;
@@ -480,6 +553,7 @@
 				min-width: 0;
 				flex: 1;
 			}
+
 			.MuiAvatar-root {
 				background: $sage;
 				color: $primary;
@@ -487,6 +561,7 @@
 					opacity: 0.8;
 				}
 			}
+
 			.pet-comments__author {
 				align-items: center;
 				justify-content: space-between;
@@ -495,6 +570,7 @@
 					align-items: flex-start;
 					gap: 3px;
 				}
+
 				.pet-comments__role {
 					padding: 2px 6px;
 					border-radius: 4px;
@@ -507,11 +583,13 @@
 						background: var(--pet-warning-bg);
 						color: var(--pet-warning-text);
 					}
+
 					&--agent {
 						background: var(--pet-sage);
 						color: var(--pet-success-text);
 					}
 				}
+
 				.pet-comments__author-actions {
 					align-items: center;
 					gap: 8px;
@@ -521,6 +599,7 @@
 						font-size: 11px;
 					}
 				}
+
 				.pet-comments__author-link {
 					color: inherit;
 					font-size: 13px;
@@ -531,11 +610,13 @@
 						text-decoration: underline;
 					}
 				}
+
 				p {
 					color: $muted;
 					font-size: 11px;
 				}
 			}
+
 			.pet-comments__text {
 				margin-top: 8px;
 				font-size: 13px;
@@ -543,6 +624,7 @@
 				white-space: pre-wrap;
 				word-break: break-word;
 			}
+
 			.pet-comments__edit-form {
 				gap: 10px;
 				margin-top: 10px;
@@ -552,11 +634,13 @@
 				}
 			}
 		}
+
 		.pet-comments__empty {
 			margin-top: 24px;
 			color: $muted;
 			font-size: 13px;
 		}
+
 		.MuiPagination-root {
 			display: flex;
 			justify-content: center;
@@ -579,7 +663,9 @@
 		margin-bottom: 26px;
 		color: $muted;
 		font-size: 12px;
-		a:hover { color: $primary; }
+		a:hover {
+			color: $primary;
+		}
 	}
 
 	.member-detail__profile {
@@ -595,10 +681,12 @@
 			border: 3px solid #ffffff;
 			box-shadow: 0 4px 16px #174f3f20;
 		}
+
 		h1 {
 			font-family: Georgia, 'Times New Roman', serif;
 			font-size: 34px;
 		}
+
 		p {
 			margin-top: 8px;
 			color: $muted;
@@ -606,41 +694,75 @@
 			line-height: 1.6;
 			white-space: pre-line;
 		}
-		.member-detail__intro { flex: 1; min-width: 0; }
+
+		.member-detail__intro {
+			flex: 1;
+			min-width: 0;
+		}
+
 		.member-detail__social {
 			align-items: center;
 			flex-wrap: wrap;
 			gap: 16px;
 			margin-top: 18px;
-			p { margin-top: 0; font-size: 13px; }
+			p {
+				margin-top: 0;
+				font-size: 13px;
+			}
+
 			a {
 				color: $muted;
 				text-decoration: none;
-				&:hover { color: $primary; text-decoration: underline; }
+				&:hover {
+					color: $primary;
+					text-decoration: underline;
+				}
 			}
-			strong { color: $primary; }
+
+			strong {
+				color: $primary;
+			}
+
 			.MuiButton-root {
 				min-width: 116px;
 				border-radius: 9px;
 				font-size: 12px;
 				font-weight: 700;
 				text-transform: none;
-				&.MuiButton-outlined { border-color: $primary; color: $primary; &:hover { background: $sage; } }
+				&.MuiButton-outlined {
+					border-color: $primary;
+					color: $primary;
+					&:hover {
+						background: $sage;
+					}
+				}
+
 				&.member-detail__follow {
 					background: #ff5d18;
 					color: var(--pet-on-dark);
-					&:hover { background: #e84d0c; }
+					&:hover {
+						background: #e84d0c;
+					}
 				}
+
 				&.member-detail__unfollow {
 					border-color: var(--pet-text-disabled);
 					background: var(--pet-text-disabled);
 					color: var(--pet-ink);
-					&:hover { border-color: var(--pet-text-disabled); background: var(--pet-text-disabled); }
+					&:hover {
+						border-color: var(--pet-text-disabled);
+						background: var(--pet-text-disabled);
+					}
 				}
 			}
-			.member-detail__following { color: var(--pet-text-disabled); font-style: italic; }
+
+			.member-detail__following {
+				color: var(--pet-text-disabled);
+				font-style: italic;
+			}
 		}
 	}
+
 	.member-detail__tabs {
 		gap: 8px;
 		margin-top: 30px;
@@ -651,12 +773,14 @@
 			color: $muted;
 			font-size: 12px;
 			text-transform: none;
-			&:hover, &.active {
+			&:hover,
+			&.active {
 				background: $sage;
 				color: $primary;
 			}
 		}
 	}
+
 	.member-detail__follows {
 		min-height: 350px;
 		margin-top: 30px;
@@ -677,12 +801,17 @@
 				font-size: 16px;
 			}
 		}
-		> p { color: $muted; }
+
+		> p {
+			color: $muted;
+		}
+
 		.MuiPagination-root {
 			align-self: center;
 			margin-top: 10px;
 		}
 	}
+
 	.member-detail__grid {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -701,17 +830,20 @@
 			font-weight: 800;
 			letter-spacing: 0.12em;
 		}
+
 		h1 {
 			margin-top: 8px;
 			font-family: Georgia, 'Times New Roman', serif;
 			font-size: 38px;
 		}
+
 		> p:last-child {
 			margin-top: 8px;
 			color: $muted;
 			font-size: 14px;
 		}
 	}
+
 	.pet-create-page__auth {
 		margin-bottom: 20px;
 		a {
@@ -720,6 +852,7 @@
 			text-decoration: underline;
 		}
 	}
+
 	.pet-create-form {
 		gap: 24px;
 		padding: 30px;
@@ -733,11 +866,13 @@
 			svg {
 				font-size: 22px;
 			}
+
 			h2 {
 				color: $ink;
 				font-size: 18px;
 			}
 		}
+
 		.pet-create-form__grid {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
@@ -746,26 +881,31 @@
 				background: var(--pet-surface);
 			}
 		}
+
 		.pet-create-form__description {
 			.MuiInputBase-root {
 				background: var(--pet-surface);
 			}
 		}
+
 		.pet-create-form__images {
 			align-items: flex-start;
 			gap: 8px;
 			> strong {
 				font-size: 14px;
 			}
+
 			> p {
 				color: $muted;
 				font-size: 12px;
 			}
+
 			.MuiButton-root {
 				margin-top: 6px;
 				border-color: $border;
 				color: $primary;
 			}
+
 			.pet-create-form__previews {
 				flex-direction: row;
 				flex-wrap: wrap;
@@ -773,6 +913,7 @@
 				width: 100%;
 				margin-top: 8px;
 			}
+
 			.pet-create-form__preview {
 				position: relative;
 				width: 150px;
@@ -784,6 +925,7 @@
 					border-radius: 10px;
 					object-fit: cover;
 				}
+
 				.MuiIconButton-root {
 					position: absolute;
 					top: 6px;
@@ -796,6 +938,7 @@
 						background: var(--pet-surface-muted);
 					}
 				}
+
 				p {
 					overflow: hidden;
 					margin-top: 6px;
@@ -806,6 +949,7 @@
 				}
 			}
 		}
+
 		.pet-create-form__actions {
 			justify-content: flex-end;
 			gap: 12px;
@@ -818,10 +962,12 @@
 }
 
 @keyframes petCommentRolePulse {
-	0%, 100% {
+	0%,
+	100% {
 		box-shadow: 0 0 0 0 currentColor;
 		opacity: 1;
 	}
+
 	50% {
 		box-shadow: 0 0 0 3px transparent;
 		opacity: 0.7;

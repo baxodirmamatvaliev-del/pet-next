@@ -1,0 +1,138 @@
+@use '../../variables' as *;
+
+.container {
+	width: min(calc(100% - 48px), $container);
+	margin: 0 auto;
+}
+
+.announcement {
+	height: 38px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+	background: $primary-fill;
+	color: var(--pet-on-dark);
+	font-size: 12px;
+	font-weight: 700;
+	.MuiTypography-root {
+		font-size: 12px;
+	}
+}
+
+.header-main {
+	height: 94px;
+	display: grid;
+	grid-template-columns: 190px minmax(280px, 1fr) auto;
+	align-items: center;
+	gap: 36px;
+}
+
+.brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 9px;
+	color: $primary;
+	.brand__mark {
+		font-size: 42px !important;
+		transform: rotate(-10deg);
+	}
+
+	.brand__text {
+		display: flex;
+		flex-direction: column;
+		line-height: 1;
+		strong {
+			font-family: Georgia, 'Times New Roman', serif;
+			font-size: 27px;
+		}
+
+		small {
+			margin-top: 5px;
+			font-size: 11px;
+			font-weight: 800;
+			letter-spacing: 0.22em;
+			text-transform: uppercase;
+		}
+	}
+
+	&.brand--footer {
+		color: var(--pet-on-dark);
+	}
+}
+
+.header-search-form {
+	width: 100%;
+	.header-search {
+		width: 100%;
+		height: 46px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 0 16px;
+		border: 1px solid $border;
+		border-radius: 10px;
+		background: var(--pet-canvas);
+		color: $muted;
+		.MuiOutlinedInput-notchedOutline {
+			border: 0;
+		}
+
+		input {
+			width: 100%;
+			border: 0;
+			outline: 0;
+			background: transparent;
+			color: $ink;
+		}
+
+		.MuiIconButton-root {
+			color: $muted;
+		}
+	}
+}
+
+.header-actions {
+	display: flex;
+	align-items: center;
+	gap: 25px;
+	a {
+		position: relative;
+		min-width: 52px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		color: var(--pet-ink);
+		font-size: 11px;
+	}
+
+	svg {
+		font-size: 25px;
+	}
+
+	.cart-link {
+		b {
+			position: absolute;
+			top: -7px;
+			right: 5px;
+			width: 18px;
+			height: 18px;
+			display: grid;
+			place-items: center;
+			border-radius: 50%;
+			background: $secondary-fill;
+			color: var(--pet-on-dark);
+			font-size: 10px;
+		}
+	}
+
+	.notification-bell {
+		color: $primary;
+		transition: color 160ms ease, transform 160ms ease;
+		&:hover {
+			color: $secondary;
+			transform: translateY(-2px);
+		}
+	}
+}

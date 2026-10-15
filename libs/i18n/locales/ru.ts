@@ -1,6 +1,18 @@
 import type { Dictionary } from './en';
 
 const ru: Dictionary = {
+	"chat.title": "Чат сообщества",
+	"chat.open": "Открыть чат",
+	"chat.close": "Закрыть чат",
+	"chat.online": "Онлайн: {count}",
+	"chat.connecting": "Подключение…",
+	"chat.welcome": "Всё начинается с приветствия.",
+	"chat.description": "Расскажите о питомце, задайте вопрос или поздоровайтесь.",
+	"chat.guest": "Гость",
+	"chat.you": "Вы",
+	"chat.message": "Напишите сообщение…",
+	"chat.send": "Отправить сообщение",
+
 	'nav.home': 'Главная PetNest Korea',
 	'nav.delivery': 'Бесплатная доставка при заказе от ₩30,000',
 	'nav.products': 'Все товары',
