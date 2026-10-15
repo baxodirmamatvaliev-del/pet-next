@@ -1,6 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { Alert, Avatar, Box, Button, CircularProgress, Pagination, Rating, Stack, TextField, Typography } from '@mui/material';
+import {
+	Alert,
+	Avatar,
+	Box,
+	Button,
+	CircularProgress,
+	Pagination,
+	Rating,
+	Stack,
+	TextField,
+	Typography,
+} from '@mui/material';
 import Link from 'next/link';
 
 import { userVar } from '../../../apollo/store';
@@ -93,7 +104,9 @@ const ProductReviews = (props: ProductReviewsProps) => {
 	/** COMPUTED VALUES **/
 	const totalPages = Math.ceil(reviewTotal / reviewInquiry.limit);
 	const canWriteReview = Boolean(user?.sub && user.sub !== ownerId);
-	const signInHref = `/account/join?referrer=${encodeURIComponent(`/product/detail?id=${productId}`)}`;
+	const signInHref = `/account/join?referrer=${encodeURIComponent(
+		`/product/detail?id=${productId}`
+	)}`;
 	const content = (
 		<>
 			<Stack direction="row" className="product-reviews__heading">
@@ -119,21 +132,29 @@ const ProductReviews = (props: ProductReviewsProps) => {
 						fullWidth
 						slotProps={{ htmlInput: { maxLength: 500, 'aria-label': t('common.writeReview') } }}
 					/>
-					<Button type="submit" variant="contained" disabled={!reviewRating || !reviewText.trim() || createCommentLoading}>
+					<Button
+						type="submit"
+						variant="contained"
+						disabled={!reviewRating || !reviewText.trim() || createCommentLoading}
+					>
 						{createCommentLoading ? t('ui.posting') : t('ui.postReview')}
 					</Button>
 				</Stack>
 			) : !user?.sub ? (
 				<Stack direction="row" className="product-reviews__sign-in">
 					<Typography>{t('ui.signInToReviewThisProduct')}</Typography>
-					<Button component={Link} href={signInHref} variant="outlined">{t('ui.signIn')}</Button>
+					<Button component={Link} href={signInHref} variant="outlined">
+						{t('ui.signIn')}
+					</Button>
 				</Stack>
 			) : (
 				<Alert severity="info">{t('ui.youCannotReviewYourOwnProduct')}</Alert>
 			)}
 
 			{getCommentsLoading && !reviews.length ? (
-				<Stack className="product-reviews__state"><CircularProgress color="primary" /></Stack>
+				<Stack className="product-reviews__state">
+					<CircularProgress color="primary" />
+				</Stack>
 			) : getCommentsError ? (
 				<Alert severity="error">{t('ui.reviewsCouldNotBeLoaded')}</Alert>
 			) : reviews.length ? (
@@ -147,35 +168,69 @@ const ProductReviews = (props: ProductReviewsProps) => {
 
 							return (
 								<Stack direction="row" className="product-reviews__item" key={review._id}>
-									<Avatar component={Link} href={`/member/detail?id=${review.memberId}`} src={avatar} alt={author}>
+									<Avatar
+										component={Link}
+										href={`/member/detail?id=${review.memberId}`}
+										src={avatar}
+										alt={author}
+									>
 										{author.charAt(0).toUpperCase()}
 									</Avatar>
 									<Box>
 										<Stack direction="row" className="product-reviews__author">
-											<Typography component={Link} href={`/member/detail?id=${review.memberId}`}>{author}</Typography>
-											<Typography>{new Date(review.createdAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
+											<Typography component={Link} href={`/member/detail?id=${review.memberId}`}>
+												{author}
+											</Typography>
+											<Typography>
+												{new Date(review.createdAt).toLocaleDateString(locale, {
+													year: 'numeric',
+													month: 'short',
+													day: 'numeric',
+													timeZone: 'Asia/Seoul',
+												})}
+											</Typography>
 										</Stack>
 										<Rating value={review.commentRating ?? 0} readOnly size="small" />
-										<Typography className="product-reviews__text">{review.commentContent}</Typography>
+										<Typography className="product-reviews__text">
+											{review.commentContent}
+										</Typography>
 									</Box>
 								</Stack>
 							);
 						})}
 					</Stack>
-					{totalPages > 1 && <Pagination page={reviewPage} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />}
+					{totalPages > 1 && (
+						<Pagination
+							page={reviewPage}
+							count={totalPages}
+							onChange={paginationHandler}
+							color="primary"
+							shape="rounded"
+						/>
+					)}
 				</>
 			) : (
-				<Typography className="product-reviews__empty">{t('ui.noReviewsYetBeTheFirstToShare')}</Typography>
+				<Typography className="product-reviews__empty">
+					{t('ui.noReviewsYetBeTheFirstToShare')}
+				</Typography>
 			)}
 		</>
 	);
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
-		return <Box component="section" className="product-reviews product-reviews--mobile">{content}</Box>;
+		return (
+			<Box component="section" className="product-reviews product-reviews--mobile">
+				{content}
+			</Box>
+		);
 	} else {
 		/** RENDER PC **/
-		return <Box component="section" className="product-reviews product-reviews--pc">{content}</Box>;
+		return (
+			<Box component="section" className="product-reviews product-reviews--pc">
+				{content}
+			</Box>
+		);
 	}
 };
 

@@ -45,9 +45,18 @@ const CategoryNavigation = () => {
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
 		return (
-			<Stack component="section" className="home-categories home-categories--mobile container" aria-label={t('ui.shopByCategory')}>
+			<Stack
+				component="section"
+				className="home-categories home-categories--mobile container"
+				aria-label={t('ui.shopByCategory')}
+			>
 				{categories.map(({ label, href, tone, icon: Icon }) => (
-					<Box component={Link} href={href} className={`category-tile category-tile--${tone}`} key={label}>
+					<Box
+						component={Link}
+						href={href}
+						className={`category-tile category-tile--${tone}`}
+						key={label}
+					>
 						<Box component="span" className="category-tile__icon">
 							<Icon />
 						</Box>
@@ -59,9 +68,18 @@ const CategoryNavigation = () => {
 	} else {
 		/** RENDER PC **/
 		return (
-			<Stack component="section" className="home-categories home-categories--pc container" aria-label={t('ui.shopByCategory')}>
+			<Stack
+				component="section"
+				className="home-categories home-categories--pc container"
+				aria-label={t('ui.shopByCategory')}
+			>
 				{categories.map(({ label, caption, href, tone, icon: Icon }) => (
-					<Box component={Link} href={href} className={`category-tile category-tile--${tone}`} key={label}>
+					<Box
+						component={Link}
+						href={href}
+						className={`category-tile category-tile--${tone}`}
+						key={label}
+					>
 						<Box component="span" className="category-tile__icon">
 							<Icon />
 						</Box>

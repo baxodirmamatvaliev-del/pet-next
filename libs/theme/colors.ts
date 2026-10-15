@@ -77,7 +77,9 @@ export const darkColors: Record<keyof typeof colors, string> = {
 };
 
 const cssVariables = (palette: Record<keyof typeof colors, string>) =>
-	Object.entries(palette).map(([name, value]) => `--pet-${name}:${value}`).join(';');
+	Object.entries(palette)
+		.map(([name, value]) => `--pet-${name}:${value}`)
+		.join(';');
 
 // Server HTML’iga qo‘shiladi: sahifa ochilishi bilanoq barcha CSS ranglari mavjud bo‘ladi.
 export const colorVariables = `:root{${cssVariables(colors)};color-scheme:light}

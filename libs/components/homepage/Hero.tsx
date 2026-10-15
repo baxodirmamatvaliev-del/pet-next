@@ -18,18 +18,27 @@ const Hero = () => {
 						{t('ui.forHappyDogsAndCats')}
 					</Typography>
 					<Typography component="h1">
-						{t('ui.everything')}<br />
+						{t('ui.everything')}
+						<br />
 						{t('ui.theyLove')}
 					</Typography>
-					<Typography>
-						{t('ui.premiumAccessoriesAndEssentialsForHealthierHappierDays')}
-					</Typography>
+					<Typography>{t('ui.premiumAccessoriesAndEssentialsForHealthierHappierDays')}</Typography>
 					<Box className="home-hero__actions">
-						<Button component={Link} href="/product?category=DOG" className="button button--primary">
-							{t('ui.shopDogs')}<ArrowForwardRoundedIcon />
+						<Button
+							component={Link}
+							href="/product?category=DOG"
+							className="button button--primary"
+						>
+							{t('ui.shopDogs')}
+							<ArrowForwardRoundedIcon />
 						</Button>
-						<Button component={Link} href="/product?category=CAT" className="button button--secondary">
-							{t('ui.shopCats')}<ArrowForwardRoundedIcon />
+						<Button
+							component={Link}
+							href="/product?category=CAT"
+							className="button button--secondary"
+						>
+							{t('ui.shopCats')}
+							<ArrowForwardRoundedIcon />
 						</Button>
 					</Box>
 				</Stack>
@@ -44,18 +53,27 @@ const Hero = () => {
 						{t('ui.forHappyDogsAndCats')}
 					</Typography>
 					<Typography component="h1">
-						{t('ui.everything')}<br />
+						{t('ui.everything')}
+						<br />
 						{t('ui.theyLove')}
 					</Typography>
-					<Typography>
-						{t('ui.premiumAccessoriesAndEssentialsForHealthierHappierDays')}
-					</Typography>
+					<Typography>{t('ui.premiumAccessoriesAndEssentialsForHealthierHappierDays')}</Typography>
 					<Box className="home-hero__actions">
-						<Button component={Link} href="/product?category=DOG" className="button button--primary">
-							{t('ui.shopDogs')}<ArrowForwardRoundedIcon />
+						<Button
+							component={Link}
+							href="/product?category=DOG"
+							className="button button--primary"
+						>
+							{t('ui.shopDogs')}
+							<ArrowForwardRoundedIcon />
 						</Button>
-						<Button component={Link} href="/product?category=CAT" className="button button--secondary">
-							{t('ui.shopCats')}<ArrowForwardRoundedIcon />
+						<Button
+							component={Link}
+							href="/product?category=CAT"
+							className="button button--secondary"
+						>
+							{t('ui.shopCats')}
+							<ArrowForwardRoundedIcon />
 						</Button>
 					</Box>
 				</Stack>

@@ -23,9 +23,16 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 						<meta name="viewport" content="width=device-width, initial-scale=1" />
 					</Head>
 					<Stack id="mobile-wrap">
-						<Stack id="top"><Top /></Stack>
-						<Stack id="main"><Component {...props} /></Stack>
-						<Stack id="footer"><Footer /></Stack>
+						<Stack id="top">
+							<Top />
+						</Stack>
+						<Stack id="main">
+							<Component {...props} />
+						</Stack>
+						<Chat />
+						<Stack id="footer">
+							<Footer />
+						</Stack>
 					</Stack>
 				</>
 			);
@@ -39,15 +46,21 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 						<meta name="viewport" content="width=device-width, initial-scale=1" />
 					</Head>
 					<Stack id="pc-wrap">
-						<Stack id="top"><Top /></Stack>
-						<Stack id="main"><Component {...props} /></Stack>
+						<Stack id="top">
+							<Top />
+						</Stack>
+						<Stack id="main">
+							<Component {...props} />
+						</Stack>
 						<Chat />
-						<Stack id="footer"><Footer /></Stack>
+						<Stack id="footer">
+							<Footer />
+						</Stack>
 					</Stack>
 				</>
 			);
 		}
-	}
+	};
 };
 
 export default withLayoutHome;

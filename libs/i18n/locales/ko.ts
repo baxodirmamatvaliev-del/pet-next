@@ -1,17 +1,17 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
-	"chat.title": "함께 나누는 이야기",
-	"chat.open": "채팅 열기",
-	"chat.close": "채팅 닫기",
-	"chat.online": "{count}명 접속 중",
-	"chat.connecting": "연결 중…",
-	"chat.welcome": "작은 인사로 시작해 보세요.",
-	"chat.description": "반려동물 이야기를 나누고, 궁금한 점을 물어보세요.",
-	"chat.guest": "게스트",
-	"chat.you": "나",
-	"chat.message": "메시지를 입력하세요…",
-	"chat.send": "메시지 보내기",
+	'chat.title': '함께 나누는 이야기',
+	'chat.open': '채팅 열기',
+	'chat.close': '채팅 닫기',
+	'chat.online': '{count}명 접속 중',
+	'chat.connecting': '연결 중…',
+	'chat.welcome': '작은 인사로 시작해 보세요.',
+	'chat.description': '반려동물 이야기를 나누고, 궁금한 점을 물어보세요.',
+	'chat.guest': '게스트',
+	'chat.you': '나',
+	'chat.message': '메시지를 입력하세요…',
+	'chat.send': '메시지 보내기',
 
 	'nav.home': 'PetNest Korea 홈',
 	'nav.delivery': '30,000원 이상 주문 시 무료배송',
@@ -58,8 +58,10 @@ const ko: Dictionary = {
 	'ui.welcomeToPetnest': 'PETNEST에 오신 것을 환영합니다',
 	'ui.loginGreeting': '다시 오신 것을 환영합니다',
 	'ui.createYourAccount': '계정을 만드세요',
-	'ui.loginToManageYourCartFavoritesAndOrders': '장바구니, 찜 목록, 주문을 관리하려면 로그인하세요.',
-	'ui.joinPetnestAndMakeShoppingForYourPet': 'PetNest에 가입하고 반려동물 쇼핑을 편리하게 즐기세요.',
+	'ui.loginToManageYourCartFavoritesAndOrders':
+		'장바구니, 찜 목록, 주문을 관리하려면 로그인하세요.',
+	'ui.joinPetnestAndMakeShoppingForYourPet':
+		'PetNest에 가입하고 반려동물 쇼핑을 편리하게 즐기세요.',
 	'ui.signUp': '회원가입',
 	'ui.nickname': '닉네임',
 	'ui.enterYourNickname': '닉네임을 입력하세요',
@@ -71,7 +73,8 @@ const ko: Dictionary = {
 	'ui.accountPetnestKorea': '계정 | PetNest Korea',
 	'ui.petnestMembership': 'PETNEST 멤버십',
 	'ui.everythingTheyLoveAllInOnePlace': '반려동물이 좋아하는 모든 것을 한곳에서.',
-	'ui.saveFavoritesBuildYourCartAndKeepEvery': '찜 목록과 장바구니를 채우고 모든 주문을 확인하세요.',
+	'ui.saveFavoritesBuildYourCartAndKeepEvery':
+		'찜 목록과 장바구니를 채우고 모든 주문을 확인하세요.',
 	'ui.searchAgents': '판매자 검색',
 	'ui.sortSellers': '판매자 정렬',
 	'ui.newest': '최신순',
@@ -83,7 +86,8 @@ const ko: Dictionary = {
 	'ui.petnestAgentsPetnestKorea': '판매자 | PetNest Korea',
 	'ui.petnestCommunity': 'PETNEST 커뮤니티',
 	'ui.meetOurAgents': '판매자를 만나보세요',
-	'ui.findAnAgentExploreTheirProductsOrContact': '판매자를 찾고 상품을 둘러보거나 도움을 요청하세요.',
+	'ui.findAnAgentExploreTheirProductsOrContact':
+		'판매자를 찾고 상품을 둘러보거나 도움을 요청하세요.',
 	'ui.removedFromCart': '장바구니에서 삭제했습니다',
 	'ui.cartCleared': '장바구니를 비웠습니다',
 	'ui.yourCartPetnestKorea': '장바구니 | PetNest Korea',
@@ -114,12 +118,15 @@ const ko: Dictionary = {
 	'ui.signInToContinue': '계속하려면 로그인하세요',
 	'ui.yourAccountIsRequiredToPlaceAnOrder': '안전한 주문을 위해 로그인이 필요합니다.',
 	'ui.checkoutInformationCouldNotBeLoaded': '주문 정보를 불러오지 못했습니다.',
-	'ui.thisOrderOrItsPaymentRequestWasCancelled': '주문 또는 결제 요청이 취소되어 다시 시도할 수 없습니다.',
+	'ui.thisOrderOrItsPaymentRequestWasCancelled':
+		'주문 또는 결제 요청이 취소되어 다시 시도할 수 없습니다.',
 	'ui.viewMyOrders': '내 주문 보기',
 	'ui.orderReceived': '주문 접수 완료',
 	'ui.thankYouForYourOrder': '주문해 주셔서 감사합니다',
-	'ui.yourDemoPaymentRequestHasBeenConfirmedNo': '데모 결제 요청이 확인되었습니다. 실제 결제는 이루어지지 않았습니다.',
-	'ui.yourOrderHasBeenCreatedAndTheDemo': '주문이 생성되었으며 데모 결제 확인을 기다리고 있습니다. 실제 결제는 이루어지지 않았습니다.',
+	'ui.yourDemoPaymentRequestHasBeenConfirmedNo':
+		'데모 결제 요청이 확인되었습니다. 실제 결제는 이루어지지 않았습니다.',
+	'ui.yourOrderHasBeenCreatedAndTheDemo':
+		'주문이 생성되었으며 데모 결제 확인을 기다리고 있습니다. 실제 결제는 이루어지지 않았습니다.',
 	'ui.orderNumber': '주문 번호',
 	'ui.payment': '결제',
 	'ui.viewOrder': '주문 보기',
@@ -135,7 +142,8 @@ const ko: Dictionary = {
 	'ui.deliveryAddress': '배송지 주소',
 	'ui.deliveryNoteOptional': '배송 메모 (선택)',
 	'ui.paymentMethod': '결제 방법',
-	'ui.noOnlineChargeIsTakenYetYourPayment': '아직 실제 결제는 이루어지지 않습니다. 결제 요청은 확인될 때까지 대기 상태로 유지됩니다.',
+	'ui.noOnlineChargeIsTakenYetYourPayment':
+		'아직 실제 결제는 이루어지지 않습니다. 결제 요청은 확인될 때까지 대기 상태로 유지됩니다.',
 	'ui.cardPreference': '카드 결제 선택',
 	'ui.noCardChargeIsMadeYet': '아직 카드 결제는 이루어지지 않습니다',
 	'ui.kakaoPayPreference': '카카오페이 선택',
@@ -152,7 +160,8 @@ const ko: Dictionary = {
 	'ui.agentAccessIsRequired': '판매자 권한이 필요합니다.',
 	'ui.helpCenterPetnestKorea': '고객센터 | PetNest Korea',
 	'ui.weAreHereToHelp': '도움이 필요하신가요?',
-	'ui.findAnAnswerOrContactAPetnestAgent': '답변을 찾거나 PetNest 판매자 또는 관리자에게 직접 문의하세요.',
+	'ui.findAnAnswerOrContactAPetnestAgent':
+		'답변을 찾거나 PetNest 판매자 또는 관리자에게 직접 문의하세요.',
 	'ui.followed': '팔로우했습니다!',
 	'ui.unfollowed': '팔로우를 취소했습니다!',
 	'ui.products': '상품',
@@ -177,7 +186,8 @@ const ko: Dictionary = {
 	'ui.signInToViewYourOrder': '주문을 보려면 로그인하세요',
 	'ui.chooseAnOrderFromYourOrderHistory': '주문 내역에서 주문을 선택하세요.',
 	'ui.orderCouldNotBeLoaded': '주문을 불러오지 못했습니다.',
-	'ui.reviewYourItemsDeliveryDetailsAndCurrentOrder': '상품, 배송 정보, 현재 주문 상태를 확인하세요.',
+	'ui.reviewYourItemsDeliveryDetailsAndCurrentOrder':
+		'상품, 배송 정보, 현재 주문 상태를 확인하세요.',
 	'ui.orderDetailsPetnestKorea': '주문 상세 | PetNest Korea',
 	'ui.backToOrders': '← 내 주문',
 	'ui.favoriteUpdated': '찜 목록을 업데이트했습니다',
@@ -194,7 +204,8 @@ const ko: Dictionary = {
 	'ui.home': '홈',
 	'ui.homeCommunity': '홈 / 커뮤니티',
 	'ui.findYourNewBestFriend': '새로운 가족을 만나보세요',
-	'ui.meetPetsLookingForLovingHomesAcrossSouth': '대한민국에서 새로운 가족을 기다리는 반려동물을 만나보세요.',
+	'ui.meetPetsLookingForLovingHomesAcrossSouth':
+		'대한민국에서 새로운 가족을 기다리는 반려동물을 만나보세요.',
 	'ui.sortBy': '정렬',
 	'ui.price': '가격',
 	'ui.createListing': '게시글 작성',
@@ -223,7 +234,8 @@ const ko: Dictionary = {
 	'ui.productName': '상품명',
 	'ui.loadingProducts': '상품 불러오는 중...',
 	'ui.noProductsMatchYourFilters': '조건에 맞는 상품이 없습니다.',
-	'ui.everythingTheyLoveHappyPetsHappyFamilies': '반려동물이 좋아하는 모든 것. 반려동물과 가족이 함께 행복하게.',
+	'ui.everythingTheyLoveHappyPetsHappyFamilies':
+		'반려동물이 좋아하는 모든 것. 반려동물과 가족이 함께 행복하게.',
 	'ui.explore': '둘러보기',
 	'ui.2026PetnestKoreaAllRightsReserved': '© 2026 PetNest Korea. 모든 권리 보유.',
 	'ui.everythingTheyLove': '반려동물이 좋아하는 모든 것.',
@@ -240,7 +252,8 @@ const ko: Dictionary = {
 	'ui.reviewsComments': '리뷰 및 댓글',
 	'ui.permanentlyRemoveThisComment': '이 댓글을 영구 삭제하시겠습니까?',
 	'ui.commentRemoved': '댓글을 삭제했습니다',
-	'ui.reviewCommunityContentAndRemoveInappropriateMessages': '커뮤니티 내용을 검토하고 부적절한 메시지를 삭제하세요.',
+	'ui.reviewCommunityContentAndRemoveInappropriateMessages':
+		'커뮤니티 내용을 검토하고 부적절한 메시지를 삭제하세요.',
 	'ui.searchComments': '댓글 검색',
 	'ui.search': '검색',
 	'ui.clear': '초기화',
@@ -251,9 +264,11 @@ const ko: Dictionary = {
 	'ui.remove': '삭제',
 	'ui.noReviewsOrCommentsFound': '리뷰나 댓글이 없습니다.',
 	'ui.orderUpdated': '주문을 업데이트했습니다',
-	'ui.noRealChargeWasMadeConfirmThisDemo': '실제 결제는 이루어지지 않았습니다. 데모 결제를 확인하고 주문을 결제 확인 상태로 변경하시겠습니까?',
+	'ui.noRealChargeWasMadeConfirmThisDemo':
+		'실제 결제는 이루어지지 않았습니다. 데모 결제를 확인하고 주문을 결제 확인 상태로 변경하시겠습니까?',
 	'ui.demoPaymentConfirmed': '데모 결제 확인 완료',
-	'ui.reviewDemoPaymentRequestsShipmentsAndDeliveries': '데모 결제 요청, 배송 및 배송 완료를 관리하세요.',
+	'ui.reviewDemoPaymentRequestsShipmentsAndDeliveries':
+		'데모 결제 요청, 배송 및 배송 완료를 관리하세요.',
 	'ui.status': '상태',
 	'ui.ordersCouldNotBeLoaded': '주문을 불러오지 못했습니다.',
 	'ui.customer': '고객:',
@@ -262,7 +277,8 @@ const ko: Dictionary = {
 	'ui.markInTransit': '배송 중으로 변경',
 	'ui.markDelivered': '배송 완료로 변경',
 	'ui.noOrdersFound': '주문이 없습니다',
-	'ui.noCardOrKakaoPaymentHasBeenCharged': '카드나 카카오페이로 실제 결제되지 않았습니다. 확인은 이 데모 주문에만 적용됩니다.',
+	'ui.noCardOrKakaoPaymentHasBeenCharged':
+		'카드나 카카오페이로 실제 결제되지 않았습니다. 확인은 이 데모 주문에만 적용됩니다.',
 	'ui.paymentRequestCouldNotBeLoaded': '결제 요청을 불러오지 못했습니다.',
 	'ui.method': '방법:',
 	'ui.statusLabel': '상태:',
@@ -310,19 +326,24 @@ const ko: Dictionary = {
 	'ui.likes': '좋아요',
 	'ui.viewProfile': '프로필 보기',
 	'ui.howCanIContactAnAgent': '판매자에게 어떻게 문의하나요?',
-	'ui.openAskForHelpChooseAgentsThenSelect': '도움 요청에서 판매자를 선택한 다음 문의할 판매자를 고르세요.',
+	'ui.openAskForHelpChooseAgentsThenSelect':
+		'도움 요청에서 판매자를 선택한 다음 문의할 판매자를 고르세요.',
 	'ui.howDoIContactThePetnestAdmin': 'PetNest 관리자에게 어떻게 문의하나요?',
-	'ui.openAskForHelpAndChooseAdminYour': '도움 요청에서 관리자를 선택하세요. 선택한 관리자에게 메시지가 전달됩니다.',
+	'ui.openAskForHelpAndChooseAdminYour':
+		'도움 요청에서 관리자를 선택하세요. 선택한 관리자에게 메시지가 전달됩니다.',
 	'ui.whereCanISeeTheReply': '답변은 어디에서 확인하나요?',
-	'ui.signInAndOpenMyRequestsRepliesAppear': '로그인 후 내 문의를 여세요. 원래 메시지 아래에 답변이 표시됩니다.',
+	'ui.signInAndOpenMyRequestsRepliesAppear':
+		'로그인 후 내 문의를 여세요. 원래 메시지 아래에 답변이 표시됩니다.',
 	'ui.canIPayByCardHere': '여기서 카드로 결제할 수 있나요?',
-	'ui.cardAndKakaoPaymentsAreCurrentlyDemoFlows': '카드와 카카오페이는 현재 데모 기능입니다. 실제 결제는 이루어지지 않습니다.',
+	'ui.cardAndKakaoPaymentsAreCurrentlyDemoFlows':
+		'카드와 카카오페이는 현재 데모 기능입니다. 실제 결제는 이루어지지 않습니다.',
 	'ui.requestSent': '문의를 보냈습니다',
 	'ui.requestCouldNotBeSent': '문의를 보내지 못했습니다.',
 	'ui.signInToSendARequest': '문의하려면 로그인하세요',
 	'ui.yourRequestAndItsReplyWillStayIn': '문의와 답변은 계정에 보관됩니다.',
 	'ui.whoWouldYouLikeToContact': '누구에게 문의하시겠어요?',
-	'ui.chooseAnAgentForSellerOrListingQuestions': '판매자나 게시글 관련 질문은 판매자에게, 계정이나 플랫폼 문제는 관리자에게 문의하세요.',
+	'ui.chooseAnAgentForSellerOrListingQuestions':
+		'판매자나 게시글 관련 질문은 판매자에게, 계정이나 플랫폼 문제는 관리자에게 문의하세요.',
 	'ui.admin': '관리자',
 	'ui.supportContactsCouldNotBeLoaded': '문의 대상을 불러오지 못했습니다.',
 	'ui.chooseAnAgent': '판매자를 선택하세요',
@@ -358,12 +379,15 @@ const ko: Dictionary = {
 	'ui.shopByCategory': '카테고리별 쇼핑',
 	'ui.dogsAndCatsLookingForAHome': '가족을 기다리는 강아지와 고양이',
 	'ui.loadingCommunityListings': '커뮤니티 게시글 불러오는 중...',
-	'ui.communityListingsCouldNotBeLoadedPleaseTry': '커뮤니티 게시글을 불러오지 못했습니다. 나중에 다시 시도해 주세요.',
-	'ui.noDogOrCatListingsYetCheckBack': '아직 강아지나 고양이 게시글이 없습니다. 다음에 다시 확인해 주세요!',
+	'ui.communityListingsCouldNotBeLoadedPleaseTry':
+		'커뮤니티 게시글을 불러오지 못했습니다. 나중에 다시 시도해 주세요.',
+	'ui.noDogOrCatListingsYetCheckBack':
+		'아직 강아지나 고양이 게시글이 없습니다. 다음에 다시 확인해 주세요!',
 	'ui.forHappyDogsAndCats': '행복한 강아지와 고양이를 위해',
 	'ui.everything': '반려동물이',
 	'ui.theyLove': '좋아하는 모든 것',
-	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays': '함께하는 건강하고 행복한 일상을 위한 프리미엄 용품.',
+	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays':
+		'함께하는 건강하고 행복한 일상을 위한 프리미엄 용품.',
 	'ui.shopDogs': '강아지 상품 보기',
 	'ui.shopCats': '고양이 상품 보기',
 	'ui.adminPetnestKorea': '관리자 | PetNest Korea',
@@ -461,7 +485,8 @@ const ko: Dictionary = {
 	'ui.editPetListing': '반려동물 게시글 수정',
 	'ui.createAPetListing': '반려동물 게시글 작성',
 	'ui.updateYourPetListingDetailsAndPhotos': '반려동물 정보와 사진을 업데이트하세요.',
-	'ui.shareYourPetWithPeopleLookingToAdopt': '새로운 반려동물을 맞이하려는 사람들에게 소개해 주세요.',
+	'ui.shareYourPetWithPeopleLookingToAdopt':
+		'새로운 반려동물을 맞이하려는 사람들에게 소개해 주세요.',
 	'ui.petInformation': '반려동물 정보',
 	'ui.petType': '반려동물 종류',
 	'ui.listingType': '게시글 유형',
@@ -474,8 +499,10 @@ const ko: Dictionary = {
 	'ui.priceWon': '가격 (₩)',
 	'ui.descriptionOptional': '설명 (선택)',
 	'ui.petPhotos': '반려동물 사진',
-	'ui.chooseNewImagesToReplaceTheCurrentPhotos': '사진을 교체하려면 새 이미지를 선택하세요. 선택하지 않으면 기존 사진이 유지됩니다.',
-	'ui.uploadUpTo10JpgOrPngImages': 'JPG 또는 PNG 이미지를 최대 10장 업로드하세요. 사진이 1장 이상 필요합니다.',
+	'ui.chooseNewImagesToReplaceTheCurrentPhotos':
+		'사진을 교체하려면 새 이미지를 선택하세요. 선택하지 않으면 기존 사진이 유지됩니다.',
+	'ui.uploadUpTo10JpgOrPngImages':
+		'JPG 또는 PNG 이미지를 최대 10장 업로드하세요. 사진이 1장 이상 필요합니다.',
 	'ui.chooseImages': '이미지 선택',
 	'ui.uploadingImages': '이미지 업로드 중...',
 	'ui.publishListing': '게시글 등록',
@@ -509,7 +536,8 @@ const ko: Dictionary = {
 	'ui.zeroStockHint': '0은 품절을 뜻합니다',
 	'ui.addOption': '옵션 추가',
 	'ui.productPhotos': '상품 사진',
-	'ui.productImageHint': 'JPG 또는 PNG 이미지를 최대 10장 업로드하세요. 첫 번째 이미지가 카탈로그에 표시됩니다.',
+	'ui.productImageHint':
+		'JPG 또는 PNG 이미지를 최대 10장 업로드하세요. 첫 번째 이미지가 카탈로그에 표시됩니다.',
 	'ui.catalogImage': '카탈로그 이미지',
 	'ui.accountRoleCouldNotBeLoaded': '계정 권한을 불러오지 못했습니다.',
 	'ui.onlyAnAdminOrAgentCanManageProducts': '관리자 또는 판매자만 상품을 관리할 수 있습니다.',
@@ -542,7 +570,8 @@ const ko: Dictionary = {
 	'ui.comfortPlay': '편안함과 놀이',
 	'ui.freshArrivals': '새로 나온 상품',
 	'ui.lovedByPets': '반려동물이 좋아하는 상품',
-	'ui.shopQualityProductsForDogsAndCatsAnd': '강아지와 고양이를 위한 좋은 상품을 쇼핑하고 PetNest Korea 커뮤니티에서 반려동물을 만나보세요.',
+	'ui.shopQualityProductsForDogsAndCatsAnd':
+		'강아지와 고양이를 위한 좋은 상품을 쇼핑하고 PetNest Korea 커뮤니티에서 반려동물을 만나보세요.',
 	'ui.aGoldenRetrieverAndCatWithThePetnest': 'PetNest Korea 이름과 골든 리트리버 및 고양이',
 
 	'common.confirm': '확인',
@@ -557,7 +586,8 @@ const ko: Dictionary = {
 
 	'message.removeFromCart': '장바구니에서 {name} 삭제',
 	'message.submitOrder': '주문 요청 제출 · ₩{amount}',
-	'message.paymentRetry': '주문 #{id}이 생성되었으나 결제 요청을 확인하지 못했습니다. 실제 결제는 이루어지지 않았습니다.',
+	'message.paymentRetry':
+		'주문 #{id}이 생성되었으나 결제 요청을 확인하지 못했습니다. 실제 결제는 이루어지지 않았습니다.',
 	'message.ageMonths': '{count}개월',
 	'message.changeStatus': '{name}의 상태를 {status}(으)로 변경하시겠습니까?',
 	'message.changeOrderStatus': '주문 #{id}을 {status}(으)로 변경하시겠습니까?',

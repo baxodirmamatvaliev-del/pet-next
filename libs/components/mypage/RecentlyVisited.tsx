@@ -34,19 +34,19 @@ const RecentlyVisited = () => {
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
-	const {
-		loading: getVisitedPetsLoading,
-		error: getVisitedPetsError,
-	} = useQuery(GET_VISITED_PETS, {
-		fetchPolicy: 'network-only',
-		variables: { input: searchVisited },
-		skip: !user?.sub || visitedType !== 'pets',
-		notifyOnNetworkStatusChange: true,
-		onCompleted: (data: T) => {
-			setVisitedPets(data?.getVisitedPets?.list ?? []);
-			setPetTotal(data?.getVisitedPets?.metaCounter[0]?.total ?? 0);
-		},
-	});
+	const { loading: getVisitedPetsLoading, error: getVisitedPetsError } = useQuery(
+		GET_VISITED_PETS,
+		{
+			fetchPolicy: 'network-only',
+			variables: { input: searchVisited },
+			skip: !user?.sub || visitedType !== 'pets',
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setVisitedPets(data?.getVisitedPets?.list ?? []);
+				setPetTotal(data?.getVisitedPets?.metaCounter[0]?.total ?? 0);
+			},
+		}
+	);
 	const {
 		loading: getVisitedProductsLoading,
 		error: getVisitedProductsError,
@@ -87,24 +87,44 @@ const RecentlyVisited = () => {
 	/** COMPUTED VALUES **/
 	const activeItems = visitedType === 'products' ? visitedProducts : visitedPets;
 	const total = visitedType === 'products' ? productTotal : petTotal;
-	const getVisitedLoading = visitedType === 'products' ? getVisitedProductsLoading : getVisitedPetsLoading;
-	const getVisitedError = visitedType === 'products' ? getVisitedProductsError : getVisitedPetsError;
+	const getVisitedLoading =
+		visitedType === 'products' ? getVisitedProductsLoading : getVisitedPetsLoading;
+	const getVisitedError =
+		visitedType === 'products' ? getVisitedProductsError : getVisitedPetsError;
 	const totalPages = Math.ceil(total / searchVisited.limit);
 	const visitedContent = (
 		<>
 			<Stack direction="row" className="recently-visited__tabs">
-				<Button className={visitedType === 'products' ? 'active' : ''} onClick={() => visitedTypeHandler('products')}>{t('ui.products')}</Button>
-				<Button className={visitedType === 'pets' ? 'active' : ''} onClick={() => visitedTypeHandler('pets')}>{t('ui.petListings')}</Button>
+				<Button
+					className={visitedType === 'products' ? 'active' : ''}
+					onClick={() => visitedTypeHandler('products')}
+				>
+					{t('ui.products')}
+				</Button>
+				<Button
+					className={visitedType === 'pets' ? 'active' : ''}
+					onClick={() => visitedTypeHandler('pets')}
+				>
+					{t('ui.petListings')}
+				</Button>
 			</Stack>
 			{getVisitedLoading && !activeItems.length ? (
-				<Stack className="recently-visited__state"><CircularProgress color="primary" /></Stack>
+				<Stack className="recently-visited__state">
+					<CircularProgress color="primary" />
+				</Stack>
 			) : getVisitedError ? (
 				<Alert severity="error">{t('ui.recentlyVisitedItemsCouldNotBeLoaded')}</Alert>
 			) : activeItems.length ? (
 				<>
 					<Box className="recently-visited__grid">
 						{visitedType === 'products'
-							? visitedProducts.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)
+							? visitedProducts.map((product) => (
+									<ProductCard
+										product={product}
+										likeTargetProduct={likeProductHandler}
+										key={product._id}
+									/>
+							  ))
 							: visitedPets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
 					</Box>
 					{totalPages > 0 && (
@@ -123,9 +143,17 @@ const RecentlyVisited = () => {
 			) : (
 				<Stack className="recently-visited__state">
 					<HistoryRoundedIcon />
-					<Typography component="h2">{t(visitedType === 'products' ? 'message.noVisitedProducts' : 'message.noVisitedPets')}</Typography>
+					<Typography component="h2">
+						{t(visitedType === 'products' ? 'message.noVisitedProducts' : 'message.noVisitedPets')}
+					</Typography>
 					<Typography>{t('ui.itemsYouOpenWillAppearHere')}</Typography>
-					<Button component={Link} href={visitedType === 'products' ? '/product' : '/pet'} variant="contained">{t(visitedType === 'products' ? 'ui.browseProducts' : 'ui.exploreCommunity')}</Button>
+					<Button
+						component={Link}
+						href={visitedType === 'products' ? '/product' : '/pet'}
+						variant="contained"
+					>
+						{t(visitedType === 'products' ? 'ui.browseProducts' : 'ui.exploreCommunity')}
+					</Button>
 				</Stack>
 			)}
 		</>

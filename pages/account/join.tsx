@@ -45,11 +45,12 @@ const Join: NextPage = () => {
 	};
 
 	const redirectAfterAuthHandler = async () => {
-		const referrer = typeof router.query.referrer === 'string'
-			&& router.query.referrer.startsWith('/')
-			&& !router.query.referrer.startsWith('//')
-			? router.query.referrer
-			: '/';
+		const referrer =
+			typeof router.query.referrer === 'string' &&
+			router.query.referrer.startsWith('/') &&
+			!router.query.referrer.startsWith('//')
+				? router.query.referrer
+				: '/';
 
 		await router.push(referrer);
 	};
@@ -95,10 +96,12 @@ const Join: NextPage = () => {
 	};
 
 	/** COMPUTED VALUES **/
-	const isSubmitDisabled = !authReady || loading
-		|| !input.nick.trim()
-		|| input.password.length < 8
-		|| (!loginView && !input.phone.trim());
+	const isSubmitDisabled =
+		!authReady ||
+		loading ||
+		!input.nick.trim() ||
+		input.password.length < 8 ||
+		(!loginView && !input.phone.trim());
 
 	const joinForm = (
 		<Stack className="join-form">
@@ -115,11 +118,7 @@ const Join: NextPage = () => {
 					<Typography component="span">{t('nav.accountSection')}</Typography>
 					<Typography component="h1">{t('ui.youAreSignedIn')}</Typography>
 					<Typography>{t('ui.yourPetnestSessionIsActiveAndReadyFor')}</Typography>
-					<Button
-						variant="contained"
-						startIcon={<LogoutRoundedIcon />}
-						onClick={logoutHandler}
-					>
+					<Button variant="contained" startIcon={<LogoutRoundedIcon />} onClick={logoutHandler}>
 						{t('ui.logout')}
 					</Button>
 					<Button component={Link} href="/product" variant="outlined">
@@ -207,9 +206,7 @@ const Join: NextPage = () => {
 				</Head>
 				<Box component="main" className="join-page join-page--mobile">
 					<Box className="container">
-						<Box className="join-card">
-							{joinForm}
-						</Box>
+						<Box className="join-card">{joinForm}</Box>
 					</Box>
 				</Box>
 			</>
@@ -230,9 +227,7 @@ const Join: NextPage = () => {
 								<PetsRoundedIcon />
 								<Typography component="span">{t('ui.petnestMembership')}</Typography>
 								<Typography component="h2">{t('ui.everythingTheyLoveAllInOnePlace')}</Typography>
-								<Typography>
-									{t('ui.saveFavoritesBuildYourCartAndKeepEvery')}
-								</Typography>
+								<Typography>{t('ui.saveFavoritesBuildYourCartAndKeepEvery')}</Typography>
 							</Stack>
 						</Box>
 					</Box>

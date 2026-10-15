@@ -23,18 +23,33 @@ const PetCard = (props: PetCardProps) => {
 	const imagePath = pet.petImages[0]
 		? `${REACT_APP_API_URL}/${pet.petImages[0]}`
 		: '/img/banner/home-hero.png';
-	const petAge = typeof pet.petAgeMonths === 'number' ? t('message.ageMonths', { count: pet.petAgeMonths }) : t('ui.ageNotListed');
-	const petPrice = pet.petListingType === PetListingType.ADOPTION
-		? t('ui.freeAdoption')
-		: `₩${formatterStr(pet.petPrice)}`;
+	const petAge =
+		typeof pet.petAgeMonths === 'number'
+			? t('message.ageMonths', { count: pet.petAgeMonths })
+			: t('ui.ageNotListed');
+	const petPrice =
+		pet.petListingType === PetListingType.ADOPTION
+			? t('ui.freeAdoption')
+			: `₩${formatterStr(pet.petPrice)}`;
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
 		return (
 			<Stack component="article" className="pet-card pet-card--mobile">
-				<Box component={Link} href={{ pathname: '/pet/detail', query: { id: pet._id } }} className="pet-card__image">
+				<Box
+					component={Link}
+					href={{ pathname: '/pet/detail', query: { id: pet._id } }}
+					className="pet-card__image"
+				>
 					<Image src={imagePath} alt={pet.petName} fill sizes="100vw" unoptimized />
-					<Chip label={pet.petListingType === PetListingType.ADOPTION ? t('ui.adoption') : t('ui.saleListingType')} className="pet-card__status" />
+					<Chip
+						label={
+							pet.petListingType === PetListingType.ADOPTION
+								? t('ui.adoption')
+								: t('ui.saleListingType')
+						}
+						className="pet-card__status"
+					/>
 				</Box>
 				<Stack className="pet-card__content">
 					<Stack direction="row" className="pet-card__heading">
@@ -46,13 +61,25 @@ const PetCard = (props: PetCardProps) => {
 					</Stack>
 					<Typography className="pet-card__title">{pet.petTitle}</Typography>
 					<Stack direction="row" className="pet-card__meta">
-						<Typography><LocationOnOutlinedIcon /> {label(pet.petLocation)}</Typography>
-						<Typography>{label(pet.petGender)} · {petAge}</Typography>
+						<Typography>
+							<LocationOnOutlinedIcon /> {label(pet.petLocation)}
+						</Typography>
+						<Typography>
+							{label(pet.petGender)} · {petAge}
+						</Typography>
 					</Stack>
 					<Stack direction="row" className="pet-card__stats">
-						<Typography><FavoriteBorderRoundedIcon /> {pet.petLikes}</Typography>
-						<Typography><VisibilityOutlinedIcon /> {pet.petViews}</Typography>
-						<Box component={Link} href={`/member/detail?id=${pet.memberId}`} className="pet-card__owner">
+						<Typography>
+							<FavoriteBorderRoundedIcon /> {pet.petLikes}
+						</Typography>
+						<Typography>
+							<VisibilityOutlinedIcon /> {pet.petViews}
+						</Typography>
+						<Box
+							component={Link}
+							href={`/member/detail?id=${pet.memberId}`}
+							className="pet-card__owner"
+						>
 							{pet.memberData?.memberNick ?? t('common.member')}
 						</Box>
 					</Stack>
@@ -70,7 +97,11 @@ const PetCard = (props: PetCardProps) => {
 				>
 					<Image src={imagePath} alt={pet.petName} fill sizes="310px" unoptimized />
 					<Chip
-						label={pet.petListingType === PetListingType.ADOPTION ? t('ui.adoption') : t('ui.saleListingType')}
+						label={
+							pet.petListingType === PetListingType.ADOPTION
+								? t('ui.adoption')
+								: t('ui.saleListingType')
+						}
 						className="pet-card__status"
 					/>
 				</Box>
@@ -87,12 +118,22 @@ const PetCard = (props: PetCardProps) => {
 						<Typography>
 							<LocationOnOutlinedIcon /> {label(pet.petLocation)}
 						</Typography>
-						<Typography>{label(pet.petGender)} · {petAge}</Typography>
+						<Typography>
+							{label(pet.petGender)} · {petAge}
+						</Typography>
 					</Stack>
 					<Stack direction="row" className="pet-card__stats">
-						<Typography><FavoriteBorderRoundedIcon /> {pet.petLikes}</Typography>
-						<Typography><VisibilityOutlinedIcon /> {pet.petViews}</Typography>
-						<Box component={Link} href={`/member/detail?id=${pet.memberId}`} className="pet-card__owner">
+						<Typography>
+							<FavoriteBorderRoundedIcon /> {pet.petLikes}
+						</Typography>
+						<Typography>
+							<VisibilityOutlinedIcon /> {pet.petViews}
+						</Typography>
+						<Box
+							component={Link}
+							href={`/member/detail?id=${pet.memberId}`}
+							className="pet-card__owner"
+						>
 							{pet.memberData?.memberNick ?? t('common.member')}
 						</Box>
 					</Stack>

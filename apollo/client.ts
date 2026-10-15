@@ -12,7 +12,13 @@ import { onError } from '@apollo/client/link/error';
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 import { useMemo } from 'react';
 
-import { clearAuthSession, getJwtToken, getValidAccessToken, isAuthError, refreshAccessToken } from '../libs/auth/session';
+import {
+	clearAuthSession,
+	getJwtToken,
+	getValidAccessToken,
+	isAuthError,
+	refreshAccessToken,
+} from '../libs/auth/session';
 import { REACT_APP_API_GRAPHQL_URL } from '../libs/config';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -22,7 +28,8 @@ function createIsomorphicLink() {
 	const authLink = new ApolloLink((operation, forward) => {
 		if (typeof window === 'undefined') return forward(operation);
 		const tokenPromise = operation.getContext().skipRefresh
-			? Promise.resolve(getJwtToken()) : getValidAccessToken();
+			? Promise.resolve(getJwtToken())
+			: getValidAccessToken();
 		return fromPromise(tokenPromise).flatMap((token) => {
 			operation.setContext(({ headers = {} }) => ({
 				headers: { ...headers, Authorization: token ? `Bearer ${token}` : '' },
@@ -33,9 +40,10 @@ function createIsomorphicLink() {
 
 	// Server tokenni rad etsa, refresh qilib so‘rovni faqat bir marta qaytaramiz.
 	const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-		const unauthenticated = graphQLErrors?.some(isAuthError)
-			|| (networkError && isAuthError(networkError));
-		if (!unauthenticated || typeof window === 'undefined' || operation.getContext().skipRefresh) return;
+		const unauthenticated =
+			graphQLErrors?.some(isAuthError) || (networkError && isAuthError(networkError));
+		if (!unauthenticated || typeof window === 'undefined' || operation.getContext().skipRefresh)
+			return;
 		if (operation.getContext().authRetried) {
 			clearAuthSession();
 			return;
@@ -43,13 +51,17 @@ function createIsomorphicLink() {
 		operation.setContext({ authRetried: true });
 		// Boshqa so‘rov allaqachon yangilagan bo‘lsa, yana refresh qilmaymiz.
 		const sentToken = operation.getContext().headers?.Authorization;
-		const tokenPromise = getJwtToken() && sentToken !== `Bearer ${getJwtToken()}`
-			? Promise.resolve(getJwtToken()) : refreshAccessToken();
-		return fromPromise(tokenPromise).flatMap(() => forward(operation)).map((result) => {
-			// Qayta yuborilgan so‘rov ham rad etilsa, login holatini tozalaymiz.
-			if (result.errors?.some(isAuthError)) clearAuthSession();
-			return result;
-		});
+		const tokenPromise =
+			getJwtToken() && sentToken !== `Bearer ${getJwtToken()}`
+				? Promise.resolve(getJwtToken())
+				: refreshAccessToken();
+		return fromPromise(tokenPromise)
+			.flatMap(() => forward(operation))
+			.map((result) => {
+				// Qayta yuborilgan so‘rov ham rad etilsa, login holatini tozalaymiz.
+				if (result.errors?.some(isAuthError)) clearAuthSession();
+				return result;
+			});
 	});
 
 	const uploadLink = createUploadLink({

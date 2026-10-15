@@ -11,11 +11,15 @@ const LanguageSwitcher = () => {
 		if (!isLocale(nextLocale)) return;
 		// Faqat til almashadi: sahifa, query, hash va scroll saqlanadi.
 		const changed = await router.replace(
-			{ pathname: router.pathname, query: router.query }, router.asPath,
-			{ locale: nextLocale, scroll: false },
+			{ pathname: router.pathname, query: router.query },
+			router.asPath,
+			{ locale: nextLocale, scroll: false }
 		);
 		// Keyingi tashrifda Next.js shu cookie orqali tanlangan tilni ochadi.
-		if (changed) document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
+		if (changed)
+			document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax${
+				location.protocol === 'https:' ? '; Secure' : ''
+			}`;
 	};
 
 	return (
@@ -25,10 +29,14 @@ const LanguageSwitcher = () => {
 			value={locale}
 			renderValue={(value) => value.toUpperCase()}
 			inputProps={{ 'aria-label': t('preferences.language') }}
-			onChange={(event) => { void changeLanguage(event.target.value); }}
+			onChange={(event) => {
+				void changeLanguage(event.target.value);
+			}}
 		>
 			{locales.map((code) => (
-				<MenuItem key={code} value={code} lang={code}>{languages[code]}</MenuItem>
+				<MenuItem key={code} value={code} lang={code}>
+					{languages[code]}
+				</MenuItem>
 			))}
 		</Select>
 	);

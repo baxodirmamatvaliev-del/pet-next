@@ -16,6 +16,7 @@ Open `http://localhost:3000`. Login and refresh require the backend and its Http
 ## Checks before committing
 
 ```bash
+yarn format:check
 yarn lint
 yarn typecheck
 yarn test
@@ -30,3 +31,5 @@ Production builds require the public backend URL at build time. Set the variable
 - Native WebSocket handles the public live chat; it shares the backend port with notifications.
 
 See [session documentation](docs/REFRESH_TOKENS.md), [appearance and languages](docs/APPEARANCE_AND_LANGUAGES.md) and [live chat](docs/LIVE_CHAT.md).
+
+Use `yarn format` to keep source formatting consistent. See [the code review guide](docs/CODE_REVIEW_GUIDE.md) for feature entry points and validation.

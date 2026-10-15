@@ -9,11 +9,13 @@ if (process.env.NODE_ENV === 'production' && !configuredApiUrl?.trim()) {
 
 export const REACT_APP_API_URL = normalizeUrl(configuredApiUrl ?? DEFAULT_API_URL);
 
-export const REACT_APP_API_GRAPHQL_URL =
-	normalizeUrl(process.env.NEXT_PUBLIC_API_GRAPHQL_URL ?? `${REACT_APP_API_URL}/graphql`);
+export const REACT_APP_API_GRAPHQL_URL = normalizeUrl(
+	process.env.NEXT_PUBLIC_API_GRAPHQL_URL ?? `${REACT_APP_API_URL}/graphql`
+);
 
-export const REACT_APP_API_SOCKET_URL =
-	normalizeUrl(process.env.NEXT_PUBLIC_API_SOCKET_URL ?? REACT_APP_API_URL);
+export const REACT_APP_API_SOCKET_URL = normalizeUrl(
+	process.env.NEXT_PUBLIC_API_SOCKET_URL ?? REACT_APP_API_URL
+);
 
 // Raw WebSocket chat shares the API port; notifications keep Socket.IO.
 export const REACT_APP_API_WS = REACT_APP_API_SOCKET_URL.replace(/^http/, 'ws');

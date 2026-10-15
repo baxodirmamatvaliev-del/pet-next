@@ -71,23 +71,44 @@ const Top = () => {
 					<Typography component="span">{t('nav.delivery')}</Typography>
 				</Stack>
 				<Box className="header-main container">
-					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
+					<Stack
+						direction="row"
+						component={Link}
+						href="/"
+						className="brand"
+						aria-label={t('nav.home')}
+					>
 						<PetsRoundedIcon className="brand__mark" />
 						<Stack component="span" className="brand__text">
 							<Typography component="strong">PetNest</Typography>
 							<Typography component="small">Korea</Typography>
 						</Stack>
 					</Stack>
-					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.shoppingActions')}>
+					<Stack
+						direction="row"
+						component="nav"
+						className="header-actions"
+						aria-label={t('nav.shoppingActions')}
+					>
 						<ThemeToggle />
 						<NotificationBell />
-						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
+						<Stack
+							component={Link}
+							href="/cart"
+							aria-label={t('nav.shoppingCart')}
+							className="cart-link"
+						>
 							<LocalMallOutlinedIcon />
 							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>
 						</Stack>
 					</Stack>
-					<IconButton className="mobile-menu" onClick={mobileMenuOpenHandler} aria-label={t('nav.openMenu')} aria-expanded={mobileMenuOpen}>
+					<IconButton
+						className="mobile-menu"
+						onClick={mobileMenuOpenHandler}
+						aria-label={t('nav.openMenu')}
+						aria-expanded={mobileMenuOpen}
+					>
 						<MenuRoundedIcon />
 					</IconButton>
 				</Box>
@@ -108,7 +129,13 @@ const Top = () => {
 					<Typography component="span">{t('nav.delivery')}</Typography>
 				</Stack>
 				<Box className="header-main container">
-					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
+					<Stack
+						direction="row"
+						component={Link}
+						href="/"
+						className="brand"
+						aria-label={t('nav.home')}
+					>
 						<PetsRoundedIcon className="brand__mark" />
 						<Stack component="span" className="brand__text">
 							<Typography component="strong">PetNest</Typography>
@@ -124,26 +151,46 @@ const Top = () => {
 							defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
 							placeholder={t('nav.searchPlaceholder')}
 							inputProps={{ 'aria-label': t('nav.search') }}
-							endAdornment={(
+							endAdornment={
 								<InputAdornment position="end">
-									<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}><SearchRoundedIcon /></IconButton>
+									<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}>
+										<SearchRoundedIcon />
+									</IconButton>
 								</InputAdornment>
-							)}
+							}
 						/>
 					</Box>
-					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.accountNavigation')}>
+					<Stack
+						direction="row"
+						component="nav"
+						className="header-actions"
+						aria-label={t('nav.accountNavigation')}
+					>
 						<ThemeToggle />
 						<LanguageSwitcher />
 						<NotificationBell />
-						<Stack component={Link} href="/mypage?category=myFavorites" aria-label={t('nav.favorites')}>
+						<Stack
+							component={Link}
+							href="/mypage?category=myFavorites"
+							aria-label={t('nav.favorites')}
+						>
 							<FavoriteBorderRoundedIcon />
 							<Typography component="span">{t('nav.favorites')}</Typography>
 						</Stack>
-						<Stack component={Link} href={user?.sub ? '/mypage' : '/account/join'} aria-label={t(user?.sub ? 'nav.account' : 'nav.login')}>
+						<Stack
+							component={Link}
+							href={user?.sub ? '/mypage' : '/account/join'}
+							aria-label={t(user?.sub ? 'nav.account' : 'nav.login')}
+						>
 							<PersonOutlineRoundedIcon />
 							<Typography component="span">{t(user?.sub ? 'nav.account' : 'nav.login')}</Typography>
 						</Stack>
-						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
+						<Stack
+							component={Link}
+							href="/cart"
+							aria-label={t('nav.shoppingCart')}
+							className="cart-link"
+						>
 							<LocalMallOutlinedIcon />
 							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>

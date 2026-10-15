@@ -1,7 +1,6 @@
 import { Direction } from '../../enums/common.enum';
 import { MemberStatus, MemberType } from '../../enums/member.enum';
 
-
 export interface MembersInquiry {
 	page: number;
 	limit: number;

@@ -65,10 +65,7 @@ const CheckoutPage: NextPage = () => {
 	/** APOLLO REQUESTS **/
 	const [createOrder, { loading: createOrderLoading }] = useMutation(CREATE_ORDER);
 	const [createPayment, { loading: createPaymentLoading }] = useMutation(CREATE_PAYMENT);
-	const {
-		loading: getMyCartLoading,
-		error: getMyCartError,
-	} = useQuery(GET_MY_CART, {
+	const { loading: getMyCartLoading, error: getMyCartError } = useQuery(GET_MY_CART, {
 		fetchPolicy: 'network-only',
 		skip: !user?.sub,
 		notifyOnNetworkStatusChange: true,
@@ -144,14 +141,16 @@ const CheckoutPage: NextPage = () => {
 
 	/** COMPUTED VALUES **/
 	const isCheckoutLoading = createOrderLoading || createPaymentLoading;
-	const isSubmitDisabled = isCheckoutLoading
-		|| !orderInput.recipientName.trim()
-		|| !orderInput.recipientPhone.trim()
-		|| !orderInput.deliveryAddress.trim();
+	const isSubmitDisabled =
+		isCheckoutLoading ||
+		!orderInput.recipientName.trim() ||
+		!orderInput.recipientPhone.trim() ||
+		!orderInput.deliveryAddress.trim();
 	const hasUnavailableItems = cart?.cartItems.some((cartItem) => !cartItem.available) ?? false;
 	const isPaymentConfirmed = payment?.paymentStatus === PaymentStatus.CONFIRMED;
-	const isOrderCancelled = order?.orderStatus === OrderStatus.CANCELLED
-		|| payment?.paymentStatus === PaymentStatus.CANCELLED;
+	const isOrderCancelled =
+		order?.orderStatus === OrderStatus.CANCELLED ||
+		payment?.paymentStatus === PaymentStatus.CANCELLED;
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
@@ -171,46 +170,79 @@ const CheckoutPage: NextPage = () => {
 							<LockOutlinedIcon />
 							<Typography component="h2">{t('ui.signInToContinue')}</Typography>
 							<Typography>{t('ui.yourAccountIsRequiredToPlaceAnOrder')}</Typography>
-							<Button component={Link} href="/account/join?referrer=/checkout" variant="contained">{t('ui.loginOrSignUp')}</Button>
+							<Button component={Link} href="/account/join?referrer=/checkout" variant="contained">
+								{t('ui.loginOrSignUp')}
+							</Button>
 						</Stack>
 					) : getMyCartLoading && !cart ? (
-						<Stack className="checkout-state"><CircularProgress color="primary" /></Stack>
+						<Stack className="checkout-state">
+							<CircularProgress color="primary" />
+						</Stack>
 					) : getMyCartError ? (
 						<Alert severity="error">{t('ui.checkoutInformationCouldNotBeLoaded')}</Alert>
 					) : isOrderCancelled ? (
 						<Stack className="checkout-state">
 							<Alert severity="warning">{t('ui.thisOrderOrItsPaymentRequestWasCancelled')}</Alert>
-							<Button component={Link} href="/mypage?category=myOrders" variant="contained">{t('ui.viewMyOrders')}</Button>
+							<Button component={Link} href="/mypage?category=myOrders" variant="contained">
+								{t('ui.viewMyOrders')}
+							</Button>
 						</Stack>
 					) : order && payment ? (
 						<Stack className="checkout-success">
 							<CheckCircleOutlineRoundedIcon />
 							<Typography component="span">{t('ui.orderReceived')}</Typography>
 							<Typography component="h2">{t('ui.thankYouForYourOrder')}</Typography>
-							<Typography>{isPaymentConfirmed ? t('ui.yourDemoPaymentRequestHasBeenConfirmedNo') : t('ui.yourOrderHasBeenCreatedAndTheDemo')}</Typography>
+							<Typography>
+								{isPaymentConfirmed
+									? t('ui.yourDemoPaymentRequestHasBeenConfirmedNo')
+									: t('ui.yourOrderHasBeenCreatedAndTheDemo')}
+							</Typography>
 							<Box className="checkout-success__details">
-								<Stack direction="row"><Typography>{t('ui.orderNumber')}</Typography><Typography component="strong">#{order._id.slice(-8).toUpperCase()}</Typography></Stack>
-								<Stack direction="row"><Typography>{t('ui.total')}</Typography><Typography component="strong">₩{formatterStr(order.totalAmount)}</Typography></Stack>
-								<Stack direction="row"><Typography>{t('ui.payment')}</Typography><Chip label={label(payment.paymentStatus)} color={isPaymentConfirmed ? 'success' : 'warning'} size="small" /></Stack>
+								<Stack direction="row">
+									<Typography>{t('ui.orderNumber')}</Typography>
+									<Typography component="strong">#{order._id.slice(-8).toUpperCase()}</Typography>
+								</Stack>
+								<Stack direction="row">
+									<Typography>{t('ui.total')}</Typography>
+									<Typography component="strong">₩{formatterStr(order.totalAmount)}</Typography>
+								</Stack>
+								<Stack direction="row">
+									<Typography>{t('ui.payment')}</Typography>
+									<Chip
+										label={label(payment.paymentStatus)}
+										color={isPaymentConfirmed ? 'success' : 'warning'}
+										size="small"
+									/>
+								</Stack>
 							</Box>
-							<Button component={Link} href={`/order/detail?id=${order._id}`} variant="contained">{t('ui.viewOrder')}</Button>
+							<Button component={Link} href={`/order/detail?id=${order._id}`} variant="contained">
+								{t('ui.viewOrder')}
+							</Button>
 						</Stack>
 					) : order ? (
 						<Stack component="form" className="checkout-state" onSubmit={checkoutHandler}>
-							<Alert severity="warning">{t('message.paymentRetry', { id: order._id.slice(-8).toUpperCase() })}</Alert>
-							<Button type="submit" variant="contained" disabled={isCheckoutLoading}>{isCheckoutLoading ? t('ui.retrying') : t('ui.retryPaymentRequest')}</Button>
+							<Alert severity="warning">
+								{t('message.paymentRetry', { id: order._id.slice(-8).toUpperCase() })}
+							</Alert>
+							<Button type="submit" variant="contained" disabled={isCheckoutLoading}>
+								{isCheckoutLoading ? t('ui.retrying') : t('ui.retryPaymentRequest')}
+							</Button>
 						</Stack>
 					) : !cart?.cartItems.length ? (
 						<Stack className="checkout-state">
 							<LocalShippingOutlinedIcon />
 							<Typography component="h2">{t('ui.yourCartIsEmpty')}</Typography>
 							<Typography>{t('ui.addProductsToYourCartBeforeStartingCheckout')}</Typography>
-							<Button component={Link} href="/product" variant="contained">{t('ui.browseProducts')}</Button>
+							<Button component={Link} href="/product" variant="contained">
+								{t('ui.browseProducts')}
+							</Button>
 						</Stack>
 					) : hasUnavailableItems ? (
 						<Stack className="checkout-state">
 							<Alert severity="warning">{t('ui.yourCartContainsUnavailableProducts')}</Alert>
-							<Button component={Link} href="/cart" variant="contained">{t('ui.returnToCart')}</Button>
+							<Button component={Link} href="/cart" variant="contained">
+								{t('ui.returnToCart')}
+							</Button>
 						</Stack>
 					) : (
 						<Stack className="checkout-content checkout-content--mobile">
@@ -224,21 +256,36 @@ const CheckoutPage: NextPage = () => {
 											: '/img/banner/home-hero.png';
 
 										return (
-											<Stack direction="row" className="checkout-summary__item" key={`${cartItem.productId}-${cartItem.sku}`}>
+											<Stack
+												direction="row"
+												className="checkout-summary__item"
+												key={`${cartItem.productId}-${cartItem.sku}`}
+											>
 												<Box className="checkout-summary__image">
-													<Image src={imagePath} alt={product?.productName ?? t('common.petProduct')} fill sizes="70px" unoptimized />
+													<Image
+														src={imagePath}
+														alt={product?.productName ?? t('common.petProduct')}
+														fill
+														sizes="70px"
+														unoptimized
+													/>
 												</Box>
 												<Box>
 													<Typography component="strong">{product?.productName}</Typography>
-													<Typography>{t('ui.quantity')} {cartItem.quantity}</Typography>
+													<Typography>
+														{t('ui.quantity')} {cartItem.quantity}
+													</Typography>
 												</Box>
-												<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
-												</Stack>
+												<Typography component="strong">
+													₩{formatterStr(cartItem.subtotal)}
+												</Typography>
+											</Stack>
 										);
 									})}
 								</Stack>
 								<Stack direction="row" className="checkout-summary__total">
-									<Typography>{t('ui.total')}</Typography><Typography>₩{formatterStr(cart.totalAmount)}</Typography>
+									<Typography>{t('ui.total')}</Typography>
+									<Typography>₩{formatterStr(cart.totalAmount)}</Typography>
 								</Stack>
 							</Stack>
 							<Stack component="form" className="checkout-form" onSubmit={checkoutHandler}>
@@ -248,10 +295,40 @@ const CheckoutPage: NextPage = () => {
 										<Typography component="h2">{t('ui.deliveryInformation')}</Typography>
 									</Stack>
 									<Box className="checkout-fields">
-										<TextField label={t('ui.recipientName')} value={orderInput.recipientName} onChange={(event) => inputChangeHandler('recipientName', event.target.value)} required fullWidth />
-										<TextField label={t('ui.phoneNumber')} type="tel" value={orderInput.recipientPhone} onChange={(event) => inputChangeHandler('recipientPhone', event.target.value)} required fullWidth />
-										<TextField className="checkout-fields__wide" label={t('ui.deliveryAddress')} value={orderInput.deliveryAddress} onChange={(event) => inputChangeHandler('deliveryAddress', event.target.value)} required fullWidth />
-										<TextField className="checkout-fields__wide" label={t('ui.deliveryNoteOptional')} value={orderInput.deliveryNote} onChange={(event) => inputChangeHandler('deliveryNote', event.target.value)} multiline rows={3} fullWidth />
+										<TextField
+											label={t('ui.recipientName')}
+											value={orderInput.recipientName}
+											onChange={(event) => inputChangeHandler('recipientName', event.target.value)}
+											required
+											fullWidth
+										/>
+										<TextField
+											label={t('ui.phoneNumber')}
+											type="tel"
+											value={orderInput.recipientPhone}
+											onChange={(event) => inputChangeHandler('recipientPhone', event.target.value)}
+											required
+											fullWidth
+										/>
+										<TextField
+											className="checkout-fields__wide"
+											label={t('ui.deliveryAddress')}
+											value={orderInput.deliveryAddress}
+											onChange={(event) =>
+												inputChangeHandler('deliveryAddress', event.target.value)
+											}
+											required
+											fullWidth
+										/>
+										<TextField
+											className="checkout-fields__wide"
+											label={t('ui.deliveryNoteOptional')}
+											value={orderInput.deliveryNote}
+											onChange={(event) => inputChangeHandler('deliveryNote', event.target.value)}
+											multiline
+											rows={3}
+											fullWidth
+										/>
 									</Box>
 								</Box>
 								<Box className="checkout-section">
@@ -259,16 +336,54 @@ const CheckoutPage: NextPage = () => {
 										<Typography component="span">2</Typography>
 										<Typography component="h2">{t('ui.paymentMethod')}</Typography>
 									</Stack>
-									<Alert className="checkout-section__notice" severity="info">{t('ui.noOnlineChargeIsTakenYetYourPayment')}</Alert>
+									<Alert className="checkout-section__notice" severity="info">
+										{t('ui.noOnlineChargeIsTakenYetYourPayment')}
+									</Alert>
 									<FormControl className="payment-methods">
-										<RadioGroup value={paymentMethod} onChange={(event) => paymentMethodChangeHandler(event.target.value)}>
-											<FormControlLabel value={PaymentMethod.CARD} control={<Radio />} label={<Stack direction="row"><CreditCardRoundedIcon /><Box><Typography component="strong">{t('ui.cardPreference')}</Typography><Typography>{t('ui.noCardChargeIsMadeYet')}</Typography></Box></Stack>} />
-											<FormControlLabel value={PaymentMethod.KAKAO_PAY} control={<Radio />} label={<Stack direction="row"><Typography component="b">K</Typography><Box><Typography component="strong">{t('ui.kakaoPayPreference')}</Typography><Typography>{t('ui.noKakaoPayChargeIsMadeYet')}</Typography></Box></Stack>} />
+										<RadioGroup
+											value={paymentMethod}
+											onChange={(event) => paymentMethodChangeHandler(event.target.value)}
+										>
+											<FormControlLabel
+												value={PaymentMethod.CARD}
+												control={<Radio />}
+												label={
+													<Stack direction="row">
+														<CreditCardRoundedIcon />
+														<Box>
+															<Typography component="strong">{t('ui.cardPreference')}</Typography>
+															<Typography>{t('ui.noCardChargeIsMadeYet')}</Typography>
+														</Box>
+													</Stack>
+												}
+											/>
+											<FormControlLabel
+												value={PaymentMethod.KAKAO_PAY}
+												control={<Radio />}
+												label={
+													<Stack direction="row">
+														<Typography component="b">K</Typography>
+														<Box>
+															<Typography component="strong">
+																{t('ui.kakaoPayPreference')}
+															</Typography>
+															<Typography>{t('ui.noKakaoPayChargeIsMadeYet')}</Typography>
+														</Box>
+													</Stack>
+												}
+											/>
 										</RadioGroup>
 									</FormControl>
 								</Box>
-								<Button type="submit" variant="contained" disabled={isSubmitDisabled} startIcon={<LockOutlinedIcon />}>
-									{isCheckoutLoading ? t('ui.processing') : t('message.submitOrder', { amount: formatterStr(cart.totalAmount) })}
+								<Button
+									type="submit"
+									variant="contained"
+									disabled={isSubmitDisabled}
+									startIcon={<LockOutlinedIcon />}
+								>
+									{isCheckoutLoading
+										? t('ui.processing')
+										: t('message.submitOrder', { amount: formatterStr(cart.totalAmount) })}
 								</Button>
 							</Stack>
 						</Stack>
@@ -309,14 +424,20 @@ const CheckoutPage: NextPage = () => {
 					) : isOrderCancelled ? (
 						<Stack className="checkout-state">
 							<Alert severity="warning">{t('ui.thisOrderOrItsPaymentRequestWasCancelled')}</Alert>
-							<Button component={Link} href="/mypage?category=myOrders" variant="contained">{t('ui.viewMyOrders')}</Button>
+							<Button component={Link} href="/mypage?category=myOrders" variant="contained">
+								{t('ui.viewMyOrders')}
+							</Button>
 						</Stack>
 					) : order && payment ? (
 						<Stack className="checkout-success">
 							<CheckCircleOutlineRoundedIcon />
 							<Typography component="span">{t('ui.orderReceived')}</Typography>
 							<Typography component="h2">{t('ui.thankYouForYourOrder')}</Typography>
-							<Typography>{isPaymentConfirmed ? t('ui.yourDemoPaymentRequestHasBeenConfirmedNo') : t('ui.yourOrderHasBeenCreatedAndTheDemo')}</Typography>
+							<Typography>
+								{isPaymentConfirmed
+									? t('ui.yourDemoPaymentRequestHasBeenConfirmedNo')
+									: t('ui.yourOrderHasBeenCreatedAndTheDemo')}
+							</Typography>
 							<Box className="checkout-success__details">
 								<Stack direction="row">
 									<Typography>{t('ui.orderNumber')}</Typography>
@@ -328,7 +449,11 @@ const CheckoutPage: NextPage = () => {
 								</Stack>
 								<Stack direction="row">
 									<Typography>{t('ui.payment')}</Typography>
-									<Chip label={label(payment.paymentStatus)} color={isPaymentConfirmed ? 'success' : 'warning'} size="small" />
+									<Chip
+										label={label(payment.paymentStatus)}
+										color={isPaymentConfirmed ? 'success' : 'warning'}
+										size="small"
+									/>
 								</Stack>
 							</Box>
 							<Button component={Link} href={`/order/detail?id=${order._id}`} variant="contained">
@@ -337,8 +462,12 @@ const CheckoutPage: NextPage = () => {
 						</Stack>
 					) : order ? (
 						<Stack component="form" className="checkout-state" onSubmit={checkoutHandler}>
-							<Alert severity="warning">{t('message.paymentRetry', { id: order._id.slice(-8).toUpperCase() })}</Alert>
-							<Button type="submit" variant="contained" disabled={isCheckoutLoading}>{isCheckoutLoading ? t('ui.retrying') : t('ui.retryPaymentRequest')}</Button>
+							<Alert severity="warning">
+								{t('message.paymentRetry', { id: order._id.slice(-8).toUpperCase() })}
+							</Alert>
+							<Button type="submit" variant="contained" disabled={isCheckoutLoading}>
+								{isCheckoutLoading ? t('ui.retrying') : t('ui.retryPaymentRequest')}
+							</Button>
 						</Stack>
 					) : !cart?.cartItems.length ? (
 						<Stack className="checkout-state">
@@ -387,7 +516,9 @@ const CheckoutPage: NextPage = () => {
 											className="checkout-fields__wide"
 											label={t('ui.deliveryAddress')}
 											value={orderInput.deliveryAddress}
-											onChange={(event) => inputChangeHandler('deliveryAddress', event.target.value)}
+											onChange={(event) =>
+												inputChangeHandler('deliveryAddress', event.target.value)
+											}
 											required
 											fullWidth
 										/>
@@ -411,7 +542,9 @@ const CheckoutPage: NextPage = () => {
 											<Typography>{t('ui.selectHowYouWantToPayForYour')}</Typography>
 										</Box>
 									</Stack>
-									<Alert className="checkout-section__notice" severity="info">{t('ui.noOnlineChargeIsTakenYetYourPayment')}</Alert>
+									<Alert className="checkout-section__notice" severity="info">
+										{t('ui.noOnlineChargeIsTakenYetYourPayment')}
+									</Alert>
 									<FormControl className="payment-methods">
 										<RadioGroup
 											value={paymentMethod}
@@ -420,7 +553,7 @@ const CheckoutPage: NextPage = () => {
 											<FormControlLabel
 												value={PaymentMethod.CARD}
 												control={<Radio />}
-												label={(
+												label={
 													<Stack direction="row">
 														<CreditCardRoundedIcon />
 														<Box>
@@ -428,20 +561,22 @@ const CheckoutPage: NextPage = () => {
 															<Typography>{t('ui.noCardChargeIsMadeYet')}</Typography>
 														</Box>
 													</Stack>
-												)}
+												}
 											/>
 											<FormControlLabel
 												value={PaymentMethod.KAKAO_PAY}
 												control={<Radio />}
-												label={(
+												label={
 													<Stack direction="row">
 														<Typography component="b">K</Typography>
 														<Box>
-															<Typography component="strong">{t('ui.kakaoPayPreference')}</Typography>
+															<Typography component="strong">
+																{t('ui.kakaoPayPreference')}
+															</Typography>
 															<Typography>{t('ui.noKakaoPayChargeIsMadeYet')}</Typography>
 														</Box>
 													</Stack>
-												)}
+												}
 											/>
 										</RadioGroup>
 									</FormControl>
@@ -453,7 +588,9 @@ const CheckoutPage: NextPage = () => {
 									disabled={isSubmitDisabled}
 									startIcon={<LockOutlinedIcon />}
 								>
-									{isCheckoutLoading ? t('ui.processing') : t('message.submitOrder', { amount: formatterStr(cart.totalAmount) })}
+									{isCheckoutLoading
+										? t('ui.processing')
+										: t('message.submitOrder', { amount: formatterStr(cart.totalAmount) })}
 								</Button>
 							</Stack>
 
@@ -467,7 +604,11 @@ const CheckoutPage: NextPage = () => {
 											: '/img/banner/home-hero.png';
 
 										return (
-											<Stack direction="row" className="checkout-summary__item" key={`${cartItem.productId}-${cartItem.sku}`}>
+											<Stack
+												direction="row"
+												className="checkout-summary__item"
+												key={`${cartItem.productId}-${cartItem.sku}`}
+											>
 												<Box className="checkout-summary__image">
 													<Image
 														src={imagePath}
@@ -479,9 +620,13 @@ const CheckoutPage: NextPage = () => {
 												</Box>
 												<Box>
 													<Typography component="strong">{product?.productName}</Typography>
-													<Typography>{t('ui.quantity')} {cartItem.quantity}</Typography>
+													<Typography>
+														{t('ui.quantity')} {cartItem.quantity}
+													</Typography>
 												</Box>
-												<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
+												<Typography component="strong">
+													₩{formatterStr(cartItem.subtotal)}
+												</Typography>
 											</Stack>
 										);
 									})}

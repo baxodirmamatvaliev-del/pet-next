@@ -1,17 +1,17 @@
 import type { Dictionary } from './en';
 
 const uz: Dictionary = {
-	"chat.title": "Hamjamiyat chati",
-	"chat.open": "Chatni ochish",
-	"chat.close": "Chatni yopish",
-	"chat.online": "{count} onlayn",
-	"chat.connecting": "Ulanmoqda…",
-	"chat.welcome": "Suhbat salomdan boshlanadi.",
-	"chat.description": "Uy hayvoningiz haqida yozing, savol bering yoki salomlashing.",
-	"chat.guest": "Mehmon",
-	"chat.you": "Siz",
-	"chat.message": "Xabar yozing…",
-	"chat.send": "Xabar yuborish",
+	'chat.title': 'Hamjamiyat chati',
+	'chat.open': 'Chatni ochish',
+	'chat.close': 'Chatni yopish',
+	'chat.online': '{count} onlayn',
+	'chat.connecting': 'Ulanmoqda…',
+	'chat.welcome': 'Suhbat salomdan boshlanadi.',
+	'chat.description': 'Uy hayvoningiz haqida yozing, savol bering yoki salomlashing.',
+	'chat.guest': 'Mehmon',
+	'chat.you': 'Siz',
+	'chat.message': 'Xabar yozing…',
+	'chat.send': 'Xabar yuborish',
 
 	'nav.home': 'PetNest Korea bosh sahifasi',
 	'nav.delivery': '₩30,000 dan ortiq buyurtmalarga bepul yetkazib berish',
@@ -58,8 +58,10 @@ const uz: Dictionary = {
 	'ui.welcomeToPetnest': 'PETNEST’GA XUSH KELIBSIZ',
 	'ui.loginGreeting': 'Xush kelibsiz',
 	'ui.createYourAccount': 'Hisobingizni yarating',
-	'ui.loginToManageYourCartFavoritesAndOrders': 'Savat, sevimlilar va buyurtmalarni boshqarish uchun kiring.',
-	'ui.joinPetnestAndMakeShoppingForYourPet': 'PetNest’ga qo‘shiling va jonivoringiz uchun oson xarid qiling.',
+	'ui.loginToManageYourCartFavoritesAndOrders':
+		'Savat, sevimlilar va buyurtmalarni boshqarish uchun kiring.',
+	'ui.joinPetnestAndMakeShoppingForYourPet':
+		'PetNest’ga qo‘shiling va jonivoringiz uchun oson xarid qiling.',
 	'ui.signUp': 'Ro‘yxatdan o‘tish',
 	'ui.nickname': 'Taxallus',
 	'ui.enterYourNickname': 'Taxallusingizni kiriting',
@@ -71,7 +73,8 @@ const uz: Dictionary = {
 	'ui.accountPetnestKorea': 'Hisob | PetNest Korea',
 	'ui.petnestMembership': 'PETNEST A’ZOLIGI',
 	'ui.everythingTheyLoveAllInOnePlace': 'Ular sevgan barcha narsalar bir joyda.',
-	'ui.saveFavoritesBuildYourCartAndKeepEvery': 'Sevimlilarni saqlang, savatni to‘ldiring va buyurtmalaringizni kuzating.',
+	'ui.saveFavoritesBuildYourCartAndKeepEvery':
+		'Sevimlilarni saqlang, savatni to‘ldiring va buyurtmalaringizni kuzating.',
 	'ui.searchAgents': 'Agentlarni qidirish',
 	'ui.sortSellers': 'Sotuvchilarni saralash',
 	'ui.newest': 'Eng yangi',
@@ -83,7 +86,8 @@ const uz: Dictionary = {
 	'ui.petnestAgentsPetnestKorea': 'Agentlar | PetNest Korea',
 	'ui.petnestCommunity': 'PETNEST HAMJAMIYATI',
 	'ui.meetOurAgents': 'Agentlarimiz bilan tanishing',
-	'ui.findAnAgentExploreTheirProductsOrContact': 'Agent toping, mahsulotlarini ko‘ring yoki yordam so‘rang.',
+	'ui.findAnAgentExploreTheirProductsOrContact':
+		'Agent toping, mahsulotlarini ko‘ring yoki yordam so‘rang.',
 	'ui.removedFromCart': 'Savatdan olib tashlandi',
 	'ui.cartCleared': 'Savat tozalandi',
 	'ui.yourCartPetnestKorea': 'Savatingiz | PetNest Korea',
@@ -95,7 +99,8 @@ const uz: Dictionary = {
 	'ui.loginOrSignUp': 'Kirish yoki ro‘yxatdan o‘tish',
 	'ui.cartCouldNotBeLoaded': 'Savatni yuklab bo‘lmadi.',
 	'ui.yourCartIsEmpty': 'Savatingiz bo‘sh',
-	'ui.exploreOurProductsAndFindSomethingYourPet': 'Mahsulotlarni ko‘ring va jonivoringizga yoqadiganini toping.',
+	'ui.exploreOurProductsAndFindSomethingYourPet':
+		'Mahsulotlarni ko‘ring va jonivoringizga yoqadiganini toping.',
 	'ui.inStock': 'Mavjud',
 	'ui.unavailable': 'Mavjud emas',
 	'ui.decreaseQuantity': 'Miqdorni kamaytirish',
@@ -105,7 +110,8 @@ const uz: Dictionary = {
 	'ui.shipping': 'Yetkazib berish',
 	'ui.free': 'Bepul',
 	'ui.total': 'Jami',
-	'ui.removeUnavailableProductsBeforeCheckout': 'Buyurtma berishdan oldin mavjud bo‘lmagan mahsulotlarni olib tashlang.',
+	'ui.removeUnavailableProductsBeforeCheckout':
+		'Buyurtma berishdan oldin mavjud bo‘lmagan mahsulotlarni olib tashlang.',
 	'ui.proceedToCheckout': 'Buyurtma berish',
 	'ui.orderRequestSubmitted': 'Buyurtma so‘rovi yuborildi',
 	'ui.checkoutPetnestKorea': 'Buyurtma berish | PetNest Korea',
@@ -114,18 +120,22 @@ const uz: Dictionary = {
 	'ui.signInToContinue': 'Davom etish uchun kiring',
 	'ui.yourAccountIsRequiredToPlaceAnOrder': 'Xavfsiz buyurtma berish uchun hisobingizga kiring.',
 	'ui.checkoutInformationCouldNotBeLoaded': 'Buyurtma ma’lumotlarini yuklab bo‘lmadi.',
-	'ui.thisOrderOrItsPaymentRequestWasCancelled': 'Buyurtma yoki to‘lov so‘rovi bekor qilingan. Qayta urinib bo‘lmaydi.',
+	'ui.thisOrderOrItsPaymentRequestWasCancelled':
+		'Buyurtma yoki to‘lov so‘rovi bekor qilingan. Qayta urinib bo‘lmaydi.',
 	'ui.viewMyOrders': 'Buyurtmalarimni ko‘rish',
 	'ui.orderReceived': 'BUYURTMA QABUL QILINDI',
 	'ui.thankYouForYourOrder': 'Buyurtmangiz uchun rahmat',
-	'ui.yourDemoPaymentRequestHasBeenConfirmedNo': 'Sinov to‘lovi tasdiqlandi. Haqiqiy pul yechilmadi.',
-	'ui.yourOrderHasBeenCreatedAndTheDemo': 'Buyurtma yaratildi, sinov to‘lovi tasdiqlanishi kutilmoqda. Haqiqiy pul yechilmadi.',
+	'ui.yourDemoPaymentRequestHasBeenConfirmedNo':
+		'Sinov to‘lovi tasdiqlandi. Haqiqiy pul yechilmadi.',
+	'ui.yourOrderHasBeenCreatedAndTheDemo':
+		'Buyurtma yaratildi, sinov to‘lovi tasdiqlanishi kutilmoqda. Haqiqiy pul yechilmadi.',
 	'ui.orderNumber': 'Buyurtma raqami',
 	'ui.payment': 'To‘lov',
 	'ui.viewOrder': 'Buyurtmani ko‘rish',
 	'ui.retrying': 'Qayta urinilmoqda...',
 	'ui.retryPaymentRequest': 'To‘lov so‘rovini qayta yuborish',
-	'ui.addProductsToYourCartBeforeStartingCheckout': 'Buyurtma berishdan oldin savatga mahsulot qo‘shing.',
+	'ui.addProductsToYourCartBeforeStartingCheckout':
+		'Buyurtma berishdan oldin savatga mahsulot qo‘shing.',
 	'ui.browseProducts': 'Mahsulotlarni ko‘rish',
 	'ui.yourCartContainsUnavailableProducts': 'Savatingizda mavjud bo‘lmagan mahsulotlar bor.',
 	'ui.returnToCart': 'Savatga qaytish',
@@ -135,7 +145,8 @@ const uz: Dictionary = {
 	'ui.deliveryAddress': 'Yetkazib berish manzili',
 	'ui.deliveryNoteOptional': 'Yetkazib berish izohi (ixtiyoriy)',
 	'ui.paymentMethod': 'To‘lov usuli',
-	'ui.noOnlineChargeIsTakenYetYourPayment': 'Hozircha onlayn pul yechilmaydi. To‘lov so‘rovingiz tasdiqlanishini kutadi.',
+	'ui.noOnlineChargeIsTakenYetYourPayment':
+		'Hozircha onlayn pul yechilmaydi. To‘lov so‘rovingiz tasdiqlanishini kutadi.',
 	'ui.cardPreference': 'Karta orqali to‘lash istagi',
 	'ui.noCardChargeIsMadeYet': 'Hozircha kartadan pul yechilmaydi',
 	'ui.kakaoPayPreference': 'Kakao Pay orqali to‘lash istagi',
@@ -152,7 +163,8 @@ const uz: Dictionary = {
 	'ui.agentAccessIsRequired': 'Agent huquqi kerak.',
 	'ui.helpCenterPetnestKorea': 'Yordam markazi | PetNest Korea',
 	'ui.weAreHereToHelp': 'YORDAM BERISHGA TAYYORMIZ',
-	'ui.findAnAnswerOrContactAPetnestAgent': 'Javob toping yoki PetNest agenti yoxud adminiga yozing.',
+	'ui.findAnAnswerOrContactAPetnestAgent':
+		'Javob toping yoki PetNest agenti yoxud adminiga yozing.',
 	'ui.followed': 'Kuzatishga qo‘shildi!',
 	'ui.unfollowed': 'Kuzatish bekor qilindi!',
 	'ui.products': 'Mahsulotlar',
@@ -171,13 +183,15 @@ const uz: Dictionary = {
 	'ui.memberProfileCouldNotBeLoaded': 'Profilni yuklab bo‘lmadi.',
 	'ui.myAccountPetnestKorea': 'Hisobim | PetNest Korea',
 	'ui.signInToViewYourAccount': 'Hisobingizni ko‘rish uchun kiring',
-	'ui.manageYourPetnestOrdersFromOneSecurePlace': 'PetNest buyurtmalaringizni bir joyda xavfsiz boshqaring.',
+	'ui.manageYourPetnestOrdersFromOneSecurePlace':
+		'PetNest buyurtmalaringizni bir joyda xavfsiz boshqaring.',
 	'ui.doYouWantToCancelThisOrder': 'Bu buyurtmani bekor qilmoqchimisiz?',
 	'ui.orderCancelled': 'Buyurtma bekor qilindi',
 	'ui.signInToViewYourOrder': 'Buyurtmani ko‘rish uchun kiring',
 	'ui.chooseAnOrderFromYourOrderHistory': 'Buyurtmalar tarixidan buyurtmani tanlang.',
 	'ui.orderCouldNotBeLoaded': 'Buyurtmani yuklab bo‘lmadi.',
-	'ui.reviewYourItemsDeliveryDetailsAndCurrentOrder': 'Mahsulotlar, yetkazib berish va buyurtma holatini ko‘ring.',
+	'ui.reviewYourItemsDeliveryDetailsAndCurrentOrder':
+		'Mahsulotlar, yetkazib berish va buyurtma holatini ko‘ring.',
 	'ui.orderDetailsPetnestKorea': 'Buyurtma tafsilotlari | PetNest Korea',
 	'ui.backToOrders': '← Buyurtmalarim',
 	'ui.favoriteUpdated': 'Sevimlilar yangilandi',
@@ -194,7 +208,8 @@ const uz: Dictionary = {
 	'ui.home': 'Bosh sahifa',
 	'ui.homeCommunity': 'Bosh sahifa / Hamjamiyat',
 	'ui.findYourNewBestFriend': 'Yangi do‘stingizni toping',
-	'ui.meetPetsLookingForLovingHomesAcrossSouth': 'Janubiy Koreyada mehribon oila izlayotgan jonivorlar bilan tanishing.',
+	'ui.meetPetsLookingForLovingHomesAcrossSouth':
+		'Janubiy Koreyada mehribon oila izlayotgan jonivorlar bilan tanishing.',
 	'ui.sortBy': 'Saralash',
 	'ui.price': 'Narx',
 	'ui.createListing': 'E’lon yaratish',
@@ -223,7 +238,8 @@ const uz: Dictionary = {
 	'ui.productName': 'Mahsulot nomi',
 	'ui.loadingProducts': 'Mahsulotlar yuklanmoqda...',
 	'ui.noProductsMatchYourFilters': 'Filtrlarga mos mahsulotlar topilmadi.',
-	'ui.everythingTheyLoveHappyPetsHappyFamilies': 'Ular sevgan barcha narsalar. Baxtli jonivorlar, baxtli oilalar.',
+	'ui.everythingTheyLoveHappyPetsHappyFamilies':
+		'Ular sevgan barcha narsalar. Baxtli jonivorlar, baxtli oilalar.',
 	'ui.explore': 'Kashf eting',
 	'ui.2026PetnestKoreaAllRightsReserved': '© 2026 PetNest Korea. Barcha huquqlar himoyalangan.',
 	'ui.everythingTheyLove': 'Ular sevgan barcha narsalar.',
@@ -240,7 +256,8 @@ const uz: Dictionary = {
 	'ui.reviewsComments': 'Sharhlar va izohlar',
 	'ui.permanentlyRemoveThisComment': 'Bu izohni butunlay o‘chirasizmi?',
 	'ui.commentRemoved': 'Izoh o‘chirildi',
-	'ui.reviewCommunityContentAndRemoveInappropriateMessages': 'Hamjamiyat matnlarini ko‘ring va nomaqbul xabarlarni o‘chiring.',
+	'ui.reviewCommunityContentAndRemoveInappropriateMessages':
+		'Hamjamiyat matnlarini ko‘ring va nomaqbul xabarlarni o‘chiring.',
 	'ui.searchComments': 'Izohlarni qidirish',
 	'ui.search': 'Qidirish',
 	'ui.clear': 'Tozalash',
@@ -251,9 +268,11 @@ const uz: Dictionary = {
 	'ui.remove': 'O‘chirish',
 	'ui.noReviewsOrCommentsFound': 'Sharhlar yoki izohlar topilmadi.',
 	'ui.orderUpdated': 'Buyurtma yangilandi',
-	'ui.noRealChargeWasMadeConfirmThisDemo': 'Haqiqiy pul yechilmadi. Sinov to‘lovini tasdiqlab, buyurtmani to‘langan holatga o‘tkazasizmi?',
+	'ui.noRealChargeWasMadeConfirmThisDemo':
+		'Haqiqiy pul yechilmadi. Sinov to‘lovini tasdiqlab, buyurtmani to‘langan holatga o‘tkazasizmi?',
 	'ui.demoPaymentConfirmed': 'Sinov to‘lovi tasdiqlandi',
-	'ui.reviewDemoPaymentRequestsShipmentsAndDeliveries': 'Sinov to‘lovlari, jo‘natmalar va yetkazib berishni boshqaring.',
+	'ui.reviewDemoPaymentRequestsShipmentsAndDeliveries':
+		'Sinov to‘lovlari, jo‘natmalar va yetkazib berishni boshqaring.',
 	'ui.status': 'Holat',
 	'ui.ordersCouldNotBeLoaded': 'Buyurtmalarni yuklab bo‘lmadi.',
 	'ui.customer': 'Xaridor:',
@@ -262,7 +281,8 @@ const uz: Dictionary = {
 	'ui.markInTransit': 'Yo‘lda deb belgilash',
 	'ui.markDelivered': 'Yetkazildi deb belgilash',
 	'ui.noOrdersFound': 'Buyurtmalar topilmadi',
-	'ui.noCardOrKakaoPaymentHasBeenCharged': 'Karta yoki Kakao orqali pul yechilmadi. Tasdiqlash faqat ushbu sinov buyurtmasiga tegishli.',
+	'ui.noCardOrKakaoPaymentHasBeenCharged':
+		'Karta yoki Kakao orqali pul yechilmadi. Tasdiqlash faqat ushbu sinov buyurtmasiga tegishli.',
 	'ui.paymentRequestCouldNotBeLoaded': 'To‘lov so‘rovini yuklab bo‘lmadi.',
 	'ui.method': 'Usul:',
 	'ui.statusLabel': 'Holat:',
@@ -271,13 +291,15 @@ const uz: Dictionary = {
 	'ui.close': 'Yopish',
 	'ui.confirming': 'Tasdiqlanmoqda...',
 	'ui.confirmDemoPayment': 'Sinov to‘lovini tasdiqlash',
-	'ui.liveTotalsAndTheLatestOrdersFromPetnest': 'PetNest’dagi joriy ko‘rsatkichlar va so‘nggi buyurtmalar.',
+	'ui.liveTotalsAndTheLatestOrdersFromPetnest':
+		'PetNest’dagi joriy ko‘rsatkichlar va so‘nggi buyurtmalar.',
 	'ui.recentOrders': 'So‘nggi buyurtmalar',
 	'ui.theFiveLatestOrdersPlacedByCustomers': 'Xaridorlarning eng so‘nggi beshta buyurtmasi.',
 	'ui.viewAllOrders': 'Barcha buyurtmalarni ko‘rish',
 	'ui.noOrdersYet': 'Hozircha buyurtmalar yo‘q.',
 	'ui.petListingUpdated': 'Jonivor e’loni yangilandi',
-	'ui.moderateCommunityListingsAndTheirStatus': 'Hamjamiyat e’lonlari va ularning holatini boshqaring.',
+	'ui.moderateCommunityListingsAndTheirStatus':
+		'Hamjamiyat e’lonlari va ularning holatini boshqaring.',
 	'ui.pet': 'Jonivor',
 	'ui.allPets': 'Barcha jonivorlar',
 	'ui.location': 'Joylashuv',
@@ -310,19 +332,24 @@ const uz: Dictionary = {
 	'ui.likes': 'yoqtirish',
 	'ui.viewProfile': 'Profilni ko‘rish',
 	'ui.howCanIContactAnAgent': 'Agent bilan qanday bog‘lanaman?',
-	'ui.openAskForHelpChooseAgentsThenSelect': 'Yordam so‘rash bo‘limida Agentlarni, keyin kerakli agentni tanlang.',
+	'ui.openAskForHelpChooseAgentsThenSelect':
+		'Yordam so‘rash bo‘limida Agentlarni, keyin kerakli agentni tanlang.',
 	'ui.howDoIContactThePetnestAdmin': 'PetNest adminiga qanday yozaman?',
-	'ui.openAskForHelpAndChooseAdminYour': 'Yordam so‘rash bo‘limida Adminni tanlang. Xabaringiz tanlagan adminga yuboriladi.',
+	'ui.openAskForHelpAndChooseAdminYour':
+		'Yordam so‘rash bo‘limida Adminni tanlang. Xabaringiz tanlagan adminga yuboriladi.',
 	'ui.whereCanISeeTheReply': 'Javobni qayerdan ko‘raman?',
-	'ui.signInAndOpenMyRequestsRepliesAppear': 'Hisobga kirib, So‘rovlarimni oching. Javoblar xabaringiz ostida ko‘rinadi.',
+	'ui.signInAndOpenMyRequestsRepliesAppear':
+		'Hisobga kirib, So‘rovlarimni oching. Javoblar xabaringiz ostida ko‘rinadi.',
 	'ui.canIPayByCardHere': 'Bu yerda karta bilan to‘lay olamanmi?',
-	'ui.cardAndKakaoPaymentsAreCurrentlyDemoFlows': 'Karta va Kakao to‘lovlari hozircha sinov rejimida. Haqiqiy pul yechilmaydi.',
+	'ui.cardAndKakaoPaymentsAreCurrentlyDemoFlows':
+		'Karta va Kakao to‘lovlari hozircha sinov rejimida. Haqiqiy pul yechilmaydi.',
 	'ui.requestSent': 'So‘rov yuborildi',
 	'ui.requestCouldNotBeSent': 'So‘rovni yuborib bo‘lmadi.',
 	'ui.signInToSendARequest': 'So‘rov yuborish uchun kiring',
 	'ui.yourRequestAndItsReplyWillStayIn': 'So‘rovingiz va javob hisobingizda saqlanadi.',
 	'ui.whoWouldYouLikeToContact': 'Kim bilan bog‘lanmoqchisiz?',
-	'ui.chooseAnAgentForSellerOrListingQuestions': 'Sotuvchi yoki e’lon haqida savol bo‘lsa agentni, hisob yoki sayt masalasida adminni tanlang.',
+	'ui.chooseAnAgentForSellerOrListingQuestions':
+		'Sotuvchi yoki e’lon haqida savol bo‘lsa agentni, hisob yoki sayt masalasida adminni tanlang.',
 	'ui.admin': 'Admin',
 	'ui.supportContactsCouldNotBeLoaded': 'Yordam kontaktlarini yuklab bo‘lmadi.',
 	'ui.chooseAnAgent': 'Agentni tanlang',
@@ -342,7 +369,8 @@ const uz: Dictionary = {
 	'ui.cancel': 'Bekor qilish',
 	'ui.reply': 'Javob berish',
 	'ui.inboxIsClear': 'Yangi xabarlar yo‘q',
-	'ui.newRequestsAddressedToYouWillAppearHere': 'Sizga yuborilgan yangi so‘rovlar shu yerda chiqadi.',
+	'ui.newRequestsAddressedToYouWillAppearHere':
+		'Sizga yuborilgan yangi so‘rovlar shu yerda chiqadi.',
 	'ui.signInToViewYourRequests': 'So‘rovlaringizni ko‘rish uchun kiring',
 	'ui.yourRequestsCouldNotBeLoaded': 'So‘rovlaringizni yuklab bo‘lmadi.',
 	'ui.waitingForReply': 'Javob kutilmoqda',
@@ -358,12 +386,14 @@ const uz: Dictionary = {
 	'ui.shopByCategory': 'Toifa bo‘yicha xarid',
 	'ui.dogsAndCatsLookingForAHome': 'Uy izlayotgan it va mushuklar',
 	'ui.loadingCommunityListings': 'Hamjamiyat e’lonlari yuklanmoqda...',
-	'ui.communityListingsCouldNotBeLoadedPleaseTry': 'Hamjamiyat e’lonlarini yuklab bo‘lmadi. Keyinroq urinib ko‘ring.',
+	'ui.communityListingsCouldNotBeLoadedPleaseTry':
+		'Hamjamiyat e’lonlarini yuklab bo‘lmadi. Keyinroq urinib ko‘ring.',
 	'ui.noDogOrCatListingsYetCheckBack': 'Hozircha it yoki mushuk e’lonlari yo‘q. Keyinroq qayting!',
 	'ui.forHappyDogsAndCats': 'Baxtli itlar va mushuklar uchun',
 	'ui.everything': 'Ular sevgan',
 	'ui.theyLove': 'barcha narsalar',
-	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays': 'Birgalikdagi sog‘lom va baxtli kunlar uchun sifatli aksessuar va buyumlar.',
+	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays':
+		'Birgalikdagi sog‘lom va baxtli kunlar uchun sifatli aksessuar va buyumlar.',
 	'ui.shopDogs': 'Itlar uchun xarid',
 	'ui.shopCats': 'Mushuklar uchun xarid',
 	'ui.adminPetnestKorea': 'Admin | PetNest Korea',
@@ -432,7 +462,8 @@ const uz: Dictionary = {
 	'ui.profileImageUploaded': 'Profil rasmi yuklandi',
 	'ui.profileUpdatedSuccessfully': 'Profil yangilandi',
 	'ui.profileInformationCouldNotBeLoaded': 'Profil ma’lumotlarini yuklab bo‘lmadi.',
-	'ui.keepYourDeliveryAndAccountInformationUpTo': 'Yetkazib berish va hisob ma’lumotlaringizni yangilab turing.',
+	'ui.keepYourDeliveryAndAccountInformationUpTo':
+		'Yetkazib berish va hisob ma’lumotlaringizni yangilab turing.',
 	'ui.profilePhoto': 'Profil rasmi',
 	'ui.jpgJpegOrPngImage': 'JPG, JPEG yoki PNG rasm.',
 	'ui.uploading': 'Yuklanmoqda...',
@@ -450,7 +481,8 @@ const uz: Dictionary = {
 	'ui.cancelOrder': 'Buyurtmani bekor qilish',
 	'ui.recentlyVisitedItemsCouldNotBeLoaded': 'Yaqinda ko‘rilganlarni yuklab bo‘lmadi.',
 	'ui.itemsYouOpenWillAppearHere': 'Ochgan narsalaringiz shu yerda chiqadi.',
-	'ui.productsAndPetListingsYouViewedRecently': 'Yaqinda ko‘rgan mahsulot va jonivor e’lonlaringiz.',
+	'ui.productsAndPetListingsYouViewedRecently':
+		'Yaqinda ko‘rgan mahsulot va jonivor e’lonlaringiz.',
 	'ui.youCanUploadUpTo10Images': '10 tagacha rasm yuklashingiz mumkin.',
 	'ui.pleaseChooseJpgJpegOrPngImages': 'JPG, JPEG yoki PNG rasmlarni tanlang.',
 	'ui.youCanOnlyEditYourOwnListing': 'Faqat o‘z e’loningizni tahrirlashingiz mumkin.',
@@ -461,7 +493,8 @@ const uz: Dictionary = {
 	'ui.editPetListing': 'Jonivor e’lonini tahrirlash',
 	'ui.createAPetListing': 'Jonivor e’lonini yaratish',
 	'ui.updateYourPetListingDetailsAndPhotos': 'E’lon ma’lumotlari va rasmlarini yangilang.',
-	'ui.shareYourPetWithPeopleLookingToAdopt': 'Jonivor asrab olmoqchi bo‘lgan insonlarga e’loningizni ko‘rsating.',
+	'ui.shareYourPetWithPeopleLookingToAdopt':
+		'Jonivor asrab olmoqchi bo‘lgan insonlarga e’loningizni ko‘rsating.',
 	'ui.petInformation': 'Jonivor ma’lumotlari',
 	'ui.petType': 'Jonivor turi',
 	'ui.listingType': 'E’lon turi',
@@ -474,7 +507,8 @@ const uz: Dictionary = {
 	'ui.priceWon': 'Narx (₩)',
 	'ui.descriptionOptional': 'Tavsif (ixtiyoriy)',
 	'ui.petPhotos': 'Jonivor rasmlari',
-	'ui.chooseNewImagesToReplaceTheCurrentPhotos': 'Rasmlarni almashtirish uchun yangilarini tanlang yoki mavjudlarini qoldiring.',
+	'ui.chooseNewImagesToReplaceTheCurrentPhotos':
+		'Rasmlarni almashtirish uchun yangilarini tanlang yoki mavjudlarini qoldiring.',
 	'ui.uploadUpTo10JpgOrPngImages': '10 tagacha JPG yoki PNG rasm yuklang. Kamida bitta rasm kerak.',
 	'ui.chooseImages': 'Rasmlarni tanlash',
 	'ui.uploadingImages': 'Rasmlar yuklanmoqda...',
@@ -542,7 +576,8 @@ const uz: Dictionary = {
 	'ui.comfortPlay': 'Qulaylik va o‘yin',
 	'ui.freshArrivals': 'Yangi kelganlar',
 	'ui.lovedByPets': 'Jonivorlar tanlovi',
-	'ui.shopQualityProductsForDogsAndCatsAnd': 'It va mushuklar uchun sifatli mahsulotlar xarid qiling, PetNest Korea hamjamiyatida jonivorlar bilan tanishing.',
+	'ui.shopQualityProductsForDogsAndCatsAnd':
+		'It va mushuklar uchun sifatli mahsulotlar xarid qiling, PetNest Korea hamjamiyatida jonivorlar bilan tanishing.',
 	'ui.aGoldenRetrieverAndCatWithThePetnest': 'PetNest Korea nomi yonida golden retriver va mushuk',
 
 	'common.confirm': 'Tasdiqlash',
@@ -557,7 +592,8 @@ const uz: Dictionary = {
 
 	'message.removeFromCart': '{name} — savatdan olib tashlash',
 	'message.submitOrder': 'Buyurtma so‘rovini yuborish · ₩{amount}',
-	'message.paymentRetry': '№{id} buyurtma yaratildi, ammo to‘lov so‘rovi tasdiqlanmadi. Onlayn pul yechilmadi.',
+	'message.paymentRetry':
+		'№{id} buyurtma yaratildi, ammo to‘lov so‘rovi tasdiqlanmadi. Onlayn pul yechilmadi.',
 	'message.ageMonths': '{count} oylik',
 	'message.changeStatus': '{name} holatini «{status}»ga o‘zgartirasizmi?',
 	'message.changeOrderStatus': '№{id} buyurtmani «{status}» holatiga o‘tkazasizmi?',

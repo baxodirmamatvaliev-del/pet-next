@@ -6,13 +6,21 @@ import { gql } from '@apollo/client';
 
 export const CREATE_INQUIRY = gql`
 	mutation CreateInquiry($input: InquiryInput!) {
-		createInquiry(input: $input) { _id inquiryStatus }
+		createInquiry(input: $input) {
+			_id
+			inquiryStatus
+		}
 	}
 `;
 
 export const ANSWER_INQUIRY = gql`
 	mutation AnswerInquiry($input: AnswerInquiryInput!) {
-		answerInquiry(input: $input) { _id inquiryStatus inquiryAnswer answeredAt }
+		answerInquiry(input: $input) {
+			_id
+			inquiryStatus
+			inquiryAnswer
+			answeredAt
+		}
 	}
 `;
 
@@ -36,7 +44,9 @@ export const READ_NOTIFICATION = gql`
 // Cookie orqali yangi access token olamiz; refresh token javobda berilmaydi.
 export const REFRESH_TOKEN = gql`
 	mutation RefreshToken {
-		refreshToken { accessToken }
+		refreshToken {
+			accessToken
+		}
 	}
 `;
 

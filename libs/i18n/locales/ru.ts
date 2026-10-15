@@ -1,17 +1,17 @@
 import type { Dictionary } from './en';
 
 const ru: Dictionary = {
-	"chat.title": "Чат сообщества",
-	"chat.open": "Открыть чат",
-	"chat.close": "Закрыть чат",
-	"chat.online": "Онлайн: {count}",
-	"chat.connecting": "Подключение…",
-	"chat.welcome": "Всё начинается с приветствия.",
-	"chat.description": "Расскажите о питомце, задайте вопрос или поздоровайтесь.",
-	"chat.guest": "Гость",
-	"chat.you": "Вы",
-	"chat.message": "Напишите сообщение…",
-	"chat.send": "Отправить сообщение",
+	'chat.title': 'Чат сообщества',
+	'chat.open': 'Открыть чат',
+	'chat.close': 'Закрыть чат',
+	'chat.online': 'Онлайн: {count}',
+	'chat.connecting': 'Подключение…',
+	'chat.welcome': 'Всё начинается с приветствия.',
+	'chat.description': 'Расскажите о питомце, задайте вопрос или поздоровайтесь.',
+	'chat.guest': 'Гость',
+	'chat.you': 'Вы',
+	'chat.message': 'Напишите сообщение…',
+	'chat.send': 'Отправить сообщение',
 
 	'nav.home': 'Главная PetNest Korea',
 	'nav.delivery': 'Бесплатная доставка при заказе от ₩30,000',
@@ -47,7 +47,8 @@ const ru: Dictionary = {
 	'preferences.darkMode': 'Включить тёмную тему',
 
 	'ui.supportRequests': 'Обращения в поддержку',
-	'ui.requestsAddressedToYourAdminAccount': 'Обращения, адресованные вашей учётной записи администратора.',
+	'ui.requestsAddressedToYourAdminAccount':
+		'Обращения, адресованные вашей учётной записи администратора.',
 	'ui.welcomeBack': 'С возвращением!',
 	'ui.accountCreated': 'Аккаунт создан!',
 	'ui.logoutFailedPleaseTryAgain': 'Не удалось выйти. Попробуйте ещё раз.',
@@ -58,8 +59,10 @@ const ru: Dictionary = {
 	'ui.welcomeToPetnest': 'ДОБРО ПОЖАЛОВАТЬ В PETNEST',
 	'ui.loginGreeting': 'С возвращением',
 	'ui.createYourAccount': 'Создайте аккаунт',
-	'ui.loginToManageYourCartFavoritesAndOrders': 'Войдите, чтобы управлять корзиной, избранным и заказами.',
-	'ui.joinPetnestAndMakeShoppingForYourPet': 'Присоединяйтесь к PetNest, чтобы покупать для питомца было проще.',
+	'ui.loginToManageYourCartFavoritesAndOrders':
+		'Войдите, чтобы управлять корзиной, избранным и заказами.',
+	'ui.joinPetnestAndMakeShoppingForYourPet':
+		'Присоединяйтесь к PetNest, чтобы покупать для питомца было проще.',
 	'ui.signUp': 'Регистрация',
 	'ui.nickname': 'Никнейм',
 	'ui.enterYourNickname': 'Введите никнейм',
@@ -71,7 +74,8 @@ const ru: Dictionary = {
 	'ui.accountPetnestKorea': 'Аккаунт | PetNest Korea',
 	'ui.petnestMembership': 'СООБЩЕСТВО PETNEST',
 	'ui.everythingTheyLoveAllInOnePlace': 'Всё, что они любят, в одном месте.',
-	'ui.saveFavoritesBuildYourCartAndKeepEvery': 'Сохраняйте избранное, собирайте корзину и следите за заказами.',
+	'ui.saveFavoritesBuildYourCartAndKeepEvery':
+		'Сохраняйте избранное, собирайте корзину и следите за заказами.',
 	'ui.searchAgents': 'Поиск агентов',
 	'ui.sortSellers': 'Сортировка продавцов',
 	'ui.newest': 'Сначала новые',
@@ -83,7 +87,8 @@ const ru: Dictionary = {
 	'ui.petnestAgentsPetnestKorea': 'Агенты | PetNest Korea',
 	'ui.petnestCommunity': 'СООБЩЕСТВО PETNEST',
 	'ui.meetOurAgents': 'Познакомьтесь с агентами',
-	'ui.findAnAgentExploreTheirProductsOrContact': 'Найдите агента, посмотрите его товары или обратитесь за помощью.',
+	'ui.findAnAgentExploreTheirProductsOrContact':
+		'Найдите агента, посмотрите его товары или обратитесь за помощью.',
 	'ui.removedFromCart': 'Удалено из корзины',
 	'ui.cartCleared': 'Корзина очищена',
 	'ui.yourCartPetnestKorea': 'Ваша корзина | PetNest Korea',
@@ -95,7 +100,8 @@ const ru: Dictionary = {
 	'ui.loginOrSignUp': 'Войти или зарегистрироваться',
 	'ui.cartCouldNotBeLoaded': 'Не удалось загрузить корзину.',
 	'ui.yourCartIsEmpty': 'Корзина пуста',
-	'ui.exploreOurProductsAndFindSomethingYourPet': 'Найдите среди наших товаров то, что понравится питомцу.',
+	'ui.exploreOurProductsAndFindSomethingYourPet':
+		'Найдите среди наших товаров то, что понравится питомцу.',
 	'ui.inStock': 'В наличии',
 	'ui.unavailable': 'Недоступно',
 	'ui.decreaseQuantity': 'Уменьшить количество',
@@ -114,12 +120,15 @@ const ru: Dictionary = {
 	'ui.signInToContinue': 'Войдите, чтобы продолжить',
 	'ui.yourAccountIsRequiredToPlaceAnOrder': 'Для безопасного оформления заказа нужен аккаунт.',
 	'ui.checkoutInformationCouldNotBeLoaded': 'Не удалось загрузить данные оформления.',
-	'ui.thisOrderOrItsPaymentRequestWasCancelled': 'Заказ или заявка на оплату отменены. Повторная попытка невозможна.',
+	'ui.thisOrderOrItsPaymentRequestWasCancelled':
+		'Заказ или заявка на оплату отменены. Повторная попытка невозможна.',
 	'ui.viewMyOrders': 'Посмотреть мои заказы',
 	'ui.orderReceived': 'ЗАКАЗ ПРИНЯТ',
 	'ui.thankYouForYourOrder': 'Спасибо за заказ',
-	'ui.yourDemoPaymentRequestHasBeenConfirmedNo': 'Демонстрационная оплата подтверждена. Реальные деньги не списывались.',
-	'ui.yourOrderHasBeenCreatedAndTheDemo': 'Заказ создан, демонстрационная оплата ожидает подтверждения. Реальные деньги не списывались.',
+	'ui.yourDemoPaymentRequestHasBeenConfirmedNo':
+		'Демонстрационная оплата подтверждена. Реальные деньги не списывались.',
+	'ui.yourOrderHasBeenCreatedAndTheDemo':
+		'Заказ создан, демонстрационная оплата ожидает подтверждения. Реальные деньги не списывались.',
 	'ui.orderNumber': 'Номер заказа',
 	'ui.payment': 'Оплата',
 	'ui.viewOrder': 'Посмотреть заказ',
@@ -135,7 +144,8 @@ const ru: Dictionary = {
 	'ui.deliveryAddress': 'Адрес доставки',
 	'ui.deliveryNoteOptional': 'Примечание к доставке (необязательно)',
 	'ui.paymentMethod': 'Способ оплаты',
-	'ui.noOnlineChargeIsTakenYetYourPayment': 'Сейчас деньги не списываются. Заявка на оплату будет ожидать подтверждения.',
+	'ui.noOnlineChargeIsTakenYetYourPayment':
+		'Сейчас деньги не списываются. Заявка на оплату будет ожидать подтверждения.',
 	'ui.cardPreference': 'Предпочтение: карта',
 	'ui.noCardChargeIsMadeYet': 'Сейчас деньги с карты не списываются',
 	'ui.kakaoPayPreference': 'Предпочтение: Kakao Pay',
@@ -152,7 +162,8 @@ const ru: Dictionary = {
 	'ui.agentAccessIsRequired': 'Требуются права агента.',
 	'ui.helpCenterPetnestKorea': 'Центр помощи | PetNest Korea',
 	'ui.weAreHereToHelp': 'МЫ ГОТОВЫ ПОМОЧЬ',
-	'ui.findAnAnswerOrContactAPetnestAgent': 'Найдите ответ или свяжитесь с агентом либо администратором PetNest.',
+	'ui.findAnAnswerOrContactAPetnestAgent':
+		'Найдите ответ или свяжитесь с агентом либо администратором PetNest.',
 	'ui.followed': 'Вы подписались!',
 	'ui.unfollowed': 'Подписка отменена!',
 	'ui.products': 'Товары',
@@ -171,13 +182,15 @@ const ru: Dictionary = {
 	'ui.memberProfileCouldNotBeLoaded': 'Не удалось загрузить профиль.',
 	'ui.myAccountPetnestKorea': 'Мой аккаунт | PetNest Korea',
 	'ui.signInToViewYourAccount': 'Войдите, чтобы открыть аккаунт',
-	'ui.manageYourPetnestOrdersFromOneSecurePlace': 'Управляйте заказами PetNest в одном безопасном месте.',
+	'ui.manageYourPetnestOrdersFromOneSecurePlace':
+		'Управляйте заказами PetNest в одном безопасном месте.',
 	'ui.doYouWantToCancelThisOrder': 'Отменить этот заказ?',
 	'ui.orderCancelled': 'Заказ отменён',
 	'ui.signInToViewYourOrder': 'Войдите, чтобы посмотреть заказ',
 	'ui.chooseAnOrderFromYourOrderHistory': 'Выберите заказ из истории заказов.',
 	'ui.orderCouldNotBeLoaded': 'Не удалось загрузить заказ.',
-	'ui.reviewYourItemsDeliveryDetailsAndCurrentOrder': 'Проверьте товары, данные доставки и статус заказа.',
+	'ui.reviewYourItemsDeliveryDetailsAndCurrentOrder':
+		'Проверьте товары, данные доставки и статус заказа.',
 	'ui.orderDetailsPetnestKorea': 'Детали заказа | PetNest Korea',
 	'ui.backToOrders': '← Мои заказы',
 	'ui.favoriteUpdated': 'Избранное обновлено',
@@ -194,7 +207,8 @@ const ru: Dictionary = {
 	'ui.home': 'Главная',
 	'ui.homeCommunity': 'Главная / Сообщество',
 	'ui.findYourNewBestFriend': 'Найдите нового лучшего друга',
-	'ui.meetPetsLookingForLovingHomesAcrossSouth': 'Познакомьтесь с питомцами, которые ищут семью в Южной Корее.',
+	'ui.meetPetsLookingForLovingHomesAcrossSouth':
+		'Познакомьтесь с питомцами, которые ищут семью в Южной Корее.',
 	'ui.sortBy': 'Сортировать',
 	'ui.price': 'Цена',
 	'ui.createListing': 'Создать объявление',
@@ -223,7 +237,8 @@ const ru: Dictionary = {
 	'ui.productName': 'Название товара',
 	'ui.loadingProducts': 'Загрузка товаров...',
 	'ui.noProductsMatchYourFilters': 'Нет товаров, соответствующих фильтрам.',
-	'ui.everythingTheyLoveHappyPetsHappyFamilies': 'Всё, что они любят. Счастливые питомцы, счастливые семьи.',
+	'ui.everythingTheyLoveHappyPetsHappyFamilies':
+		'Всё, что они любят. Счастливые питомцы, счастливые семьи.',
 	'ui.explore': 'Обзор',
 	'ui.2026PetnestKoreaAllRightsReserved': '© 2026 PetNest Korea. Все права защищены.',
 	'ui.everythingTheyLove': 'Всё, что они любят.',
@@ -240,7 +255,8 @@ const ru: Dictionary = {
 	'ui.reviewsComments': 'Отзывы и комментарии',
 	'ui.permanentlyRemoveThisComment': 'Удалить этот комментарий навсегда?',
 	'ui.commentRemoved': 'Комментарий удалён',
-	'ui.reviewCommunityContentAndRemoveInappropriateMessages': 'Проверяйте публикации сообщества и удаляйте недопустимые сообщения.',
+	'ui.reviewCommunityContentAndRemoveInappropriateMessages':
+		'Проверяйте публикации сообщества и удаляйте недопустимые сообщения.',
 	'ui.searchComments': 'Поиск комментариев',
 	'ui.search': 'Поиск',
 	'ui.clear': 'Очистить',
@@ -251,9 +267,11 @@ const ru: Dictionary = {
 	'ui.remove': 'Удалить',
 	'ui.noReviewsOrCommentsFound': 'Отзывы и комментарии не найдены.',
 	'ui.orderUpdated': 'Заказ обновлён',
-	'ui.noRealChargeWasMadeConfirmThisDemo': 'Реальные деньги не списывались. Подтвердить демонстрационную оплату и изменить статус заказа на оплаченный?',
+	'ui.noRealChargeWasMadeConfirmThisDemo':
+		'Реальные деньги не списывались. Подтвердить демонстрационную оплату и изменить статус заказа на оплаченный?',
 	'ui.demoPaymentConfirmed': 'Демонстрационная оплата подтверждена',
-	'ui.reviewDemoPaymentRequestsShipmentsAndDeliveries': 'Проверяйте демонстрационные оплаты, отправления и доставки.',
+	'ui.reviewDemoPaymentRequestsShipmentsAndDeliveries':
+		'Проверяйте демонстрационные оплаты, отправления и доставки.',
 	'ui.status': 'Статус',
 	'ui.ordersCouldNotBeLoaded': 'Не удалось загрузить заказы.',
 	'ui.customer': 'Покупатель:',
@@ -262,7 +280,8 @@ const ru: Dictionary = {
 	'ui.markInTransit': 'Отметить отправленным',
 	'ui.markDelivered': 'Отметить доставленным',
 	'ui.noOrdersFound': 'Заказы не найдены',
-	'ui.noCardOrKakaoPaymentHasBeenCharged': 'Деньги с карты или Kakao не списывались. Подтверждение относится только к этому демозаказу.',
+	'ui.noCardOrKakaoPaymentHasBeenCharged':
+		'Деньги с карты или Kakao не списывались. Подтверждение относится только к этому демозаказу.',
 	'ui.paymentRequestCouldNotBeLoaded': 'Не удалось загрузить заявку на оплату.',
 	'ui.method': 'Способ:',
 	'ui.statusLabel': 'Статус:',
@@ -310,19 +329,24 @@ const ru: Dictionary = {
 	'ui.likes': 'отметок «нравится»',
 	'ui.viewProfile': 'Открыть профиль',
 	'ui.howCanIContactAnAgent': 'Как связаться с агентом?',
-	'ui.openAskForHelpChooseAgentsThenSelect': 'Откройте «Обратиться за помощью», выберите «Агенты», затем нужного агента.',
+	'ui.openAskForHelpChooseAgentsThenSelect':
+		'Откройте «Обратиться за помощью», выберите «Агенты», затем нужного агента.',
 	'ui.howDoIContactThePetnestAdmin': 'Как связаться с администратором PetNest?',
-	'ui.openAskForHelpAndChooseAdminYour': 'Откройте «Обратиться за помощью» и выберите «Администратор». Сообщение получит выбранный администратор.',
+	'ui.openAskForHelpAndChooseAdminYour':
+		'Откройте «Обратиться за помощью» и выберите «Администратор». Сообщение получит выбранный администратор.',
 	'ui.whereCanISeeTheReply': 'Где посмотреть ответ?',
-	'ui.signInAndOpenMyRequestsRepliesAppear': 'Войдите и откройте «Мои обращения». Ответ появится под исходным сообщением.',
+	'ui.signInAndOpenMyRequestsRepliesAppear':
+		'Войдите и откройте «Мои обращения». Ответ появится под исходным сообщением.',
 	'ui.canIPayByCardHere': 'Можно ли здесь оплатить картой?',
-	'ui.cardAndKakaoPaymentsAreCurrentlyDemoFlows': 'Оплата картой и Kakao сейчас работает в демонстрационном режиме. Реальные деньги не списываются.',
+	'ui.cardAndKakaoPaymentsAreCurrentlyDemoFlows':
+		'Оплата картой и Kakao сейчас работает в демонстрационном режиме. Реальные деньги не списываются.',
 	'ui.requestSent': 'Обращение отправлено',
 	'ui.requestCouldNotBeSent': 'Не удалось отправить обращение.',
 	'ui.signInToSendARequest': 'Войдите, чтобы отправить обращение',
 	'ui.yourRequestAndItsReplyWillStayIn': 'Обращение и ответ сохранятся в вашем аккаунте.',
 	'ui.whoWouldYouLikeToContact': 'С кем вы хотите связаться?',
-	'ui.chooseAnAgentForSellerOrListingQuestions': 'По вопросам товаров и объявлений выберите агента, по вопросам аккаунта и сайта — администратора.',
+	'ui.chooseAnAgentForSellerOrListingQuestions':
+		'По вопросам товаров и объявлений выберите агента, по вопросам аккаунта и сайта — администратора.',
 	'ui.admin': 'Администратор',
 	'ui.supportContactsCouldNotBeLoaded': 'Не удалось загрузить контакты поддержки.',
 	'ui.chooseAnAgent': 'Выберите агента',
@@ -358,12 +382,14 @@ const ru: Dictionary = {
 	'ui.shopByCategory': 'Покупки по категориям',
 	'ui.dogsAndCatsLookingForAHome': 'Собаки и кошки ищут дом',
 	'ui.loadingCommunityListings': 'Загрузка объявлений сообщества...',
-	'ui.communityListingsCouldNotBeLoadedPleaseTry': 'Не удалось загрузить объявления сообщества. Попробуйте позже.',
+	'ui.communityListingsCouldNotBeLoadedPleaseTry':
+		'Не удалось загрузить объявления сообщества. Попробуйте позже.',
 	'ui.noDogOrCatListingsYetCheckBack': 'Объявлений о собаках и кошках пока нет. Загляните позже!',
 	'ui.forHappyDogsAndCats': 'Для счастливых собак и кошек',
 	'ui.everything': 'Всё, что',
 	'ui.theyLove': 'они любят',
-	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays': 'Качественные аксессуары и всё необходимое для здоровой и счастливой жизни вместе.',
+	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays':
+		'Качественные аксессуары и всё необходимое для здоровой и счастливой жизни вместе.',
 	'ui.shopDogs': 'Товары для собак',
 	'ui.shopCats': 'Товары для кошек',
 	'ui.adminPetnestKorea': 'Администратор | PetNest Korea',
@@ -418,7 +444,8 @@ const ru: Dictionary = {
 	'ui.reserved': 'Зарезервировано',
 	'ui.allListings': 'Все объявления',
 	'ui.yourPetListingsCouldNotBeLoaded': 'Не удалось загрузить ваши объявления о питомцах.',
-	'ui.yourListingsWillAppearHereAfterYouPublish': 'Ваши объявления появятся здесь после публикации.',
+	'ui.yourListingsWillAppearHereAfterYouPublish':
+		'Ваши объявления появятся здесь после публикации.',
 	'ui.createAListing': 'Создать объявление',
 	'ui.hidden': 'Скрыто',
 	'ui.areYouSureYouWantToRemoveThis': 'Удалить этот товар?',
@@ -432,7 +459,8 @@ const ru: Dictionary = {
 	'ui.profileImageUploaded': 'Фото профиля загружено',
 	'ui.profileUpdatedSuccessfully': 'Профиль обновлён',
 	'ui.profileInformationCouldNotBeLoaded': 'Не удалось загрузить данные профиля.',
-	'ui.keepYourDeliveryAndAccountInformationUpTo': 'Поддерживайте данные аккаунта и доставки в актуальном состоянии.',
+	'ui.keepYourDeliveryAndAccountInformationUpTo':
+		'Поддерживайте данные аккаунта и доставки в актуальном состоянии.',
 	'ui.profilePhoto': 'Фото профиля',
 	'ui.jpgJpegOrPngImage': 'Изображение JPG, JPEG или PNG.',
 	'ui.uploading': 'Загрузка...',
@@ -450,7 +478,8 @@ const ru: Dictionary = {
 	'ui.cancelOrder': 'Отменить заказ',
 	'ui.recentlyVisitedItemsCouldNotBeLoaded': 'Не удалось загрузить недавно просмотренное.',
 	'ui.itemsYouOpenWillAppearHere': 'Просмотренные товары появятся здесь.',
-	'ui.productsAndPetListingsYouViewedRecently': 'Недавно просмотренные товары и объявления о питомцах.',
+	'ui.productsAndPetListingsYouViewedRecently':
+		'Недавно просмотренные товары и объявления о питомцах.',
 	'ui.youCanUploadUpTo10Images': 'Можно загрузить не более 10 изображений.',
 	'ui.pleaseChooseJpgJpegOrPngImages': 'Выберите изображения JPG, JPEG или PNG.',
 	'ui.youCanOnlyEditYourOwnListing': 'Можно изменять только своё объявление.',
@@ -461,7 +490,8 @@ const ru: Dictionary = {
 	'ui.editPetListing': 'Изменить объявление о питомце',
 	'ui.createAPetListing': 'Создать объявление о питомце',
 	'ui.updateYourPetListingDetailsAndPhotos': 'Обновите данные объявления и фотографии.',
-	'ui.shareYourPetWithPeopleLookingToAdopt': 'Расскажите о питомце тем, кто хочет принять нового друга в семью.',
+	'ui.shareYourPetWithPeopleLookingToAdopt':
+		'Расскажите о питомце тем, кто хочет принять нового друга в семью.',
 	'ui.petInformation': 'Информация о питомце',
 	'ui.petType': 'Вид питомца',
 	'ui.listingType': 'Тип объявления',
@@ -474,7 +504,8 @@ const ru: Dictionary = {
 	'ui.priceWon': 'Цена (₩)',
 	'ui.descriptionOptional': 'Описание (необязательно)',
 	'ui.petPhotos': 'Фото питомца',
-	'ui.chooseNewImagesToReplaceTheCurrentPhotos': 'Для замены выберите новые фото или оставьте текущие.',
+	'ui.chooseNewImagesToReplaceTheCurrentPhotos':
+		'Для замены выберите новые фото или оставьте текущие.',
 	'ui.uploadUpTo10JpgOrPngImages': 'Загрузите до 10 фото JPG или PNG. Нужно хотя бы одно фото.',
 	'ui.chooseImages': 'Выбрать изображения',
 	'ui.uploadingImages': 'Загрузка изображений...',
@@ -512,7 +543,8 @@ const ru: Dictionary = {
 	'ui.productImageHint': 'Загрузите до 10 фото JPG или PNG. Первое фото появится в каталоге.',
 	'ui.catalogImage': 'Изображение каталога',
 	'ui.accountRoleCouldNotBeLoaded': 'Не удалось загрузить роль аккаунта.',
-	'ui.onlyAnAdminOrAgentCanManageProducts': 'Управлять товарами могут только администратор или агент.',
+	'ui.onlyAnAdminOrAgentCanManageProducts':
+		'Управлять товарами могут только администратор или агент.',
 	'ui.updateProductDetailsAndStock': 'Обновите данные товара и остатки.',
 	'ui.addAProductToThePetnestCatalog': 'Добавьте товар в каталог PetNest.',
 	'ui.food': 'Корм',
@@ -542,8 +574,10 @@ const ru: Dictionary = {
 	'ui.comfortPlay': 'Комфорт и игры',
 	'ui.freshArrivals': 'Новые поступления',
 	'ui.lovedByPets': 'Любимое питомцами',
-	'ui.shopQualityProductsForDogsAndCatsAnd': 'Покупайте качественные товары для собак и кошек и знакомьтесь с питомцами в сообществе PetNest Korea.',
-	'ui.aGoldenRetrieverAndCatWithThePetnest': 'Золотистый ретривер и кошка рядом с названием PetNest Korea',
+	'ui.shopQualityProductsForDogsAndCatsAnd':
+		'Покупайте качественные товары для собак и кошек и знакомьтесь с питомцами в сообществе PetNest Korea.',
+	'ui.aGoldenRetrieverAndCatWithThePetnest':
+		'Золотистый ретривер и кошка рядом с названием PetNest Korea',
 
 	'common.confirm': 'Подтвердить',
 	'common.petProduct': 'Товар для питомца',
@@ -557,7 +591,8 @@ const ru: Dictionary = {
 
 	'message.removeFromCart': 'Удалить «{name}» из корзины',
 	'message.submitOrder': 'Отправить заявку на заказ · ₩{amount}',
-	'message.paymentRetry': 'Заказ №{id} создан, но заявку на оплату подтвердить не удалось. Деньги не списывались.',
+	'message.paymentRetry':
+		'Заказ №{id} создан, но заявку на оплату подтвердить не удалось. Деньги не списывались.',
 	'message.ageMonths': 'Возраст в месяцах: {count}',
 	'message.changeStatus': 'Изменить статус «{name}» на «{status}»?',
 	'message.changeOrderStatus': 'Изменить статус заказа №{id} на «{status}»?',

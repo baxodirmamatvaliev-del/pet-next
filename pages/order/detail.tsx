@@ -13,7 +13,11 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import OrderCard from '../../libs/components/mypage/OrderCard';
 import { Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import {
+	sweetConfirmAlert,
+	sweetMixinErrorAlert,
+	sweetTopSmallSuccessAlert,
+} from '../../libs/sweetAlert';
 import { T } from '../../libs/types/common';
 import { Order } from '../../libs/types/order/order';
 import { useTranslation } from '../../libs/i18n';
@@ -50,7 +54,7 @@ const OrderDetail: NextPage = () => {
 			const isConfirmed = await sweetConfirmAlert(
 				t('ui.doYouWantToCancelThisOrder'),
 				t('common.confirm'),
-				t('ui.cancel'),
+				t('ui.cancel')
 			);
 			if (!isConfirmed) return;
 
@@ -66,25 +70,38 @@ const OrderDetail: NextPage = () => {
 	/** COMPUTED VALUES **/
 	const signInHref = `/account/join?referrer=${encodeURIComponent(`/order/detail?id=${orderId}`)}`;
 	const orderContent = !router.isReady ? (
-		<Stack className="order-detail-page__state"><CircularProgress color="primary" /></Stack>
+		<Stack className="order-detail-page__state">
+			<CircularProgress color="primary" />
+		</Stack>
 	) : !user?.sub ? (
 		<Stack className="order-detail-page__state">
 			<Typography component="h1">{t('ui.signInToViewYourOrder')}</Typography>
-			<Button component={Link} href={signInHref} variant="contained">{t('ui.loginOrSignUp')}</Button>
+			<Button component={Link} href={signInHref} variant="contained">
+				{t('ui.loginOrSignUp')}
+			</Button>
 		</Stack>
 	) : !orderId ? (
 		<Alert severity="warning">{t('ui.chooseAnOrderFromYourOrderHistory')}</Alert>
 	) : getOrderError ? (
 		<Alert severity="error">{t('ui.orderCouldNotBeLoaded')}</Alert>
 	) : getOrderLoading && order?._id !== orderId ? (
-		<Stack className="order-detail-page__state"><CircularProgress color="primary" /></Stack>
+		<Stack className="order-detail-page__state">
+			<CircularProgress color="primary" />
+		</Stack>
 	) : order?._id === orderId ? (
 		<>
 			<Stack className="order-detail-page__heading">
-				<Typography component="h1">{t('message.orderTitle', { id: order._id.slice(-8).toUpperCase() })}</Typography>
+				<Typography component="h1">
+					{t('message.orderTitle', { id: order._id.slice(-8).toUpperCase() })}
+				</Typography>
 				<Typography>{t('ui.reviewYourItemsDeliveryDetailsAndCurrentOrder')}</Typography>
 			</Stack>
-			<OrderCard order={order} cancelOrderHandler={cancelOrderHandler} cancelOrderLoading={cancelOrderLoading} showDetailsLink={false} />
+			<OrderCard
+				order={order}
+				cancelOrderHandler={cancelOrderHandler}
+				cancelOrderLoading={cancelOrderLoading}
+				showDetailsLink={false}
+			/>
 		</>
 	) : (
 		<Alert severity="error">{t('ui.orderCouldNotBeLoaded')}</Alert>
@@ -94,10 +111,14 @@ const OrderDetail: NextPage = () => {
 		/** RENDER MOBILE **/
 		return (
 			<>
-				<Head><title>{t('ui.orderDetailsPetnestKorea')}</title></Head>
+				<Head>
+					<title>{t('ui.orderDetailsPetnestKorea')}</title>
+				</Head>
 				<Box component="main" id="my-page" className="order-detail-page order-detail-page--mobile">
 					<Box className="container">
-						<Button component={Link} href="/mypage?category=myOrders">{t('ui.backToOrders')}</Button>
+						<Button component={Link} href="/mypage?category=myOrders">
+							{t('ui.backToOrders')}
+						</Button>
 						{orderContent}
 					</Box>
 				</Box>
@@ -107,10 +128,14 @@ const OrderDetail: NextPage = () => {
 		/** RENDER PC **/
 		return (
 			<>
-				<Head><title>{t('ui.orderDetailsPetnestKorea')}</title></Head>
+				<Head>
+					<title>{t('ui.orderDetailsPetnestKorea')}</title>
+				</Head>
 				<Box component="main" id="my-page" className="order-detail-page">
 					<Box className="container">
-						<Button component={Link} href="/mypage?category=myOrders">{t('ui.backToOrders')}</Button>
+						<Button component={Link} href="/mypage?category=myOrders">
+							{t('ui.backToOrders')}
+						</Button>
 						{orderContent}
 					</Box>
 				</Box>

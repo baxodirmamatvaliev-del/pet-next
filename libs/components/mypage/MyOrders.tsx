@@ -8,7 +8,11 @@ import { GET_MY_ORDERS } from '../../../apollo/user/query';
 import { Message } from '../../enums/common.enum';
 import { OrderStatus } from '../../enums/order.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { sweetConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import {
+	sweetConfirmAlert,
+	sweetMixinErrorAlert,
+	sweetTopSmallSuccessAlert,
+} from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Order } from '../../types/order/order';
 import { MyOrdersInquiry } from '../../types/order/order.input';
@@ -65,7 +69,7 @@ const MyOrders = (props: MyOrdersProps) => {
 			const isConfirmed = await sweetConfirmAlert(
 				t('ui.doYouWantToCancelThisOrder'),
 				t('common.confirm'),
-				t('ui.cancel'),
+				t('ui.cancel')
 			);
 			if (!isConfirmed) return;
 
@@ -93,22 +97,76 @@ const MyOrders = (props: MyOrdersProps) => {
 			{device === 'mobile' ? (
 				/** RENDER MOBILE ORDER FILTERS **/
 				<Stack direction="row" className="order-tabs order-tabs--mobile">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>{t('ui.all')}</Button>
-					<Button className={selectedStatus === OrderStatus.PENDING ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PENDING)}>{t('ui.pending')}</Button>
-					<Button className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}>{t('ui.demoConfirmed')}</Button>
-					<Button className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}>{t('ui.shipping')}</Button>
-					<Button className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}>{t('ui.delivered')}</Button>
-					<Button className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}>{t('ui.cancelled')}</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>
+						{t('ui.all')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.PENDING ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.PENDING)}
+					>
+						{t('ui.pending')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}
+					>
+						{t('ui.demoConfirmed')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}
+					>
+						{t('ui.shipping')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}
+					>
+						{t('ui.delivered')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}
+					>
+						{t('ui.cancelled')}
+					</Button>
 				</Stack>
 			) : (
 				/** RENDER PC ORDER FILTERS **/
 				<Stack direction="row" className="order-tabs order-tabs--pc">
-					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>{t('ui.all')}</Button>
-					<Button className={selectedStatus === OrderStatus.PENDING ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PENDING)}>{t('ui.pending')}</Button>
-					<Button className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}>{t('ui.demoConfirmed')}</Button>
-					<Button className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}>{t('ui.inTransit')}</Button>
-					<Button className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}>{t('ui.delivered')}</Button>
-					<Button className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''} onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}>{t('ui.cancelled')}</Button>
+					<Button className={!selectedStatus ? 'active' : ''} onClick={() => orderStatusHandler()}>
+						{t('ui.all')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.PENDING ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.PENDING)}
+					>
+						{t('ui.pending')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.PAYMENT_CONFIRMED ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.PAYMENT_CONFIRMED)}
+					>
+						{t('ui.demoConfirmed')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.IN_TRANSIT ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.IN_TRANSIT)}
+					>
+						{t('ui.inTransit')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.DELIVERED_TO_CUSTOMER ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.DELIVERED_TO_CUSTOMER)}
+					>
+						{t('ui.delivered')}
+					</Button>
+					<Button
+						className={selectedStatus === OrderStatus.CANCELLED ? 'active' : ''}
+						onClick={() => orderStatusHandler(OrderStatus.CANCELLED)}
+					>
+						{t('ui.cancelled')}
+					</Button>
 				</Stack>
 			)}
 

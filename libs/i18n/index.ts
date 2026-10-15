@@ -15,10 +15,14 @@ export function useTranslation() {
 	const locale = isLocale(routeLocale) ? routeLocale : defaultLocale;
 
 	// Masalan: t('nav.itemCount', { count: 3 }) → "Mahsulotlar: 3".
-	const t = useCallback((key: TranslationKey, values: Record<string, string | number> = {}) => {
-		return dictionaries[locale][key].replace(/\{(\w+)\}/g, (placeholder, name: string) =>
-			String(values[name] ?? placeholder));
-	}, [locale]);
+	const t = useCallback(
+		(key: TranslationKey, values: Record<string, string | number> = {}) => {
+			return dictionaries[locale][key].replace(/\{(\w+)\}/g, (placeholder, name: string) =>
+				String(values[name] ?? placeholder)
+			);
+		},
+		[locale]
+	);
 
 	const label = (value: string | undefined) => {
 		if (!value) return '';

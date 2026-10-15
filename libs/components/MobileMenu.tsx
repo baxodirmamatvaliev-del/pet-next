@@ -132,15 +132,21 @@ const MobileMenu = (props: MobileMenuProps) => {
 					<ListItemText primary={t('nav.best')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/pet" onClick={closeHandler}>
-					<ListItemIcon><GroupsOutlinedIcon /></ListItemIcon>
+					<ListItemIcon>
+						<GroupsOutlinedIcon />
+					</ListItemIcon>
 					<ListItemText primary={t('nav.community')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/agent" onClick={closeHandler}>
-					<ListItemIcon><StorefrontOutlinedIcon /></ListItemIcon>
+					<ListItemIcon>
+						<StorefrontOutlinedIcon />
+					</ListItemIcon>
 					<ListItemText primary={t('nav.agents')} />
 				</ListItemButton>
 				<ListItemButton component={Link} href="/cs" onClick={closeHandler}>
-					<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
+					<ListItemIcon>
+						<SupportAgentOutlinedIcon />
+					</ListItemIcon>
 					<ListItemText primary={t('nav.help')} />
 				</ListItemButton>
 			</List>
@@ -162,10 +168,15 @@ const MobileMenu = (props: MobileMenuProps) => {
 					<ListItemIcon>
 						<LocalMallOutlinedIcon />
 					</ListItemIcon>
-					<ListItemText primary={t('nav.shoppingCart')} secondary={t('nav.itemCount', { count: cartCount })} />
+					<ListItemText
+						primary={t('nav.shoppingCart')}
+						secondary={t('nav.itemCount', { count: cartCount })}
+					/>
 				</ListItemButton>
 				<ListItemButton component={Link} href="/mypage?category=myFavorites" onClick={closeHandler}>
-					<ListItemIcon><FavoriteBorderRoundedIcon /></ListItemIcon>
+					<ListItemIcon>
+						<FavoriteBorderRoundedIcon />
+					</ListItemIcon>
 					<ListItemText primary={t('nav.favorites')} />
 				</ListItemButton>
 			</List>

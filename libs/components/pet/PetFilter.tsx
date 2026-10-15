@@ -33,7 +33,7 @@ const PetFilter = (props: PetFilterProps) => {
 
 	const listingTypeChangeHandler = (
 		_event: MouseEvent<HTMLElement>,
-		value: PetListingType | 'ALL' | null,
+		value: PetListingType | 'ALL' | null
 	) => {
 		if (!value) return;
 		updateSearchFilter({
@@ -61,7 +61,11 @@ const PetFilter = (props: PetFilterProps) => {
 				</Stack>
 				<Stack className="pet-filter__group">
 					<Typography>{t('ui.listingType')}</Typography>
-					<ToggleButtonGroup exclusive value={selectedListingType} onChange={listingTypeChangeHandler}>
+					<ToggleButtonGroup
+						exclusive
+						value={selectedListingType}
+						onChange={listingTypeChangeHandler}
+					>
 						<ToggleButton value="ALL">{t('ui.all')}</ToggleButton>
 						<ToggleButton value={PetListingType.ADOPTION}>{t('ui.adoption')}</ToggleButton>
 						<ToggleButton value={PetListingType.SALE}>{t('ui.saleListingType')}</ToggleButton>
@@ -84,7 +88,11 @@ const PetFilter = (props: PetFilterProps) => {
 				</Stack>
 				<Stack className="pet-filter__group">
 					<Typography>{t('ui.listingType')}</Typography>
-					<ToggleButtonGroup exclusive value={selectedListingType} onChange={listingTypeChangeHandler}>
+					<ToggleButtonGroup
+						exclusive
+						value={selectedListingType}
+						onChange={listingTypeChangeHandler}
+					>
 						<ToggleButton value="ALL">{t('ui.all')}</ToggleButton>
 						<ToggleButton value={PetListingType.ADOPTION}>{t('ui.adoption')}</ToggleButton>
 						<ToggleButton value={PetListingType.SALE}>{t('ui.saleListingType')}</ToggleButton>

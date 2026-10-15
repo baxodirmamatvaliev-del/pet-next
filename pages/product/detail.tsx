@@ -53,11 +53,9 @@ const ProductDetail: NextPage = () => {
 			if (data?.addToCart) cartCountVar(data.addToCart.totalQuantity);
 		},
 	});
-	const [likeTargetProduct, { loading: likeTargetProductLoading }] = useMutation(LIKE_TARGET_PRODUCT);
-	const {
-		error: getProductError,
-		refetch: getProductRefetch,
-	} = useQuery(GET_PRODUCT, {
+	const [likeTargetProduct, { loading: likeTargetProductLoading }] =
+		useMutation(LIKE_TARGET_PRODUCT);
+	const { error: getProductError, refetch: getProductRefetch } = useQuery(GET_PRODUCT, {
 		fetchPolicy: 'network-only',
 		variables: { productId },
 		skip: !productId,
@@ -150,16 +148,16 @@ const ProductDetail: NextPage = () => {
 	};
 
 	/** COMPUTED VALUES **/
-	const activeVariant = product?.productVariants.find((variant) => variant.sku === selectedSku)
-		?? product?.productVariants[0];
+	const activeVariant =
+		product?.productVariants.find((variant) => variant.sku === selectedSku) ??
+		product?.productVariants[0];
 	const isOutOfStock = !activeVariant || activeVariant.stock < 1;
 	const visibleRelatedProducts = relatedProducts
 		.filter((item) => item._id !== productId && item.productCategory === product?.productCategory)
 		.slice(0, 4);
-	const imagePath = slideImage
-		? `${REACT_APP_API_URL}/${slideImage}`
-		: '/img/banner/home-hero.png';
-	const sellerName = seller && seller._id === product?.memberId ? seller.memberNick : t('ui.seller');
+	const imagePath = slideImage ? `${REACT_APP_API_URL}/${slideImage}` : '/img/banner/home-hero.png';
+	const sellerName =
+		seller && seller._id === product?.memberId ? seller.memberNick : t('ui.seller');
 	const isFavorite = Boolean(product?.meLiked?.[0]?.myFavorite);
 
 	if (!router.isReady || !productId || (product?._id !== productId && !getProductError)) {
@@ -183,13 +181,21 @@ const ProductDetail: NextPage = () => {
 		return (
 			<Box component="main" className="product-detail-page product-detail-page--mobile container">
 				<Typography className="product-detail-page__breadcrumb">
-					<Link href="/">{t('ui.home')}</Link> / <Link href="/product">{t('ui.shop')}</Link> / {product.productName}
+					<Link href="/">{t('ui.home')}</Link> / <Link href="/product">{t('ui.shop')}</Link> /{' '}
+					{product.productName}
 				</Typography>
 
 				<Box className="product-detail product-detail--mobile">
 					<Box className="product-gallery">
 						<Box className="product-gallery__main">
-							<Image src={imagePath} alt={product.productName} fill sizes="100vw" priority unoptimized />
+							<Image
+								src={imagePath}
+								alt={product.productName}
+								fill
+								sizes="100vw"
+								priority
+								unoptimized
+							/>
 						</Box>
 						<Stack className="product-gallery__thumbs">
 							{product.productImages.map((image) => (
@@ -198,7 +204,13 @@ const ProductDetail: NextPage = () => {
 									onClick={() => changeImageHandler(image)}
 									key={image}
 								>
-									<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="68px" unoptimized />
+									<Image
+										src={`${REACT_APP_API_URL}/${image}`}
+										alt=""
+										fill
+										sizes="68px"
+										unoptimized
+									/>
 								</Button>
 							))}
 						</Stack>
@@ -210,11 +222,18 @@ const ProductDetail: NextPage = () => {
 						</Typography>
 						<Typography component="h1">{product.productName}</Typography>
 						<Typography className="product-detail__rating">
-							<Box component="span">★</Box> {product.productRating.toFixed(1)} ({t('counts.reviews', { count: product.productReviews })})</Typography>
+							<Box component="span">★</Box> {product.productRating.toFixed(1)} (
+							{t('counts.reviews', { count: product.productReviews })})
+						</Typography>
 						<Typography component="strong" className="product-detail__price">
 							₩{formatterStr(activeVariant?.price ?? 0)}
 						</Typography>
-						<Typography className="product-detail__seller">{t('ui.soldBy')} <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
+						<Typography className="product-detail__seller">
+							{t('ui.soldBy')}{' '}
+							<Link href={`/member/detail?id=${product.memberId}&category=products`}>
+								{sellerName}
+							</Link>
+						</Typography>
 						<Box className="product-variants">
 							<Typography component="strong">{t('ui.chooseAnOption')}</Typography>
 							<Stack direction="row">
@@ -232,18 +251,36 @@ const ProductDetail: NextPage = () => {
 						</Box>
 						<Stack direction="row" className="product-detail__cart-action">
 							<Stack direction="row" className="product-detail__quantity">
-								<IconButton onClick={decreaseQuantityHandler} disabled={quantity === 1 || isOutOfStock} aria-label={t('ui.decreaseQuantity')}>
+								<IconButton
+									onClick={decreaseQuantityHandler}
+									disabled={quantity === 1 || isOutOfStock}
+									aria-label={t('ui.decreaseQuantity')}
+								>
 									<RemoveRoundedIcon />
 								</IconButton>
 								<Typography>{quantity}</Typography>
-								<IconButton onClick={() => increaseQuantityHandler(activeVariant?.stock ?? 0)} disabled={quantity >= (activeVariant?.stock ?? 0)} aria-label={t('ui.increaseQuantity')}>
+								<IconButton
+									onClick={() => increaseQuantityHandler(activeVariant?.stock ?? 0)}
+									disabled={quantity >= (activeVariant?.stock ?? 0)}
+									aria-label={t('ui.increaseQuantity')}
+								>
 									<AddRoundedIcon />
 								</IconButton>
 							</Stack>
-							<Button variant="contained" startIcon={<ShoppingBagOutlinedIcon />} onClick={addToCartHandler} disabled={isOutOfStock || addToCartLoading}>
+							<Button
+								variant="contained"
+								startIcon={<ShoppingBagOutlinedIcon />}
+								onClick={addToCartHandler}
+								disabled={isOutOfStock || addToCartLoading}
+							>
 								{addToCartLoading ? t('ui.adding') : t('ui.addToCart')}
 							</Button>
-							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
+							<IconButton
+								className={`product-detail__favorite ${isFavorite ? 'active' : ''}`}
+								onClick={() => void likeProductHandler(user, productId)}
+								disabled={likeTargetProductLoading}
+								aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
+							>
 								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 							</IconButton>
 						</Stack>
@@ -254,13 +291,22 @@ const ProductDetail: NextPage = () => {
 							</Box>
 						)}
 						{user?.sub === product.memberId && (
-							<Button component={Link} href={`/product/edit?id=${product._id}`} variant="outlined" className="product-detail__edit">
+							<Button
+								component={Link}
+								href={`/product/edit?id=${product._id}`}
+								variant="outlined"
+								className="product-detail__edit"
+							>
 								{t('ui.editProduct')}
 							</Button>
 						)}
 					</Stack>
 				</Box>
-				<ProductReviews productId={product._id} ownerId={product.memberId} onReviewCreated={reviewCreatedHandler} />
+				<ProductReviews
+					productId={product._id}
+					ownerId={product.memberId}
+					onReviewCreated={reviewCreatedHandler}
+				/>
 				{visibleRelatedProducts.length > 0 && (
 					<Box component="section" className="product-related">
 						<Stack direction="row" className="product-related__heading">
@@ -268,7 +314,9 @@ const ProductDetail: NextPage = () => {
 							<Link href="/product">{t('ui.viewAllProducts')}</Link>
 						</Stack>
 						<Box className="product-related__grid">
-							{visibleRelatedProducts.map((item) => <ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />)}
+							{visibleRelatedProducts.map((item) => (
+								<ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />
+							))}
 						</Box>
 					</Box>
 				)}
@@ -279,7 +327,8 @@ const ProductDetail: NextPage = () => {
 		return (
 			<Box component="main" className="product-detail-page container">
 				<Typography className="product-detail-page__breadcrumb">
-					<Link href="/">{t('ui.home')}</Link> / <Link href="/product">{t('ui.shop')}</Link> / {product.productName}
+					<Link href="/">{t('ui.home')}</Link> / <Link href="/product">{t('ui.shop')}</Link> /{' '}
+					{product.productName}
 				</Typography>
 
 				<Box className="product-detail">
@@ -291,7 +340,13 @@ const ProductDetail: NextPage = () => {
 									onClick={() => changeImageHandler(image)}
 									key={image}
 								>
-									<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="80px" unoptimized />
+									<Image
+										src={`${REACT_APP_API_URL}/${image}`}
+										alt=""
+										fill
+										sizes="80px"
+										unoptimized
+									/>
 								</Button>
 							))}
 						</Stack>
@@ -314,11 +369,18 @@ const ProductDetail: NextPage = () => {
 						</Typography>
 						<Typography component="h1">{product.productName}</Typography>
 						<Typography className="product-detail__rating">
-							<Box component="span">★</Box> {product.productRating.toFixed(1)} ({t('counts.reviews', { count: product.productReviews })})</Typography>
+							<Box component="span">★</Box> {product.productRating.toFixed(1)} (
+							{t('counts.reviews', { count: product.productReviews })})
+						</Typography>
 						<Typography component="strong" className="product-detail__price">
 							₩{formatterStr(activeVariant?.price ?? 0)}
 						</Typography>
-						<Typography className="product-detail__seller">{t('ui.soldBy')} <Link href={`/member/detail?id=${product.memberId}&category=products`}>{sellerName}</Link></Typography>
+						<Typography className="product-detail__seller">
+							{t('ui.soldBy')}{' '}
+							<Link href={`/member/detail?id=${product.memberId}&category=products`}>
+								{sellerName}
+							</Link>
+						</Typography>
 
 						<Stack className="product-detail__benefits">
 							<Stack direction="row">
@@ -377,7 +439,12 @@ const ProductDetail: NextPage = () => {
 							>
 								{addToCartLoading ? t('ui.adding') : t('ui.addToCart')}
 							</Button>
-							<IconButton className={`product-detail__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeProductHandler(user, productId)} disabled={likeTargetProductLoading} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
+							<IconButton
+								className={`product-detail__favorite ${isFavorite ? 'active' : ''}`}
+								onClick={() => void likeProductHandler(user, productId)}
+								disabled={likeTargetProductLoading}
+								aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
+							>
 								{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 							</IconButton>
 						</Stack>
@@ -389,13 +456,22 @@ const ProductDetail: NextPage = () => {
 							</Box>
 						)}
 						{user?.sub === product.memberId && (
-							<Button component={Link} href={`/product/edit?id=${product._id}`} variant="outlined" className="product-detail__edit">
+							<Button
+								component={Link}
+								href={`/product/edit?id=${product._id}`}
+								variant="outlined"
+								className="product-detail__edit"
+							>
 								{t('ui.editProduct')}
 							</Button>
 						)}
 					</Stack>
 				</Box>
-				<ProductReviews productId={product._id} ownerId={product.memberId} onReviewCreated={reviewCreatedHandler} />
+				<ProductReviews
+					productId={product._id}
+					ownerId={product.memberId}
+					onReviewCreated={reviewCreatedHandler}
+				/>
 				{visibleRelatedProducts.length > 0 && (
 					<Box component="section" className="product-related">
 						<Stack direction="row" className="product-related__heading">
@@ -403,7 +479,9 @@ const ProductDetail: NextPage = () => {
 							<Link href="/product">{t('ui.viewAllProducts')}</Link>
 						</Stack>
 						<Box className="product-related__grid">
-							{visibleRelatedProducts.map((item) => <ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />)}
+							{visibleRelatedProducts.map((item) => (
+								<ProductCard product={item} likeTargetProduct={likeProductHandler} key={item._id} />
+							))}
 						</Box>
 					</Box>
 				)}

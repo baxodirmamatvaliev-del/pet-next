@@ -28,27 +28,49 @@ const CommunityPets = () => {
 	const pets = data?.getPets.list ?? [];
 
 	return (
-		<Stack component="section" className="community-pets container" aria-labelledby="community-pets-heading">
+		<Stack
+			component="section"
+			className="community-pets container"
+			aria-labelledby="community-pets-heading"
+		>
 			<Stack direction="row" className="section-heading">
 				<Box>
 					<Typography component="span">{t('ui.dogsAndCatsLookingForAHome')}</Typography>
-					<Typography component="h2" id="community-pets-heading">{t('nav.community')}</Typography>
+					<Typography component="h2" id="community-pets-heading">
+						{t('nav.community')}
+					</Typography>
 				</Box>
-				<Stack direction="row" component={Link} href={{ pathname: '/pet', query: { input: JSON.stringify({ ...communityInput, limit: 9 }) } }}>
-					{t('ui.viewAll')}<ArrowForwardRoundedIcon />
+				<Stack
+					direction="row"
+					component={Link}
+					href={{
+						pathname: '/pet',
+						query: { input: JSON.stringify({ ...communityInput, limit: 9 }) },
+					}}
+				>
+					{t('ui.viewAll')}
+					<ArrowForwardRoundedIcon />
 				</Stack>
 			</Stack>
 			<Box aria-live="polite" aria-busy={loading}>
 				{loading && !pets.length ? (
-					<Typography className="community-pets__message">{t('ui.loadingCommunityListings')}</Typography>
+					<Typography className="community-pets__message">
+						{t('ui.loadingCommunityListings')}
+					</Typography>
 				) : error && !pets.length ? (
-					<Typography className="community-pets__message community-pets__message--error">{t('ui.communityListingsCouldNotBeLoadedPleaseTry')}</Typography>
+					<Typography className="community-pets__message community-pets__message--error">
+						{t('ui.communityListingsCouldNotBeLoadedPleaseTry')}
+					</Typography>
 				) : pets.length ? (
 					<Box className="community-pets__grid">
-						{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
+						{pets.map((pet) => (
+							<PetCard pet={pet} key={pet._id} />
+						))}
 					</Box>
 				) : (
-					<Typography className="community-pets__message">{t('ui.noDogOrCatListingsYetCheckBack')}</Typography>
+					<Typography className="community-pets__message">
+						{t('ui.noDogOrCatListingsYetCheckBack')}
+					</Typography>
 				)}
 			</Box>
 		</Stack>

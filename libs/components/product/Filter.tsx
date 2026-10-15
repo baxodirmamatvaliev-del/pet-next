@@ -110,7 +110,15 @@ const Filter = (props: FilterType) => {
 						placeholder={t('nav.search')}
 						slotProps={{
 							htmlInput: { 'aria-label': t('nav.search') },
-							input: { endAdornment: <InputAdornment position="end"><IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}><SearchRoundedIcon /></IconButton></InputAdornment> },
+							input: {
+								endAdornment: (
+									<InputAdornment position="end">
+										<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}>
+											<SearchRoundedIcon />
+										</IconButton>
+									</InputAdornment>
+								),
+							},
 						}}
 					/>
 				</Box>
@@ -119,7 +127,17 @@ const Filter = (props: FilterType) => {
 						<FormLabel>{t('ui.pet')}</FormLabel>
 						<FormGroup>
 							{categoryOptions.map(({ label, value }) => (
-								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.categoryList?.includes(value) ?? false} onChange={() => categorySelectHandler(value)} />} />
+								<FormControlLabel
+									key={value}
+									label={label}
+									control={
+										<Checkbox
+											size="small"
+											checked={searchFilter.search.categoryList?.includes(value) ?? false}
+											onChange={() => categorySelectHandler(value)}
+										/>
+									}
+								/>
 							))}
 						</FormGroup>
 					</FormControl>
@@ -127,12 +145,24 @@ const Filter = (props: FilterType) => {
 						<FormLabel>{t('ui.productType')}</FormLabel>
 						<FormGroup>
 							{typeOptions.map(({ label, value }) => (
-								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.typeList?.includes(value) ?? false} onChange={() => typeSelectHandler(value)} />} />
+								<FormControlLabel
+									key={value}
+									label={label}
+									control={
+										<Checkbox
+											size="small"
+											checked={searchFilter.search.typeList?.includes(value) ?? false}
+											onChange={() => typeSelectHandler(value)}
+										/>
+									}
+								/>
 							))}
 						</FormGroup>
 					</FormControl>
 				</Stack>
-				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>{t('ui.resetFilters')}</Button>
+				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>
+					{t('ui.resetFilters')}
+				</Button>
 			</Stack>
 		);
 	} else {
@@ -169,13 +199,13 @@ const Filter = (props: FilterType) => {
 							<FormControlLabel
 								key={value}
 								label={label}
-								control={(
+								control={
 									<Checkbox
 										size="small"
 										checked={searchFilter.search.categoryList?.includes(value) ?? false}
 										onChange={() => categorySelectHandler(value)}
 									/>
-								)}
+								}
 							/>
 						))}
 					</FormGroup>
@@ -188,13 +218,13 @@ const Filter = (props: FilterType) => {
 							<FormControlLabel
 								key={value}
 								label={label}
-								control={(
+								control={
 									<Checkbox
 										size="small"
 										checked={searchFilter.search.typeList?.includes(value) ?? false}
 										onChange={() => typeSelectHandler(value)}
 									/>
-								)}
+								}
 							/>
 						))}
 					</FormGroup>
