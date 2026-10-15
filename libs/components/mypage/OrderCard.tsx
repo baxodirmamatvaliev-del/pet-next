@@ -1,4 +1,3 @@
-import React from 'react';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { Box, Button, Chip, Stack, Typography } from '@mui/material';

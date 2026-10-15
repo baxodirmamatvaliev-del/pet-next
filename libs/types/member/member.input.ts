@@ -1,11 +1,6 @@
 import { Direction } from '../../enums/common.enum';
 import { MemberStatus, MemberType } from '../../enums/member.enum';
 
-export interface MemberInput {
-	memberNick: string;
-	memberPhone: string;
-	memberPassword: string;
-}
 
 export interface MembersInquiry {
 	page: number;
@@ -21,9 +16,4 @@ export interface AgentsInquiry {
 	sort?: string;
 	direction?: Direction;
 	search: { text?: string };
-}
-
-export interface LoginInput {
-	memberNick: string;
-	memberPassword: string;
 }

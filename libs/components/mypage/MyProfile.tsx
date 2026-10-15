@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import axios from 'axios';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';

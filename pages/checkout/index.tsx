@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';

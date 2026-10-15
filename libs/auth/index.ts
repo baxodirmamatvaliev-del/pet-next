@@ -4,7 +4,7 @@ import { LOGIN, SIGN_UP } from '../../apollo/user/mutation';
 import { Message } from '../enums/common.enum';
 import { endSession, restoreSession, setJwtToken } from './session';
 
-export { getJwtToken, getValidAccessToken, setJwtToken } from './session';
+export { getValidAccessToken, setJwtToken } from './session';
 
 // Login javobidagi access token xotiraga, refresh cookie esa brauzerga yoziladi.
 export async function logIn(nick: string, password: string): Promise<void> {

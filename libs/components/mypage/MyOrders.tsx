@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Alert, Box, Button, CircularProgress, Pagination, Stack, Typography } from '@mui/material';
 

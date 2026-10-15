@@ -1,4 +1,3 @@
-import React from 'react';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';

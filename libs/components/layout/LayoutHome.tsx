@@ -5,6 +5,7 @@ import React from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Footer from '../Footer';
 import Top from '../Top';
+import Chat from '../Chat';
 import { useTranslation } from '../../i18n';
 
 const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => {
@@ -40,6 +41,7 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 					<Stack id="pc-wrap">
 						<Stack id="top"><Top /></Stack>
 						<Stack id="main"><Component {...props} /></Stack>
+						<Chat />
 						<Stack id="footer"><Footer /></Stack>
 					</Stack>
 				</>

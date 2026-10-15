@@ -26,8 +26,3 @@ export interface InquiryInput {
 	inquiryTitle: string;
 	inquiryContent: string;
 }
-
-export interface AnswerInquiryInput {
-	inquiryId: string;
-	inquiryAnswer: string;
-}

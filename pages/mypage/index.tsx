@@ -1,4 +1,3 @@
-import React from 'react';
 import { useReactiveVar } from '@apollo/client';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Box, Button, Stack, Typography } from '@mui/material';
