@@ -11,8 +11,8 @@
 	align-items: center;
 	justify-content: center;
 	gap: 14px;
-	background: var(--pet-surface-muted);
-	color: $muted;
+	background: $primary-fill;
+	color: var(--pet-on-dark);
 	font-size: 12px;
 	font-weight: 700;
 	.MuiTypography-root {
@@ -71,7 +71,7 @@
 		gap: 10px;
 		padding: 0 16px;
 		border: 1px solid $border;
-		border-radius: 999px;
+		border-radius: 10px;
 		background: var(--pet-canvas);
 		color: $muted;
 		.MuiOutlinedInput-notchedOutline {
@@ -133,42 +133,6 @@
 		&:hover {
 			color: $secondary;
 			transform: translateY(-2px);
-		}
-	}
-}
-
-.category-nav__badge {
-	margin-left: 8px;
-	padding: 4px 8px;
-	border-radius: 999px;
-	background: var(--pet-accent-bg);
-	color: $secondary;
-	font-size: 10px;
-}
-
-.header-editorial {
-	border-bottom: 1px solid $border;
-	background: var(--pet-surface-muted);
-
-	.header-editorial__inner {
-		min-height: 40px;
-		align-items: center;
-		justify-content: space-between;
-		gap: 20px;
-		padding-block: 10px;
-
-		p,
-		a {
-			font-size: 12px;
-		}
-
-		p {
-			color: $muted;
-		}
-
-		a {
-			flex-shrink: 0;
-			color: $primary;
 		}
 	}
 }

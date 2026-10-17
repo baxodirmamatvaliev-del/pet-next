@@ -40,19 +40,11 @@ const ProductCard = (props: ProductCardType) => {
 		return (
 			<Stack component="article" className="product-card product-card--mobile">
 				{showFavorite && likeTargetProduct && (
-					<IconButton
-						className={`product-card__favorite ${isFavorite ? 'active' : ''}`}
-						onClick={() => void likeTargetProduct(user, product._id)}
-						aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
-					>
+					<IconButton className={`product-card__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeTargetProduct(user, product._id)} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
 						{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 					</IconButton>
 				)}
-				<Box
-					component={Link}
-					href={{ pathname: '/product/detail', query: { id: product._id } }}
-					className="product-card__image"
-				>
+				<Box component={Link} href={{ pathname: '/product/detail', query: { id: product._id } }} className="product-card__image">
 					<Image src={imagePath} alt={product.productName} fill sizes="50vw" unoptimized />
 				</Box>
 				{isSoldOut && <Chip className="product-card__stock" label={t('ui.soldOut')} size="small" />}
@@ -61,10 +53,7 @@ const ProductCard = (props: ProductCardType) => {
 						<Typography component="h3">{product.productName}</Typography>
 					</Box>
 					<Typography component="strong">₩{formatterStr(productPrice)}</Typography>
-					<Typography>
-						<Box component="span">★</Box> {product.productRating.toFixed(1)} (
-						{product.productReviews})
-					</Typography>
+					<Typography><Box component="span">★</Box> {product.productRating.toFixed(1)} ({product.productReviews})</Typography>
 				</Stack>
 			</Stack>
 		);
@@ -73,11 +62,7 @@ const ProductCard = (props: ProductCardType) => {
 		return (
 			<Stack component="article" className="product-card product-card--pc">
 				{showFavorite && likeTargetProduct && (
-					<IconButton
-						className={`product-card__favorite ${isFavorite ? 'active' : ''}`}
-						onClick={() => void likeTargetProduct(user, product._id)}
-						aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}
-					>
+					<IconButton className={`product-card__favorite ${isFavorite ? 'active' : ''}`} onClick={() => void likeTargetProduct(user, product._id)} aria-label={isFavorite ? t('ui.removeFromFavorites') : t('ui.addToFavorites')}>
 						{isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
 					</IconButton>
 				)}
@@ -95,8 +80,7 @@ const ProductCard = (props: ProductCardType) => {
 					</Box>
 					<Typography component="strong">₩{formatterStr(productPrice)}</Typography>
 					<Typography>
-						<Box component="span">★</Box> {product.productRating.toFixed(1)} (
-						{product.productReviews})
+						<Box component="span">★</Box> {product.productRating.toFixed(1)} ({product.productReviews})
 					</Typography>
 				</Stack>
 			</Stack>

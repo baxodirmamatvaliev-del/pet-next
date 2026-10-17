@@ -6,29 +6,15 @@ import { gql } from '@apollo/client';
 
 export const GET_SUPPORT_RECIPIENTS = gql`
 	query GetSupportRecipients {
-		getSupportRecipients {
-			_id
-			memberNick
-			memberImage
-			memberType
-		}
+		getSupportRecipients { _id memberNick memberImage memberType }
 	}
 `;
 
 export const GET_MY_INQUIRIES = gql`
 	query GetMyInquiries {
 		getMyInquiries {
-			_id
-			senderId
-			receiverId
-			senderNick
-			receiverNick
-			inquiryTitle
-			inquiryContent
-			inquiryStatus
-			inquiryAnswer
-			createdAt
-			answeredAt
+			_id senderId receiverId senderNick receiverNick
+			inquiryTitle inquiryContent inquiryStatus inquiryAnswer createdAt answeredAt
 		}
 	}
 `;
@@ -36,17 +22,8 @@ export const GET_MY_INQUIRIES = gql`
 export const GET_ASSIGNED_INQUIRIES = gql`
 	query GetAssignedInquiries {
 		getAssignedInquiries {
-			_id
-			senderId
-			receiverId
-			senderNick
-			receiverNick
-			inquiryTitle
-			inquiryContent
-			inquiryStatus
-			inquiryAnswer
-			createdAt
-			answeredAt
+			_id senderId receiverId senderNick receiverNick
+			inquiryTitle inquiryContent inquiryStatus inquiryAnswer createdAt answeredAt
 		}
 	}
 `;
@@ -72,9 +49,7 @@ export const GET_MY_NOTIFICATIONS = gql`
 				inquiryId
 				createdAt
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -94,9 +69,7 @@ export const GET_AGENTS = gql`
 				memberFollowers
 				memberLikes
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -146,21 +119,10 @@ export const GET_MEMBER_FOLLOWERS = gql`
 			list {
 				_id
 				followerId
-				meFollowed {
-					myFollowing
-				}
-				followerData {
-					_id
-					memberNick
-					memberImage
-					memberType
-					memberFollowers
-					memberFollowings
-				}
+				meFollowed { myFollowing }
+				followerData { _id memberNick memberImage memberType memberFollowers memberFollowings }
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -171,21 +133,10 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 			list {
 				_id
 				followingId
-				meFollowed {
-					myFollowing
-				}
-				followingData {
-					_id
-					memberNick
-					memberImage
-					memberType
-					memberFollowers
-					memberFollowings
-				}
+				meFollowed { myFollowing }
+				followingData { _id memberNick memberImage memberType memberFollowers memberFollowings }
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -218,11 +169,7 @@ export const GET_PRODUCT = gql`
 			productRank
 			productLikes
 			productViews
-			meLiked {
-				memberId
-				likeRefId
-				myFavorite
-			}
+			meLiked { memberId likeRefId myFavorite }
 			createdAt
 			updatedAt
 		}
@@ -254,11 +201,7 @@ export const GET_PRODUCTS = gql`
 				productRank
 				productLikes
 				productViews
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
+				meLiked { memberId likeRefId myFavorite }
 				createdAt
 				updatedAt
 			}
@@ -281,30 +224,18 @@ export const GET_FAVORITE_PRODUCTS = gql`
 				productName
 				productDesc
 				productImages
-				productVariants {
-					sku
-					color
-					size
-					price
-					stock
-				}
+				productVariants { sku color size price stock }
 				productRating
 				productReviews
 				productSold
 				productRank
 				productLikes
 				productViews
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
+				meLiked { memberId likeRefId myFavorite }
 				createdAt
 				updatedAt
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -321,30 +252,18 @@ export const GET_VISITED_PRODUCTS = gql`
 				productName
 				productDesc
 				productImages
-				productVariants {
-					sku
-					color
-					size
-					price
-					stock
-				}
+				productVariants { sku color size price stock }
 				productRating
 				productReviews
 				productSold
 				productRank
 				productLikes
 				productViews
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
+				meLiked { memberId likeRefId myFavorite }
 				createdAt
 				updatedAt
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;

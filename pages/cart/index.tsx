@@ -67,7 +67,10 @@ const CartPage: NextPage = () => {
 			}
 		},
 	});
-	const { loading: getMyCartLoading, error: getMyCartError } = useQuery(GET_MY_CART, {
+	const {
+		loading: getMyCartLoading,
+		error: getMyCartError,
+	} = useQuery(GET_MY_CART, {
 		fetchPolicy: 'network-only',
 		skip: !user?.sub,
 		notifyOnNetworkStatusChange: true,
@@ -142,12 +145,7 @@ const CartPage: NextPage = () => {
 							<Typography component="h1">{t('ui.yourCart')}</Typography>
 						</Box>
 						{cartItems.length > 0 && (
-							<Button
-								color="inherit"
-								onClick={clearCartHandler}
-								disabled={isCartUpdating}
-								startIcon={<DeleteOutlineRoundedIcon />}
-							>
+							<Button color="inherit" onClick={clearCartHandler} disabled={isCartUpdating} startIcon={<DeleteOutlineRoundedIcon />}>
 								{t('ui.clearCart')}
 							</Button>
 						)}
@@ -157,14 +155,10 @@ const CartPage: NextPage = () => {
 							<ShoppingBagOutlinedIcon />
 							<Typography component="h2">{t('ui.signInToViewYourCart')}</Typography>
 							<Typography>{t('ui.yourSavedProductsWillBeWaitingForYou')}</Typography>
-							<Button component={Link} href="/account/join?referrer=/cart" variant="contained">
-								{t('ui.loginOrSignUp')}
-							</Button>
+							<Button component={Link} href="/account/join?referrer=/cart" variant="contained">{t('ui.loginOrSignUp')}</Button>
 						</Stack>
 					) : getMyCartLoading && !cart ? (
-						<Stack className="cart-state">
-							<CircularProgress color="primary" />
-						</Stack>
+						<Stack className="cart-state"><CircularProgress color="primary" /></Stack>
 					) : getMyCartError ? (
 						<Alert severity="error">{t('ui.cartCouldNotBeLoaded')}</Alert>
 					) : cartItems.length === 0 ? (
@@ -172,9 +166,7 @@ const CartPage: NextPage = () => {
 							<ShoppingBagOutlinedIcon />
 							<Typography component="h2">{t('ui.yourCartIsEmpty')}</Typography>
 							<Typography>{t('ui.exploreOurProductsAndFindSomethingYourPet')}</Typography>
-							<Button component={Link} href="/product" variant="contained">
-								{t('ui.continueShopping')}
-							</Button>
+							<Button component={Link} href="/product" variant="contained">{t('ui.continueShopping')}</Button>
 						</Stack>
 					) : (
 						<Stack className="cart-content cart-content--mobile">
@@ -188,74 +180,32 @@ const CartPage: NextPage = () => {
 										: '/img/banner/home-hero.png';
 
 									return (
-										<Box
-											className="cart-item cart-item--mobile"
-											key={`${cartItem.productId}-${cartItem.sku}`}
-										>
-											<Link
-												href={`/product/detail?id=${cartItem.productId}`}
-												className="cart-item__image"
-											>
-												<Image
-													src={imagePath}
-													alt={product?.productName ?? t('common.petProduct')}
-													fill
-													sizes="88px"
-													unoptimized
-												/>
+										<Box className="cart-item cart-item--mobile" key={`${cartItem.productId}-${cartItem.sku}`}>
+											<Link href={`/product/detail?id=${cartItem.productId}`} className="cart-item__image">
+												<Image src={imagePath} alt={product?.productName ?? t('common.petProduct')} fill sizes="88px" unoptimized />
 											</Link>
 											<Stack className="cart-item__info">
-												<Typography
-													component={Link}
-													href={`/product/detail?id=${cartItem.productId}`}
-												>
+												<Typography component={Link} href={`/product/detail?id=${cartItem.productId}`}>
 													{product?.productName ?? t('common.unavailableProduct')}
 												</Typography>
 												<Typography>{variantName || cartItem.sku}</Typography>
-												<Chip
-													label={cartItem.available ? t('ui.inStock') : t('ui.unavailable')}
-													color={cartItem.available ? 'success' : 'error'}
-													size="small"
-												/>
+												<Chip label={cartItem.available ? t('ui.inStock') : t('ui.unavailable')} color={cartItem.available ? 'success' : 'error'} size="small" />
 											</Stack>
-											<IconButton
-												className="cart-item__remove"
-												onClick={() => removeCartItemHandler(cartItem)}
-												disabled={isCartUpdating}
-												aria-label={t('message.removeFromCart', {
-													name: product?.productName ?? t('common.petProduct'),
-												})}
-											>
+											<IconButton className="cart-item__remove" onClick={() => removeCartItemHandler(cartItem)} disabled={isCartUpdating} aria-label={t('message.removeFromCart', { name: product?.productName ?? t('common.petProduct') })}>
 												<DeleteOutlineRoundedIcon />
 											</IconButton>
 											<Stack direction="row" className="cart-item__quantity">
-												<IconButton
-													onClick={() => updateCartItemHandler(cartItem, cartItem.quantity - 1)}
-													disabled={cartItem.quantity === 1 || isCartUpdating}
-													aria-label={t('ui.decreaseQuantity')}
-												>
+												<IconButton onClick={() => updateCartItemHandler(cartItem, cartItem.quantity - 1)} disabled={cartItem.quantity === 1 || isCartUpdating} aria-label={t('ui.decreaseQuantity')}>
 													<RemoveRoundedIcon />
 												</IconButton>
 												<Typography>{cartItem.quantity}</Typography>
-												<IconButton
-													onClick={() => updateCartItemHandler(cartItem, cartItem.quantity + 1)}
-													disabled={
-														!cartItem.available ||
-														cartItem.quantity >= (variant?.stock ?? 0) ||
-														isCartUpdating
-													}
-													aria-label={t('ui.increaseQuantity')}
-												>
+												<IconButton onClick={() => updateCartItemHandler(cartItem, cartItem.quantity + 1)} disabled={!cartItem.available || cartItem.quantity >= (variant?.stock ?? 0) || isCartUpdating} aria-label={t('ui.increaseQuantity')}>
 													<AddRoundedIcon />
 												</IconButton>
 											</Stack>
 											<Stack className="cart-item__price">
-												<Typography component="strong">
-													₩{formatterStr(cartItem.subtotal)}
-												</Typography>
-												<Typography>
-													₩{formatterStr(cartItem.unitPrice)} {t('ui.each')}
-												</Typography>
+												<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
+												<Typography>₩{formatterStr(cartItem.unitPrice)} {t('ui.each')}</Typography>
 											</Stack>
 										</Box>
 									);
@@ -263,35 +213,13 @@ const CartPage: NextPage = () => {
 							</Stack>
 							<Stack className="cart-summary">
 								<Typography component="h2">{t('ui.orderSummary')}</Typography>
-								<Stack direction="row">
-									<Typography>{t('counts.items', { count: cart?.totalQuantity ?? 0 })}</Typography>
-									<Typography>₩{formatterStr(cart?.totalAmount ?? 0)}</Typography>
-								</Stack>
-								<Stack direction="row">
-									<Typography>{t('ui.shipping')}</Typography>
-									<Typography className="cart-summary__free">{t('ui.free')}</Typography>
-								</Stack>
+								<Stack direction="row"><Typography>{t('counts.items', { count: cart?.totalQuantity ?? 0 })}</Typography><Typography>₩{formatterStr(cart?.totalAmount ?? 0)}</Typography></Stack>
+								<Stack direction="row"><Typography>{t('ui.shipping')}</Typography><Typography className="cart-summary__free">{t('ui.free')}</Typography></Stack>
 								<Divider />
-								<Stack direction="row" className="cart-summary__total">
-									<Typography>{t('ui.total')}</Typography>
-									<Typography>₩{formatterStr(cart?.totalAmount ?? 0)}</Typography>
-								</Stack>
-								{hasUnavailableItems && (
-									<Alert severity="warning">
-										{t('ui.removeUnavailableProductsBeforeCheckout')}
-									</Alert>
-								)}
-								<Button
-									component={Link}
-									href="/checkout"
-									variant="contained"
-									disabled={hasUnavailableItems || isCartUpdating}
-								>
-									{t('ui.proceedToCheckout')}
-								</Button>
-								<Button component={Link} href="/product" variant="outlined">
-									{t('ui.continueShopping')}
-								</Button>
+								<Stack direction="row" className="cart-summary__total"><Typography>{t('ui.total')}</Typography><Typography>₩{formatterStr(cart?.totalAmount ?? 0)}</Typography></Stack>
+								{hasUnavailableItems && <Alert severity="warning">{t('ui.removeUnavailableProductsBeforeCheckout')}</Alert>}
+								<Button component={Link} href="/checkout" variant="contained" disabled={hasUnavailableItems || isCartUpdating}>{t('ui.proceedToCheckout')}</Button>
+								<Button component={Link} href="/product" variant="outlined">{t('ui.continueShopping')}</Button>
 							</Stack>
 						</Stack>
 					)}
@@ -362,10 +290,7 @@ const CartPage: NextPage = () => {
 
 									return (
 										<Box className="cart-item" key={`${cartItem.productId}-${cartItem.sku}`}>
-											<Link
-												href={`/product/detail?id=${cartItem.productId}`}
-												className="cart-item__image"
-											>
+											<Link href={`/product/detail?id=${cartItem.productId}`} className="cart-item__image">
 												<Image
 													src={imagePath}
 													alt={product?.productName ?? t('common.petProduct')}
@@ -376,10 +301,7 @@ const CartPage: NextPage = () => {
 											</Link>
 
 											<Stack className="cart-item__info">
-												<Typography
-													component={Link}
-													href={`/product/detail?id=${cartItem.productId}`}
-												>
+												<Typography component={Link} href={`/product/detail?id=${cartItem.productId}`}>
 													{product?.productName ?? t('common.unavailableProduct')}
 												</Typography>
 												<Typography>{variantName || cartItem.sku}</Typography>
@@ -401,11 +323,7 @@ const CartPage: NextPage = () => {
 												<Typography>{cartItem.quantity}</Typography>
 												<IconButton
 													onClick={() => updateCartItemHandler(cartItem, cartItem.quantity + 1)}
-													disabled={
-														!cartItem.available ||
-														cartItem.quantity >= (variant?.stock ?? 0) ||
-														isCartUpdating
-													}
+													disabled={!cartItem.available || cartItem.quantity >= (variant?.stock ?? 0) || isCartUpdating}
 													aria-label={t('ui.increaseQuantity')}
 												>
 													<AddRoundedIcon />
@@ -413,21 +331,15 @@ const CartPage: NextPage = () => {
 											</Stack>
 
 											<Stack className="cart-item__price">
-												<Typography component="strong">
-													₩{formatterStr(cartItem.subtotal)}
-												</Typography>
-												<Typography>
-													₩{formatterStr(cartItem.unitPrice)} {t('ui.each')}
-												</Typography>
+												<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
+												<Typography>₩{formatterStr(cartItem.unitPrice)} {t('ui.each')}</Typography>
 											</Stack>
 
 											<IconButton
 												className="cart-item__remove"
 												onClick={() => removeCartItemHandler(cartItem)}
 												disabled={isCartUpdating}
-												aria-label={t('message.removeFromCart', {
-													name: product?.productName ?? t('common.petProduct'),
-												})}
+												aria-label={t('message.removeFromCart', { name: product?.productName ?? t('common.petProduct') })}
 											>
 												<DeleteOutlineRoundedIcon />
 											</IconButton>
@@ -452,9 +364,7 @@ const CartPage: NextPage = () => {
 									<Typography>₩{formatterStr(cart?.totalAmount ?? 0)}</Typography>
 								</Stack>
 								{hasUnavailableItems && (
-									<Alert severity="warning">
-										{t('ui.removeUnavailableProductsBeforeCheckout')}
-									</Alert>
+									<Alert severity="warning">{t('ui.removeUnavailableProductsBeforeCheckout')}</Alert>
 								)}
 								<Button
 									component={Link}

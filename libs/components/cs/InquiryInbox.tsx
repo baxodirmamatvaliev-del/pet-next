@@ -1,15 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import {
-	Alert,
-	Box,
-	Button,
-	Chip,
-	CircularProgress,
-	Stack,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { Alert, Box, Button, Chip, CircularProgress, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { ANSWER_INQUIRY } from '../../../apollo/user/mutation';
@@ -59,17 +50,13 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 	const answerInquiryHandler = async (inquiryId: string) => {
 		try {
 			if (answerText.trim().length < 2) return;
-			await answerInquiry({
-				variables: { input: { inquiryId, inquiryAnswer: answerText.trim() } },
-			});
+			await answerInquiry({ variables: { input: { inquiryId, inquiryAnswer: answerText.trim() } } });
 			await getAssignedInquiriesRefetch();
 			setActiveId('');
 			setAnswerText('');
 			await sweetTopSmallSuccessAlert(t('ui.replySent'), 800);
 		} catch (err) {
-			await sweetMixinErrorAlert(
-				errorText(err instanceof Error ? err.message : t('ui.replyCouldNotBeSent'))
-			);
+			await sweetMixinErrorAlert(errorText(err instanceof Error ? err.message : t('ui.replyCouldNotBeSent')));
 		}
 	};
 
@@ -85,17 +72,12 @@ const InquiryInbox = ({ enabled = true }: { enabled?: boolean }) => {
 	) : inquiries.length ? (
 		<Stack className="cs-tickets">
 			{inquiries.map((inquiry) => (
-				<Box
-					id={`inquiry-${inquiry._id}`}
-					className={`cs-ticket ${selectedId === inquiry._id ? 'cs-ticket--selected' : ''}`}
-					key={inquiry._id}
-				>
+				<Box id={`inquiry-${inquiry._id}`} className={`cs-ticket ${selectedId === inquiry._id ? 'cs-ticket--selected' : ''}`} key={inquiry._id}>
 					<Stack direction="row" className="cs-ticket__heading">
 						<Box>
 							<Typography component="h2">{inquiry.inquiryTitle}</Typography>
 							<Typography>
-								{t('message.from', { name: inquiry.senderNick })} ·{' '}
-								{new Date(inquiry.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' })}
+								{t('message.from', { name: inquiry.senderNick })} · {new Date(inquiry.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' })}
 							</Typography>
 						</Box>
 						<Chip

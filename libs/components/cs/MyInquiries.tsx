@@ -22,14 +22,11 @@ const MyInquiries = () => {
 	const selectedId = typeof router.query.id === 'string' ? router.query.id : '';
 
 	/** APOLLO REQUESTS **/
-	const { loading: getMyInquiriesLoading, error: getMyInquiriesError } = useQuery(
-		GET_MY_INQUIRIES,
-		{
-			fetchPolicy: 'network-only',
-			skip: !user?.sub,
-			onCompleted: (data: T) => setInquiries(data?.getMyInquiries ?? []),
-		}
-	);
+	const { loading: getMyInquiriesLoading, error: getMyInquiriesError } = useQuery(GET_MY_INQUIRIES, {
+		fetchPolicy: 'network-only',
+		skip: !user?.sub,
+		onCompleted: (data: T) => setInquiries(data?.getMyInquiries ?? []),
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -55,23 +52,16 @@ const MyInquiries = () => {
 	) : inquiries.length ? (
 		<Stack className="cs-tickets">
 			{inquiries.map((inquiry) => (
-				<Box
-					id={`inquiry-${inquiry._id}`}
-					className={`cs-ticket ${selectedId === inquiry._id ? 'cs-ticket--selected' : ''}`}
-					key={inquiry._id}
-				>
+				<Box id={`inquiry-${inquiry._id}`} className={`cs-ticket ${selectedId === inquiry._id ? 'cs-ticket--selected' : ''}`} key={inquiry._id}>
 					<Stack direction="row" className="cs-ticket__heading">
 						<Box>
 							<Typography component="h2">{inquiry.inquiryTitle}</Typography>
 							<Typography>
-								{t('message.to', { name: inquiry.receiverNick })} ·{' '}
-								{new Date(inquiry.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' })}
+								{t('message.to', { name: inquiry.receiverNick })} · {new Date(inquiry.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' })}
 							</Typography>
 						</Box>
 						<Chip
-							label={
-								inquiry.inquiryStatus === 'ANSWERED' ? t('ui.answered') : t('ui.waitingForReply')
-							}
+							label={inquiry.inquiryStatus === 'ANSWERED' ? t('ui.answered') : t('ui.waitingForReply')}
 							color={inquiry.inquiryStatus === 'ANSWERED' ? 'success' : 'warning'}
 							size="small"
 						/>
@@ -79,9 +69,7 @@ const MyInquiries = () => {
 					<Typography className="cs-ticket__message">{inquiry.inquiryContent}</Typography>
 					{inquiry.inquiryAnswer && (
 						<Box className="cs-ticket__reply">
-							<Typography component="strong">
-								{t('message.replyFrom', { name: inquiry.receiverNick })}
-							</Typography>
+							<Typography component="strong">{t('message.replyFrom', { name: inquiry.receiverNick })}</Typography>
 							<Typography>{inquiry.inquiryAnswer}</Typography>
 						</Box>
 					)}

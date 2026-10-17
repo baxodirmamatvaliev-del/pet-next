@@ -57,22 +57,17 @@ const BestSellers = (props: BestSellersProps) => {
 	};
 
 	/** COMPUTED VALUES **/
-	const productContent =
-		getProductsLoading && !products.length ? (
-			<Typography className="product-message">{t('ui.loadingProducts')}</Typography>
-		) : getProductsError ? (
-			<Typography className="product-message product-message--error">
-				{t('ui.productsCouldNotBeLoaded')}
-			</Typography>
-		) : products.length ? (
-			<Box className={`product-grid product-grid--${device}`}>
-				{products.map((product) => (
-					<ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />
-				))}
-			</Box>
-		) : (
-			<Typography className="product-message">{t('ui.noProductsAvailableYet')}</Typography>
-		);
+	const productContent = getProductsLoading && !products.length ? (
+		<Typography className="product-message">{t('ui.loadingProducts')}</Typography>
+	) : getProductsError ? (
+		<Typography className="product-message product-message--error">{t('ui.productsCouldNotBeLoaded')}</Typography>
+	) : products.length ? (
+		<Box className={`product-grid product-grid--${device}`}>
+			{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
+		</Box>
+	) : (
+		<Typography className="product-message">{t('ui.noProductsAvailableYet')}</Typography>
+	);
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
@@ -84,8 +79,7 @@ const BestSellers = (props: BestSellersProps) => {
 						<Typography component="h2">{t('nav.best')}</Typography>
 					</Box>
 					<Stack direction="row" component={Link} href="/product?sort=productSold">
-						{t('ui.viewAll')}
-						<ArrowForwardRoundedIcon />
+						{t('ui.viewAll')}<ArrowForwardRoundedIcon />
 					</Stack>
 				</Stack>
 				{productContent}
@@ -101,8 +95,7 @@ const BestSellers = (props: BestSellersProps) => {
 						<Typography component="h2">{t('nav.best')}</Typography>
 					</Box>
 					<Stack direction="row" component={Link} href="/product?sort=productSold">
-						{t('ui.viewAll')}
-						<ArrowForwardRoundedIcon />
+						{t('ui.viewAll')}<ArrowForwardRoundedIcon />
 					</Stack>
 				</Stack>
 				{productContent}

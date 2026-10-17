@@ -1,17 +1,7 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import {
-	Box,
-	Button,
-	FormControl,
-	MenuItem,
-	Pagination,
-	Select,
-	SelectChangeEvent,
-	Stack,
-	Typography,
-} from '@mui/material';
+import { Box, Button, FormControl, MenuItem, Pagination, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -53,7 +43,10 @@ const PetList = (props: PetListProps) => {
 	}, [initialInput, router.query.input]);
 
 	/** APOLLO REQUESTS **/
-	const { loading: getPetsLoading, error: getPetsError } = useQuery(GET_PETS, {
+	const {
+		loading: getPetsLoading,
+		error: getPetsError,
+	} = useQuery(GET_PETS, {
 		fetchPolicy: 'network-only',
 		variables: { input: searchFilter },
 		notifyOnNetworkStatusChange: true,
@@ -65,9 +58,11 @@ const PetList = (props: PetListProps) => {
 
 	/** HANDLERS **/
 	const updateSearchFilterHandler = (input: PetsInquiry) => {
-		void router.push({ pathname: '/pet', query: { input: JSON.stringify(input) } }, undefined, {
-			scroll: false,
-		});
+		void router.push(
+			{ pathname: '/pet', query: { input: JSON.stringify(input) } },
+			undefined,
+			{ scroll: false },
+		);
 	};
 
 	const sortingHandler = (event: SelectChangeEvent) => {
@@ -106,44 +101,25 @@ const PetList = (props: PetListProps) => {
 				<PetFilter searchFilter={searchFilter} updateSearchFilter={updateSearchFilterHandler} />
 				<Box component="section" className="pet-results" aria-live="polite">
 					<Stack direction="row" className="pet-results__toolbar">
-						<Typography className="pet-results__count">
-							{t('counts.pets', { count: total })}
-						</Typography>
-						<Button
-							component={Link}
-							href="/pet/create"
-							className="pet-results__create"
-							startIcon={<AddRoundedIcon />}
-						>
+						<Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>
+						<Button component={Link} href="/pet/create" className="pet-results__create" startIcon={<AddRoundedIcon />}>
 							{t('ui.createListing')}
 						</Button>
 					</Stack>
 					{getPetsLoading && !pets.length ? (
 						<Typography className="pet-results__message">{t('ui.loadingPets')}</Typography>
 					) : getPetsError ? (
-						<Typography className="pet-results__message pet-results__message--error">
-							{t('ui.petsCouldNotBeLoaded')}
-						</Typography>
+						<Typography className="pet-results__message pet-results__message--error">{t('ui.petsCouldNotBeLoaded')}</Typography>
 					) : pets.length ? (
 						<Box className="pet-results__grid">
-							{pets.map((pet) => (
-								<PetCard pet={pet} key={pet._id} />
-							))}
+							{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
 						</Box>
 					) : (
-						<Typography className="pet-results__message">
-							{t('ui.noPetsMatchYourFilters')}
-						</Typography>
+						<Typography className="pet-results__message">{t('ui.noPetsMatchYourFilters')}</Typography>
 					)}
 					{pets.length > 0 && totalPages > 0 && (
 						<Stack direction="row" className="pet-pagination">
-							<Pagination
-								page={searchFilter.page}
-								count={totalPages}
-								onChange={paginationChangeHandler}
-								color="primary"
-								shape="rounded"
-							/>
+							<Pagination page={searchFilter.page} count={totalPages} onChange={paginationChangeHandler} color="primary" shape="rounded" />
 							<Typography>{t('counts.pets', { count: total })}</Typography>
 						</Stack>
 					)}
@@ -177,9 +153,7 @@ const PetList = (props: PetListProps) => {
 
 				<Box component="section" className="pet-results" aria-live="polite">
 					<Stack direction="row" className="pet-results__toolbar">
-						<Typography className="pet-results__count">
-							{t('counts.pets', { count: total })}
-						</Typography>
+						<Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>
 						<Button
 							component={Link}
 							href="/pet/create"
@@ -197,14 +171,10 @@ const PetList = (props: PetListProps) => {
 						</Typography>
 					) : pets.length ? (
 						<Box className="pet-results__grid">
-							{pets.map((pet) => (
-								<PetCard pet={pet} key={pet._id} />
-							))}
+							{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
 						</Box>
 					) : (
-						<Typography className="pet-results__message">
-							{t('ui.noPetsMatchYourFilters')}
-						</Typography>
+						<Typography className="pet-results__message">{t('ui.noPetsMatchYourFilters')}</Typography>
 					)}
 					{pets.length > 0 && totalPages > 0 && (
 						<Stack direction="row" className="pet-pagination">

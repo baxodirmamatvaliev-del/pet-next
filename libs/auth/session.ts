@@ -1,3 +1,4 @@
+
 //access tokenni xotirada saqlash, refresh va logout.//
 import { jwtDecode } from 'jwt-decode';
 import { print } from 'graphql';
@@ -43,11 +44,8 @@ type AuthError = {
 
 export function isAuthError(error: unknown): boolean {
 	const authError = error as AuthError | null;
-	return (
-		authError?.statusCode === 401 ||
-		authError?.extensions?.code === 'UNAUTHENTICATED' ||
-		authError?.extensions?.originalError?.statusCode === 401
-	);
+	return authError?.statusCode === 401 || authError?.extensions?.code === 'UNAUTHENTICATED'
+		|| authError?.extensions?.originalError?.statusCode === 401;
 }
 
 // Refresh/logout Apollo’dan alohida yuboriladi: refresh xatosi yana refreshni chaqirmaydi.
@@ -77,9 +75,7 @@ export function refreshAccessToken(): Promise<string> {
 		if (version !== sessionVersion) throw new Error('Session changed');
 		setJwtToken(data.refreshToken.accessToken);
 		return accessToken;
-	}).finally(() => {
-		refreshPromise = undefined;
-	});
+	}).finally(() => { refreshPromise = undefined; });
 	return refreshPromise;
 }
 
@@ -90,9 +86,7 @@ export function restoreSession(): Promise<void> {
 		startupPromise = refreshAccessToken()
 			.then(() => undefined)
 			.catch(() => undefined) // Mehmonning refresh cookie’si bo‘lmasligi odatiy holat.
-			.finally(() => {
-				authReadyVar(true);
-			});
+			.finally(() => { authReadyVar(true); });
 	}
 	return startupPromise;
 }

@@ -1,6 +1,6 @@
 /** TUSHUN TIRISH
- * Access token xotirada, refresh token HttpOnly cookie’da turadi.
- * Token tugaganda bitta refresh so‘rovi orqali yangilanadi.
+ * Access token xotirada, refresh token HttpOnly cookie’da turadi. 
+ * Token tugaganda bitta refresh so‘rovi orqali yangilanadi. 
  * Parallel so‘rovlar shu natijani kutadi.
  *  Logout backend sessiyasini bekor qilib,
  *  frontend xotirasi va cache’ini tozalaydi.
@@ -29,7 +29,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 	const socialDescription = t('ui.shopQualityProductsForDogsAndCatsAnd');
 
 	const client = useApollo(pageProps.initialApolloState);
-	//— sahifa qayta ochilganda sessiyani tiklash.
+    //— sahifa qayta ochilganda sessiyani tiklash.
 	// Ilova ochilganda sessiyani tiklaymiz; boshqa tabdagi logoutni ham qabul qilamiz.
 	useEffect(() => {
 		void restoreSession();
@@ -44,35 +44,18 @@ const App = ({ Component, pageProps }: AppProps) => {
 
 	return (
 		<ApolloProvider client={client}>
-			<ThemeProvider
-				theme={theme}
-				defaultMode="system"
-				modeStorageKey="pet-theme"
-				disableTransitionOnChange
-			>
+			<ThemeProvider theme={theme} defaultMode="system" modeStorageKey="pet-theme" disableTransitionOnChange>
 				<Head>
 					<meta property="og:type" content="website" key="og:type" />
 					<meta property="og:site_name" content="PetNest Korea" key="og:site_name" />
-					<meta
-						property="og:title"
-						content={t('ui.petnestKoreaEverythingTheyLove')}
-						key="og:title"
-					/>
+					<meta property="og:title" content={t('ui.petnestKoreaEverythingTheyLove')} key="og:title" />
 					<meta property="og:description" content={socialDescription} key="og:description" />
 					<meta property="og:image" content={socialImage} key="og:image" />
 					<meta property="og:image:width" content="1200" key="og:image:width" />
 					<meta property="og:image:height" content="630" key="og:image:height" />
-					<meta
-						property="og:image:alt"
-						content={t('ui.aGoldenRetrieverAndCatWithThePetnest')}
-						key="og:image:alt"
-					/>
+					<meta property="og:image:alt" content={t('ui.aGoldenRetrieverAndCatWithThePetnest')} key="og:image:alt" />
 					<meta name="twitter:card" content="summary_large_image" key="twitter:card" />
-					<meta
-						name="twitter:title"
-						content={t('ui.petnestKoreaEverythingTheyLove')}
-						key="twitter:title"
-					/>
+					<meta name="twitter:title" content={t('ui.petnestKoreaEverythingTheyLove')} key="twitter:title" />
 					<meta name="twitter:description" content={socialDescription} key="twitter:description" />
 					<meta name="twitter:image" content={socialImage} key="twitter:image" />
 				</Head>

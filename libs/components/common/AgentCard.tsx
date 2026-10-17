@@ -14,10 +14,7 @@ const AgentCard = ({ agent }: { agent: Member }) => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const memberImage = agent.memberImage ? `${REACT_APP_API_URL}/${agent.memberImage}` : undefined;
-	const profileLink = {
-		pathname: '/member/detail',
-		query: { id: agent._id, category: 'products' },
-	};
+	const profileLink = { pathname: '/member/detail', query: { id: agent._id, category: 'products' } };
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
@@ -33,16 +30,14 @@ const AgentCard = ({ agent }: { agent: Member }) => {
 						{agent.memberDesc || t('common.agentDescription')}
 					</Typography>
 					<Typography className="agent-card__stats">
-						{agent.memberFollowers} {t('ui.followers3')} {agent.memberLikes} {t('ui.likes')}
-					</Typography>
+						{agent.memberFollowers} {t('ui.followers3')} {agent.memberLikes} {t('ui.likes')}</Typography>
 					{user?.sub !== agent._id && (
 						<Link href={`/cs?tab=ask&recipient=${agent._id}`} className="agent-card__contact">
 							{t('ui.contactAgent')}
 						</Link>
 					)}
 					<Link href={profileLink} className="agent-card__link">
-						{t('ui.viewProfile')}
-						<EastRoundedIcon fontSize="small" />
+						{t('ui.viewProfile')}<EastRoundedIcon fontSize="small" />
 					</Link>
 				</Box>
 			</Stack>
@@ -61,16 +56,14 @@ const AgentCard = ({ agent }: { agent: Member }) => {
 						{agent.memberDesc || t('common.agentDescription')}
 					</Typography>
 					<Typography className="agent-card__stats">
-						{agent.memberFollowers} {t('ui.followers3')} {agent.memberLikes} {t('ui.likes')}
-					</Typography>
+						{agent.memberFollowers} {t('ui.followers3')} {agent.memberLikes} {t('ui.likes')}</Typography>
 					{user?.sub !== agent._id && (
 						<Link href={`/cs?tab=ask&recipient=${agent._id}`} className="agent-card__contact">
 							{t('ui.contactAgent')}
 						</Link>
 					)}
 					<Link href={profileLink} className="agent-card__link">
-						{t('ui.viewProfile')}
-						<EastRoundedIcon fontSize="small" />
+						{t('ui.viewProfile')}<EastRoundedIcon fontSize="small" />
 					</Link>
 				</Box>
 			</Stack>

@@ -21,45 +21,30 @@ const MyPetCard = (props: MyPetCardProps) => {
 	const { t, label } = useTranslation();
 	const { pet, loading, updatePetStatusHandler } = props;
 	const canManage = pet.petStatus === PetStatus.ACTIVE || pet.petStatus === PetStatus.RESERVED;
-	const completedStatus =
-		pet.petListingType === PetListingType.ADOPTION ? PetStatus.ADOPTED : PetStatus.SOLD;
+	const completedStatus = pet.petListingType === PetListingType.ADOPTION ? PetStatus.ADOPTED : PetStatus.SOLD;
 
 	/** RENDER **/
 	return (
 		<Stack className="my-pet-card">
 			<PetCard pet={pet} />
 			<Stack className="my-pet-card__actions">
-				<Chip
-					label={label(pet.petStatus)}
-					className={`my-pet-card__status my-pet-card__status--${pet.petStatus.toLowerCase()}`}
-				/>
+				<Chip label={label(pet.petStatus)} className={`my-pet-card__status my-pet-card__status--${pet.petStatus.toLowerCase()}`} />
 				{canManage && (
 					<Stack direction="row" className="my-pet-card__buttons">
 						{pet.petStatus === PetStatus.ACTIVE && (
-							<Button
-								component={Link}
-								href={`/pet/edit?id=${pet._id}`}
-								variant="outlined"
-								startIcon={<EditOutlinedIcon />}
-							>
+							<Button component={Link} href={`/pet/edit?id=${pet._id}`} variant="outlined" startIcon={<EditOutlinedIcon />}>
 								{t('ui.edit')}
 							</Button>
 						)}
 						<Button
 							variant="outlined"
-							startIcon={
-								pet.petStatus === PetStatus.RESERVED ? (
-									<PlayCircleOutlineRoundedIcon />
-								) : (
-									<PauseCircleOutlineRoundedIcon />
-								)
-							}
-							onClick={() =>
-								updatePetStatusHandler(
-									pet,
-									pet.petStatus === PetStatus.RESERVED ? PetStatus.ACTIVE : PetStatus.RESERVED
-								)
-							}
+							startIcon={pet.petStatus === PetStatus.RESERVED
+								? <PlayCircleOutlineRoundedIcon />
+								: <PauseCircleOutlineRoundedIcon />}
+							onClick={() => updatePetStatusHandler(
+								pet,
+								pet.petStatus === PetStatus.RESERVED ? PetStatus.ACTIVE : PetStatus.RESERVED,
+							)}
 							disabled={loading}
 						>
 							{pet.petStatus === PetStatus.RESERVED ? t('ui.reactivate') : t('ui.reserve')}

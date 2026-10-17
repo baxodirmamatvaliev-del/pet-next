@@ -40,53 +40,24 @@ const MyProductCard = (props: MyProductCardProps) => {
 			<Stack className="my-product-card__content">
 				<Stack direction="row" className="my-product-card__title">
 					<Typography component="h2">{product.productName}</Typography>
-					<Chip
-						label={isActive ? t('ui.active') : t('ui.hidden')}
-						size="small"
-						className={isActive ? 'active' : 'hidden'}
-					/>
+					<Chip label={isActive ? t('ui.active') : t('ui.hidden')} size="small" className={isActive ? 'active' : 'hidden'} />
 				</Stack>
-				<Typography>
-					{label(product.productType)} · ₩{formatterStr(price)} ·{' '}
-					{t('counts.inStock', { count: stock })}
-				</Typography>
+				<Typography>{label(product.productType)} · ₩{formatterStr(price)} · {t('counts.inStock', { count: stock })}</Typography>
 				<Stack direction="row" className="my-product-card__actions">
 					{isActive && (
 						<>
-							<Button
-								component={Link}
-								href={`/product/detail?id=${product._id}`}
-								startIcon={<VisibilityOutlinedIcon />}
-							>
-								{t('ui.view')}
-							</Button>
-							<Button
-								component={Link}
-								href={`/product/edit?id=${product._id}`}
-								startIcon={<EditOutlinedIcon />}
-							>
-								{t('ui.edit')}
-							</Button>
+							<Button component={Link} href={`/product/detail?id=${product._id}`} startIcon={<VisibilityOutlinedIcon />}>{t('ui.view')}</Button>
+							<Button component={Link} href={`/product/edit?id=${product._id}`} startIcon={<EditOutlinedIcon />}>{t('ui.edit')}</Button>
 						</>
 					)}
 					<Button
 						startIcon={isActive ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
-						onClick={() =>
-							updateProductStatusHandler(
-								product,
-								isActive ? ProductStatus.HIDDEN : ProductStatus.ACTIVE
-							)
-						}
+						onClick={() => updateProductStatusHandler(product, isActive ? ProductStatus.HIDDEN : ProductStatus.ACTIVE)}
 						disabled={loading}
 					>
 						{isActive ? t('ui.hide') : t('ui.show')}
 					</Button>
-					<Button
-						className="my-product-card__remove"
-						startIcon={<DeleteOutlineRoundedIcon />}
-						onClick={() => removeProductHandler(product)}
-						disabled={loading}
-					>
+					<Button className="my-product-card__remove" startIcon={<DeleteOutlineRoundedIcon />} onClick={() => removeProductHandler(product)} disabled={loading}>
 						{t('ui.remove')}
 					</Button>
 				</Stack>

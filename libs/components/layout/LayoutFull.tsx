@@ -22,16 +22,9 @@ const withLayoutFull = <P extends object>(Component: React.ComponentType<P>) => 
 						<meta name="title" content={t('ui.productDetailPetnestKorea')} />
 					</Head>
 					<Stack id="mobile-wrap">
-						<Stack id="top">
-							<Top />
-						</Stack>
-						<Stack id="main">
-							<Component {...props} />
-						</Stack>
-						<Chat />
-						<Stack id="footer">
-							<Footer />
-						</Stack>
+						<Stack id="top"><Top /></Stack>
+						<Stack id="main"><Component {...props} /></Stack>
+						<Stack id="footer"><Footer /></Stack>
 					</Stack>
 				</>
 			);
@@ -44,16 +37,10 @@ const withLayoutFull = <P extends object>(Component: React.ComponentType<P>) => 
 						<meta name="title" content={t('ui.productDetailPetnestKorea')} />
 					</Head>
 					<Stack id="pc-wrap">
-						<Stack id="top">
-							<Top />
-						</Stack>
-						<Stack id="main">
-							<Component {...props} />
-						</Stack>
+						<Stack id="top"><Top /></Stack>
+						<Stack id="main"><Component {...props} /></Stack>
 						<Chat />
-						<Stack id="footer">
-							<Footer />
-						</Stack>
+						<Stack id="footer"><Footer /></Stack>
 					</Stack>
 				</>
 			);

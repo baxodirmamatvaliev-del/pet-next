@@ -1,16 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import {
-	Alert,
-	Avatar,
-	Box,
-	Button,
-	CircularProgress,
-	Pagination,
-	Stack,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { Alert, Avatar, Box, Button, CircularProgress, Pagination, Stack, TextField, Typography } from '@mui/material';
 import Link from 'next/link';
 
 import { userVar } from '../../../apollo/store';
@@ -24,11 +14,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Comment } from '../../types/comment/comment';
-import {
-	CommentInput,
-	CommentUpdateInput,
-	CommentsInquiry,
-} from '../../types/comment/comment.input';
+import { CommentInput, CommentUpdateInput, CommentsInquiry } from '../../types/comment/comment.input';
 import { useTranslation } from '../../i18n';
 
 interface PetCommentsProps {
@@ -157,27 +143,19 @@ const PetComments = (props: PetCommentsProps) => {
 						fullWidth
 						slotProps={{ htmlInput: { maxLength: 500, 'aria-label': t('common.writeComment') } }}
 					/>
-					<Button
-						type="submit"
-						variant="contained"
-						disabled={!commentText.trim() || createCommentLoading}
-					>
+					<Button type="submit" variant="contained" disabled={!commentText.trim() || createCommentLoading}>
 						{createCommentLoading ? t('ui.posting') : t('ui.postComment')}
 					</Button>
 				</Stack>
 			) : (
 				<Stack direction="row" className="pet-comments__sign-in">
 					<Typography>{t('ui.signInToJoinTheConversation')}</Typography>
-					<Button component={Link} href={signInHref} variant="outlined">
-						{t('ui.signIn')}
-					</Button>
+					<Button component={Link} href={signInHref} variant="outlined">{t('ui.signIn')}</Button>
 				</Stack>
 			)}
 
 			{getCommentsLoading && !comments.length ? (
-				<Stack className="pet-comments__state">
-					<CircularProgress color="primary" />
-				</Stack>
+				<Stack className="pet-comments__state"><CircularProgress color="primary" /></Stack>
 			) : getCommentsError ? (
 				<Alert severity="error">{t('ui.commentsCouldNotBeLoaded')}</Alert>
 			) : comments.length ? (
@@ -187,9 +165,7 @@ const PetComments = (props: PetCommentsProps) => {
 							const author = comment.memberData?.memberNick ?? t('common.member');
 							const memberType = comment.memberData?.memberType;
 							const isOwner = user?.sub === comment.memberId;
-							const authorHref = isOwner
-								? '/mypage?category=myProfile'
-								: `/member/detail?id=${comment.memberId}`;
+							const authorHref = isOwner ? '/mypage?category=myProfile' : `/member/detail?id=${comment.memberId}`;
 							const isEditing = editingCommentId === comment._id;
 							const avatar = comment.memberData?.memberImage
 								? `${REACT_APP_API_URL}/${comment.memberData.memberImage}`
@@ -197,85 +173,30 @@ const PetComments = (props: PetCommentsProps) => {
 
 							return (
 								<Stack direction="row" className="pet-comments__item" key={comment._id}>
-									<Avatar component={Link} href={authorHref} src={avatar} alt={author}>
-										{author.charAt(0).toUpperCase()}
-									</Avatar>
+									<Avatar component={Link} href={authorHref} src={avatar} alt={author}>{author.charAt(0).toUpperCase()}</Avatar>
 									<Box>
 										<Stack direction="row" className="pet-comments__author">
 											<Stack className="pet-comments__author-identity">
 												{(memberType === MemberType.ADMIN || memberType === MemberType.AGENT) && (
-													<Typography
-														component="span"
-														className={`pet-comments__role pet-comments__role--${memberType.toLowerCase()}`}
-													>
-														{label(memberType)}
-													</Typography>
+													<Typography component="span" className={`pet-comments__role pet-comments__role--${memberType.toLowerCase()}`}>{label(memberType)}</Typography>
 												)}
-												<Typography
-													component={Link}
-													href={authorHref}
-													className="pet-comments__author-link"
-												>
-													{author}
-												</Typography>
+												<Typography component={Link} href={authorHref} className="pet-comments__author-link">{author}</Typography>
 											</Stack>
 											<Stack direction="row" className="pet-comments__author-actions">
-												<Typography>
-													{new Date(comment.createdAt).toLocaleDateString(locale, {
-														year: 'numeric',
-														month: 'short',
-														day: 'numeric',
-														timeZone: 'Asia/Seoul',
-													})}
-												</Typography>
-												{isOwner && !isEditing && (
-													<Button size="small" onClick={() => editCommentHandler(comment)}>
-														{t('ui.edit')}
-													</Button>
-												)}
+												<Typography>{new Date(comment.createdAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Seoul' })}</Typography>
+												{isOwner && !isEditing && <Button size="small" onClick={() => editCommentHandler(comment)}>{t('ui.edit')}</Button>}
 											</Stack>
 										</Stack>
 										{isEditing ? (
-											<Stack
-												component="form"
-												className="pet-comments__edit-form"
-												onSubmit={updateCommentHandler}
-											>
-												<TextField
-													value={editText}
-													onChange={(event) => setEditText(event.target.value)}
-													multiline
-													rows={3}
-													fullWidth
-													slotProps={{
-														htmlInput: { maxLength: 500, 'aria-label': t('common.editComment') },
-													}}
-												/>
+											<Stack component="form" className="pet-comments__edit-form" onSubmit={updateCommentHandler}>
+												<TextField value={editText} onChange={(event) => setEditText(event.target.value)} multiline rows={3} fullWidth slotProps={{ htmlInput: { maxLength: 500, 'aria-label': t('common.editComment') } }} />
 												<Stack direction="row" className="pet-comments__edit-actions">
-													<Button
-														type="button"
-														onClick={cancelEditHandler}
-														disabled={updateCommentLoading}
-													>
-														{t('ui.cancel')}
-													</Button>
-													<Button
-														type="submit"
-														variant="contained"
-														disabled={
-															!editText.trim() ||
-															editText.trim() === comment.commentContent ||
-															updateCommentLoading
-														}
-													>
-														{updateCommentLoading ? t('ui.saving') : t('ui.save')}
-													</Button>
+													<Button type="button" onClick={cancelEditHandler} disabled={updateCommentLoading}>{t('ui.cancel')}</Button>
+													<Button type="submit" variant="contained" disabled={!editText.trim() || editText.trim() === comment.commentContent || updateCommentLoading}>{updateCommentLoading ? t('ui.saving') : t('ui.save')}</Button>
 												</Stack>
 											</Stack>
 										) : (
-											<Typography className="pet-comments__text">
-												{comment.commentContent}
-											</Typography>
+											<Typography className="pet-comments__text">{comment.commentContent}</Typography>
 										)}
 									</Box>
 								</Stack>
@@ -283,37 +204,21 @@ const PetComments = (props: PetCommentsProps) => {
 						})}
 					</Stack>
 					{totalPages > 1 && (
-						<Pagination
-							page={commentPage}
-							count={totalPages}
-							onChange={paginationHandler}
-							color="primary"
-							shape="rounded"
-						/>
+						<Pagination page={commentPage} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />
 					)}
 				</>
 			) : (
-				<Typography className="pet-comments__empty">
-					{t('ui.noCommentsYetBeTheFirstToSay')}
-				</Typography>
+				<Typography className="pet-comments__empty">{t('ui.noCommentsYetBeTheFirstToSay')}</Typography>
 			)}
 		</>
 	);
 
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
-		return (
-			<Box component="section" className="pet-comments pet-comments--mobile">
-				{commentsContent}
-			</Box>
-		);
+		return <Box component="section" className="pet-comments pet-comments--mobile">{commentsContent}</Box>;
 	} else {
 		/** RENDER PC **/
-		return (
-			<Box component="section" className="pet-comments pet-comments--pc">
-				{commentsContent}
-			</Box>
-		);
+		return <Box component="section" className="pet-comments pet-comments--pc">{commentsContent}</Box>;
 	}
 };
 

@@ -1,4 +1,4 @@
-:is(#pc-wrap, #mobile-wrap) .chatting {
+#pc-wrap .chatting {
 	--chat-accent: #b6533b;
 	--chat-highlight: #b6533b;
 	--chat-tint: color-mix(in srgb, var(--chat-accent) 12%, var(--pet-surface));
@@ -308,7 +308,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	:is(#pc-wrap, #mobile-wrap) .chatting {
+	#pc-wrap .chatting {
 		.chat-frame,
 		.chat-button,
 		.send-msg-btn {
@@ -317,6 +317,6 @@
 	}
 }
 
-[data-mui-color-scheme='dark'] :is(#pc-wrap, #mobile-wrap) .chatting {
+[data-mui-color-scheme='dark'] #pc-wrap .chatting {
 	--chat-highlight: #f0ac8e;
 }

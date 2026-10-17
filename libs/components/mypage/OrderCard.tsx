@@ -17,21 +17,13 @@ interface OrderCardProps {
 	showDetailsLink?: boolean;
 }
 
-const OrderCard = ({
-	order,
-	cancelOrderHandler,
-	cancelOrderLoading,
-	showDetailsLink = true,
-}: OrderCardProps) => {
+const OrderCard = ({ order, cancelOrderHandler, cancelOrderLoading, showDetailsLink = true }: OrderCardProps) => {
 	const { t, locale, label } = useTranslation();
 	/** COMPUTED VALUES **/
-	const orderDate = new Date(order.createdAt).toLocaleDateString(locale, {
-		timeZone: 'Asia/Seoul',
-	});
-	const orderStatus =
-		order.orderStatus === OrderStatus.PAYMENT_CONFIRMED
-			? t('ui.demoPaymentConfirmed')
-			: label(order.orderStatus);
+	const orderDate = new Date(order.createdAt).toLocaleDateString(locale, { timeZone: 'Asia/Seoul' });
+	const orderStatus = order.orderStatus === OrderStatus.PAYMENT_CONFIRMED
+		? t('ui.demoPaymentConfirmed')
+		: label(order.orderStatus);
 
 	/** RENDER **/
 	return (
@@ -64,15 +56,8 @@ const OrderCard = ({
 							: '/img/banner/home-hero.png';
 
 						return (
-							<Stack
-								direction="row"
-								className="order-product"
-								key={`${orderItem.productId}-${orderItem.sku}`}
-							>
-								<Link
-									href={`/product/detail?id=${orderItem.productId}`}
-									className="order-product__image"
-								>
+							<Stack direction="row" className="order-product" key={`${orderItem.productId}-${orderItem.sku}`}>
+								<Link href={`/product/detail?id=${orderItem.productId}`} className="order-product__image">
 									<Image
 										src={imagePath}
 										alt={orderItem.productName}
@@ -85,9 +70,7 @@ const OrderCard = ({
 									<Typography component={Link} href={`/product/detail?id=${orderItem.productId}`}>
 										{orderItem.productName}
 									</Typography>
-									<Typography>
-										{orderItem.sku} {t('ui.qty')} {orderItem.quantity}
-									</Typography>
+									<Typography>{orderItem.sku} {t('ui.qty')} {orderItem.quantity}</Typography>
 								</Box>
 								<Typography component="strong">₩{formatterStr(orderItem.subtotal)}</Typography>
 							</Stack>
@@ -107,15 +90,11 @@ const OrderCard = ({
 						<AccessTimeRoundedIcon />
 						<Box>
 							<Typography component="strong">{t('ui.recipient')}</Typography>
-							<Typography>
-								{order.recipientName} · {order.recipientPhone}
-							</Typography>
+							<Typography>{order.recipientName} · {order.recipientPhone}</Typography>
 						</Box>
 					</Stack>
 					{showDetailsLink && (
-						<Button component={Link} href={`/order/detail?id=${order._id}`} variant="outlined">
-							{t('ui.viewDetails')}
-						</Button>
+						<Button component={Link} href={`/order/detail?id=${order._id}`} variant="outlined">{t('ui.viewDetails')}</Button>
 					)}
 					{order.orderStatus === OrderStatus.PENDING && (
 						<Button

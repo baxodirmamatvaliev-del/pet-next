@@ -11,16 +11,10 @@ export const GET_ALL_PRODUCTS_BY_ADMIN = gql`
 				productType
 				productStatus
 				productImages
-				productVariants {
-					sku
-					price
-					stock
-				}
+				productVariants { sku price stock }
 				createdAt
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -39,9 +33,7 @@ export const GET_ALL_PETS_BY_ADMIN = gql`
 				petImages
 				createdAt
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -55,15 +47,10 @@ export const GET_ALL_ORDERS_BY_ADMIN = gql`
 				orderStatus
 				recipientName
 				totalAmount
-				orderItems {
-					productName
-					quantity
-				}
+				orderItems { productName quantity }
 				createdAt
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -92,9 +79,7 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 				memberImage
 				createdAt
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;
@@ -118,9 +103,7 @@ export const GET_ALL_COMMENTS_BY_ADMIN = gql`
 					memberType
 				}
 			}
-			metaCounter {
-				total
-			}
+			metaCounter { total }
 		}
 	}
 `;

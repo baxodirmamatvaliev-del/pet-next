@@ -59,8 +59,7 @@ const AgentList: NextPage = () => {
 				!input.search ||
 				typeof input.search !== 'object' ||
 				Array.isArray(input.search) ||
-				(input.search.text !== undefined &&
-					(typeof input.search.text !== 'string' || input.search.text.length > 100))
+				(input.search.text !== undefined && (typeof input.search.text !== 'string' || input.search.text.length > 100))
 			) {
 				return initialInput;
 			}
@@ -90,21 +89,13 @@ const AgentList: NextPage = () => {
 
 	/** HANDLERS **/
 	const updateSearchFilterHandler = (input: AgentsInquiry) => {
-		void router.push({ pathname: '/agent', query: { input: JSON.stringify(input) } }, undefined, {
-			scroll: false,
-		});
+		void router.push({ pathname: '/agent', query: { input: JSON.stringify(input) } }, undefined, { scroll: false });
 	};
 
 	const searchHandler = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const searchText = (
-			event.currentTarget.elements.namedItem('agentSearch') as HTMLInputElement
-		).value.trim();
-		updateSearchFilterHandler({
-			...searchFilter,
-			page: 1,
-			search: { text: searchText || undefined },
-		});
+		const searchText = (event.currentTarget.elements.namedItem('agentSearch') as HTMLInputElement).value.trim();
+		updateSearchFilterHandler({ ...searchFilter, page: 1, search: { text: searchText || undefined } });
 	};
 
 	const sortHandler = (event: SelectChangeEvent) => {
@@ -133,12 +124,7 @@ const AgentList: NextPage = () => {
 						<SearchRoundedIcon />
 					</Box>
 				</Box>
-				<Select
-					size="small"
-					value={searchFilter.sort ?? 'createdAt'}
-					onChange={sortHandler}
-					aria-label={t('ui.sortSellers')}
-				>
+				<Select size="small" value={searchFilter.sort ?? 'createdAt'} onChange={sortHandler} aria-label={t('ui.sortSellers')}>
 					<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
 					<MenuItem value="memberLikes">{t('ui.mostLiked')}</MenuItem>
 					<MenuItem value="memberViews">{t('ui.mostViewed')}</MenuItem>
@@ -160,9 +146,7 @@ const AgentList: NextPage = () => {
 			) : (
 				<Typography className="agent-page__state">{t('ui.noAgentsFound')}</Typography>
 			)}
-			{totalPages > 1 && (
-				<Pagination page={searchFilter.page} count={totalPages} onChange={pageHandler} />
-			)}
+			{totalPages > 1 && <Pagination page={searchFilter.page} count={totalPages} onChange={pageHandler} />}
 		</>
 	);
 

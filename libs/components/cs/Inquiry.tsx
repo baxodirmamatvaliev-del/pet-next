@@ -2,16 +2,7 @@ import { FormEvent, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
-import {
-	Alert,
-	Box,
-	Button,
-	CircularProgress,
-	MenuItem,
-	Stack,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -35,31 +26,24 @@ const Inquiry = () => {
 	/** STATES **/
 	const user = useReactiveVar(userVar);
 	const [recipients, setRecipients] = useState<SupportRecipient[]>([]);
-	const [recipientType, setRecipientType] = useState<MemberType.AGENT | MemberType.ADMIN>(
-		MemberType.AGENT
-	);
+	const [recipientType, setRecipientType] = useState<MemberType.AGENT | MemberType.ADMIN>(MemberType.AGENT);
 	const [input, setInput] = useState<InquiryInput>(initialInput);
 
 	/** APOLLO REQUESTS **/
 	const [createInquiry, { loading: createInquiryLoading }] = useMutation(CREATE_INQUIRY);
-	const { loading: getSupportRecipientsLoading, error: getSupportRecipientsError } = useQuery(
-		GET_SUPPORT_RECIPIENTS,
-		{
-			fetchPolicy: 'cache-and-network',
-			skip: !router.isReady,
-			onCompleted: (data: T) => {
-				const list = data?.getSupportRecipients ?? [];
-				setRecipients(list);
-				const selected = list.find(
-					(item) => item._id === router.query.recipient && item._id !== user?.sub
-				);
-				if (selected) {
-					setRecipientType(selected.memberType as MemberType.AGENT | MemberType.ADMIN);
-					setInput((previous) => ({ ...previous, receiverId: selected._id }));
-				}
-			},
-		}
-	);
+	const { loading: getSupportRecipientsLoading, error: getSupportRecipientsError } = useQuery(GET_SUPPORT_RECIPIENTS, {
+		fetchPolicy: 'cache-and-network',
+		skip: !router.isReady,
+		onCompleted: (data: T) => {
+			const list = data?.getSupportRecipients ?? [];
+			setRecipients(list);
+			const selected = list.find((item) => item._id === router.query.recipient && item._id !== user?.sub);
+			if (selected) {
+				setRecipientType(selected.memberType as MemberType.AGENT | MemberType.ADMIN);
+				setInput((previous) => ({ ...previous, receiverId: selected._id }));
+			}
+		},
+	});
 
 	/** HANDLERS **/
 	const recipientTypeHandler = (type: MemberType.AGENT | MemberType.ADMIN) => {
@@ -75,12 +59,7 @@ const Inquiry = () => {
 		event.preventDefault();
 		try {
 			if (!user?.sub) return;
-			if (
-				!input.receiverId ||
-				input.inquiryTitle.trim().length < 3 ||
-				input.inquiryContent.trim().length < 10
-			)
-				return;
+			if (!input.receiverId || input.inquiryTitle.trim().length < 3 || input.inquiryContent.trim().length < 10) return;
 			await createInquiry({
 				variables: {
 					input: {
@@ -93,16 +72,12 @@ const Inquiry = () => {
 			await sweetTopSmallSuccessAlert(t('ui.requestSent'), 800);
 			void router.push('/cs?tab=my');
 		} catch (err) {
-			await sweetMixinErrorAlert(
-				errorText(err instanceof Error ? err.message : t('ui.requestCouldNotBeSent'))
-			);
+			await sweetMixinErrorAlert(errorText(err instanceof Error ? err.message : t('ui.requestCouldNotBeSent')));
 		}
 	};
 
 	/** COMPUTED VALUES **/
-	const visibleRecipients = recipients.filter(
-		(item) => item.memberType === recipientType && item._id !== user?.sub
-	);
+	const visibleRecipients = recipients.filter((item) => item.memberType === recipientType && item._id !== user?.sub);
 	const content = !user?.sub ? (
 		<Stack className="cs-state">
 			<Typography component="h2">{t('ui.signInToSendARequest')}</Typography>
@@ -133,9 +108,7 @@ const Inquiry = () => {
 					{t('ui.admin')}
 				</Button>
 			</Stack>
-			{getSupportRecipientsError && (
-				<Alert severity="error">{t('ui.supportContactsCouldNotBeLoaded')}</Alert>
-			)}
+			{getSupportRecipientsError && <Alert severity="error">{t('ui.supportContactsCouldNotBeLoaded')}</Alert>}
 			<TextField
 				select
 				label={recipientType === MemberType.AGENT ? t('ui.chooseAnAgent') : t('ui.chooseAnAdmin')}
@@ -175,11 +148,7 @@ const Inquiry = () => {
 				fullWidth
 			/>
 			<Box className="cs-inquiry__actions">
-				<Button
-					type="submit"
-					variant="contained"
-					disabled={createInquiryLoading || !input.receiverId}
-				>
+				<Button type="submit" variant="contained" disabled={createInquiryLoading || !input.receiverId}>
 					{createInquiryLoading ? t('ui.sending') : t('ui.sendRequest')}
 				</Button>
 			</Box>

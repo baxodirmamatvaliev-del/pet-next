@@ -50,32 +50,18 @@ const ProductList = (props: ProductListProps) => {
 				const search = input.search;
 				if (!search || typeof search !== 'object' || Array.isArray(search)) return initialInput;
 
-				const validCategories =
-					search.categoryList === undefined ||
-					(Array.isArray(search.categoryList) &&
-						search.categoryList.every((category) =>
-							Object.values(ProductCategory).includes(category)
-						));
-				const validTypes =
-					search.typeList === undefined ||
-					(Array.isArray(search.typeList) &&
-						search.typeList.every((type) => Object.values(ProductType).includes(type)));
-				const validText =
-					search.text === undefined ||
-					(typeof search.text === 'string' && !!search.text.trim() && search.text.length <= 100);
+				const validCategories = search.categoryList === undefined
+					|| (Array.isArray(search.categoryList) && search.categoryList.every((category) => Object.values(ProductCategory).includes(category)));
+				const validTypes = search.typeList === undefined
+					|| (Array.isArray(search.typeList) && search.typeList.every((type) => Object.values(ProductType).includes(type)));
+				const validText = search.text === undefined
+					|| (typeof search.text === 'string' && !!search.text.trim() && search.text.length <= 100);
 
-				if (
-					!Number.isInteger(input.page) ||
-					input.page < 1 ||
-					!Number.isInteger(input.limit) ||
-					input.limit < 1 ||
-					input.limit > 100 ||
-					(input.sort !== undefined && !productSorts.includes(input.sort)) ||
-					(input.direction !== undefined && !Object.values(Direction).includes(input.direction)) ||
-					!validCategories ||
-					!validTypes ||
-					!validText
-				) {
+				if (!Number.isInteger(input.page) || input.page < 1
+					|| !Number.isInteger(input.limit) || input.limit < 1 || input.limit > 100
+					|| (input.sort !== undefined && !productSorts.includes(input.sort))
+					|| (input.direction !== undefined && !Object.values(Direction).includes(input.direction))
+					|| !validCategories || !validTypes || !validText) {
 					return initialInput;
 				}
 
@@ -96,12 +82,9 @@ const ProductList = (props: ProductListProps) => {
 		}
 
 		const category = Object.values(ProductCategory).find((item) => item === router.query.category);
-		const sort =
-			typeof router.query.sort === 'string' && productSorts.includes(router.query.sort)
-				? router.query.sort
-				: initialInput.sort;
-		const text =
-			typeof router.query.text === 'string' ? router.query.text.trim().slice(0, 100) : '';
+		const sort = typeof router.query.sort === 'string' && productSorts.includes(router.query.sort)
+			? router.query.sort : initialInput.sort;
+		const text = typeof router.query.text === 'string' ? router.query.text.trim().slice(0, 100) : '';
 
 		return {
 			...initialInput,
@@ -111,13 +94,7 @@ const ProductList = (props: ProductListProps) => {
 				text: text || undefined,
 			},
 		};
-	}, [
-		initialInput,
-		router.query.category,
-		router.query.input,
-		router.query.sort,
-		router.query.text,
-	]);
+	}, [initialInput, router.query.category, router.query.input, router.query.sort, router.query.text]);
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
@@ -137,9 +114,11 @@ const ProductList = (props: ProductListProps) => {
 
 	/** HANDLERS **/
 	const updateSearchFilterHandler = (input: ProductsInquiry) => {
-		void router.push({ pathname: '/product', query: { input: JSON.stringify(input) } }, undefined, {
-			scroll: false,
-		});
+		void router.push(
+			{ pathname: '/product', query: { input: JSON.stringify(input) } },
+			undefined,
+			{ scroll: false },
+		);
 	};
 
 	const sortingHandler = (event: SelectChangeEvent) => {
@@ -196,39 +175,21 @@ const ProductList = (props: ProductListProps) => {
 					initialInput={initialInput}
 				/>
 				<Box component="section" className="product-results" aria-live="polite">
-					<Typography className="product-results__count">
-						{t('counts.products', { count: total })}
-					</Typography>
+					<Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>
 					{getProductsLoading && !products.length ? (
 						<Typography className="product-results__message">{t('ui.loadingProducts')}</Typography>
 					) : getProductsError ? (
-						<Typography className="product-results__message product-results__message--error">
-							{t('ui.productsCouldNotBeLoaded')}
-						</Typography>
+						<Typography className="product-results__message product-results__message--error">{t('ui.productsCouldNotBeLoaded')}</Typography>
 					) : products.length ? (
 						<Box className="product-results__grid">
-							{products.map((product) => (
-								<ProductCard
-									product={product}
-									likeTargetProduct={likeProductHandler}
-									key={product._id}
-								/>
-							))}
+							{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 						</Box>
 					) : (
-						<Typography className="product-results__message">
-							{t('ui.noProductsMatchYourFilters')}
-						</Typography>
+						<Typography className="product-results__message">{t('ui.noProductsMatchYourFilters')}</Typography>
 					)}
 					{products.length > 0 && totalPages > 0 && (
 						<Stack direction="row" className="product-pagination">
-							<Pagination
-								page={searchFilter.page}
-								count={totalPages}
-								onChange={paginationChangeHandler}
-								color="primary"
-								shape="rounded"
-							/>
+							<Pagination page={searchFilter.page} count={totalPages} onChange={paginationChangeHandler} color="primary" shape="rounded" />
 							<Typography>{t('counts.products', { count: total })}</Typography>
 						</Stack>
 					)}
@@ -265,31 +226,19 @@ const ProductList = (props: ProductListProps) => {
 						initialInput={initialInput}
 					/>
 					<Box component="section" className="product-results" aria-live="polite">
-						<Typography className="product-results__count">
-							{t('counts.products', { count: total })}
-						</Typography>
+						<Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>
 						{getProductsLoading && !products.length ? (
-							<Typography className="product-results__message">
-								{t('ui.loadingProducts')}
-							</Typography>
+							<Typography className="product-results__message">{t('ui.loadingProducts')}</Typography>
 						) : getProductsError ? (
 							<Typography className="product-results__message product-results__message--error">
 								{t('ui.productsCouldNotBeLoaded')}
 							</Typography>
 						) : products.length ? (
 							<Box className="product-results__grid">
-								{products.map((product) => (
-									<ProductCard
-										product={product}
-										likeTargetProduct={likeProductHandler}
-										key={product._id}
-									/>
-								))}
+								{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
 							</Box>
 						) : (
-							<Typography className="product-results__message">
-								{t('ui.noProductsMatchYourFilters')}
-							</Typography>
+							<Typography className="product-results__message">{t('ui.noProductsMatchYourFilters')}</Typography>
 						)}
 						{products.length > 0 && totalPages > 0 && (
 							<Stack direction="row" className="product-pagination">

@@ -47,7 +47,10 @@ const MyProfile = () => {
 
 	/** APOLLO REQUESTS **/
 	const [updateMember, { loading: updateMemberLoading }] = useMutation(UPDATE_MEMBER);
-	const { loading: getMemberLoading, error: getMemberError } = useQuery(GET_MEMBER, {
+	const {
+		loading: getMemberLoading,
+		error: getMemberError,
+	} = useQuery(GET_MEMBER, {
 		fetchPolicy: 'network-only',
 		variables: { memberId: user?.sub ?? '' },
 		skip: !user?.sub,
@@ -79,24 +82,18 @@ const MyProfile = () => {
 
 			setImageUploaderLoading(true);
 			const formData = new FormData();
-			formData.append(
-				'operations',
-				JSON.stringify({
-					query: `mutation ImageUploader($file: Upload!, $target: String!) {
+			formData.append('operations', JSON.stringify({
+				query: `mutation ImageUploader($file: Upload!, $target: String!) {
 					imageUploader(file: $file, target: $target)
 				}`,
-					variables: {
-						file: null,
-						target: 'member',
-					},
-				})
-			);
-			formData.append(
-				'map',
-				JSON.stringify({
-					'0': ['variables.file'],
-				})
-			);
+				variables: {
+					file: null,
+					target: 'member',
+				},
+			}));
+			formData.append('map', JSON.stringify({
+				'0': ['variables.file'],
+			}));
 			formData.append('0', image);
 
 			const response = await axios.post(REACT_APP_API_GRAPHQL_URL, formData, {
@@ -149,8 +146,9 @@ const MyProfile = () => {
 		? `${REACT_APP_API_URL}/${memberUpdate.memberImage}`
 		: '';
 	const fullNameLength = memberUpdate.memberFullName?.trim().length ?? 0;
-	const isUpdateDisabled =
-		updateMemberLoading || imageUploaderLoading || (fullNameLength > 0 && fullNameLength < 2);
+	const isUpdateDisabled = updateMemberLoading
+		|| imageUploaderLoading
+		|| (fullNameLength > 0 && fullNameLength < 2);
 
 	if (getMemberLoading && !member) {
 		return (
@@ -174,61 +172,24 @@ const MyProfile = () => {
 				</Box>
 				<Stack component="form" className="profile-form" onSubmit={updateMemberHandler}>
 					<Stack className="profile-photo profile-photo--mobile">
-						<Avatar src={imagePath} alt={member.memberNick}>
-							<PetsRoundedIcon />
-						</Avatar>
+						<Avatar src={imagePath} alt={member.memberNick}><PetsRoundedIcon /></Avatar>
 						<Box>
 							<Typography component="strong">{t('ui.profilePhoto')}</Typography>
 							<Typography>{t('ui.jpgJpegOrPngImage')}</Typography>
-							<Button
-								component="label"
-								variant="outlined"
-								startIcon={<CloudUploadOutlinedIcon />}
-								disabled={imageUploaderLoading}
-							>
+							<Button component="label" variant="outlined" startIcon={<CloudUploadOutlinedIcon />} disabled={imageUploaderLoading}>
 								{imageUploaderLoading ? t('ui.uploading') : t('ui.uploadImage')}
-								<Box
-									component="input"
-									className="profile-photo__input"
-									type="file"
-									accept="image/jpeg,image/png"
-									onChange={uploadImageHandler}
-								/>
+								<Box component="input" className="profile-photo__input" type="file" accept="image/jpeg,image/png" onChange={uploadImageHandler} />
 							</Button>
 						</Box>
 					</Stack>
 					<Box className="profile-fields profile-fields--mobile">
 						<TextField label={t('ui.nickname')} value={member.memberNick} disabled fullWidth />
 						<TextField label={t('ui.phoneNumber')} value={member.memberPhone} disabled fullWidth />
-						<TextField
-							label={t('ui.fullName')}
-							value={memberUpdate.memberFullName}
-							onChange={(event) => inputChangeHandler('memberFullName', event.target.value)}
-							slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }}
-							fullWidth
-						/>
-						<TextField
-							label={t('ui.address')}
-							value={memberUpdate.memberAddress}
-							onChange={(event) => inputChangeHandler('memberAddress', event.target.value)}
-							fullWidth
-						/>
-						<TextField
-							className="profile-fields__wide"
-							label={t('ui.aboutMe')}
-							value={memberUpdate.memberDesc}
-							onChange={(event) => inputChangeHandler('memberDesc', event.target.value)}
-							multiline
-							rows={4}
-							fullWidth
-						/>
+						<TextField label={t('ui.fullName')} value={memberUpdate.memberFullName} onChange={(event) => inputChangeHandler('memberFullName', event.target.value)} slotProps={{ htmlInput: { minLength: 2, maxLength: 100 } }} fullWidth />
+						<TextField label={t('ui.address')} value={memberUpdate.memberAddress} onChange={(event) => inputChangeHandler('memberAddress', event.target.value)} fullWidth />
+						<TextField className="profile-fields__wide" label={t('ui.aboutMe')} value={memberUpdate.memberDesc} onChange={(event) => inputChangeHandler('memberDesc', event.target.value)} multiline rows={4} fullWidth />
 					</Box>
-					<Button
-						type="submit"
-						variant="contained"
-						startIcon={<SaveOutlinedIcon />}
-						disabled={isUpdateDisabled}
-					>
+					<Button type="submit" variant="contained" startIcon={<SaveOutlinedIcon />} disabled={isUpdateDisabled}>
 						{updateMemberLoading ? t('ui.saving') : t('ui.saveChanges')}
 					</Button>
 				</Stack>

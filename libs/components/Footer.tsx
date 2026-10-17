@@ -38,9 +38,7 @@ const Footer = () => {
 						<Link href="/mypage?category=myOrders">{t('ui.myOrders')}</Link>
 					</Stack>
 				</Box>
-				<Box className="container site-footer__bottom">
-					{t('ui.2026PetnestKoreaAllRightsReserved')}
-				</Box>
+				<Box className="container site-footer__bottom">{t('ui.2026PetnestKoreaAllRightsReserved')}</Box>
 			</Stack>
 		);
 	} else {
@@ -57,8 +55,7 @@ const Footer = () => {
 							</Stack>
 						</Stack>
 						<Typography>
-							{t('ui.everythingTheyLove')}
-							<br />
+							{t('ui.everythingTheyLove')}<br />
 							{t('ui.happyPetsHappyFamilies')}
 						</Typography>
 					</Stack>
@@ -82,9 +79,7 @@ const Footer = () => {
 						<Link href="/pet/create">{t('ui.createListing')}</Link>
 					</Stack>
 				</Box>
-				<Box className="container site-footer__bottom">
-					{t('ui.2026PetnestKoreaAllRightsReserved')}
-				</Box>
+				<Box className="container site-footer__bottom">{t('ui.2026PetnestKoreaAllRightsReserved')}</Box>
 			</Stack>
 		);
 	}

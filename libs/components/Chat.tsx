@@ -19,23 +19,11 @@ interface ChatMessage {
 const isMessage = (value: unknown): value is ChatMessage => {
 	if (!value || typeof value !== 'object') return false;
 	const message = value as ChatMessage;
-	return (
-		typeof message.text === 'string' &&
-		(message.memberData == null ||
-			(typeof message.memberData === 'object' &&
-				typeof message.memberData._id === 'string' &&
-				(message.memberData.memberImage == null ||
-					typeof message.memberData.memberImage === 'string') &&
-				(message.memberData.memberNick == null ||
-					typeof message.memberData.memberNick === 'string')))
-	);
+	return typeof message.text === 'string' && (message.memberData == null ||
+		(typeof message.memberData === 'object' && typeof message.memberData._id === 'string' &&
+			(message.memberData.memberImage == null || typeof message.memberData.memberImage === 'string') &&
+			(message.memberData.memberNick == null || typeof message.memberData.memberNick === 'string')));
 };
-
-function getChatAvatarUrl(memberImage?: string): string {
-	if (!memberImage) return '/img/profile/defaultUser.svg';
-	if (/^https?:\/\//.test(memberImage)) return memberImage;
-	return `${REACT_APP_API_URL}/${memberImage.replace(/^\//, '')}`;
-}
 
 export default function Chat() {
 	const { t } = useTranslation();
@@ -43,7 +31,6 @@ export default function Chat() {
 	const authReady = useReactiveVar(authReadyVar);
 	const socketRef = useRef<WebSocket | null>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
-	const frameRef = useRef<HTMLDivElement>(null);
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
 	const [onlineUsers, setOnlineUsers] = useState(0);
 	const [messageInput, setMessageInput] = useState('');
@@ -70,12 +57,7 @@ export default function Chat() {
 				url.searchParams.set('token', token);
 				socket = new WebSocket(url);
 				socketRef.current = socket;
-				socket.onopen = () => {
-					if (!disposed) {
-						attempt = 0;
-						setConnected(true);
-					}
-				};
+				socket.onopen = () => { if (!disposed) { attempt = 0; setConnected(true); } };
 				socket.onmessage = (event) => {
 					if (disposed) return;
 					try {
@@ -92,9 +74,7 @@ export default function Chat() {
 								if (isMessage(data)) setMessages((previous) => [...previous, data]);
 								break;
 						}
-					} catch {
-						/* Ignore malformed frames. */
-					}
+					} catch { /* Ignore malformed frames. */ }
 				};
 				socket.onclose = () => {
 					if (disposed) return;
@@ -102,9 +82,7 @@ export default function Chat() {
 					setOnlineUsers(0);
 					scheduleRetry();
 				};
-			} catch {
-				scheduleRetry();
-			}
+			} catch { scheduleRetry(); }
 		};
 		void connect();
 		return () => {
@@ -123,30 +101,6 @@ export default function Chat() {
 		if (content) content.scrollTop = content.scrollHeight;
 	}, [messages, open]);
 
-	// Keep the composer above the phone keyboard and browser chrome.
-	useEffect(() => {
-		if (!open) return;
-		const frame = frameRef.current;
-		if (!frame) return;
-		const viewport = window.visualViewport;
-		const updateViewport = () => {
-			frame.style.setProperty(
-				'--chat-viewport-height',
-				`${viewport?.height ?? window.innerHeight}px`
-			);
-			frame.style.setProperty('--chat-viewport-top', `${viewport?.offsetTop ?? 0}px`);
-		};
-		updateViewport();
-		viewport?.addEventListener('resize', updateViewport);
-		viewport?.addEventListener('scroll', updateViewport);
-		window.addEventListener('resize', updateViewport);
-		return () => {
-			viewport?.removeEventListener('resize', updateViewport);
-			viewport?.removeEventListener('scroll', updateViewport);
-			window.removeEventListener('resize', updateViewport);
-		};
-	}, [open]);
-
 	const sendMessage = () => {
 		const text = messageInput.trim();
 		if (!text || socketRef.current?.readyState !== WebSocket.OPEN) return;
@@ -155,103 +109,38 @@ export default function Chat() {
 	};
 
 	return (
-		<Stack className={`chatting ${open ? 'is-open' : ''}`}>
-			<button
-				className="chat-button"
-				onClick={() => setOpen((value) => !value)}
-				aria-label={open ? t('chat.close') : t('chat.open')}
-				aria-expanded={open}
-				aria-controls="live-chat"
-			>
+		<Stack className="chatting">
+			<button className="chat-button" onClick={() => setOpen((value) => !value)} aria-label={open ? t('chat.close') : t('chat.open')} aria-expanded={open} aria-controls="live-chat">
 				{open ? <CloseRoundedIcon /> : <MarkChatUnreadIcon />}
 				{!open && <span className="chat-launcher-dot" />}
 			</button>
-			<Stack
-				ref={frameRef}
-				id="live-chat"
-				onKeyDown={(event) => {
-					if (event.key === 'Escape') setOpen(false);
-				}}
-				className={`chat-frame ${open ? 'open' : ''}`}
-				inert={!open}
-				aria-hidden={!open}
-			>
+			<Stack id="live-chat" className={`chat-frame ${open ? 'open' : ''}`} inert={!open} aria-hidden={!open}>
 				<Box className="chat-top">
-					<div className="chat-brand">
-						<PetsRoundedIcon />
+					<div className="chat-brand"><PetsRoundedIcon /></div>
+					<div className="chat-heading"><span className="chat-eyebrow">PETNEST COMMUNITY</span><h2>{t('chat.title')}</h2>
+						<span className={`chat-status ${connected ? 'is-connected' : ''}`} role="status"><i />{connected ? t('chat.online', { count: onlineUsers }) : t('chat.connecting')}</span>
 					</div>
-					<div className="chat-heading">
-						<span className="chat-eyebrow">PETNEST COMMUNITY</span>
-						<h2>{t('chat.title')}</h2>
-						<span className={`chat-status ${connected ? 'is-connected' : ''}`} role="status">
-							<i />
-							{connected ? t('chat.online', { count: onlineUsers }) : t('chat.connecting')}
-						</span>
-					</div>
-					<button
-						type="button"
-						className="chat-close"
-						aria-label={t('chat.close')}
-						onClick={() => setOpen(false)}
-					>
-						<CloseRoundedIcon />
-					</button>
+					<button type="button" className="chat-close" aria-label={t('chat.close')} onClick={() => setOpen(false)}><CloseRoundedIcon /></button>
 				</Box>
-				<Box
-					className="chat-content"
-					ref={contentRef}
-					role="log"
-					aria-label={t('chat.title')}
-					aria-live="polite"
-				>
+				<Box className="chat-content" ref={contentRef} role="log" aria-label={t('chat.title')} aria-live="polite">
 					<Stack className="chat-main">
-						<div className="chat-intro">
-							<span>{t('chat.welcome')}</span>
-							<p>{t('chat.description')}</p>
-						</div>
+						<div className="chat-intro"><span>{t('chat.welcome')}</span><p>{t('chat.description')}</p></div>
 						{messages.map((message, index) => {
 							const member = message.memberData;
 							const own = Boolean(user?.sub && member?._id === user.sub);
-							const image = getChatAvatarUrl(member?.memberImage);
-							return (
-								<Box key={index} className={`chat-message ${own ? 'is-own' : ''}`}>
-									{!own && <Avatar alt={member?.memberNick ?? t('chat.guest')} src={image} />}
-									<div className="chat-message-body">
-										<span className="chat-author">
-											{own ? t('chat.you') : member?.memberNick ?? t('chat.guest')}
-										</span>
-										<div className={own ? 'msg-right' : 'msg-left'}>{message.text}</div>
-									</div>
-								</Box>
-							);
+							const image = member?.memberImage
+								? (/^https?:\/\//.test(member.memberImage) ? member.memberImage : `${REACT_APP_API_URL}/${member.memberImage.replace(/^\//, '')}`)
+								: '/img/profile/defaultUser.svg';
+							return <Box key={index} className={`chat-message ${own ? 'is-own' : ''}`}>
+								{!own && <Avatar alt={member?.memberNick ?? t('chat.guest')} src={image} />}
+								<div className="chat-message-body"><span className="chat-author">{own ? t('chat.you') : member?.memberNick ?? t('chat.guest')}</span><div className={own ? 'msg-right' : 'msg-left'}>{message.text}</div></div>
+							</Box>;
 						})}
 					</Stack>
 				</Box>
-				<Box
-					className="chat-bott"
-					component="form"
-					onSubmit={(event) => {
-						event.preventDefault();
-						sendMessage();
-					}}
-				>
-					<input
-						className="msg-input"
-						name="message"
-						aria-label={t('chat.message')}
-						type="text"
-						placeholder={t('chat.message')}
-						value={messageInput}
-						onChange={(event) => setMessageInput(event.target.value)}
-					/>
-					<button
-						type="submit"
-						className="send-msg-btn"
-						aria-label={t('chat.send')}
-						disabled={!connected || !messageInput.trim()}
-					>
-						<SendIcon />
-					</button>
+				<Box className="chat-bott" component="form" onSubmit={(event) => { event.preventDefault(); sendMessage(); }}>
+					<input className="msg-input" name="message" aria-label={t('chat.message')} type="text" placeholder={t('chat.message')} value={messageInput} onChange={(event) => setMessageInput(event.target.value)} />
+					<button type="submit" className="send-msg-btn" aria-label={t('chat.send')} disabled={!connected || !messageInput.trim()}><SendIcon /></button>
 				</Box>
 			</Stack>
 		</Stack>

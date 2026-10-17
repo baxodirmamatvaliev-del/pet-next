@@ -117,73 +117,46 @@ const MyFavorites = () => {
 	/** COMPUTED VALUES **/
 	const activeItems = favoriteType === 'products' ? favoriteProducts : favoritePets;
 	const total = favoriteType === 'products' ? productTotal : petTotal;
-	const getFavoritesLoading =
-		favoriteType === 'products' ? getFavoriteProductsLoading : getFavoritePetsLoading;
-	const getFavoritesError =
-		favoriteType === 'products' ? getFavoriteProductsError : getFavoritePetsError;
+	const getFavoritesLoading = favoriteType === 'products' ? getFavoriteProductsLoading : getFavoritePetsLoading;
+	const getFavoritesError = favoriteType === 'products' ? getFavoriteProductsError : getFavoritePetsError;
 	const totalPages = Math.ceil(total / searchFavorites.limit);
 	const favoritesContent = (
 		<>
 			<Stack direction="row" className="my-favorites__tabs">
-				<Button
-					className={favoriteType === 'products' ? 'active' : ''}
-					onClick={() => favoriteTypeHandler('products')}
-				>
-					{t('ui.products')}
-				</Button>
-				<Button
-					className={favoriteType === 'pets' ? 'active' : ''}
-					onClick={() => favoriteTypeHandler('pets')}
-				>
-					{t('ui.petListings')}
-				</Button>
+				<Button className={favoriteType === 'products' ? 'active' : ''} onClick={() => favoriteTypeHandler('products')}>{t('ui.products')}</Button>
+				<Button className={favoriteType === 'pets' ? 'active' : ''} onClick={() => favoriteTypeHandler('pets')}>{t('ui.petListings')}</Button>
 			</Stack>
 			{getFavoritesLoading && !activeItems.length ? (
-				<Stack className="my-favorites__state">
-					<CircularProgress color="primary" />
-				</Stack>
+				<Stack className="my-favorites__state"><CircularProgress color="primary" /></Stack>
 			) : getFavoritesError ? (
 				<Alert severity="error">{t('ui.favoritesCouldNotBeLoaded')}</Alert>
 			) : activeItems.length ? (
 				<>
 					<Box className="my-favorites__grid">
-						{favoriteType === 'pets'
-							? favoritePets.map((pet) => (
-									<Stack className="my-favorites__item" key={pet._id}>
-										<PetCard pet={pet} />
-										<Button
-											variant="outlined"
-											startIcon={<FavoriteRoundedIcon />}
-											onClick={() => removeFavoriteHandler(pet._id)}
-											disabled={Boolean(removingId)}
-										>
-											{removingId === pet._id ? t('ui.removing') : t('ui.removeFromFavorites')}
-										</Button>
-									</Stack>
-							  ))
-							: favoriteProducts.map((product) => (
-									<Stack className="my-favorites__item" key={product._id}>
-										<ProductCard product={product} showFavorite={false} />
-										<Button
-											variant="outlined"
-											startIcon={<FavoriteRoundedIcon />}
-											onClick={() => removeFavoriteProductHandler(product._id)}
-											disabled={Boolean(removingId)}
-										>
-											{removingId === product._id ? t('ui.removing') : t('ui.removeFromFavorites')}
-										</Button>
-									</Stack>
-							  ))}
+						{favoriteType === 'pets' ? favoritePets.map((pet) => (
+							<Stack className="my-favorites__item" key={pet._id}>
+								<PetCard pet={pet} />
+								<Button
+									variant="outlined"
+									startIcon={<FavoriteRoundedIcon />}
+									onClick={() => removeFavoriteHandler(pet._id)}
+									disabled={Boolean(removingId)}
+								>
+									{removingId === pet._id ? t('ui.removing') : t('ui.removeFromFavorites')}
+								</Button>
+							</Stack>
+						)) : favoriteProducts.map((product) => (
+							<Stack className="my-favorites__item" key={product._id}>
+								<ProductCard product={product} showFavorite={false} />
+								<Button variant="outlined" startIcon={<FavoriteRoundedIcon />} onClick={() => removeFavoriteProductHandler(product._id)} disabled={Boolean(removingId)}>
+									{removingId === product._id ? t('ui.removing') : t('ui.removeFromFavorites')}
+								</Button>
+							</Stack>
+						))}
 					</Box>
 					{totalPages > 0 && (
 						<Stack direction="row" className="my-favorites__pagination">
-							<Pagination
-								page={searchFavorites.page}
-								count={totalPages}
-								onChange={paginationHandler}
-								color="primary"
-								shape="rounded"
-							/>
+							<Pagination page={searchFavorites.page} count={totalPages} onChange={paginationHandler} color="primary" shape="rounded" />
 							<Typography>{t('counts.saved', { count: total })}</Typography>
 						</Stack>
 					)}
@@ -191,19 +164,9 @@ const MyFavorites = () => {
 			) : (
 				<Stack className="my-favorites__state">
 					<FavoriteRoundedIcon />
-					<Typography component="h2">
-						{t(
-							favoriteType === 'products' ? 'message.noFavoriteProducts' : 'message.noFavoritePets'
-						)}
-					</Typography>
+					<Typography component="h2">{t(favoriteType === 'products' ? 'message.noFavoriteProducts' : 'message.noFavoritePets')}</Typography>
 					<Typography>{t('ui.itemsYouSaveWillAppearHere')}</Typography>
-					<Button
-						component={Link}
-						href={favoriteType === 'products' ? '/product' : '/pet'}
-						variant="contained"
-					>
-						{t(favoriteType === 'products' ? 'ui.browseProducts' : 'ui.exploreCommunity')}
-					</Button>
+					<Button component={Link} href={favoriteType === 'products' ? '/product' : '/pet'} variant="contained">{t(favoriteType === 'products' ? 'ui.browseProducts' : 'ui.exploreCommunity')}</Button>
 				</Stack>
 			)}
 		</>

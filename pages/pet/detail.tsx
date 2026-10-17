@@ -81,14 +81,10 @@ const PetDetail: NextPage = () => {
 	/** COMPUTED VALUES **/
 	const isFavorite = Boolean(pet?.meLiked?.some((item) => item.myFavorite));
 	const imagePath = slideImage ? `${REACT_APP_API_URL}/${slideImage}` : '/img/banner/home-hero.png';
-	const petAge =
-		typeof pet?.petAgeMonths === 'number'
-			? t('message.ageMonths', { count: pet.petAgeMonths })
-			: t('ui.notListed');
-	const petPrice =
-		pet?.petListingType === PetListingType.ADOPTION
-			? t('ui.freeAdoption')
-			: `₩${formatterStr(pet?.petPrice ?? 0)}`;
+	const petAge = typeof pet?.petAgeMonths === 'number' ? t('message.ageMonths', { count: pet.petAgeMonths }) : t('ui.notListed');
+	const petPrice = pet?.petListingType === PetListingType.ADOPTION
+		? t('ui.freeAdoption')
+		: `₩${formatterStr(pet?.petPrice ?? 0)}`;
 
 	if (!router.isReady || !petId || (getPetLoading && !pet)) {
 		return (
@@ -117,7 +113,14 @@ const PetDetail: NextPage = () => {
 				<Box className="pet-detail pet-detail--mobile">
 					<Box className="pet-gallery">
 						<Box className="pet-gallery__main">
-							<Image src={imagePath} alt={pet.petName} fill sizes="100vw" priority unoptimized />
+							<Image
+								src={imagePath}
+								alt={pet.petName}
+								fill
+								sizes="100vw"
+								priority
+								unoptimized
+							/>
 						</Box>
 						<Stack className="pet-gallery__thumbs">
 							{pet.petImages.map((image) => (
@@ -126,13 +129,7 @@ const PetDetail: NextPage = () => {
 									onClick={() => changeImageHandler(image)}
 									key={image}
 								>
-									<Image
-										src={`${REACT_APP_API_URL}/${image}`}
-										alt=""
-										fill
-										sizes="68px"
-										unoptimized
-									/>
+									<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="68px" unoptimized />
 								</Button>
 							))}
 						</Stack>
@@ -140,11 +137,7 @@ const PetDetail: NextPage = () => {
 
 					<Stack className="pet-detail__info">
 						<Stack direction="row" className="pet-detail__eyebrow">
-							<Typography>
-								{pet.petListingType === PetListingType.ADOPTION
-									? t('ui.adoption')
-									: t('ui.forSale')}
-							</Typography>
+							<Typography>{pet.petListingType === PetListingType.ADOPTION ? t('ui.adoption') : t('ui.forSale')}</Typography>
 							<IconButton
 								className={isFavorite ? 'active' : ''}
 								onClick={likePetHandler}
@@ -156,23 +149,16 @@ const PetDetail: NextPage = () => {
 						</Stack>
 						<Typography component="h1">{pet.petName}</Typography>
 						<Typography className="pet-detail__title">{pet.petTitle}</Typography>
-						<Typography component="strong" className="pet-detail__price">
-							{petPrice}
-						</Typography>
+						<Typography component="strong" className="pet-detail__price">{petPrice}</Typography>
 
 						<Stack className="pet-detail__facts">
 							<Stack direction="row">
 								<PetsOutlinedIcon />
-								<Typography>
-									{pet.petBreed ?? label(pet.petType)} · {label(pet.petGender)} · {petAge}
-								</Typography>
+								<Typography>{pet.petBreed ?? label(pet.petType)} · {label(pet.petGender)} · {petAge}</Typography>
 							</Stack>
 							<Stack direction="row">
 								<LocationOnOutlinedIcon />
-								<Typography>
-									{label(pet.petLocation)}
-									{t('ui.southKorea')}
-								</Typography>
+								<Typography>{label(pet.petLocation)}{t('ui.southKorea')}</Typography>
 							</Stack>
 						</Stack>
 
@@ -187,16 +173,12 @@ const PetDetail: NextPage = () => {
 
 						<Stack className="pet-detail__owner">
 							<Typography>{t('ui.listedBy')}</Typography>
-							<Link href={`/member/detail?id=${pet.memberId}`}>
-								{pet.memberData?.memberNick ?? t('common.member')}
-							</Link>
+							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? t('common.member')}</Link>
 						</Stack>
 
 						{pet.petDesc && (
 							<Box className="pet-detail__description">
-								<Typography component="strong">
-									{t('ui.about')} {pet.petName}
-								</Typography>
+								<Typography component="strong">{t('ui.about')} {pet.petName}</Typography>
 								<Typography>{pet.petDesc}</Typography>
 							</Box>
 						)}
@@ -210,8 +192,7 @@ const PetDetail: NextPage = () => {
 		return (
 			<Box component="main" className="pet-detail-page container">
 				<Typography className="pet-detail-page__breadcrumb">
-					<Link href="/">{t('ui.home')}</Link> / <Link href="/pet">{t('nav.community')}</Link> /{' '}
-					{pet.petName}
+					<Link href="/">{t('ui.home')}</Link> / <Link href="/pet">{t('nav.community')}</Link> / {pet.petName}
 				</Typography>
 
 				<Box className="pet-detail">
@@ -223,13 +204,7 @@ const PetDetail: NextPage = () => {
 									onClick={() => changeImageHandler(image)}
 									key={image}
 								>
-									<Image
-										src={`${REACT_APP_API_URL}/${image}`}
-										alt=""
-										fill
-										sizes="80px"
-										unoptimized
-									/>
+									<Image src={`${REACT_APP_API_URL}/${image}`} alt="" fill sizes="80px" unoptimized />
 								</Button>
 							))}
 						</Stack>
@@ -247,11 +222,7 @@ const PetDetail: NextPage = () => {
 
 					<Stack className="pet-detail__info">
 						<Stack direction="row" className="pet-detail__eyebrow">
-							<Typography>
-								{pet.petListingType === PetListingType.ADOPTION
-									? t('ui.adoption')
-									: t('ui.forSale')}
-							</Typography>
+							<Typography>{pet.petListingType === PetListingType.ADOPTION ? t('ui.adoption') : t('ui.forSale')}</Typography>
 							<IconButton
 								className={isFavorite ? 'active' : ''}
 								onClick={likePetHandler}
@@ -263,23 +234,16 @@ const PetDetail: NextPage = () => {
 						</Stack>
 						<Typography component="h1">{pet.petName}</Typography>
 						<Typography className="pet-detail__title">{pet.petTitle}</Typography>
-						<Typography component="strong" className="pet-detail__price">
-							{petPrice}
-						</Typography>
+						<Typography component="strong" className="pet-detail__price">{petPrice}</Typography>
 
 						<Stack className="pet-detail__facts">
 							<Stack direction="row">
 								<PetsOutlinedIcon />
-								<Typography>
-									{pet.petBreed ?? label(pet.petType)} · {label(pet.petGender)} · {petAge}
-								</Typography>
+								<Typography>{pet.petBreed ?? label(pet.petType)} · {label(pet.petGender)} · {petAge}</Typography>
 							</Stack>
 							<Stack direction="row">
 								<LocationOnOutlinedIcon />
-								<Typography>
-									{label(pet.petLocation)}
-									{t('ui.southKorea')}
-								</Typography>
+								<Typography>{label(pet.petLocation)}{t('ui.southKorea')}</Typography>
 							</Stack>
 						</Stack>
 
@@ -294,16 +258,12 @@ const PetDetail: NextPage = () => {
 
 						<Stack className="pet-detail__owner">
 							<Typography>{t('ui.listedBy')}</Typography>
-							<Link href={`/member/detail?id=${pet.memberId}`}>
-								{pet.memberData?.memberNick ?? t('common.member')}
-							</Link>
+							<Link href={`/member/detail?id=${pet.memberId}`}>{pet.memberData?.memberNick ?? t('common.member')}</Link>
 						</Stack>
 
 						{pet.petDesc && (
 							<Box className="pet-detail__description">
-								<Typography component="strong">
-									{t('ui.about')} {pet.petName}
-								</Typography>
+								<Typography component="strong">{t('ui.about')} {pet.petName}</Typography>
 								<Typography>{pet.petDesc}</Typography>
 							</Box>
 						)}

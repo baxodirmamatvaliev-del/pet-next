@@ -19,11 +19,7 @@ const AdminMenuList = () => {
 		{ title: t('ui.orders'), href: '/_admin/orders', icon: <ReceiptLongOutlinedIcon /> },
 		{ title: t('ui.members'), href: '/_admin/users', icon: <Groups2OutlinedIcon /> },
 		{ title: t('ui.reviewsComments'), href: '/_admin/comments', icon: <RateReviewOutlinedIcon /> },
-		{
-			title: t('ui.supportRequests'),
-			href: '/_admin/inquiries',
-			icon: <SupportAgentOutlinedIcon />,
-		},
+		{ title: t('ui.supportRequests'), href: '/_admin/inquiries', icon: <SupportAgentOutlinedIcon /> },
 	];
 
 	const router = useRouter();
@@ -31,12 +27,7 @@ const AdminMenuList = () => {
 	return (
 		<List className="admin-menu">
 			{adminMenu.map((item) => (
-				<ListItemButton
-					component={Link}
-					href={item.href}
-					selected={router.pathname === item.href}
-					key={item.href}
-				>
+				<ListItemButton component={Link} href={item.href} selected={router.pathname === item.href} key={item.href}>
 					<ListItemIcon>{item.icon}</ListItemIcon>
 					<ListItemText primary={item.title} />
 				</ListItemButton>

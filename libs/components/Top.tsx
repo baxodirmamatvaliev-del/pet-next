@@ -4,7 +4,6 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
-import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { Box, IconButton, InputAdornment, OutlinedInput, Stack, Typography } from '@mui/material';
@@ -70,47 +69,25 @@ const Top = () => {
 			<Stack component="header" className="site-header site-header--mobile">
 				<Stack direction="row" className="announcement">
 					<Typography component="span">{t('nav.delivery')}</Typography>
-					<LanguageSwitcher />
 				</Stack>
 				<Box className="header-main container">
-					<Stack
-						direction="row"
-						component={Link}
-						href="/"
-						className="brand"
-						aria-label={t('nav.home')}
-					>
+					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
 						<PetsRoundedIcon className="brand__mark" />
 						<Stack component="span" className="brand__text">
 							<Typography component="strong">PetNest</Typography>
 							<Typography component="small">Korea</Typography>
 						</Stack>
 					</Stack>
-					<Stack
-						direction="row"
-						component="nav"
-						className="header-actions"
-						aria-label={t('nav.shoppingActions')}
-					>
+					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.shoppingActions')}>
 						<ThemeToggle />
 						<NotificationBell />
-						<Stack
-							component={Link}
-							href="/cart"
-							aria-label={t('nav.shoppingCart')}
-							className="cart-link"
-						>
+						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
 							<LocalMallOutlinedIcon />
 							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>
 						</Stack>
 					</Stack>
-					<IconButton
-						className="mobile-menu"
-						onClick={mobileMenuOpenHandler}
-						aria-label={t('nav.openMenu')}
-						aria-expanded={mobileMenuOpen}
-					>
+					<IconButton className="mobile-menu" onClick={mobileMenuOpenHandler} aria-label={t('nav.openMenu')} aria-expanded={mobileMenuOpen}>
 						<MenuRoundedIcon />
 					</IconButton>
 				</Box>
@@ -121,12 +98,6 @@ const Top = () => {
 					closeHandler={mobileMenuCloseHandler}
 					searchProductsHandler={searchProductsHandler}
 				/>
-				<Stack className="header-editorial">
-					<Stack direction="row" className="container header-editorial__inner">
-						<Typography>{t('home.dispatchNote')}</Typography>
-						<Link href="/product">{t('home.explore')}</Link>
-					</Stack>
-				</Stack>
 			</Stack>
 		);
 	} else {
@@ -135,16 +106,9 @@ const Top = () => {
 			<Stack component="header" className="site-header site-header--pc">
 				<Stack direction="row" className="announcement">
 					<Typography component="span">{t('nav.delivery')}</Typography>
-					<LanguageSwitcher />
 				</Stack>
 				<Box className="header-main container">
-					<Stack
-						direction="row"
-						component={Link}
-						href="/"
-						className="brand"
-						aria-label={t('nav.home')}
-					>
+					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
 						<PetsRoundedIcon className="brand__mark" />
 						<Stack component="span" className="brand__text">
 							<Typography component="strong">PetNest</Typography>
@@ -160,48 +124,26 @@ const Top = () => {
 							defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
 							placeholder={t('nav.searchPlaceholder')}
 							inputProps={{ 'aria-label': t('nav.search') }}
-							endAdornment={
+							endAdornment={(
 								<InputAdornment position="end">
-									<IconButton component={Link} href="/product" aria-label={t('nav.products')}>
-										<TuneRoundedIcon />
-									</IconButton>
-									<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}>
-										<SearchRoundedIcon />
-									</IconButton>
+									<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}><SearchRoundedIcon /></IconButton>
 								</InputAdornment>
-							}
+							)}
 						/>
 					</Box>
-					<Stack
-						direction="row"
-						component="nav"
-						className="header-actions"
-						aria-label={t('nav.accountNavigation')}
-					>
+					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.accountNavigation')}>
 						<ThemeToggle />
+						<LanguageSwitcher />
 						<NotificationBell />
-						<Stack
-							component={Link}
-							href="/mypage?category=myFavorites"
-							aria-label={t('nav.favorites')}
-						>
+						<Stack component={Link} href="/mypage?category=myFavorites" aria-label={t('nav.favorites')}>
 							<FavoriteBorderRoundedIcon />
 							<Typography component="span">{t('nav.favorites')}</Typography>
 						</Stack>
-						<Stack
-							component={Link}
-							href={user?.sub ? '/mypage' : '/account/join'}
-							aria-label={t(user?.sub ? 'nav.account' : 'nav.login')}
-						>
+						<Stack component={Link} href={user?.sub ? '/mypage' : '/account/join'} aria-label={t(user?.sub ? 'nav.account' : 'nav.login')}>
 							<PersonOutlineRoundedIcon />
 							<Typography component="span">{t(user?.sub ? 'nav.account' : 'nav.login')}</Typography>
 						</Stack>
-						<Stack
-							component={Link}
-							href="/cart"
-							aria-label={t('nav.shoppingCart')}
-							className="cart-link"
-						>
+						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
 							<LocalMallOutlinedIcon />
 							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>
@@ -213,24 +155,13 @@ const Top = () => {
 						<Link href="/product">{t('nav.products')}</Link>
 						<Link href="/product?category=DOG">{t('nav.dogs')}</Link>
 						<Link href="/product?category=CAT">{t('nav.cats')}</Link>
-						<Link href="/product?sort=createdAt">
-							{t('nav.newProducts')}
-							<Typography component="span" className="category-nav__badge">
-								{t('nav.new')}
-							</Typography>
-						</Link>
+						<Link href="/product?sort=createdAt">{t('nav.new')}</Link>
 						<Link href="/product?sort=productSold">{t('nav.best')}</Link>
 						<Link href="/agent">{t('nav.agents')}</Link>
 						<Link href="/pet">{t('nav.community')}</Link>
 						<Link href="/cs">{t('nav.help')}</Link>
 					</Stack>
 				</Box>
-				<Stack className="header-editorial">
-					<Stack direction="row" className="container header-editorial__inner">
-						<Typography>{t('home.dispatchNote')}</Typography>
-						<Link href="/product">{t('home.explore')}</Link>
-					</Stack>
-				</Stack>
 			</Stack>
 		);
 	}
