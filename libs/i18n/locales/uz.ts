@@ -1,6 +1,14 @@
 import type { Dictionary } from './en';
 
 const uz: Dictionary = {
+	'home.curatedEdit': 'Har kungi hamrohlik uchun saralangan',
+	'home.trustNote': 'Qulaylik, o‘yin va kichik odatlar — birgalikda.',
+	'home.dispatchNote':
+		'It va mushuklar bilan baxtli kunlar uchun tanlangan mahsulotlarni kashf eting.',
+	'home.explore': 'Mahsulotlarni ko‘rish →',
+	'home.featured': 'Saralangan mahsulot',
+	'home.viewItem': 'Mahsulotni ko‘rish →',
+
 	'chat.title': 'Hamjamiyat chati',
 	'chat.open': 'Chatni ochish',
 	'chat.close': 'Chatni yopish',

@@ -1,5 +1,12 @@
 // Yangi kalit avval shu yerga, keyin qolgan uchta lug‘atga qo‘shiladi.
 const en = {
+	'home.curatedEdit': 'Curated for everyday companionship',
+	'home.trustNote': 'Comfort, play, and little rituals — together.',
+	'home.dispatchNote': 'Explore essentials for dogs and cats, chosen for happier days together.',
+	'home.explore': 'Explore products →',
+	'home.featured': 'Featured favorite',
+	'home.viewItem': 'View item →',
+
 	'chat.title': 'Community chat',
 	'chat.open': 'Open live chat',
 	'chat.close': 'Close live chat',

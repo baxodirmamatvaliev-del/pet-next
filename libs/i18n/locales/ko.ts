@@ -1,6 +1,13 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
+	'home.curatedEdit': '함께하는 일상을 위한 큐레이션',
+	'home.trustNote': '편안한 휴식, 즐거운 놀이, 함께하는 작은 일상.',
+	'home.dispatchNote': '강아지와 고양이의 더 행복한 일상을 위해 고른 용품을 만나보세요.',
+	'home.explore': '상품 둘러보기 →',
+	'home.featured': '추천 상품',
+	'home.viewItem': '상품 보기 →',
+
 	'chat.title': '함께 나누는 이야기',
 	'chat.open': '채팅 열기',
 	'chat.close': '채팅 닫기',

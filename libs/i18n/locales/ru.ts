@@ -1,6 +1,13 @@
 import type { Dictionary } from './en';
 
 const ru: Dictionary = {
+	'home.curatedEdit': 'Для каждого дня вместе',
+	'home.trustNote': 'Уют, игры и маленькие ритуалы — вместе.',
+	'home.dispatchNote': 'Товары для собак и кошек, выбранные для счастливых дней вместе.',
+	'home.explore': 'Смотреть товары →',
+	'home.featured': 'Рекомендуемый товар',
+	'home.viewItem': 'Смотреть товар →',
+
 	'chat.title': 'Чат сообщества',
 	'chat.open': 'Открыть чат',
 	'chat.close': 'Закрыть чат',
