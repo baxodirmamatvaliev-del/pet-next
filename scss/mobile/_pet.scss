@@ -56,8 +56,8 @@
 			}
 
 			.pet-results__grid {
-				grid-template-columns: 1fr;
-				gap: 20px;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 12px;
 			}
 
 			.pet-pagination {
@@ -197,6 +197,48 @@
 		.member-detail__grid {
 			grid-template-columns: 1fr;
 			gap: 20px;
+		}
+	}
+}
+
+
+@media (max-width: 760px) {
+	.community-pets__grid,
+	.pet-results__grid {
+		.pet-card__content {
+			padding: 12px;
+			overflow-wrap: anywhere;
+
+			.pet-card__heading {
+				flex-direction: column;
+				gap: 8px;
+
+				h2 {
+					font-size: 18px;
+				}
+			}
+
+			.pet-card__meta {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 6px;
+			}
+
+			.pet-card__stats {
+				gap: 8px;
+
+				.pet-card__owner {
+					max-width: 100%;
+					margin-left: 0;
+					font-size: 12px;
+				}
+			}
+		}
+
+		.pet-card__status {
+			top: 8px;
+			left: 8px;
+			max-width: calc(100% - 16px);
 		}
 	}
 }

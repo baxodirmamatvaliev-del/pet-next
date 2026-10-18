@@ -36,6 +36,22 @@ export default function Chat() {
 	const [messageInput, setMessageInput] = useState('');
 	const [open, setOpen] = useState(false);
 	const [connected, setConnected] = useState(false);
+	const [scrolling, setScrolling] = useState(false);
+
+	useEffect(() => {
+		if (open) return;
+		let idle: ReturnType<typeof setTimeout> | undefined;
+		const onScroll = () => {
+			setScrolling(true);
+			clearTimeout(idle);
+			idle = setTimeout(() => setScrolling(false), 220);
+		};
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => {
+			window.removeEventListener('scroll', onScroll);
+			clearTimeout(idle);
+		};
+	}, [open]);
 
 	// Login, logout and token refresh reconnect with the current in-memory token.
 	useEffect(() => {
@@ -109,8 +125,8 @@ export default function Chat() {
 	};
 
 	return (
-		<Stack className="chatting">
-			<button className="chat-button" onClick={() => setOpen((value) => !value)} aria-label={open ? t('chat.close') : t('chat.open')} aria-expanded={open} aria-controls="live-chat">
+		<Stack className={`chatting${scrolling && !open ? ' is-scrolling' : ''}`}>
+			<button className="chat-button" onClick={() => { setScrolling(false); setOpen((value) => !value); }} aria-label={open ? t('chat.close') : t('chat.open')} aria-expanded={open} aria-controls="live-chat">
 				{open ? <CloseRoundedIcon /> : <MarkChatUnreadIcon />}
 				{!open && <span className="chat-launcher-dot" />}
 			</button>

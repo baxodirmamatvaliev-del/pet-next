@@ -25,6 +25,7 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 					<Stack id="mobile-wrap">
 						<Stack id="top"><Top /></Stack>
 						<Stack id="main"><Component {...props} /></Stack>
+						<Chat />
 						<Stack id="footer"><Footer /></Stack>
 					</Stack>
 				</>

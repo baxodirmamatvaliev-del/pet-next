@@ -8,6 +8,7 @@ import ts from 'typescript';
 function chat({ ready = true, user = null, token = '' } = {}) {
   const states = [], refs = [], effects = [], sockets = [], timers = new Map();
   const userVar = {}, authReadyVar = {};
+  const listeners = new Map();
   let stateIndex, refIndex, effectIndex, timerId = 0, tree;
   const react = {
     useState(initial) {
@@ -55,6 +56,7 @@ function chat({ ready = true, user = null, token = '' } = {}) {
   }).outputText;
   vm.runInNewContext(code, {
     exports: compiledModule.exports, WebSocket: Socket, URL,
+    window: { addEventListener: (name, fn) => listeners.set(name, fn), removeEventListener: name => listeners.delete(name) },
     require: name => imports[name] ?? { default: name },
     setTimeout: (callback, delay) => { const id = ++timerId; timers.set(id, { callback, delay }); return id; },
     clearTimeout: id => timers.delete(id),
@@ -79,7 +81,7 @@ function chat({ ready = true, user = null, token = '' } = {}) {
   };
   render();
   return {
-    sockets, states, timers, render, find,
+    sockets, states, timers, render, find, listeners,
     flush: async () => { await new Promise(resolve => setImmediate(resolve)); render(); },
     auth: (nextUser, nextToken) => { user = nextUser; token = nextToken; render(); },
     unmount: () => effects.forEach(effect => effect.cleanup?.()),
@@ -138,4 +140,50 @@ test('disconnect retries; unmount cancels retries and pending connections', asyn
   c.sockets[1].close(); c.unmount(); assert.equal(c.timers.size, 0);
   const pending = chat(); pending.unmount(); await pending.flush();
   assert.equal(pending.sockets.length, 0);
+});
+
+test('storefront layouts keep chat rendered after mobile device detection', () => {
+  for (const name of ['LayoutHome', 'LayoutBasic', 'LayoutFull']) {
+    let device = 'desktop';
+    const Chat = () => null;
+    const jsx = (type, props) => ({ type, props });
+    const imports = {
+      'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'Fragment' },
+      '@mui/material': { Stack: 'Stack' },
+      '../../hooks/useDeviceDetect': { default: () => device },
+      '../../i18n': { useTranslation: () => ({ t: key => key }) },
+      '../Chat': { default: Chat },
+    };
+    const compiledModule = { exports: {} };
+    const code = ts.transpileModule(fs.readFileSync(`libs/components/layout/${name}.tsx`, 'utf8'), {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
+    }).outputText;
+    vm.runInNewContext(code, {
+      exports: compiledModule.exports,
+      require: name => imports[name] ?? { default: name },
+    });
+    const Layout = compiledModule.exports.default(() => null);
+    const countChat = node => {
+      if (!node || typeof node !== 'object') return 0;
+      return Number(node.type === Chat) + [node.props?.children].flat(Infinity).reduce((sum, child) => sum + countChat(child), 0);
+    };
+    assert.equal(countChat(Layout({})), 1, `${name}: desktop`);
+    device = 'mobile';
+    assert.equal(countChat(Layout({})), 1, `${name}: mobile`);
+  }
+});
+
+
+test('scrolling softens the closed launcher and restores it after scrolling stops', async () => {
+  const c = chat(); await c.flush();
+  c.listeners.get('scroll')(); c.render();
+  assert.ok(c.find(props => props.className === 'chatting is-scrolling'));
+  c.retry(); c.render();
+  assert.ok(c.find(props => props.className === 'chatting'));
+  c.listeners.get('scroll')(); c.render();
+  c.find(props => props.className === 'chat-button').props.onClick(); c.render();
+  assert.ok(c.find(props => props.className === 'chatting'));
+  assert.equal(c.listeners.has('scroll'), false);
+  assert.equal(c.timers.size, 0);
+  c.unmount();
 });

@@ -1,4 +1,4 @@
-#pc-wrap .chatting {
+:is(#pc-wrap, #mobile-wrap) .chatting {
 	--chat-accent: #b6533b;
 	--chat-highlight: #b6533b;
 	--chat-tint: color-mix(in srgb, var(--chat-accent) 12%, var(--pet-surface));
@@ -29,7 +29,7 @@
 		background: var(--chat-accent);
 		color: #fff;
 		box-shadow: 0 8px 28px #532c2240;
-		transition: transform 0.2s, box-shadow 0.2s;
+		transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
 		&:hover {
 			transform: translateY(-3px);
 			box-shadow: 0 12px 32px #532c2250;
@@ -39,6 +39,12 @@
 			width: 25px;
 			height: 25px;
 		}
+	}
+
+	&.is-scrolling .chat-button:not(:hover):not(:focus-visible) {
+		transform: translateX(6px) scale(0.86);
+		opacity: 0.65;
+		box-shadow: 0 4px 12px #532c2220;
 	}
 
 	.chat-launcher-dot {
@@ -308,7 +314,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	#pc-wrap .chatting {
+	:is(#pc-wrap, #mobile-wrap) .chatting {
 		.chat-frame,
 		.chat-button,
 		.send-msg-btn {
@@ -317,6 +323,26 @@
 	}
 }
 
-[data-mui-color-scheme='dark'] #pc-wrap .chatting {
+[data-mui-color-scheme='dark'] :is(#pc-wrap, #mobile-wrap) .chatting {
 	--chat-highlight: #f0ac8e;
+}
+
+
+#mobile-wrap .chatting {
+	.chat-button {
+		right: 16px;
+		bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+	}
+
+	.chat-frame {
+		right: 12px;
+		bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+		width: 380px;
+		max-width: calc(100vw - 24px);
+		height: min(540px, calc(100dvh - 110px - env(safe-area-inset-bottom, 0px)));
+	}
+
+	.msg-input {
+		font-size: 16px;
+	}
 }
