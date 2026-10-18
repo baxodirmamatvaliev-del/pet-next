@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
@@ -28,6 +28,27 @@ const Top = () => {
 	/** STATES **/
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const headerRef = useRef<HTMLElement>(null);
+	const isHome = router.pathname === '/';
+	const showHeaderSearch = router.pathname === '/pet';
+
+	useEffect(() => {
+		let frame = 0;
+		const update = () => {
+			const progress = Math.min(1, Math.max(0, window.scrollY / 180));
+			headerRef.current?.style.setProperty('--header-progress', String(progress));
+		};
+		const onScroll = () => {
+			cancelAnimationFrame(frame);
+			frame = requestAnimationFrame(update);
+		};
+		update();
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => {
+			cancelAnimationFrame(frame);
+			window.removeEventListener('scroll', onScroll);
+		};
+	}, [router.asPath, device]);
 	const user = useReactiveVar(userVar);
 	const cartCount = useReactiveVar(cartCountVar);
 
@@ -63,13 +84,25 @@ const Top = () => {
 		setMobileMenuOpen(false);
 	};
 
+	const categoryNavigation = (
+		<Box component="nav" className={!showHeaderSearch ? 'header-inline-nav' : 'category-nav'} aria-label={t('nav.categories')}>
+			<Stack direction="row" className={!showHeaderSearch ? 'header-inline-nav__inner' : 'container category-nav__inner'}>
+				<Link href="/product">{t('nav.products')}</Link>
+				<Link href="/product?category=DOG">{t('nav.dogs')}</Link>
+				<Link href="/product?category=CAT">{t('nav.cats')}</Link>
+				<Link href="/product?sort=createdAt">{t('nav.new')}</Link>
+				<Link href="/product?sort=productSold">{t('nav.best')}</Link>
+				<Link href="/agent">{t('nav.agents')}</Link>
+				<Link href="/pet">{t('nav.community')}</Link>
+				<Link href="/cs">{t('nav.help')}</Link>
+			</Stack>
+		</Box>
+	);
+
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
 		return (
-			<Stack component="header" className="site-header site-header--mobile">
-				<Stack direction="row" className="announcement">
-					<Typography component="span">{t('nav.delivery')}</Typography>
-				</Stack>
+			<Stack component="header" ref={headerRef} className={`site-header site-header--mobile${isHome ? ' site-header--home' : ''}`}>
 				<Box className="header-main container">
 					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
 						<PetsRoundedIcon className="brand__mark" />
@@ -103,10 +136,7 @@ const Top = () => {
 	} else {
 		/** RENDER PC **/
 		return (
-			<Stack component="header" className="site-header site-header--pc">
-				<Stack direction="row" className="announcement">
-					<Typography component="span">{t('nav.delivery')}</Typography>
-				</Stack>
+			<Stack component="header" ref={headerRef} className={`site-header site-header--pc${isHome ? ' site-header--home' : ''}${!showHeaderSearch ? ' site-header--inline' : ''}`}>
 				<Box className="header-main container">
 					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
 						<PetsRoundedIcon className="brand__mark" />
@@ -115,22 +145,24 @@ const Top = () => {
 							<Typography component="small">Korea</Typography>
 						</Stack>
 					</Stack>
-					<Box component="form" className="header-search-form" onSubmit={searchHandler}>
-						<OutlinedInput
-							key={typeof router.query.text === 'string' ? router.query.text : 'empty-search'}
-							className="header-search"
-							type="search"
-							inputRef={searchInputRef}
-							defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
-							placeholder={t('nav.searchPlaceholder')}
-							inputProps={{ 'aria-label': t('nav.search') }}
-							endAdornment={(
-								<InputAdornment position="end">
-									<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}><SearchRoundedIcon /></IconButton>
-								</InputAdornment>
-							)}
-						/>
-					</Box>
+					{!showHeaderSearch ? categoryNavigation : (
+						<Box component="form" className="header-search-form" onSubmit={searchHandler}>
+							<OutlinedInput
+								key={typeof router.query.text === 'string' ? router.query.text : 'empty-search'}
+								className="header-search"
+								type="search"
+								inputRef={searchInputRef}
+								defaultValue={typeof router.query.text === 'string' ? router.query.text : ''}
+								placeholder={t('nav.searchPlaceholder')}
+								inputProps={{ 'aria-label': t('nav.search') }}
+								endAdornment={(
+									<InputAdornment position="end">
+										<IconButton type="submit" edge="end" aria-label={t('nav.submitSearch')}><SearchRoundedIcon /></IconButton>
+									</InputAdornment>
+								)}
+							/>
+						</Box>
+					)}
 					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.accountNavigation')}>
 						<ThemeToggle />
 						<LanguageSwitcher />
@@ -150,18 +182,7 @@ const Top = () => {
 						</Stack>
 					</Stack>
 				</Box>
-				<Box component="nav" className="category-nav" aria-label={t('nav.categories')}>
-					<Stack direction="row" className="container category-nav__inner">
-						<Link href="/product">{t('nav.products')}</Link>
-						<Link href="/product?category=DOG">{t('nav.dogs')}</Link>
-						<Link href="/product?category=CAT">{t('nav.cats')}</Link>
-						<Link href="/product?sort=createdAt">{t('nav.new')}</Link>
-						<Link href="/product?sort=productSold">{t('nav.best')}</Link>
-						<Link href="/agent">{t('nav.agents')}</Link>
-						<Link href="/pet">{t('nav.community')}</Link>
-						<Link href="/cs">{t('nav.help')}</Link>
-					</Stack>
-				</Box>
+				{showHeaderSearch && categoryNavigation}
 			</Stack>
 		);
 	}

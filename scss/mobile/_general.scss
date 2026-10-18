@@ -70,24 +70,20 @@
 
 	.home-page {
 		.home-hero {
-			min-height: 360px;
-			margin-top: 14px;
-			background-image: linear-gradient(
-					180deg,
-					rgb(var(--pet-hero-rgb) / 96%) 0%,
-					rgb(var(--pet-hero-rgb) / 72%) 46%,
-					transparent 70%
-				),
-				url('/img/banner/home-hero.png');
-			background-position: 68% center;
-			.home-hero__content {
-				min-height: 360px;
-				justify-content: flex-start;
-				padding: 28px 24px;
+			min-height: clamp(500px, 82svh, 660px);
+			padding: 110px 0 76px;
+			background-position: 75% center;
+
+			.home-hero__video {
+				object-position: 75% center;
 			}
 
 			h1 {
-				font-size: clamp(36px, 10vw, 44px);
+				font-size: clamp(38px, 10vw, 54px);
+			}
+
+			.eyebrow {
+				font-size: 10px;
 			}
 
 			p {
@@ -95,9 +91,6 @@
 				font-size: 15px;
 			}
 
-			.home-hero__actions {
-				flex-wrap: wrap;
-			}
 		}
 
 		.home-categories {

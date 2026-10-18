@@ -136,3 +136,113 @@
 		}
 	}
 }
+
+
+:is(#pc-wrap, #mobile-wrap) > #top {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+
+.site-header {
+	--header-progress: 0;
+	background-color: rgb(37 47 39 / calc(var(--header-progress) * 100%));
+	backdrop-filter: blur(calc(var(--header-progress) * 12px)) saturate(110%);
+	-webkit-backdrop-filter: blur(calc(var(--header-progress) * 12px)) saturate(110%);
+	transition: background-color 180ms linear, backdrop-filter 180ms linear, color 180ms linear;
+
+	.category-nav {
+		border-color: color-mix(in srgb, var(--pet-border) calc(var(--header-progress) * 100%), transparent);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.site-header {
+		transition: none;
+	}
+}
+
+
+:is(#pc-wrap, #mobile-wrap).home-layout > #top {
+	position: fixed;
+	inset: 0 0 auto;
+}
+
+.site-header--home {
+	--header-start-ink: #fffaf0;
+}
+
+.site-header {
+	--header-ink: color-mix(in srgb, #fffaf0 calc(var(--header-progress) * 100%), var(--header-start-ink, var(--pet-ink)));
+	--header-control: rgb(255 250 240 / calc(var(--header-progress) * 10%));
+	color: var(--header-ink);
+
+	.brand,
+	.header-actions a,
+	.header-actions .notification-bell,
+	.mobile-menu,
+	.theme-toggle.MuiIconButton-root {
+		color: var(--header-ink);
+	}
+
+	.theme-toggle.MuiIconButton-root,
+	.language-switcher.MuiInputBase-root,
+	.header-search-form .header-search {
+		background: var(--header-control);
+		color: var(--header-ink);
+	}
+
+	.language-switcher .MuiSelect-icon,
+	.header-search input,
+	.header-search .MuiIconButton-root {
+		color: var(--header-ink);
+	}
+
+	.header-search input::placeholder {
+		color: inherit;
+		opacity: 0.8;
+	}
+
+	.header-search-form .header-search,
+	.theme-toggle.MuiIconButton-root,
+	.language-switcher .MuiOutlinedInput-notchedOutline {
+		border-color: color-mix(in srgb, var(--header-ink) 25%, transparent);
+	}
+}
+
+
+.site-header--pc.site-header--inline {
+	.header-main {
+		grid-template-columns: 150px minmax(0, 1fr) auto;
+		gap: 24px;
+	}
+
+	.header-actions {
+		gap: 12px;
+	}
+}
+
+.header-inline-nav {
+	min-width: 0;
+	overflow-x: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--pet-border) transparent;
+
+	.header-inline-nav__inner {
+		align-items: center;
+		gap: 18px;
+		padding-block: 12px;
+		white-space: nowrap;
+		font-size: 15px;
+		font-weight: 700;
+	}
+
+	a:hover {
+		color: var(--pet-secondary);
+	}
+}
+
+
+.site-header--pc .header-main > .header-actions {
+	grid-column: 3;
+}

@@ -1,3 +1,4 @@
+import CardCarousel from './CardCarousel';
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
@@ -62,9 +63,9 @@ const BestSellers = (props: BestSellersProps) => {
 	) : getProductsError ? (
 		<Typography className="product-message product-message--error">{t('ui.productsCouldNotBeLoaded')}</Typography>
 	) : products.length ? (
-		<Box className={`product-grid product-grid--${device}`}>
+		<CardCarousel label={t('nav.best')} kind="products">
 			{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
-		</Box>
+		</CardCarousel>
 	) : (
 		<Typography className="product-message">{t('ui.noProductsAvailableYet')}</Typography>
 	);

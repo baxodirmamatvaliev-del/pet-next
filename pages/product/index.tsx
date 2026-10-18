@@ -31,6 +31,7 @@ interface ProductListProps {
 	initialInput?: ProductsInquiry;
 }
 
+const PRODUCTS_PER_PAGE = 6;
 const productSorts = ['createdAt', 'productSold', 'productRating', 'productName'];
 
 const ProductList = (props: ProductListProps) => {
@@ -67,7 +68,7 @@ const ProductList = (props: ProductListProps) => {
 
 				return {
 					page: input.page,
-					limit: input.limit,
+					limit: PRODUCTS_PER_PAGE,
 					sort: input.sort,
 					direction: input.direction,
 					search: {
@@ -262,7 +263,7 @@ const ProductList = (props: ProductListProps) => {
 ProductList.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 12,
+		limit: PRODUCTS_PER_PAGE,
 		sort: 'createdAt',
 		direction: Direction.DESC,
 		search: {},

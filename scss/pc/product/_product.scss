@@ -245,7 +245,7 @@
 
 	.product-catalog {
 		display: grid;
-		grid-template-columns: 220px 1fr;
+		grid-template-columns: 250px minmax(0, 1fr);
 		gap: 34px;
 		padding-top: 30px;
 	}
@@ -268,29 +268,52 @@
 		}
 
 		.product-filter__group {
+			display: flex;
+			width: 100%;
 			margin-top: 28px;
 			.MuiFormLabel-root {
 				margin-bottom: 15px;
 				color: $ink;
-				font-size: 14px;
+				font-size: 17px;
 				font-weight: 800;
 			}
 
+			.MuiFormGroup-root {
+				gap: 8px;
+			}
+
 			.MuiFormControlLabel-root {
+				min-height: 48px;
 				margin: 0;
-				color: $muted;
+				padding: 4px 10px;
+				border: 1px solid $border;
+				border-radius: 10px;
+				color: $ink;
+				background: var(--pet-surface);
+
+				&:hover,
+				&:has(.Mui-checked) {
+					border-color: $primary;
+					background: $sage;
+				}
+
 				.MuiCheckbox-root {
-					padding: 5px 8px 5px 0;
+					padding: 6px 10px 6px 0;
+
+					svg {
+						font-size: 24px;
+					}
 				}
 
 				.MuiFormControlLabel-label {
-					font-size: 13px;
+					font-size: 15px;
 				}
 			}
 		}
 
 		.product-filter__reset {
 			width: 100%;
+			min-height: 46px;
 			margin-top: 28px;
 			border-color: $border;
 			color: $primary;

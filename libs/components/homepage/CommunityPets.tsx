@@ -1,3 +1,4 @@
+import CardCarousel from './CardCarousel';
 import { useQuery } from '@apollo/client';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { Box, Stack, Typography } from '@mui/material';
@@ -44,9 +45,9 @@ const CommunityPets = () => {
 				) : error && !pets.length ? (
 					<Typography className="community-pets__message community-pets__message--error">{t('ui.communityListingsCouldNotBeLoadedPleaseTry')}</Typography>
 				) : pets.length ? (
-					<Box className="community-pets__grid">
+					<CardCarousel label={t('nav.community')} kind="pets">
 						{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
-					</Box>
+					</CardCarousel>
 				) : (
 					<Typography className="community-pets__message">{t('ui.noDogOrCatListingsYetCheckBack')}</Typography>
 				)}
