@@ -1,15 +1,23 @@
 @media (max-width: 760px) {
 	.join-page {
-		padding: 22px 0 48px;
+		min-height: calc(100svh - 80px);
+		justify-content: center;
+		padding: 28px 16px;
+
+		.join-background-video {
+			object-position: 62% center;
+		}
 		.join-card {
 			min-height: auto;
-			grid-template-columns: minmax(0, 1fr);
 			border-radius: 16px;
 		}
 
 		.join-form {
 			min-width: 0;
-			padding: 34px 22px 40px;
+			padding: 24px 22px;
+			.join-social {
+				grid-template-columns: minmax(0, 1fr);
+			}
 			.join-switch,
 			.join-fields {
 				min-width: 0;
@@ -18,15 +26,12 @@
 
 			.join-heading,
 			.join-session {
-				margin-top: 32px;
+				margin-top: 20px;
 				h1 {
 					font-size: 31px;
 				}
 			}
 		}
 
-		.join-side {
-			display: none;
-		}
 	}
 }

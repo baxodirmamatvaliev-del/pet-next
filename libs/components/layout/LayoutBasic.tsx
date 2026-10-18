@@ -13,39 +13,20 @@ const withLayoutBasic = <P extends object>(Component: React.ComponentType<P>) =>
 		const { t } = useTranslation();
 		const device = useDeviceDetect();
 
-		if (device === 'mobile') {
-			/** RENDER MOBILE **/
-			return (
-				<>
-					<Head>
-						<title>{t('ui.shopPetnestKorea')}</title>
-						<meta name="title" content={t('ui.shopPetnestKorea')} />
-					</Head>
-					<Stack id="mobile-wrap">
-						<Stack id="top"><Top /></Stack>
-						<Stack id="main"><Component {...props} /></Stack>
-						<Chat />
-						<Stack id="footer"><Footer /></Stack>
-					</Stack>
-				</>
-			);
-		} else {
-			/** RENDER PC **/
-			return (
-				<>
-					<Head>
-						<title>{t('ui.shopPetnestKorea')}</title>
-						<meta name="title" content={t('ui.shopPetnestKorea')} />
-					</Head>
-					<Stack id="pc-wrap">
-						<Stack id="top"><Top /></Stack>
-						<Stack id="main"><Component {...props} /></Stack>
-						<Chat />
-						<Stack id="footer"><Footer /></Stack>
-					</Stack>
-				</>
-			);
-		}
+		return (
+			<>
+				<Head>
+					<title>{t('ui.shopPetnestKorea')}</title>
+					<meta name="title" content={t('ui.shopPetnestKorea')} />
+				</Head>
+				<Stack id={device === 'mobile' ? 'mobile-wrap' : 'pc-wrap'}>
+					<Stack id="top"><Top /></Stack>
+					<Stack id="main"><Component {...props} /></Stack>
+					<Chat />
+					<Stack id="footer"><Footer /></Stack>
+				</Stack>
+			</>
+		);
 	};
 };
 

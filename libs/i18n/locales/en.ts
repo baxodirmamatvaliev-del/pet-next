@@ -1,5 +1,10 @@
 // Yangi kalit avval shu yerga, keyin qolgan uchta lug‘atga qo‘shiladi.
 const en = {
+	"ui.continueWithKakao": "Continue with KakaoTalk",
+	"ui.continueWithEmail": "Continue with email",
+	"ui.socialLoginComingSoon": "KakaoTalk and email sign-in are coming soon.",
+	"ui.or": "or",
+
 	"chat.title": "Community chat",
 	"chat.open": "Open live chat",
 	"chat.close": "Close live chat",
@@ -68,9 +73,6 @@ const en = {
 	'ui.pleaseWait': 'Please wait...',
 	'ui.createAccount': 'Create account',
 	'ui.accountPetnestKorea': 'Account | PetNest Korea',
-	'ui.petnestMembership': 'PETNEST MEMBERSHIP',
-	'ui.everythingTheyLoveAllInOnePlace': 'Everything they love, all in one place.',
-	'ui.saveFavoritesBuildYourCartAndKeepEvery': 'Save favorites, build your cart and keep every order close at hand.',
 	'ui.searchAgents': 'Search agents',
 	'ui.sortSellers': 'Sort sellers',
 	'ui.newest': 'Newest',

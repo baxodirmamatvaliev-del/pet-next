@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
@@ -13,7 +13,6 @@ import { authReadyVar, userVar } from '../../apollo/store';
 import { logIn, logOut, signUp } from '../../libs/auth';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Message } from '../../libs/enums/common.enum';
-import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { useTranslation } from '../../libs/i18n';
 
@@ -26,14 +25,27 @@ interface AccountInput {
 const Join: NextPage = () => {
 	const { t, errorText } = useTranslation();
 	const router = useRouter();
-	const device = useDeviceDetect();
 
 	/** STATES **/
 	const [input, setInput] = useState<AccountInput>({ nick: '', password: '', phone: '' });
 	const [loginView, setLoginView] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [socialNotice, setSocialNotice] = useState(false);
 	const user = useReactiveVar(userVar);
 	const authReady = useReactiveVar(authReadyVar);
+	const welcomeVideo = useRef<HTMLVideoElement>(null);
+
+	useEffect(() => {
+		if (welcomeVideo.current) welcomeVideo.current.playbackRate = 0.5;
+		const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const syncPlayback = () => {
+			if (motionPreference.matches) welcomeVideo.current?.pause();
+			else void welcomeVideo.current?.play().catch(() => {});
+		};
+		syncPlayback();
+		motionPreference.addEventListener('change', syncPlayback);
+		return () => motionPreference.removeEventListener('change', syncPlayback);
+	}, []);
 
 	/** HANDLERS **/
 	const viewChangeHandler = (state: boolean) => {
@@ -149,6 +161,16 @@ const Join: NextPage = () => {
 						</Button>
 					</Stack>
 
+					<Stack className="join-social">
+						<Button type="button" className="join-social-kakao" startIcon={<span className="join-kakao-symbol" aria-hidden="true" />} onClick={() => setSocialNotice(true)}>
+							{t('ui.continueWithKakao')}
+						</Button>
+						<Button type="button" className="join-social-email" startIcon={<span className="join-email-symbol" aria-hidden="true" />} onClick={() => setSocialNotice(true)}>
+							{t('ui.continueWithEmail')}
+						</Button>
+						{socialNotice && <Typography role="status" className="join-social-notice">{t('ui.socialLoginComingSoon')}</Typography>}
+					</Stack>
+					<Box className="join-divider"><span>{t('ui.or')}</span></Box>
 					<Stack
 						component="form"
 						className="join-fields"
@@ -197,49 +219,29 @@ const Join: NextPage = () => {
 		</Stack>
 	);
 
-	if (device === 'mobile') {
-		/** RENDER MOBILE **/
-		return (
-			<>
-				<Head>
-					<title>{t('ui.accountPetnestKorea')}</title>
-					<meta name="title" content={t('ui.accountPetnestKorea')} />
-				</Head>
-				<Box component="main" className="join-page join-page--mobile">
-					<Box className="container">
-						<Box className="join-card">
-							{joinForm}
-						</Box>
-					</Box>
-				</Box>
-			</>
-		);
-	} else {
-		/** RENDER PC **/
-		return (
-			<>
-				<Head>
-					<title>{t('ui.accountPetnestKorea')}</title>
-					<meta name="title" content={t('ui.accountPetnestKorea')} />
-				</Head>
-				<Box component="main" className="join-page join-page--pc">
-					<Box className="container">
-						<Box className="join-card">
-							{joinForm}
-							<Stack className="join-side">
-								<PetsRoundedIcon />
-								<Typography component="span">{t('ui.petnestMembership')}</Typography>
-								<Typography component="h2">{t('ui.everythingTheyLoveAllInOnePlace')}</Typography>
-								<Typography>
-									{t('ui.saveFavoritesBuildYourCartAndKeepEvery')}
-								</Typography>
-							</Stack>
-						</Box>
-					</Box>
-				</Box>
-			</>
-		);
-	}
+	return (
+		<>
+			<Head>
+				<title>{t('ui.accountPetnestKorea')}</title>
+				<meta name="title" content={t('ui.accountPetnestKorea')} />
+			</Head>
+			<Box component="main" className="join-page">
+				<video
+					ref={welcomeVideo}
+					className="join-background-video"
+					src="/videos/petnest-welcome.mp4"
+					poster="/videos/petnest-welcome.jpg"
+					muted
+					loop
+					playsInline
+					disablePictureInPicture
+					aria-hidden="true"
+					preload="metadata"
+				/>
+				<Box className="join-card">{joinForm}</Box>
+			</Box>
+		</>
+	);
 };
 
 export default withLayoutBasic(Join);

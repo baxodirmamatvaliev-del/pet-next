@@ -1,6 +1,11 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
+	"ui.continueWithKakao": "카카오톡으로 계속하기",
+	"ui.continueWithEmail": "이메일로 계속하기",
+	"ui.socialLoginComingSoon": "카카오톡 및 이메일 로그인은 준비 중입니다.",
+	"ui.or": "또는",
+
 	"chat.title": "함께 나누는 이야기",
 	"chat.open": "채팅 열기",
 	"chat.close": "채팅 닫기",
@@ -69,9 +74,6 @@ const ko: Dictionary = {
 	'ui.pleaseWait': '잠시 기다려 주세요...',
 	'ui.createAccount': '계정 만들기',
 	'ui.accountPetnestKorea': '계정 | PetNest Korea',
-	'ui.petnestMembership': 'PETNEST 멤버십',
-	'ui.everythingTheyLoveAllInOnePlace': '반려동물이 좋아하는 모든 것을 한곳에서.',
-	'ui.saveFavoritesBuildYourCartAndKeepEvery': '찜 목록과 장바구니를 채우고 모든 주문을 확인하세요.',
 	'ui.searchAgents': '판매자 검색',
 	'ui.sortSellers': '판매자 정렬',
 	'ui.newest': '최신순',

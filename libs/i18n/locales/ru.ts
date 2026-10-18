@@ -1,6 +1,11 @@
 import type { Dictionary } from './en';
 
 const ru: Dictionary = {
+	"ui.continueWithKakao": "Продолжить с KakaoTalk",
+	"ui.continueWithEmail": "Продолжить с email",
+	"ui.socialLoginComingSoon": "Вход через KakaoTalk и email скоро появится.",
+	"ui.or": "или",
+
 	"chat.title": "Чат сообщества",
 	"chat.open": "Открыть чат",
 	"chat.close": "Закрыть чат",
@@ -69,9 +74,6 @@ const ru: Dictionary = {
 	'ui.pleaseWait': 'Подождите...',
 	'ui.createAccount': 'Создать аккаунт',
 	'ui.accountPetnestKorea': 'Аккаунт | PetNest Korea',
-	'ui.petnestMembership': 'СООБЩЕСТВО PETNEST',
-	'ui.everythingTheyLoveAllInOnePlace': 'Всё, что они любят, в одном месте.',
-	'ui.saveFavoritesBuildYourCartAndKeepEvery': 'Сохраняйте избранное, собирайте корзину и следите за заказами.',
 	'ui.searchAgents': 'Поиск агентов',
 	'ui.sortSellers': 'Сортировка продавцов',
 	'ui.newest': 'Сначала новые',

@@ -13,42 +13,22 @@ const withLayoutHome = <P extends object>(Component: React.ComponentType<P>) => 
 		const { t } = useTranslation();
 		const device = useDeviceDetect();
 
-		if (device === 'mobile') {
-			/** RENDER MOBILE **/
-			return (
-				<>
-					<Head>
-						<title>{t('ui.petnestKoreaEverythingTheyLove')}</title>
-						<meta name="title" content={t('ui.petnestKoreaEverythingTheyLove')} />
-						<meta name="viewport" content="width=device-width, initial-scale=1" />
-					</Head>
-					<Stack id="mobile-wrap" className="home-layout">
-						<Stack id="top"><Top /></Stack>
-						<Stack id="main"><Component {...props} /></Stack>
-						<Chat />
-						<Stack id="footer"><Footer /></Stack>
-					</Stack>
-				</>
-			);
-		} else {
-			/** RENDER PC **/
-			return (
-				<>
-					<Head>
-						<title>{t('ui.petnestKoreaEverythingTheyLove')}</title>
-						<meta name="title" content={t('ui.petnestKoreaEverythingTheyLove')} />
-						<meta name="viewport" content="width=device-width, initial-scale=1" />
-					</Head>
-					<Stack id="pc-wrap" className="home-layout">
-						<Stack id="top"><Top /></Stack>
-						<Stack id="main"><Component {...props} /></Stack>
-						<Chat />
-						<Stack id="footer"><Footer /></Stack>
-					</Stack>
-				</>
-			);
-		}
-	}
+		return (
+			<>
+				<Head>
+					<title>{t('ui.petnestKoreaEverythingTheyLove')}</title>
+					<meta name="title" content={t('ui.petnestKoreaEverythingTheyLove')} />
+					<meta name="viewport" content="width=device-width, initial-scale=1" />
+				</Head>
+				<Stack id={device === 'mobile' ? 'mobile-wrap' : 'pc-wrap'} className="home-layout">
+					<Stack id="top"><Top /></Stack>
+					<Stack id="main"><Component {...props} /></Stack>
+					<Chat />
+					<Stack id="footer"><Footer /></Stack>
+				</Stack>
+			</>
+		);
+	};
 };
 
 export default withLayoutHome;

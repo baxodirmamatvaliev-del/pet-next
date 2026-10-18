@@ -167,9 +167,13 @@ test('storefront layouts keep chat rendered after mobile device detection', () =
       if (!node || typeof node !== 'object') return 0;
       return Number(node.type === Chat) + [node.props?.children].flat(Infinity).reduce((sum, child) => sum + countChat(child), 0);
     };
-    assert.equal(countChat(Layout({})), 1, `${name}: desktop`);
-    device = 'mobile';
-    assert.equal(countChat(Layout({})), 1, `${name}: mobile`);
+    for (const nextDevice of ['desktop', 'mobile', 'desktop']) {
+      device = nextDevice;
+      const tree = Layout({});
+      assert.equal(countChat(tree), 1, `${name}: ${device}`);
+      const wrapper = tree.props.children.find(child => child?.type === 'Stack');
+      assert.equal(wrapper.props.id, device === 'mobile' ? 'mobile-wrap' : 'pc-wrap');
+    }
   }
 });
 
