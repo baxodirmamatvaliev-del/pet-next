@@ -23,6 +23,8 @@ yarn test
 
 Production builds require the public backend URL at build time. Set the variables from `.env.production.example`, then run `yarn build`. See [DEPLOYMENT.md](DEPLOYMENT.md) for Docker and hosting.
 
+Run `yarn start` after building to serve the standalone output, including public files and static assets. Use `yarn dev` for local development.
+
 ## Integrations
 
 - Apollo GraphQL handles queries, mutations and uploads.
