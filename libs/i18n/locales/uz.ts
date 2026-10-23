@@ -1,6 +1,15 @@
 import type { Dictionary } from './en';
 
 const uz: Dictionary = {
+
+	'moments.heading': "Biz hayvonlarni yaxshi koramz",
+	'moments.park': "Yashil bog‘da ikki it bilan sayr qilayotgan juftlik",
+	'moments.spring': "Bahorgi gullar ostida iti bilan sayr qilayotgan juftlik",
+	'moments.corgi': "Daraxtli yo‘lakda korgi bilan sayr qilayotgan juftlik",
+	'moments.field': "Quyoshli maydonda oq kuchuk bilan juftlik",
+	'moments.hangang': "Hangang bog‘ida iti bilan sayr qilayotgan juftlik",
+	'moments.forest': "O‘rmon yo‘lida pudel bilan sayr qilayotgan juftlik",
+
 	'video.eyebrow': "Bir lahza quvonch",
 	'video.heading': "Momiq panjalar, shirin lahzalar",
 	'video.description': "Koreyaning 소녀의행성 kanalidan jajji Haengseong kuchukchasining yoqimli bolalik lavhalari.",

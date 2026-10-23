@@ -1,5 +1,14 @@
 // Yangi kalit avval shu yerga, keyin qolgan uchta lug‘atga qo‘shiladi.
 const en = {
+
+	'moments.heading': "We love animals",
+	'moments.park': "A couple walking two dogs in a green park",
+	'moments.spring': "A couple walking their dog beneath spring blossoms",
+	'moments.corgi': "A couple walking a corgi along a tree-lined path",
+	'moments.field': "A couple with a small white dog in a sunny field",
+	'moments.hangang': "A couple walking their dog in Hangang Park",
+	'moments.forest': "A couple walking a poodle on a forest trail",
+
 	'video.eyebrow': "A little moment of happiness",
 	'video.heading': "Fluffy paws, happy moments",
 	'video.description': "Enjoy a heartwarming puppy compilation from Korean pet channel 소녀의행성.",

@@ -1,6 +1,15 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
+
+	'moments.heading': "우리는 동물을 사랑합니다",
+	'moments.park': "초록빛 공원에서 두 반려견과 산책하는 커플",
+	'moments.spring': "봄꽃 아래 반려견과 산책하는 커플",
+	'moments.corgi': "나무가 늘어선 길에서 코기와 산책하는 커플",
+	'moments.field': "햇살 가득한 잔디밭에서 하얀 강아지와 함께하는 커플",
+	'moments.hangang': "한강공원에서 반려견과 산책하는 커플",
+	'moments.forest': "숲길에서 푸들과 산책하는 커플",
+
 	'video.eyebrow': "잠깐 쉬어가는 힐링 시간",
 	'video.heading': "작은 발자국, 가득한 행복",
 	'video.description': "소녀의행성과 함께 아기 강아지 행성이의 사랑스러운 어린 시절을 만나보세요.",

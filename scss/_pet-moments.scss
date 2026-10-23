@@ -1,0 +1,105 @@
+.home-page .pet-moments {
+	margin-bottom: 16px;
+	.pet-moments__heading { margin-bottom: 24px; text-align: center; }
+	h2 {
+		color: var(--pet-ink);
+		font-size: clamp(24px, 3vw, 36px);
+		font-weight: 800;
+		line-height: 1.3;
+		text-transform: uppercase;
+		text-wrap: balance;
+	}
+	.pet-moments__viewport {
+		--moment-width: 80vw;
+		position: relative;
+		height: clamp(280px, 38vw, 480px);
+		overflow: hidden;
+		border-radius: 24px;
+		background: radial-gradient(ellipse at center, var(--pet-sage), transparent 72%);
+		> canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; visibility: hidden; }
+		&[data-three-ready='true'] {
+			> canvas { visibility: visible; }
+			.pet-moments__card { opacity: 0; }
+		}
+	}
+	.pet-moments__track {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+		width: 100%;
+		height: 100%;
+		padding-inline: calc((100% - var(--moment-width)) / 2);
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		overscroll-behavior-x: contain;
+		scrollbar-width: none;
+		cursor: grab;
+		user-select: none;
+		&::-webkit-scrollbar { display: none; }
+		&:focus-visible { outline: 2px solid var(--pet-primary); outline-offset: -3px; border-radius: 24px; }
+		&.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+		&.is-rotating { scroll-snap-type: none; }
+	}
+	.pet-moments__card {
+		position: relative;
+		flex: 0 0 var(--moment-width);
+		aspect-ratio: 4 / 3;
+		margin: 0;
+		overflow: hidden;
+		border: 1px solid var(--pet-border);
+		border-radius: 20px;
+		background: var(--pet-sage);
+		box-shadow: 0 8px 24px rgb(41 46 36 / 10%);
+		scroll-snap-align: center;
+	}
+	.pet-moments__controls {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		margin-top: 20px;
+		button:focus-visible { outline: 2px solid var(--pet-primary); outline-offset: 4px; }
+	}
+	.pet-moments__arrow {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border: 1px solid var(--pet-border);
+		border-radius: 50%;
+		background: var(--pet-surface);
+		color: var(--pet-primary);
+		cursor: pointer;
+		&:disabled { opacity: .3; cursor: default; }
+		&:hover:not(:disabled) { background: var(--pet-sage); }
+	}
+	.pet-moments__dots {
+		display: flex;
+		gap: 4px;
+		button {
+			display: grid;
+			place-items: center;
+			width: 24px;
+			height: 32px;
+			background: transparent;
+			cursor: pointer;
+			&::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--pet-border-strong); }
+			&[aria-current='true']::after { width: 19px; border-radius: 8px; background: var(--pet-primary); }
+		}
+	}
+	.pet-moments__caption {
+		margin-top: 14px;
+		text-align: center;
+		text-wrap: balance;
+		color: var(--pet-muted);
+		font-size: 12px;
+		line-height: 1.6;
+		span { margin-inline-start: 12px; font-variant-numeric: tabular-nums; }
+	}
+	@media (max-width: 480px) {
+		.pet-moments__track { gap: 16px; }
+		.pet-moments__controls { gap: 12px; }
+		.pet-moments__card { border-radius: 16px; }
+	}
+}
