@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+/Agent-Reach/
 
 # debug
 npm-debug.log*

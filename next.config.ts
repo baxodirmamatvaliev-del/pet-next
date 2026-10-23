@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import { defaultLocale, locales } from './libs/i18n/config';
+import { noindexSources } from './libs/seo';
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
@@ -10,6 +11,10 @@ const nextConfig: NextConfig = {
 	i18n: { locales, defaultLocale },
 	async headers() {
 		return [
+			...noindexSources.map((source) => ({
+				source,
+				headers: [{ key: 'X-Robots-Tag', value: 'noindex, follow' }],
+			})),
 			{
 				source: '/:path*',
 				headers: [

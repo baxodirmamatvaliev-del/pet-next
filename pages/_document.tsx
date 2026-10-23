@@ -7,8 +7,8 @@ const Document = () => (
 		<Head>
 			{/* MUI va SCSS uchun umumiy rang o‘zgaruvchilari. */}
 			<style id="pet-colors">{colorVariables}</style>
-			<meta name="robots" content="index,follow" />
-			<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+			<link rel="icon" href="/favicon.ico?v=2" sizes="16x16 32x32 48x48 64x64" />
+			<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" sizes="any" />
 			<meta name="theme-color" content={colors.primary} />
 
 			{/* SEO */}

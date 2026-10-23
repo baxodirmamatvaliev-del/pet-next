@@ -1,6 +1,12 @@
 import type { Dictionary } from './en';
 
 const uz: Dictionary = {
+	'video.eyebrow': "Bir lahza quvonch",
+	'video.heading': "Momiq panjalar, shirin lahzalar",
+	'video.description': "Koreyaning 소녀의행성 kanalidan jajji Haengseong kuchukchasining yoqimli bolalik lavhalari.",
+	'video.watch': "YouTube’da ko‘rish",
+	'video.title': "Haengseong kuchukchasining bolaligi | 소녀의행성",
+
 	"ui.continueWithKakao": "KakaoTalk orqali davom etish",
 	"ui.continueWithEmail": "Email orqali davom etish",
 	"ui.socialLoginComingSoon": "KakaoTalk va email orqali kirish tez orada ulanadi.",

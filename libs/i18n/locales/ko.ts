@@ -1,6 +1,12 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
+	'video.eyebrow': "잠깐 쉬어가는 힐링 시간",
+	'video.heading': "작은 발자국, 가득한 행복",
+	'video.description': "소녀의행성과 함께 아기 강아지 행성이의 사랑스러운 어린 시절을 만나보세요.",
+	'video.watch': "YouTube에서 보기",
+	'video.title': "아기 솜사탕 어린시절 모음 · 귀여운 아기 강아지 행성이 | 소녀의행성",
+
 	"ui.continueWithKakao": "카카오톡으로 계속하기",
 	"ui.continueWithEmail": "이메일로 계속하기",
 	"ui.socialLoginComingSoon": "카카오톡 및 이메일 로그인은 준비 중입니다.",

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Keep noindex pages crawlable so search engines can read X-Robots-Tag.

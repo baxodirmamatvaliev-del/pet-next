@@ -1,6 +1,12 @@
 import type { Dictionary } from './en';
 
 const ru: Dictionary = {
+	'video.eyebrow': "Минута радости",
+	'video.heading': "Пушистые лапки, счастливые моменты",
+	'video.description': "Милые моменты из детства щенка Хэнсона на корейском канале 소녀의행성.",
+	'video.watch': "Смотреть на YouTube",
+	'video.title': "Детство милого щенка Хэнсона | 소녀의행성",
+
 	"ui.continueWithKakao": "Продолжить с KakaoTalk",
 	"ui.continueWithEmail": "Продолжить с email",
 	"ui.socialLoginComingSoon": "Вход через KakaoTalk и email скоро появится.",

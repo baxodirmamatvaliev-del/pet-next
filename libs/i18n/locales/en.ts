@@ -1,5 +1,11 @@
 // Yangi kalit avval shu yerga, keyin qolgan uchta lug‘atga qo‘shiladi.
 const en = {
+	'video.eyebrow': "A little moment of happiness",
+	'video.heading': "Fluffy paws, happy moments",
+	'video.description': "Enjoy a heartwarming puppy compilation from Korean pet channel 소녀의행성.",
+	'video.watch': "Watch on YouTube",
+	'video.title': "Cute puppy Haengseong — childhood moments | 소녀의행성",
+
 	"ui.continueWithKakao": "Continue with KakaoTalk",
 	"ui.continueWithEmail": "Continue with email",
 	"ui.socialLoginComingSoon": "KakaoTalk and email sign-in are coming soon.",

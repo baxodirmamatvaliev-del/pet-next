@@ -1,4 +1,8 @@
-koreapet.tech, www.koreapet.tech {
+www.koreapet.tech {
+	redir https://koreapet.tech{uri} permanent
+}
+
+koreapet.tech {
 	reverse_proxy frontend:3000
 }
 

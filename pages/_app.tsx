@@ -13,6 +13,8 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { canonicalUrl, shouldNoindex } from '../libs/seo';
 
 import { useApollo } from '../apollo/client';
 import { createAppTheme } from '../scss/MaterialTheme';
@@ -24,6 +26,12 @@ import { useTranslation } from '../libs/i18n';
 const socialImage = 'https://koreapet.tech/og-petnest-korea.jpg';
 
 const App = ({ Component, pageProps }: AppProps) => {
+	const router = useRouter();
+	const noindex = shouldNoindex(router.pathname);
+	const canonical = canonicalUrl(
+		router.pathname, router.locale ?? 'en', router.defaultLocale ?? 'en',
+		typeof router.query.id === 'string' ? router.query.id : undefined,
+	);
 	const { t } = useTranslation();
 	const theme = useMemo(() => createAppTheme(t), [t]);
 	const socialDescription = t('ui.shopQualityProductsForDogsAndCatsAnd');
@@ -46,6 +54,8 @@ const App = ({ Component, pageProps }: AppProps) => {
 		<ApolloProvider client={client}>
 			<ThemeProvider theme={theme} defaultMode="system" modeStorageKey="pet-theme" disableTransitionOnChange>
 				<Head>
+					<meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow'} key="robots" />
+					{!noindex && <link rel="canonical" href={canonical} key="canonical" />}
 					<meta property="og:type" content="website" key="og:type" />
 					<meta property="og:site_name" content="PetNest Korea" key="og:site_name" />
 					<meta property="og:title" content={t('ui.petnestKoreaEverythingTheyLove')} key="og:title" />
