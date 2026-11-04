@@ -31,6 +31,47 @@
 	.MuiSelect-icon {
 		color: var(--pet-primary);
 	}
+
+	.MuiSelect-select {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.language-flag {
+	display: inline-flex;
+	align-items: center;
+	font-size: 24px;
+	line-height: 1;
+}
+
+.language-options.MuiList-root {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 6px;
+}
+
+.language-option.MuiMenuItem-root {
+	min-height: 44px;
+	justify-content: center;
+	padding: 8px 14px;
+	border: 1px solid var(--pet-border);
+	border-radius: 8px;
+	background: var(--pet-surface);
+	transition: background-color 160ms ease, border-color 160ms ease;
+
+	&:hover,
+	&.Mui-focusVisible {
+		border-color: var(--pet-primary);
+		background: var(--pet-surface-muted);
+	}
+
+	&.Mui-selected,
+	&.Mui-selected:hover {
+		border-color: var(--pet-primary);
+		background: var(--pet-sage);
+	}
 }
 
 // SweetAlert portallari ham tanlangan tema ranglaridan foydalanadi.

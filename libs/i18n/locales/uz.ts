@@ -2,13 +2,6 @@ import type { Dictionary } from './en';
 
 const uz: Dictionary = {
 
-	'moments.heading': "Biz hayvonlarni yaxshi koramz",
-	'moments.park': "Yashil bog‘da ikki it bilan sayr qilayotgan juftlik",
-	'moments.spring': "Bahorgi gullar ostida iti bilan sayr qilayotgan juftlik",
-	'moments.corgi': "Daraxtli yo‘lakda korgi bilan sayr qilayotgan juftlik",
-	'moments.field': "Quyoshli maydonda oq kuchuk bilan juftlik",
-	'moments.hangang': "Hangang bog‘ida iti bilan sayr qilayotgan juftlik",
-	'moments.forest': "O‘rmon yo‘lida pudel bilan sayr qilayotgan juftlik",
 
 	'video.eyebrow': "Bir lahza quvonch",
 	'video.heading': "Momiq panjalar, shirin lahzalar",
@@ -377,10 +370,8 @@ const uz: Dictionary = {
 	'ui.loadingCommunityListings': 'Hamjamiyat e’lonlari yuklanmoqda...',
 	'ui.communityListingsCouldNotBeLoadedPleaseTry': 'Hamjamiyat e’lonlarini yuklab bo‘lmadi. Keyinroq urinib ko‘ring.',
 	'ui.noDogOrCatListingsYetCheckBack': 'Hozircha it yoki mushuk e’lonlari yo‘q. Keyinroq qayting!',
-	'ui.forHappyDogsAndCats': 'Baxtli itlar va mushuklar uchun',
 	'ui.everything': 'Ular sevgan',
 	'ui.theyLove': 'barcha narsalar',
-	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays': 'Birgalikdagi sog‘lom va baxtli kunlar uchun sifatli aksessuar va buyumlar.',
 	'ui.shopDogs': 'Itlar uchun xarid',
 	'ui.shopCats': 'Mushuklar uchun xarid',
 	'ui.adminPetnestKorea': 'Admin | PetNest Korea',

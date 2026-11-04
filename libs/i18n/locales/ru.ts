@@ -2,13 +2,6 @@ import type { Dictionary } from './en';
 
 const ru: Dictionary = {
 
-	'moments.heading': "Мы любим животных",
-	'moments.park': "Пара гуляет с двумя собаками в зелёном парке",
-	'moments.spring': "Пара гуляет с собакой среди весенних цветов",
-	'moments.corgi': "Пара гуляет с корги по дорожке среди деревьев",
-	'moments.field': "Пара с маленькой белой собакой на солнечной поляне",
-	'moments.hangang': "Пара гуляет с собакой в парке Ханган",
-	'moments.forest': "Пара гуляет с пуделем по лесной тропинке",
 
 	'video.eyebrow': "Минута радости",
 	'video.heading': "Пушистые лапки, счастливые моменты",
@@ -377,10 +370,8 @@ const ru: Dictionary = {
 	'ui.loadingCommunityListings': 'Загрузка объявлений сообщества...',
 	'ui.communityListingsCouldNotBeLoadedPleaseTry': 'Не удалось загрузить объявления сообщества. Попробуйте позже.',
 	'ui.noDogOrCatListingsYetCheckBack': 'Объявлений о собаках и кошках пока нет. Загляните позже!',
-	'ui.forHappyDogsAndCats': 'Для счастливых собак и кошек',
 	'ui.everything': 'Всё, что',
 	'ui.theyLove': 'они любят',
-	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays': 'Качественные аксессуары и всё необходимое для здоровой и счастливой жизни вместе.',
 	'ui.shopDogs': 'Товары для собак',
 	'ui.shopCats': 'Товары для кошек',
 	'ui.adminPetnestKorea': 'Администратор | PetNest Korea',

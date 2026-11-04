@@ -31,11 +31,9 @@ const Hero = () => {
 				muted loop playsInline preload="metadata" aria-hidden="true"
 			/>
 			<Stack className="home-hero__content container">
-				<Typography component="span" className="eyebrow">{t('ui.forHappyDogsAndCats')}</Typography>
 				<Typography component="h1" id="home-hero-title">
 					{t('ui.everything')}<br />{t('ui.theyLove')}
 				</Typography>
-				<Typography>{t('ui.premiumAccessoriesAndEssentialsForHealthierHappierDays')}</Typography>
 				<Box className="home-hero__actions">
 					<Button component={Link} href="/product?category=DOG" className="button button--primary">
 						{t('ui.shopDogs')}<ArrowForwardRoundedIcon />

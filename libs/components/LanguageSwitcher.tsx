@@ -2,6 +2,14 @@ import { MenuItem, Select } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useTranslation } from '../i18n';
 import { isLocale, languages, locales } from '../i18n/config';
+import type { Locale } from '../i18n/config';
+
+const flags: Record<Locale, string> = {
+	en: '🇺🇸',
+	uz: '🇺🇿',
+	ko: '🇰🇷',
+	ru: '🇷🇺',
+};
 
 const LanguageSwitcher = () => {
 	const router = useRouter();
@@ -23,12 +31,17 @@ const LanguageSwitcher = () => {
 			className="language-switcher"
 			size="small"
 			value={locale}
-			renderValue={(value) => value.toUpperCase()}
+			MenuProps={{ MenuListProps: { className: 'language-options' } }}
+			renderValue={(value) => (
+				<span className="language-flag" role="img" aria-label={languages[value]} title={languages[value]}>{flags[value]}</span>
+			)}
 			inputProps={{ 'aria-label': t('preferences.language') }}
 			onChange={(event) => { void changeLanguage(event.target.value); }}
 		>
 			{locales.map((code) => (
-				<MenuItem key={code} value={code} lang={code}>{languages[code]}</MenuItem>
+				<MenuItem key={code} value={code} lang={code} aria-label={languages[code]} title={languages[code]} className="language-option">
+					<span className="language-flag" aria-hidden="true">{flags[code]}</span>
+				</MenuItem>
 			))}
 		</Select>
 	);

@@ -7,7 +7,6 @@ import CategoryNavigation from '../libs/components/homepage/CategoryNavigation';
 import CommunityPets from '../libs/components/homepage/CommunityPets';
 import Hero from '../libs/components/homepage/Hero';
 import PetVideo from '../libs/components/homepage/PetVideo';
-import PetMoments from '../libs/components/homepage/PetMoments';
 import withLayoutHome from '../libs/components/layout/LayoutHome';
 import useDeviceDetect from '../libs/hooks/useDeviceDetect';
 
@@ -23,7 +22,6 @@ const Home: NextPage = () => {
 				<BestSellers />
 				<CommunityPets />
 				<PetVideo />
-				<PetMoments />
 				<Benefits />
 			</Stack>
 		);
@@ -36,7 +34,6 @@ const Home: NextPage = () => {
 				<BestSellers />
 				<CommunityPets />
 				<PetVideo />
-				<PetMoments />
 				<Benefits />
 			</Stack>
 		);

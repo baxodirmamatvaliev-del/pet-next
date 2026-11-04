@@ -2,13 +2,6 @@ import type { Dictionary } from './en';
 
 const ko: Dictionary = {
 
-	'moments.heading': "우리는 동물을 사랑합니다",
-	'moments.park': "초록빛 공원에서 두 반려견과 산책하는 커플",
-	'moments.spring': "봄꽃 아래 반려견과 산책하는 커플",
-	'moments.corgi': "나무가 늘어선 길에서 코기와 산책하는 커플",
-	'moments.field': "햇살 가득한 잔디밭에서 하얀 강아지와 함께하는 커플",
-	'moments.hangang': "한강공원에서 반려견과 산책하는 커플",
-	'moments.forest': "숲길에서 푸들과 산책하는 커플",
 
 	'video.eyebrow': "잠깐 쉬어가는 힐링 시간",
 	'video.heading': "작은 발자국, 가득한 행복",
@@ -377,10 +370,8 @@ const ko: Dictionary = {
 	'ui.loadingCommunityListings': '커뮤니티 게시글 불러오는 중...',
 	'ui.communityListingsCouldNotBeLoadedPleaseTry': '커뮤니티 게시글을 불러오지 못했습니다. 나중에 다시 시도해 주세요.',
 	'ui.noDogOrCatListingsYetCheckBack': '아직 강아지나 고양이 게시글이 없습니다. 다음에 다시 확인해 주세요!',
-	'ui.forHappyDogsAndCats': '행복한 강아지와 고양이를 위해',
 	'ui.everything': '반려동물이',
 	'ui.theyLove': '좋아하는 모든 것',
-	'ui.premiumAccessoriesAndEssentialsForHealthierHappierDays': '함께하는 건강하고 행복한 일상을 위한 프리미엄 용품.',
 	'ui.shopDogs': '강아지 상품 보기',
 	'ui.shopCats': '고양이 상품 보기',
 	'ui.adminPetnestKorea': '관리자 | PetNest Korea',
