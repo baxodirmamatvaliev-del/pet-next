@@ -323,20 +323,18 @@
 	}
 }
 
-
-
 #mobile-wrap .chatting {
 	.chat-button {
 		right: 16px;
-		bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+		bottom: calc(var(--mobile-bottom-nav-height) + 16px);
 	}
 
 	.chat-frame {
 		right: 12px;
-		bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+		bottom: calc(var(--mobile-bottom-nav-height) + 86px);
 		width: 380px;
 		max-width: calc(100vw - 24px);
-		height: min(540px, calc(100dvh - 110px - env(safe-area-inset-bottom, 0px)));
+		height: min(540px, calc(100dvh - var(--mobile-bottom-nav-height) - 110px));
 	}
 
 	.msg-input {

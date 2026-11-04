@@ -42,21 +42,6 @@
 			.notification-bell {
 				padding: 5px;
 			}
-
-			a {
-				min-width: auto;
-				span {
-					display: none;
-				}
-
-				&:not(.cart-link) {
-					display: none;
-				}
-			}
-
-			.cart-link b {
-				right: -8px;
-			}
 		}
 
 		.mobile-menu {
@@ -97,7 +82,7 @@
 				}
 			}
 
-			.home-hero__art {
+			.home-hero__image {
 				width: 210px;
 				right: 6%;
 				bottom: -40px;

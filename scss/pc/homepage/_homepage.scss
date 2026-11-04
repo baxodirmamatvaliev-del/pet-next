@@ -19,10 +19,6 @@
 			background: var(--pet-cream);
 		}
 
-		.home-hero__layout {
-			position: relative;
-		}
-
 		.home-hero__content {
 			align-items: flex-start;
 			position: relative;
@@ -58,19 +54,14 @@
 			}
 		}
 
-		.home-hero__art {
+		.home-hero__image {
 			position: absolute;
 			right: max(6%, calc((100% - 1280px) / 2 + 40px));
 			bottom: -26px;
 			width: 335px;
-			pointer-events: none;
-		}
-
-		.home-hero__image {
-			position: relative;
-			display: block;
-			width: 100%;
 			height: auto;
+			display: block;
+			pointer-events: none;
 		}
 
 		.home-hero__wave {

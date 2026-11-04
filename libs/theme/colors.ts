@@ -34,7 +34,6 @@ export const colors = {
 	'olive-text': '#7d603a',
 	rating: '#986211',
 	'primary-rgb': '185 71 18',
-	'hero-rgb': '255 235 222',
 	'surface-rgb': '255 255 255',
 } as const;
 
@@ -74,7 +73,6 @@ export const darkColors: Record<keyof typeof colors, string> = {
 	'olive-text': '#e0c29b',
 	rating: '#f0c578',
 	'primary-rgb': '255 185 140',
-	'hero-rgb': '61 41 30',
 	'surface-rgb': '45 33 27',
 };
 

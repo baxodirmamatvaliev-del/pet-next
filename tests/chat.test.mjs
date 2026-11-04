@@ -142,10 +142,11 @@ test('disconnect retries; unmount cancels retries and pending connections', asyn
   assert.equal(pending.sockets.length, 0);
 });
 
-test('storefront layouts keep chat rendered after mobile device detection', () => {
+test('storefront layouts preserve chat and show bottom navigation only on mobile', () => {
   for (const name of ['LayoutHome', 'LayoutBasic', 'LayoutFull']) {
     let device = 'desktop';
     const Chat = () => null;
+    const MobileBottomNav = () => null;
     const jsx = (type, props) => ({ type, props });
     const imports = {
       'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'Fragment' },
@@ -153,24 +154,33 @@ test('storefront layouts keep chat rendered after mobile device detection', () =
       '../../hooks/useDeviceDetect': { default: () => device },
       '../../i18n': { useTranslation: () => ({ t: key => key }) },
       '../Chat': { default: Chat },
+      '../MobileBottomNav': { default: MobileBottomNav },
     };
-    const compiledModule = { exports: {} };
-    const code = ts.transpileModule(fs.readFileSync(`libs/components/layout/${name}.tsx`, 'utf8'), {
-      compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
-    }).outputText;
-    vm.runInNewContext(code, {
-      exports: compiledModule.exports,
-      require: name => imports[name] ?? { default: name },
-    });
-    const Layout = compiledModule.exports.default(() => null);
-    const countChat = node => {
+    const loadLayout = name => {
+      const compiledModule = { exports: {} };
+      const code = ts.transpileModule(fs.readFileSync(`libs/components/layout/${name}.tsx`, 'utf8'), {
+        compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
+      }).outputText;
+      vm.runInNewContext(code, {
+        exports: compiledModule.exports,
+        require: name => imports[name] ?? { default: name },
+      });
+      return compiledModule.exports;
+    };
+    imports['./StorefrontLayout'] = loadLayout('StorefrontLayout');
+    const compiledModule = loadLayout(name);
+    const Layout = compiledModule.default(() => null);
+    const countComponent = (node, component) => {
       if (!node || typeof node !== 'object') return 0;
-      return Number(node.type === Chat) + [node.props?.children].flat(Infinity).reduce((sum, child) => sum + countChat(child), 0);
+      return Number(node.type === component) + [node.props?.children].flat(Infinity)
+        .reduce((sum, child) => sum + countComponent(child, component), 0);
     };
     for (const nextDevice of ['desktop', 'mobile', 'desktop']) {
       device = nextDevice;
-      const tree = Layout({});
-      assert.equal(countChat(tree), 1, `${name}: ${device}`);
+      const page = Layout({});
+      const tree = page.type(page.props);
+      assert.equal(countComponent(tree, Chat), 1, `${name}: ${device}`);
+      assert.equal(countComponent(tree, MobileBottomNav), device === 'mobile' ? 1 : 0, `${name}: ${device} navigation`);
       const wrapper = tree.props.children.find(child => child?.type === 'Stack');
       assert.equal(wrapper.props.id, device === 'mobile' ? 'mobile-wrap' : 'pc-wrap');
     }

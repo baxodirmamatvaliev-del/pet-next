@@ -1,8 +1,7 @@
 import { MenuItem, Select } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useTranslation } from '../i18n';
-import { isLocale, languages, locales } from '../i18n/config';
-import type { Locale } from '../i18n/config';
+import { isLocale, languages, locales, type Locale } from '../i18n/config';
 
 const flags: Record<Locale, string> = {
 	en: '🇺🇸',
@@ -19,11 +18,15 @@ const LanguageSwitcher = () => {
 		if (!isLocale(nextLocale)) return;
 		// Faqat til almashadi: sahifa, query, hash va scroll saqlanadi.
 		const changed = await router.replace(
-			{ pathname: router.pathname, query: router.query }, router.asPath,
+			{ pathname: router.pathname, query: router.query },
+			router.asPath,
 			{ locale: nextLocale, scroll: false },
 		);
 		// Keyingi tashrifda Next.js shu cookie orqali tanlangan tilni ochadi.
-		if (changed) document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
+		if (changed) {
+			const secure = location.protocol === 'https:' ? '; Secure' : '';
+			document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+		}
 	};
 
 	return (
@@ -33,13 +36,22 @@ const LanguageSwitcher = () => {
 			value={locale}
 			MenuProps={{ MenuListProps: { className: 'language-options' } }}
 			renderValue={(value) => (
-				<span className="language-flag" role="img" aria-label={languages[value]} title={languages[value]}>{flags[value]}</span>
+				<span className="language-flag" role="img" aria-label={languages[value]} title={languages[value]}>
+					{flags[value]}
+				</span>
 			)}
 			inputProps={{ 'aria-label': t('preferences.language') }}
 			onChange={(event) => { void changeLanguage(event.target.value); }}
 		>
 			{locales.map((code) => (
-				<MenuItem key={code} value={code} lang={code} aria-label={languages[code]} title={languages[code]} className="language-option">
+				<MenuItem
+					key={code}
+					value={code}
+					lang={code}
+					aria-label={languages[code]}
+					title={languages[code]}
+					className="language-option"
+				>
 					<span className="language-flag" aria-hidden="true">{flags[code]}</span>
 				</MenuItem>
 			))}

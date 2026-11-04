@@ -7,6 +7,7 @@
 - `pc/admin/` separates admin layout, lists and dashboard styles.
 - `pc/_chat.scss` contains the chat palette, launcher, panel, messages and composer.
 - `mobile/main.scss` loads responsive overrides and mobile page styles.
+- `mobile/_bottom-nav.scss` owns the bottom navigation and its reserved page space. Mobile chat offsets remain in `pc/_chat.scss` and use the same height variable.
 
 Keep one declaration per line, use tabs for indentation, and leave a blank line between selector blocks. Keep related states (`:hover`, `:focus-visible`, modifiers) beside their component rules. Preserve the `@use` order: shared desktop styles come before page styles, and mobile overrides load after desktop styles in `_app.tsx`.
 

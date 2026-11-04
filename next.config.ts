@@ -3,6 +3,7 @@ import { defaultLocale, locales } from './libs/i18n/config';
 import { noindexSources } from './libs/seo';
 
 const nextConfig: NextConfig = {
+	devIndicators: false,
 	reactStrictMode: true,
 	poweredByHeader: false,
 	compress: true,

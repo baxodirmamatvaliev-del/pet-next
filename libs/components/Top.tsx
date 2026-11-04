@@ -114,11 +114,6 @@ const Top = () => {
 					<Stack direction="row" component="nav" className="header-actions" aria-label={t('nav.shoppingActions')}>
 						<ThemeToggle />
 						<NotificationBell />
-						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
-							<ShoppingCartOutlinedIcon />
-							<Typography component="span">{t('nav.cart')}</Typography>
-							<Typography component="b">{cartCount}</Typography>
-						</Stack>
 					</Stack>
 					<IconButton className="mobile-menu" onClick={mobileMenuOpenHandler} aria-label={t('nav.openMenu')} aria-expanded={mobileMenuOpen}>
 						<MenuRoundedIcon />

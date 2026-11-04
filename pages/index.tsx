@@ -13,31 +13,16 @@ import useDeviceDetect from '../libs/hooks/useDeviceDetect';
 const Home: NextPage = () => {
 	const device = useDeviceDetect();
 
-	/** RENDER MOBILE **/
-	if (device === 'mobile') {
-		return (
-			<Stack component="main" className="home-page home-page--mobile">
-				<Hero />
-				<CategoryNavigation />
-				<BestSellers />
-				<CommunityPets />
-				<PetVideo />
-				<Benefits />
-			</Stack>
-		);
-	} else {
-		/** RENDER PC **/
-		return (
-			<Stack component="main" className="home-page home-page--pc">
-				<Hero />
-				<CategoryNavigation />
-				<BestSellers />
-				<CommunityPets />
-				<PetVideo />
-				<Benefits />
-			</Stack>
-		);
-	}
+	return (
+		<Stack component="main" className={`home-page home-page--${device === 'mobile' ? 'mobile' : 'pc'}`}>
+			<Hero />
+			<CategoryNavigation />
+			<BestSellers />
+			<CommunityPets />
+			<PetVideo />
+			<Benefits />
+		</Stack>
+	);
 };
 
 export default withLayoutHome(Home);
