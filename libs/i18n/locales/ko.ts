@@ -1,6 +1,14 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
+	'benefits.deliveryTitle': "배송 안내",
+	'benefits.deliveryDescription': "배송비와 예상 도착일은 판매자에게 문의해 주세요.",
+	'benefits.ordersTitle': "주문 조회",
+	'benefits.ordersDescription': "마이페이지에서 주문과 배송 상태를 확인하세요.",
+	'benefits.returnsTitle': "교환·반품 문의",
+	'benefits.returnsDescription': "상품별 교환·반품 조건을 판매자에게 문의해 주세요.",
+	'benefits.supportTitle': "고객 지원",
+	'benefits.supportDescription': "판매자 또는 PetNest 담당자에게 문의를 남겨 주세요.",
 
 
 	'video.eyebrow': "잠깐 쉬어가는 힐링 시간",
@@ -357,10 +365,6 @@ const ko: Dictionary = {
 	'ui.yourRequestsCouldNotBeLoaded': '내 문의를 불러오지 못했습니다.',
 	'ui.waitingForReply': '답변 대기',
 	'ui.noRequestsYet': '아직 문의가 없습니다',
-	'ui.freeDelivery': '무료 배송',
-	'ui.fastDelivery': '1–2일 배송',
-	'ui.easyReturns': '간편 반품',
-	'ui.securePayments': '안전한 결제',
 	'ui.shoppingBenefits': '쇼핑 혜택',
 	'ui.noProductsAvailableYet': '아직 등록된 상품이 없습니다.',
 	'ui.customerFavorites': '고객 인기 상품',
@@ -542,10 +546,6 @@ const ko: Dictionary = {
 	'ui.youCannotReviewYourOwnProduct': '내 상품에는 리뷰를 작성할 수 없습니다.',
 	'ui.reviewsCouldNotBeLoaded': '리뷰를 불러오지 못했습니다.',
 	'ui.noReviewsYetBeTheFirstToShare': '아직 리뷰가 없습니다. 첫 경험을 공유해 주세요.',
-	'ui.onOrdersOver30000': '₩30,000 이상 주문 시',
-	'ui.fastNationwideShipping': '전국 빠른 배송',
-	'ui.returnPeriod': '30일 반품 정책',
-	'ui.safeAndTrustedCheckout': '안전하고 믿을 수 있는 주문',
 	'ui.shopEssentials': '필수 용품',
 	'ui.comfortPlay': '편안함과 놀이',
 	'ui.freshArrivals': '새로 나온 상품',

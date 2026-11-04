@@ -1,6 +1,14 @@
 import type { Dictionary } from './en';
 
 const uz: Dictionary = {
+	'benefits.deliveryTitle': "Yetkazib berish",
+	'benefits.deliveryDescription': "Yetkazish narxi va muddatini sotuvchidan aniqlang.",
+	'benefits.ordersTitle': "Buyurtma holati",
+	'benefits.ordersDescription': "Profilingizda buyurtma va yetkazish holatini kuzating.",
+	'benefits.returnsTitle': "Qaytarish va almashtirish",
+	'benefits.returnsDescription': "Mahsulotni qaytarish shartlarini sotuvchidan so‘rang.",
+	'benefits.supportTitle': "Mijozlarga yordam",
+	'benefits.supportDescription': "Sotuvchi yoki PetNest jamoasiga savol yuboring.",
 
 
 	'video.eyebrow': "Bir lahza quvonch",
@@ -357,10 +365,6 @@ const uz: Dictionary = {
 	'ui.yourRequestsCouldNotBeLoaded': 'So‘rovlaringizni yuklab bo‘lmadi.',
 	'ui.waitingForReply': 'Javob kutilmoqda',
 	'ui.noRequestsYet': 'Hozircha so‘rovlar yo‘q',
-	'ui.freeDelivery': 'Bepul yetkazib berish',
-	'ui.fastDelivery': '1–2 kunda yetkazish',
-	'ui.easyReturns': 'Oson qaytarish',
-	'ui.securePayments': 'Xavfsiz to‘lovlar',
 	'ui.shoppingBenefits': 'Xarid afzalliklari',
 	'ui.noProductsAvailableYet': 'Hozircha mahsulotlar yo‘q.',
 	'ui.customerFavorites': 'Xaridorlar tanlovi',
@@ -542,10 +546,6 @@ const uz: Dictionary = {
 	'ui.youCannotReviewYourOwnProduct': 'O‘z mahsulotingizga sharh yoza olmaysiz.',
 	'ui.reviewsCouldNotBeLoaded': 'Sharhlarni yuklab bo‘lmadi.',
 	'ui.noReviewsYetBeTheFirstToShare': 'Hozircha sharhlar yo‘q. Birinchi bo‘lib fikr bildiring.',
-	'ui.onOrdersOver30000': '₩30,000 dan ortiq buyurtmalarga',
-	'ui.fastNationwideShipping': 'Butun mamlakat bo‘ylab tez yetkazish',
-	'ui.returnPeriod': '30 kun ichida qaytarish',
-	'ui.safeAndTrustedCheckout': 'Ishonchli va xavfsiz xarid',
 	'ui.shopEssentials': 'Kerakli buyumlar',
 	'ui.comfortPlay': 'Qulaylik va o‘yin',
 	'ui.freshArrivals': 'Yangi kelganlar',

@@ -1,5 +1,13 @@
 // Yangi kalit avval shu yerga, keyin qolgan uchta lug‘atga qo‘shiladi.
 const en = {
+	'benefits.deliveryTitle': "Delivery information",
+	'benefits.deliveryDescription': "Ask the seller about delivery fees and estimated arrival.",
+	'benefits.ordersTitle': "Order updates",
+	'benefits.ordersDescription': "Check your orders and delivery status in My Account.",
+	'benefits.returnsTitle': "Returns & exchanges",
+	'benefits.returnsDescription': "Contact the seller about the conditions for your item.",
+	'benefits.supportTitle': "Customer support",
+	'benefits.supportDescription': "Send a question to a seller or the PetNest team.",
 
 
 	'video.eyebrow': "A little moment of happiness",
@@ -356,10 +364,6 @@ const en = {
 	'ui.yourRequestsCouldNotBeLoaded': 'Your requests could not be loaded.',
 	'ui.waitingForReply': 'Waiting for reply',
 	'ui.noRequestsYet': 'No requests yet',
-	'ui.freeDelivery': 'Free delivery',
-	'ui.fastDelivery': '1–2 day delivery',
-	'ui.easyReturns': 'Easy returns',
-	'ui.securePayments': 'Secure payments',
 	'ui.shoppingBenefits': 'Shopping benefits',
 	'ui.noProductsAvailableYet': 'No products available yet.',
 	'ui.customerFavorites': 'Customer favorites',
@@ -541,10 +545,6 @@ const en = {
 	'ui.youCannotReviewYourOwnProduct': 'You cannot review your own product.',
 	'ui.reviewsCouldNotBeLoaded': 'Reviews could not be loaded.',
 	'ui.noReviewsYetBeTheFirstToShare': 'No reviews yet. Be the first to share your experience.',
-	'ui.onOrdersOver30000': 'On orders over ₩30,000',
-	'ui.fastNationwideShipping': 'Fast nationwide shipping',
-	'ui.returnPeriod': '30-day return policy',
-	'ui.safeAndTrustedCheckout': 'Safe and trusted checkout',
 	'ui.shopEssentials': 'Shop essentials',
 	'ui.comfortPlay': 'Comfort & play',
 	'ui.freshArrivals': 'Fresh arrivals',

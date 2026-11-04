@@ -1,6 +1,14 @@
 import type { Dictionary } from './en';
 
 const ru: Dictionary = {
+	'benefits.deliveryTitle': "Информация о доставке",
+	'benefits.deliveryDescription': "Уточните стоимость и сроки доставки у продавца.",
+	'benefits.ordersTitle': "Статус заказа",
+	'benefits.ordersDescription': "Следите за заказами и доставкой в личном кабинете.",
+	'benefits.returnsTitle': "Возврат и обмен",
+	'benefits.returnsDescription': "Уточните условия возврата товара у продавца.",
+	'benefits.supportTitle': "Поддержка клиентов",
+	'benefits.supportDescription': "Задайте вопрос продавцу или команде PetNest.",
 
 
 	'video.eyebrow': "Минута радости",
@@ -357,10 +365,6 @@ const ru: Dictionary = {
 	'ui.yourRequestsCouldNotBeLoaded': 'Не удалось загрузить обращения.',
 	'ui.waitingForReply': 'Ожидает ответа',
 	'ui.noRequestsYet': 'Обращений пока нет',
-	'ui.freeDelivery': 'Бесплатная доставка',
-	'ui.fastDelivery': 'Доставка за 1–2 дня',
-	'ui.easyReturns': 'Простой возврат',
-	'ui.securePayments': 'Безопасные платежи',
 	'ui.shoppingBenefits': 'Преимущества покупок',
 	'ui.noProductsAvailableYet': 'Товаров пока нет.',
 	'ui.customerFavorites': 'Выбор покупателей',
@@ -542,10 +546,6 @@ const ru: Dictionary = {
 	'ui.youCannotReviewYourOwnProduct': 'Нельзя оставить отзыв о своём товаре.',
 	'ui.reviewsCouldNotBeLoaded': 'Не удалось загрузить отзывы.',
 	'ui.noReviewsYetBeTheFirstToShare': 'Отзывов пока нет. Поделитесь впечатлениями первым.',
-	'ui.onOrdersOver30000': 'При заказе от ₩30 000',
-	'ui.fastNationwideShipping': 'Быстрая доставка по всей стране',
-	'ui.returnPeriod': 'Возврат в течение 30 дней',
-	'ui.safeAndTrustedCheckout': 'Надёжное и безопасное оформление',
 	'ui.shopEssentials': 'Всё необходимое',
 	'ui.comfortPlay': 'Комфорт и игры',
 	'ui.freshArrivals': 'Новые поступления',

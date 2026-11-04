@@ -239,47 +239,53 @@
 	.shopping-benefits {
 		margin-top: 64px;
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		padding: 30px 12px;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 28px;
+		padding-block: 30px;
 		border-block: 1px solid $border;
+
 		.benefit {
+			min-width: 0;
 			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 15px;
-			padding: 4px 24px;
-			border-right: 1px solid $border;
-			&:last-child {
-				border-right: 0;
-			}
+			align-items: flex-start;
+			gap: 14px;
+			color: $ink;
+			text-decoration: none;
 
-			> span {
-				width: 44px;
-				height: 44px;
-				flex: 0 0 44px;
-				display: grid;
-				place-items: center;
-				border-radius: 50%;
-				background: $sage;
+			&:hover h3 {
 				color: $primary;
-				svg {
-					font-size: 24px;
-				}
 			}
 
-			div {
-				display: flex;
-				flex-direction: column;
-				gap: 5px;
+			&:focus-visible {
+				outline: 2px solid $primary;
+				outline-offset: 6px;
+			}
+		}
+
+		.benefit__icon {
+			display: inline-flex;
+			flex-shrink: 0;
+			padding-top: 2px;
+			color: $primary;
+
+			svg {
+				font-size: 34px;
+			}
+		}
+
+		.benefit__content {
+			gap: 7px;
+
+			h3 {
+				font-size: 15px;
+				font-weight: 700;
+				line-height: 1.4;
 			}
 
-			strong {
-				font-size: 14px;
-			}
-
-			small {
+			p {
 				color: $muted;
-				font-size: 11px;
+				font-size: 12px;
+				line-height: 1.7;
 			}
 		}
 	}

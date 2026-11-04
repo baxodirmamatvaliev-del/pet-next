@@ -1,58 +1,60 @@
-import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
-import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
-import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
+import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import { Box, Stack, Typography } from '@mui/material';
+import Link from 'next/link';
 
-import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useTranslation } from '../../i18n';
 
 const Benefits = () => {
 	const { t } = useTranslation();
 	const benefits = [
-		{ title: t('ui.freeDelivery'), text: t('ui.onOrdersOver30000'), icon: LocalShippingOutlinedIcon },
-		{ title: t('ui.fastDelivery'), text: t('ui.fastNationwideShipping'), icon: AccessTimeRoundedIcon },
-		{ title: t('ui.easyReturns'), text: t('ui.returnPeriod'), icon: ReplayRoundedIcon },
-		{ title: t('ui.securePayments'), text: t('ui.safeAndTrustedCheckout'), icon: VerifiedUserOutlinedIcon },
+		{
+			id: 'delivery',
+			title: t('benefits.deliveryTitle'),
+			text: t('benefits.deliveryDescription'),
+			icon: LocalShippingRoundedIcon,
+			href: '/cs?tab=ask',
+		},
+		{
+			id: 'orders',
+			title: t('benefits.ordersTitle'),
+			text: t('benefits.ordersDescription'),
+			icon: Inventory2OutlinedIcon,
+			href: '/mypage?category=myOrders',
+		},
+		{
+			id: 'returns',
+			title: t('benefits.returnsTitle'),
+			text: t('benefits.returnsDescription'),
+			icon: AssignmentReturnOutlinedIcon,
+			href: '/cs?tab=ask',
+		},
+		{
+			id: 'support',
+			title: t('benefits.supportTitle'),
+			text: t('benefits.supportDescription'),
+			icon: SupportAgentRoundedIcon,
+			href: '/cs',
+		},
 	];
 
-	const device = useDeviceDetect();
-
-	if (device === 'mobile') {
-		/** RENDER MOBILE **/
-		return (
-			<Stack component="section" className="shopping-benefits shopping-benefits--mobile container" aria-label={t('ui.shoppingBenefits')}>
-				{benefits.map(({ title, text, icon: Icon }) => (
-					<Stack direction="row" className="benefit" key={title}>
-						<Box component="span">
-							<Icon />
-						</Box>
-						<Stack>
-							<Typography component="strong">{title}</Typography>
-							<Typography component="small">{text}</Typography>
-						</Stack>
+	return (
+		<Box component="section" className="shopping-benefits container" aria-label={t('ui.shoppingBenefits')}>
+			{benefits.map(({ id, title, text, icon: Icon, href }) => (
+				<Link className="benefit" href={href} key={id}>
+					<Box component="span" className="benefit__icon">
+						<Icon aria-hidden="true" />
+					</Box>
+					<Stack className="benefit__content">
+						<Typography component="h3">{title}</Typography>
+						<Typography component="p">{text}</Typography>
 					</Stack>
-				))}
-			</Stack>
-		);
-	} else {
-		/** RENDER PC **/
-		return (
-			<Stack component="section" className="shopping-benefits shopping-benefits--pc container" aria-label={t('ui.shoppingBenefits')}>
-				{benefits.map(({ title, text, icon: Icon }) => (
-					<Stack direction="row" className="benefit" key={title}>
-						<Box component="span">
-							<Icon />
-						</Box>
-						<Stack>
-							<Typography component="strong">{title}</Typography>
-							<Typography component="small">{text}</Typography>
-						</Stack>
-					</Stack>
-				))}
-			</Stack>
-		);
-	}
+				</Link>
+			))}
+		</Box>
+	);
 };
 
 export default Benefits;
