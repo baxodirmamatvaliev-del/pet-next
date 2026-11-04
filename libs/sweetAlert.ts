@@ -29,7 +29,7 @@ export const sweetConfirmAlert = async (msg: string, confirmText: string, cancel
 		icon: 'question',
 		title: msg,
 		showCancelButton: true,
-		confirmButtonColor: '#174f3f',
+		confirmButtonColor: 'var(--pet-primary-fill)',
 		confirmButtonText: confirmText,
 		cancelButtonText: cancelText,
 	});

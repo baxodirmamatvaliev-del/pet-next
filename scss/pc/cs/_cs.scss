@@ -144,7 +144,7 @@
 	background: var(--pet-surface);
 	&.cs-ticket--selected {
 		border-color: $primary;
-		box-shadow: 0 0 0 3px rgba(24, 79, 64, 0.12);
+		box-shadow: 0 0 0 3px rgb(var(--pet-primary-rgb) / 12%);
 	}
 
 	.cs-ticket__heading {

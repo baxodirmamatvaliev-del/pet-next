@@ -25,21 +25,14 @@
 	}
 
 	.join-card {
-		--pet-primary: #e8ece6;
-		--pet-secondary: #bfcbbd;
-		--pet-ink: #f4f5f1;
-		--pet-muted: #c7cdc6;
-		--pet-border: rgb(235 240 232 / 22%);
-		--pet-sage: rgb(15 21 18 / 24%);
-		--pet-surface: #526057;
 		color: var(--pet-ink);
 		width: 100%;
 		max-width: 560px;
 		border: 1px solid $border;
 		border-radius: 24px;
-		background: rgb(42 48 45 / 76%);
+		background: rgb(var(--pet-surface-rgb) / 94%);
 		backdrop-filter: blur(18px);
-		box-shadow: 0 24px 70px rgb(18 35 24 / 22%), inset 0 1px 0 rgb(255 255 255 / 10%);
+		box-shadow: 0 24px 70px rgb(61 38 31 / 22%), inset 0 1px 0 rgb(255 255 255 / 10%);
 	}
 
 	.join-form {
@@ -112,7 +105,7 @@
 				&.active {
 					background: var(--pet-surface);
 					color: $primary;
-					box-shadow: 0 3px 12px rgb(16 61 49 / 10%);
+					box-shadow: 0 3px 12px rgb(var(--pet-primary-rgb) / 10%);
 				}
 			}
 		}
@@ -149,8 +142,8 @@
 			.join-social-email {
 				color: var(--pet-ink);
 				border: 1px solid var(--pet-border);
-				background: rgb(244 247 240 / 8%);
-				&:hover { background: rgb(244 247 240 / 14%); }
+				background: var(--pet-surface-muted);
+				&:hover { background: var(--pet-sage); }
 			}
 			.join-social-notice {
 				grid-column: 1 / -1;
@@ -181,13 +174,13 @@
 			margin-top: 16px;
 			.MuiOutlinedInput-root {
 				color: var(--pet-ink);
-				background: rgb(244 247 240 / 8%);
+				background: var(--pet-surface-muted);
 				fieldset {
 					border-color: var(--pet-border);
 				}
 				&:hover fieldset,
 				&.Mui-focused fieldset {
-					border-color: #a9bda5;
+					border-color: var(--pet-primary);
 				}
 			}
 
@@ -204,14 +197,14 @@
 				border-radius: 10px;
 				font-size: 14px;
 				font-weight: 800;
-				color: #25312a;
-				background: #c0ceba;
+				color: var(--pet-on-dark);
+				background: var(--pet-primary-fill);
 				&:hover {
-					background: #d1ddcc;
+					background: var(--pet-primary-hover);
 				}
 				&.Mui-disabled {
-					color: #b9c2b7;
-					background: rgb(192 206 186 / 18%);
+					color: var(--pet-text-disabled);
+					background: var(--pet-surface-muted);
 				}
 			}
 		}

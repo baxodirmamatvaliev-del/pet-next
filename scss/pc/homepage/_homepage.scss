@@ -4,43 +4,37 @@
 	.home-hero {
 		position: relative;
 		isolation: isolate;
-		min-height: clamp(660px, 88svh, 900px);
+		min-height: 650px;
 		justify-content: center;
-		padding: 190px 0 100px;
-		overflow: hidden;
-		background: #302d22 url('/video/home-hero.jpg') center / cover;
-		color: #fffaf0;
+		padding: 160px 0 190px;
+		overflow: visible;
+		background: var(--pet-canvas);
+		color: var(--pet-ink);
 
-		&::after {
+		&::before {
 			content: '';
 			position: absolute;
-			inset: 0;
-			z-index: -1;
-			background: linear-gradient(90deg, rgb(24 27 23 / 76%), rgb(24 27 23 / 28%) 75%),
-				linear-gradient(180deg, rgb(24 27 23 / 36%), transparent 35%, rgb(24 27 23 / 24%));
-			pointer-events: none;
+			inset: 0 0 179px;
+			z-index: 1;
+			background: var(--pet-cream);
 		}
 
-		.home-hero__video {
-			position: absolute;
-			inset: 0;
-			z-index: -2;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			object-position: center;
+		.home-hero__layout {
+			position: relative;
 		}
 
 		.home-hero__content {
 			align-items: flex-start;
+			position: relative;
+			z-index: 2;
 		}
 
 		h1 {
-			max-width: 780px;
+			max-width: 720px;
 			color: inherit;
 			font-family: Georgia, 'Times New Roman', serif;
-			font-size: clamp(52px, 6vw, 88px);
-			line-height: 1.04;
+			font-size: clamp(48px, 5.5vw, 80px);
+			line-height: 1.08;
 			letter-spacing: -0.045em;
 		}
 
@@ -51,23 +45,47 @@
 			gap: 12px;
 
 			.button {
-				height: 56px;
-				padding-inline: 28px;
+				height: 54px;
+				padding-inline: 26px;
 				border-radius: 999px;
-				font-size: 16px;
+				font-size: 15px;
 			}
 
 			.button--secondary {
-				background: rgb(255 250 240 / 12%);
-				border: 1px solid rgb(255 250 240 / 45%);
-				backdrop-filter: blur(6px);
+				background: var(--pet-surface);
+				border: 1px solid var(--pet-border-strong);
+				color: var(--pet-primary);
 			}
 		}
 
+		.home-hero__art {
+			position: absolute;
+			right: max(6%, calc((100% - 1280px) / 2 + 40px));
+			bottom: -26px;
+			width: 335px;
+			pointer-events: none;
+		}
+
+		.home-hero__image {
+			position: relative;
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.home-hero__wave {
+			position: absolute;
+			inset: auto 0 -1px;
+			width: 100%;
+			height: 180px;
+			z-index: 1;
+			color: var(--pet-cream);
+			pointer-events: none;
+		}
 	}
 
 	.home-categories {
-		margin-top: 22px;
+		margin-top: 96px;
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
 		gap: 16px;

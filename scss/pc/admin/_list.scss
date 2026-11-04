@@ -92,13 +92,13 @@
 		border: 1px solid var(--pet-border);
 		border-radius: 16px;
 		background: var(--pet-surface);
-		box-shadow: 0 4px 18px #174f3f08;
+		box-shadow: 0 4px 18px rgb(var(--pet-primary-rgb) / 3%);
 		transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 
 		&:hover {
 			transform: translateY(-2px);
 			border-color: var(--pet-border-strong);
-			box-shadow: 0 12px 28px #174f3f12;
+			box-shadow: 0 12px 28px rgb(var(--pet-primary-rgb) / 7%);
 		}
 
 		.MuiAvatar-root {
@@ -106,7 +106,7 @@
 			height: 62px;
 			flex-shrink: 0;
 			border: 3px solid var(--pet-sage);
-			box-shadow: 0 2px 8px #174f3f17;
+			box-shadow: 0 2px 8px rgb(var(--pet-primary-rgb) / 9%);
 		}
 	}
 

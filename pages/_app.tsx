@@ -52,7 +52,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
 	return (
 		<ApolloProvider client={client}>
-			<ThemeProvider theme={theme} defaultMode="system" modeStorageKey="pet-theme" disableTransitionOnChange>
+			<ThemeProvider theme={theme} defaultMode="light" modeStorageKey="pet-theme" disableTransitionOnChange>
 				<Head>
 					<meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow'} key="robots" />
 					{!noindex && <link rel="canonical" href={canonical} key="canonical" />}

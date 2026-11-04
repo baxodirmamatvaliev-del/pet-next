@@ -34,12 +34,12 @@
 		background: var(--pet-surface);
 		color: $primary;
 		text-decoration: none;
-		box-shadow: 0 7px 24px #174f3f0a;
+		box-shadow: 0 7px 24px rgb(var(--pet-primary-rgb) / 4%);
 		transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 		&:hover {
 			transform: translateY(-4px);
-			border-color: #9fcbb0;
-			box-shadow: 0 16px 30px #174f3f1a;
+			border-color: var(--pet-border-strong);
+			box-shadow: 0 16px 30px rgb(var(--pet-primary-rgb) / 10%);
 		}
 
 		&:focus-visible {
@@ -111,7 +111,7 @@
 		border: 1px solid var(--pet-border);
 		border-radius: 18px;
 		background: var(--pet-surface);
-		box-shadow: 0 7px 24px #174f3f0a;
+		box-shadow: 0 7px 24px rgb(var(--pet-primary-rgb) / 4%);
 	}
 
 	.admin-dashboard__orders-heading {

@@ -37,7 +37,7 @@
 	transition: transform 160ms ease, box-shadow 160ms ease;
 	&:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 10px 25px rgb(23 79 63 / 16%);
+		box-shadow: 0 10px 25px rgb(var(--pet-primary-rgb) / 16%);
 	}
 
 	&.button--primary {

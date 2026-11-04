@@ -177,7 +177,7 @@
 	transition: transform 180ms ease, box-shadow 180ms ease;
 	&:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 14px 34px rgb(23 79 63 / 10%);
+		box-shadow: 0 14px 34px rgb(var(--pet-primary-rgb) / 10%);
 	}
 
 	.pet-card__image {
@@ -277,7 +277,7 @@
 				font-size: 13px;
 				font-weight: 700;
 				text-decoration: underline;
-				text-decoration-color: #95bea7;
+				text-decoration-color: var(--pet-border-strong);
 				text-underline-offset: 4px;
 				cursor: pointer;
 				transition: color 180ms ease, text-decoration-color 180ms ease;
@@ -445,7 +445,7 @@
 				font-size: 16px;
 				font-weight: 700;
 				text-decoration: underline;
-				text-decoration-color: #95bea7;
+				text-decoration-color: var(--pet-border-strong);
 				text-underline-offset: 5px;
 				cursor: pointer;
 				transition: color 180ms ease, text-decoration-color 180ms ease;
@@ -679,7 +679,7 @@
 			width: 96px;
 			height: 96px;
 			border: 3px solid #ffffff;
-			box-shadow: 0 4px 16px #174f3f20;
+			box-shadow: 0 4px 16px rgb(var(--pet-primary-rgb) / 12%);
 		}
 
 		h1 {
@@ -738,10 +738,10 @@
 				}
 
 				&.member-detail__follow {
-					background: #ff5d18;
+					background: var(--pet-primary-fill);
 					color: var(--pet-on-dark);
 					&:hover {
-						background: #e84d0c;
+						background: var(--pet-primary-hover);
 					}
 				}
 

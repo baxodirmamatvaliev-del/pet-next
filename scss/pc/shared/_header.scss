@@ -146,7 +146,7 @@
 
 .site-header {
 	--header-progress: 0;
-	background-color: rgb(37 47 39 / calc(var(--header-progress) * 100%));
+	background-color: rgb(var(--pet-surface-rgb) / calc(var(--header-progress) * 96%));
 	backdrop-filter: blur(calc(var(--header-progress) * 12px)) saturate(110%);
 	-webkit-backdrop-filter: blur(calc(var(--header-progress) * 12px)) saturate(110%);
 	transition: background-color 180ms linear, backdrop-filter 180ms linear, color 180ms linear;
@@ -169,12 +169,12 @@
 }
 
 .site-header--home {
-	--header-start-ink: #fffaf0;
+	--header-start-ink: var(--pet-ink);
 }
 
 .site-header {
-	--header-ink: color-mix(in srgb, #fffaf0 calc(var(--header-progress) * 100%), var(--header-start-ink, var(--pet-ink)));
-	--header-control: rgb(255 250 240 / calc(var(--header-progress) * 10%));
+	--header-ink: color-mix(in srgb, var(--pet-ink) calc(var(--header-progress) * 100%), var(--header-start-ink, var(--pet-ink)));
+	--header-control: rgb(var(--pet-primary-rgb) / calc(var(--header-progress) * 6%));
 	color: var(--header-ink);
 
 	.brand,

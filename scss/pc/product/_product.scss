@@ -12,7 +12,7 @@
 		height: 34px;
 		background: rgb(var(--pet-surface-rgb) / 92%);
 		color: $muted;
-		box-shadow: 0 4px 14px rgba(21, 75, 59, 0.12);
+		box-shadow: 0 4px 14px rgb(var(--pet-primary-rgb) / 12%);
 		transition: color 160ms ease, transform 160ms ease;
 		&:hover {
 			background: var(--pet-surface);

@@ -86,7 +86,7 @@
 	&:hover {
 		transform: translateY(-4px);
 		border-color: var(--pet-border-strong);
-		box-shadow: 0 12px 32px rgb(23 79 63 / 10%);
+		box-shadow: 0 12px 32px rgb(var(--pet-primary-rgb) / 10%);
 	}
 
 	.MuiAvatar-root {

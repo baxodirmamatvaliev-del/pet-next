@@ -234,9 +234,9 @@
 		}
 
 		.my-follows__follow {
-			background: #ff5d18;
+			background: var(--pet-primary-fill);
 			&:hover {
-				background: #e84e0a;
+				background: var(--pet-primary-hover);
 			}
 		}
 

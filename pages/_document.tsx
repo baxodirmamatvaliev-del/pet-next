@@ -28,7 +28,7 @@ const Document = () => (
 		</Head>
 		<body>
 			{/* Sahifa ko‘rinishidan oldin saqlangan tema yoki tizim tanlovini qo‘llaymiz. */}
-			<InitColorSchemeScript defaultMode="system" modeStorageKey="pet-theme" />
+			<InitColorSchemeScript defaultMode="light" modeStorageKey="pet-theme" />
 			<Main />
 			<NextScript />
 		</body>

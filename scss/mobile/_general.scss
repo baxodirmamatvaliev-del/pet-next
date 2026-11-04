@@ -70,21 +70,46 @@
 
 	.home-page {
 		.home-hero {
-			min-height: clamp(500px, 82svh, 660px);
-			padding: 110px 0 76px;
-			background-position: 75% center;
+			min-height: 0;
+			padding: 116px 0 180px;
 
-			.home-hero__video {
-				object-position: 75% center;
+			&::before {
+				bottom: 89px;
+			}
+
+			.home-hero__content {
+				align-items: center;
+				text-align: center;
 			}
 
 			h1 {
 				font-size: clamp(38px, 10vw, 54px);
 			}
+
+			.home-hero__actions {
+				justify-content: center;
+				margin-top: 24px;
+
+				.button {
+					height: 46px;
+					padding-inline: 18px;
+					font-size: 13px;
+				}
+			}
+
+			.home-hero__art {
+				width: 210px;
+				right: 6%;
+				bottom: -40px;
+			}
+
+			.home-hero__wave {
+				height: 90px;
+			}
 		}
 
 		.home-categories {
-			margin-top: 12px;
+			margin-top: 90px;
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 10px;
 			.category-tile {
