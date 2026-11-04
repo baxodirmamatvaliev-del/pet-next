@@ -4,7 +4,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CrueltyFreeOutlinedIcon from '@mui/icons-material/CrueltyFreeOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -160,7 +160,7 @@ const MobileMenu = (props: MobileMenuProps) => {
 				</ListItemButton>
 				<ListItemButton component={Link} href="/cart" onClick={closeHandler}>
 					<ListItemIcon>
-						<LocalMallOutlinedIcon />
+						<ShoppingCartOutlinedIcon />
 					</ListItemIcon>
 					<ListItemText primary={t('nav.shoppingCart')} secondary={t('nav.itemCount', { count: cartCount })} />
 				</ListItemButton>

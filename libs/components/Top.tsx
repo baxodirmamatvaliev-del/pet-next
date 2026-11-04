@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
@@ -115,7 +115,7 @@ const Top = () => {
 						<ThemeToggle />
 						<NotificationBell />
 						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
-							<LocalMallOutlinedIcon />
+							<ShoppingCartOutlinedIcon />
 							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>
 						</Stack>
@@ -176,7 +176,7 @@ const Top = () => {
 							<Typography component="span">{t(user?.sub ? 'nav.account' : 'nav.login')}</Typography>
 						</Stack>
 						<Stack component={Link} href="/cart" aria-label={t('nav.shoppingCart')} className="cart-link">
-							<LocalMallOutlinedIcon />
+							<ShoppingCartOutlinedIcon />
 							<Typography component="span">{t('nav.cart')}</Typography>
 							<Typography component="b">{cartCount}</Typography>
 						</Stack>
