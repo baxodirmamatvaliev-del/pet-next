@@ -1,6 +1,8 @@
 import type { Dictionary } from './en';
 
 const ru: Dictionary = {
+	'ui.filtersCount': 'Фильтры ({count})',
+	'ui.tryAgain': 'Повторить',
 	'benefits.deliveryTitle': "Информация о доставке",
 	'benefits.deliveryDescription': "Уточните стоимость и сроки доставки у продавца.",
 	'benefits.ordersTitle': "Статус заказа",

@@ -1,3 +1,4 @@
+import ListingError from '../../libs/components/common/ListingError';
 import { ChangeEvent, useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -46,6 +47,7 @@ const PetList = (props: PetListProps) => {
 	const {
 		loading: getPetsLoading,
 		error: getPetsError,
+		refetch: getPetsRefetch,
 	} = useQuery(GET_PETS, {
 		fetchPolicy: 'network-only',
 		variables: { input: searchFilter },
@@ -89,7 +91,7 @@ const PetList = (props: PetListProps) => {
 					<Stack direction="row" component="label">
 						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
-							<Select value={searchFilter.sort} onChange={sortingHandler}>
+							<Select value={searchFilter.sort} onChange={sortingHandler} inputProps={{ 'aria-label': t('ui.sortBy') }}>
 								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
 								<MenuItem value="petLikes">{t('ui.mostLiked')}</MenuItem>
 								<MenuItem value="petViews">{t('ui.mostViewed')}</MenuItem>
@@ -101,7 +103,7 @@ const PetList = (props: PetListProps) => {
 				<PetFilter searchFilter={searchFilter} updateSearchFilter={updateSearchFilterHandler} />
 				<Box component="section" className="pet-results" aria-live="polite">
 					<Stack direction="row" className="pet-results__toolbar">
-						<Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>
+						{!getPetsError && <Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>}
 						<Button component={Link} href="/pet/create" className="pet-results__create" startIcon={<AddRoundedIcon />}>
 							{t('ui.createListing')}
 						</Button>
@@ -109,7 +111,7 @@ const PetList = (props: PetListProps) => {
 					{getPetsLoading && !pets.length ? (
 						<Typography className="pet-results__message">{t('ui.loadingPets')}</Typography>
 					) : getPetsError ? (
-						<Typography className="pet-results__message pet-results__message--error">{t('ui.petsCouldNotBeLoaded')}</Typography>
+						<ListingError className="pet-results__message pet-results__message--error" message={t('ui.petsCouldNotBeLoaded')} onRetry={() => getPetsRefetch()} />
 					) : pets.length ? (
 						<Box className="pet-results__grid">
 							{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}
@@ -139,7 +141,7 @@ const PetList = (props: PetListProps) => {
 					<Stack direction="row" component="label">
 						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
-							<Select value={searchFilter.sort} onChange={sortingHandler}>
+							<Select value={searchFilter.sort} onChange={sortingHandler} inputProps={{ 'aria-label': t('ui.sortBy') }}>
 								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
 								<MenuItem value="petLikes">{t('ui.mostLiked')}</MenuItem>
 								<MenuItem value="petViews">{t('ui.mostViewed')}</MenuItem>
@@ -153,7 +155,7 @@ const PetList = (props: PetListProps) => {
 
 				<Box component="section" className="pet-results" aria-live="polite">
 					<Stack direction="row" className="pet-results__toolbar">
-						<Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>
+						{!getPetsError && <Typography className="pet-results__count">{t('counts.pets', { count: total })}</Typography>}
 						<Button
 							component={Link}
 							href="/pet/create"
@@ -166,9 +168,7 @@ const PetList = (props: PetListProps) => {
 					{getPetsLoading && !pets.length ? (
 						<Typography className="pet-results__message">{t('ui.loadingPets')}</Typography>
 					) : getPetsError ? (
-						<Typography className="pet-results__message pet-results__message--error">
-							{t('ui.petsCouldNotBeLoaded')}
-						</Typography>
+						<ListingError className="pet-results__message pet-results__message--error" message={t('ui.petsCouldNotBeLoaded')} onRetry={() => getPetsRefetch()} />
 					) : pets.length ? (
 						<Box className="pet-results__grid">
 							{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}

@@ -1,3 +1,4 @@
+import ListingError from '../../libs/components/common/ListingError';
 import { ChangeEvent, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
@@ -160,7 +161,7 @@ const ProductList = (props: ProductListProps) => {
 					<Stack direction="row" component="label">
 						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
-							<Select value={searchFilter.sort} onChange={sortingHandler}>
+							<Select value={searchFilter.sort} onChange={sortingHandler} inputProps={{ 'aria-label': t('ui.sortBy') }}>
 								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
 								<MenuItem value="productSold">{t('ui.bestSelling')}</MenuItem>
 								<MenuItem value="productRating">{t('ui.highestRated')}</MenuItem>
@@ -176,11 +177,11 @@ const ProductList = (props: ProductListProps) => {
 					initialInput={initialInput}
 				/>
 				<Box component="section" className="product-results" aria-live="polite">
-					<Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>
+					{!getProductsError && <Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>}
 					{getProductsLoading && !products.length ? (
 						<Typography className="product-results__message">{t('ui.loadingProducts')}</Typography>
 					) : getProductsError ? (
-						<Typography className="product-results__message product-results__message--error">{t('ui.productsCouldNotBeLoaded')}</Typography>
+						<ListingError className="product-results__message product-results__message--error" message={t('ui.productsCouldNotBeLoaded')} onRetry={() => getProductsRefetch()} />
 					) : products.length ? (
 						<Box className="product-results__grid">
 							{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
@@ -209,7 +210,7 @@ const ProductList = (props: ProductListProps) => {
 					<Stack direction="row" component="label">
 						<Typography component="span">{t('ui.sortBy')}</Typography>
 						<FormControl size="small">
-							<Select value={searchFilter.sort} onChange={sortingHandler}>
+							<Select value={searchFilter.sort} onChange={sortingHandler} inputProps={{ 'aria-label': t('ui.sortBy') }}>
 								<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
 								<MenuItem value="productSold">{t('ui.bestSelling')}</MenuItem>
 								<MenuItem value="productRating">{t('ui.highestRated')}</MenuItem>
@@ -227,13 +228,11 @@ const ProductList = (props: ProductListProps) => {
 						initialInput={initialInput}
 					/>
 					<Box component="section" className="product-results" aria-live="polite">
-						<Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>
+						{!getProductsError && <Typography className="product-results__count">{t('counts.products', { count: total })}</Typography>}
 						{getProductsLoading && !products.length ? (
 							<Typography className="product-results__message">{t('ui.loadingProducts')}</Typography>
 						) : getProductsError ? (
-							<Typography className="product-results__message product-results__message--error">
-								{t('ui.productsCouldNotBeLoaded')}
-							</Typography>
+							<ListingError className="product-results__message product-results__message--error" message={t('ui.productsCouldNotBeLoaded')} onRetry={() => getProductsRefetch()} />
 						) : products.length ? (
 							<Box className="product-results__grid">
 								{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}

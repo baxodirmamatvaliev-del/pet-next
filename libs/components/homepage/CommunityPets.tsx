@@ -1,3 +1,4 @@
+import ListingError from '../common/ListingError';
 import CardCarousel from './CardCarousel';
 import { useQuery } from '@apollo/client';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
@@ -22,9 +23,10 @@ const communityInput: PetsInquiry = {
 
 const CommunityPets = () => {
 	const { t } = useTranslation();
-	const { data, loading, error } = useQuery<{ getPets: Pets }, { input: PetsInquiry }>(GET_PETS, {
+	const { data, loading, error, refetch } = useQuery<{ getPets: Pets }, { input: PetsInquiry }>(GET_PETS, {
 		variables: { input: communityInput },
 		fetchPolicy: 'cache-and-network',
+		notifyOnNetworkStatusChange: true,
 	});
 	const pets = data?.getPets.list ?? [];
 
@@ -43,7 +45,7 @@ const CommunityPets = () => {
 				{loading && !pets.length ? (
 					<Typography className="community-pets__message">{t('ui.loadingCommunityListings')}</Typography>
 				) : error && !pets.length ? (
-					<Typography className="community-pets__message community-pets__message--error">{t('ui.communityListingsCouldNotBeLoadedPleaseTry')}</Typography>
+					<ListingError className="community-pets__message community-pets__message--error" message={t('ui.communityListingsCouldNotBeLoadedPleaseTry')} onRetry={() => refetch()} />
 				) : pets.length ? (
 					<CardCarousel label={t('nav.community')} kind="pets">
 						{pets.map((pet) => <PetCard pet={pet} key={pet._id} />)}

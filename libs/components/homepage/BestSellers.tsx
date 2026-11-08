@@ -1,3 +1,4 @@
+import ListingError from '../common/ListingError';
 import CardCarousel from './CardCarousel';
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
@@ -61,7 +62,7 @@ const BestSellers = (props: BestSellersProps) => {
 	const productContent = getProductsLoading && !products.length ? (
 		<Typography className="product-message">{t('ui.loadingProducts')}</Typography>
 	) : getProductsError ? (
-		<Typography className="product-message product-message--error">{t('ui.productsCouldNotBeLoaded')}</Typography>
+		<ListingError className="product-message product-message--error" message={t('ui.productsCouldNotBeLoaded')} onRetry={() => getProductsRefetch()} />
 	) : products.length ? (
 		<CardCarousel label={t('nav.best')} kind="products">
 			{products.map((product) => <ProductCard product={product} likeTargetProduct={likeProductHandler} key={product._id} />)}
@@ -73,7 +74,7 @@ const BestSellers = (props: BestSellersProps) => {
 	if (device === 'mobile') {
 		/** RENDER MOBILE **/
 		return (
-			<Stack component="section" className="best-sellers best-sellers--mobile container">
+			<Stack component="section" className="best-sellers best-sellers--mobile container" aria-live="polite" aria-busy={getProductsLoading}>
 				<Stack direction="row" className="section-heading">
 					<Box>
 						<Typography component="span">{t('ui.customerFavorites')}</Typography>
@@ -89,7 +90,7 @@ const BestSellers = (props: BestSellersProps) => {
 	} else {
 		/** RENDER PC **/
 		return (
-			<Stack component="section" className="best-sellers best-sellers--pc container">
+			<Stack component="section" className="best-sellers best-sellers--pc container" aria-live="polite" aria-busy={getProductsLoading}>
 				<Stack direction="row" className="section-heading">
 					<Box>
 						<Typography component="span">{t('ui.customerFavorites')}</Typography>

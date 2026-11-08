@@ -1,5 +1,7 @@
 // Yangi kalit avval shu yerga, keyin qolgan uchta lug‘atga qo‘shiladi.
 const en = {
+	'ui.filtersCount': 'Filters ({count})',
+	'ui.tryAgain': 'Try again',
 	'benefits.deliveryTitle': "Delivery information",
 	'benefits.deliveryDescription': "Ask the seller about delivery fees and estimated arrival.",
 	'benefits.ordersTitle': "Order updates",

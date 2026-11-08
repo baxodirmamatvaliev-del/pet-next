@@ -1,6 +1,8 @@
 import type { Dictionary } from './en';
 
 const ko: Dictionary = {
+	'ui.filtersCount': '필터 ({count})',
+	'ui.tryAgain': '다시 시도',
 	'benefits.deliveryTitle': "배송 안내",
 	'benefits.deliveryDescription': "배송비와 예상 도착일은 판매자에게 문의해 주세요.",
 	'benefits.ordersTitle': "주문 조회",

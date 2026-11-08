@@ -7,6 +7,7 @@
  **/
 
 import { useEffect, useMemo } from 'react';
+import { FallingLeaves } from 'falling-leaves/react';
 import { restoreSession, clearAuthSession } from '../libs/auth/session';
 import { ApolloProvider } from '@apollo/client';
 import { CssBaseline } from '@mui/material';
@@ -71,6 +72,20 @@ const App = ({ Component, pageProps }: AppProps) => {
 				</Head>
 				<CssBaseline />
 				<Component {...pageProps} />
+				{!router.pathname.startsWith('/_admin') && (
+					<FallingLeaves
+						fullScreen
+						count={20}
+						size={[14, 26]}
+						speed={[0.4, 0.9]}
+						wind={[-0.2, 0.6]}
+						shapes={['maple', 'oak', 'ginkgo']}
+						colors={['#d97706', '#b45309', '#ca8a04', '#c2410c']}
+						opacity={0.65}
+						zIndex={1200}
+						respectReducedMotion
+					/>
+				)}
 			</ThemeProvider>
 		</ApolloProvider>
 	);

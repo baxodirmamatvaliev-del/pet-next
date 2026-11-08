@@ -32,6 +32,35 @@
 		.product-filter {
 			padding-right: 0;
 			border-right: 0;
+			gap: 12px;
+			margin-bottom: 24px;
+			.product-filter__disclosure {
+				summary {
+					padding: 12px 14px;
+					border: 1px solid var(--pet-border);
+					border-radius: 8px;
+					cursor: pointer;
+					font-size: 14px;
+					font-weight: 700;
+				}
+
+				summary:focus-visible {
+					outline: 2px solid var(--pet-primary);
+					outline-offset: 2px;
+				}
+
+				.product-filter__mobile-groups {
+					flex-direction: column;
+					gap: 20px;
+					padding-block: 20px;
+				}
+
+				.product-filter__group,
+				.product-filter__reset {
+					margin-top: 0;
+				}
+			}
+
 			.product-filter__group {
 				.MuiFormLabel-root {
 					margin-bottom: 12px;

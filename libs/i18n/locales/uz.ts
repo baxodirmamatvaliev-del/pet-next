@@ -1,6 +1,8 @@
 import type { Dictionary } from './en';
 
 const uz: Dictionary = {
+	'ui.filtersCount': 'Filtrlar ({count})',
+	'ui.tryAgain': 'Qayta urinish',
 	'benefits.deliveryTitle': "Yetkazib berish",
 	'benefits.deliveryDescription': "Yetkazish narxi va muddatini sotuvchidan aniqlang.",
 	'benefits.ordersTitle': "Buyurtma holati",

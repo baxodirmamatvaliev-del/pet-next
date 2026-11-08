@@ -246,3 +246,30 @@
 .site-header--pc .header-main > .header-actions {
 	grid-column: 3;
 }
+
+@media (min-width: 761px) and (max-width: 1200px) {
+	.site-header--pc.site-header--inline {
+		.header-main {
+			height: auto;
+			grid-template-columns: 150px minmax(0, 1fr) auto;
+			row-gap: 0;
+			padding-top: 16px;
+		}
+
+		.header-main > .header-actions {
+			grid-row: 1;
+		}
+
+		.header-inline-nav {
+			grid-column: 1 / -1;
+			grid-row: 2;
+			width: 100%;
+		}
+
+		.header-inline-nav__inner {
+			flex-wrap: wrap;
+			column-gap: 18px;
+			row-gap: 8px;
+		}
+	}
+}

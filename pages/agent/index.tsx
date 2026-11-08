@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {
 	Alert,
+	Button,
 	Box,
 	CircularProgress,
 	MenuItem,
@@ -76,7 +77,7 @@ const AgentList: NextPage = () => {
 	}, [router.query.input]);
 
 	/** APOLLO REQUESTS **/
-	const { loading: getAgentsLoading, error: getAgentsError } = useQuery(GET_AGENTS, {
+	const { loading: getAgentsLoading, error: getAgentsError, refetch: getAgentsRefetch } = useQuery(GET_AGENTS, {
 		fetchPolicy: 'network-only',
 		variables: { input: searchFilter },
 		skip: !router.isReady,
@@ -124,7 +125,7 @@ const AgentList: NextPage = () => {
 						<SearchRoundedIcon />
 					</Box>
 				</Box>
-				<Select size="small" value={searchFilter.sort ?? 'createdAt'} onChange={sortHandler} aria-label={t('ui.sortSellers')}>
+				<Select size="small" value={searchFilter.sort ?? 'createdAt'} onChange={sortHandler} inputProps={{ 'aria-label': t('ui.sortSellers') }}>
 					<MenuItem value="createdAt">{t('ui.newest')}</MenuItem>
 					<MenuItem value="memberLikes">{t('ui.mostLiked')}</MenuItem>
 					<MenuItem value="memberViews">{t('ui.mostViewed')}</MenuItem>
@@ -132,7 +133,13 @@ const AgentList: NextPage = () => {
 				</Select>
 			</Stack>
 			{getAgentsError ? (
-				<Alert severity="error">{t('ui.agentsCouldNotBeLoaded')}</Alert>
+				<Alert severity="error" action={
+					<Button color="inherit" disabled={getAgentsLoading} onClick={() => { void getAgentsRefetch().catch(() => {}); }}>
+						{t(getAgentsLoading ? 'ui.retrying' : 'ui.tryAgain')}
+					</Button>
+				}>
+					{t('ui.agentsCouldNotBeLoaded')}
+				</Alert>
 			) : !router.isReady || getAgentsLoading ? (
 				<Stack className="agent-page__state">
 					<CircularProgress />

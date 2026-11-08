@@ -30,7 +30,6 @@ const Join: NextPage = () => {
 	const [input, setInput] = useState<AccountInput>({ nick: '', password: '', phone: '' });
 	const [loginView, setLoginView] = useState(true);
 	const [loading, setLoading] = useState(false);
-	const [socialNotice, setSocialNotice] = useState(false);
 	const user = useReactiveVar(userVar);
 	const authReady = useReactiveVar(authReadyVar);
 	const welcomeVideo = useRef<HTMLVideoElement>(null);
@@ -162,13 +161,13 @@ const Join: NextPage = () => {
 					</Stack>
 
 					<Stack className="join-social">
-						<Button type="button" className="join-social-kakao" startIcon={<span className="join-kakao-symbol" aria-hidden="true" />} onClick={() => setSocialNotice(true)}>
+						<Button type="button" className="join-social-kakao" startIcon={<span className="join-kakao-symbol" aria-hidden="true" />} aria-disabled="true" aria-describedby="social-login-notice">
 							{t('ui.continueWithKakao')}
 						</Button>
-						<Button type="button" className="join-social-email" startIcon={<span className="join-email-symbol" aria-hidden="true" />} onClick={() => setSocialNotice(true)}>
+						<Button type="button" className="join-social-email" startIcon={<span className="join-email-symbol" aria-hidden="true" />} aria-disabled="true" aria-describedby="social-login-notice">
 							{t('ui.continueWithEmail')}
 						</Button>
-						{socialNotice && <Typography role="status" className="join-social-notice">{t('ui.socialLoginComingSoon')}</Typography>}
+						<Typography id="social-login-notice" className="join-social-notice">{t('ui.socialLoginComingSoon')}</Typography>
 					</Stack>
 					<Box className="join-divider"><span>{t('ui.or')}</span></Box>
 					<Stack

@@ -114,25 +114,30 @@ const Filter = (props: FilterType) => {
 						}}
 					/>
 				</Box>
-				<Stack direction="row" className="product-filter__mobile-groups">
-					<FormControl className="product-filter__group">
-						<FormLabel>{t('ui.pet')}</FormLabel>
-						<FormGroup>
-							{categoryOptions.map(({ label, value }) => (
-								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.categoryList?.includes(value) ?? false} onChange={() => categorySelectHandler(value)} />} />
-							))}
-						</FormGroup>
-					</FormControl>
-					<FormControl className="product-filter__group">
-						<FormLabel>{t('ui.productType')}</FormLabel>
-						<FormGroup>
-							{typeOptions.map(({ label, value }) => (
-								<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.typeList?.includes(value) ?? false} onChange={() => typeSelectHandler(value)} />} />
-							))}
-						</FormGroup>
-					</FormControl>
-				</Stack>
-				<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>{t('ui.resetFilters')}</Button>
+				<Box component="details" className="product-filter__disclosure">
+					<Box component="summary">
+						{t('ui.filtersCount', { count: (searchFilter.search.categoryList?.length ?? 0) + (searchFilter.search.typeList?.length ?? 0) })}
+					</Box>
+					<Stack direction="row" className="product-filter__mobile-groups">
+						<FormControl className="product-filter__group">
+							<FormLabel>{t('ui.pet')}</FormLabel>
+							<FormGroup>
+								{categoryOptions.map(({ label, value }) => (
+									<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.categoryList?.includes(value) ?? false} onChange={() => categorySelectHandler(value)} />} />
+								))}
+							</FormGroup>
+						</FormControl>
+						<FormControl className="product-filter__group">
+							<FormLabel>{t('ui.productType')}</FormLabel>
+							<FormGroup>
+								{typeOptions.map(({ label, value }) => (
+									<FormControlLabel key={value} label={label} control={<Checkbox size="small" checked={searchFilter.search.typeList?.includes(value) ?? false} onChange={() => typeSelectHandler(value)} />} />
+								))}
+							</FormGroup>
+						</FormControl>
+					</Stack>
+					<Button className="product-filter__reset" variant="outlined" onClick={resetFilterHandler}>{t('ui.resetFilters')}</Button>
+				</Box>
 			</Stack>
 		);
 	} else {
