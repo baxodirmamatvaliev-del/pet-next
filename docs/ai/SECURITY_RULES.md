@@ -15,7 +15,7 @@ Known limits:
 - Initial restoration catches network failure and retains its completed startup promise; no automatic recovery retry was found.
 - Web Locks fallback only coordinates within a tab. Browser/cookie behaviour needs actual browser verification when authorized.
 - Some account/cart/checkout branches use user identity without waiting for auth readiness, so temporary guest UI is possible.
-- Kakao/email have inactive UI and historical proposals; Google/Apple and real provider auth are not implemented. Do not fake successful authentication.
+- Kakao/Google/Apple have unavailable preview buttons; email has historical proposals without an active account-page flow. Provider authentication is not implemented. Do not fake successful authentication.
 
 See the existing [refresh guide](../../libs/docs/REFRESH_TOKENS.md) for detailed flow; historical pass claims are not new verification.
 

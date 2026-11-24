@@ -58,6 +58,14 @@ Do not replace animation with static approximations or add Three.js/GSAP/Framer 
 
 Preserve these effects unless specifically asked to change them. Motion must not obstruct typing, focus or scrolling. Avoid unnecessary CPU/GPU work; do not remove fallback/cleanup as cosmetic simplification.
 
+## Account form design
+
+[Join page](../../pages/account/join.tsx) uses a centered 420px card with the PetNest paw/wordmark and a simple translated login/signup heading. Welcome copy, subtitles and the decorative divider are removed. Both nickname login and nickname/password/phone signup retain real handlers, validation and password visibility controls. [Account styles](../../scss/pc/account/_join.scss) provide theme-compatible fields, 220ms hover/focus transitions, focused icon colors and a CSS fade/slide between modes. Controlled values stay in the parent; the mode-switch button remains outside the keyed animated panel to preserve focus.
+
+Autofill remains enabled through username/current-password/new-password/tel attributes. An inset shadow masks native autofill paint using the current input background token, with matching text/caret colors in light/dark themes; do not replace this with disabled autocomplete or a long transition-delay workaround. Keep the background video and falling leaves. Reduced motion disables the form animation/transitions and pauses the video.
+
+The Google SVG is served [locally](../../public/icons/google.svg) from the supplied component's asset reference with its source notice retained. Apple uses the existing MUI icon package; KakaoTalk reuses [the existing asset](../../public/icons/kakaotalk.svg) on yellow. All three sit in a single row below the submit button, outside the form, with subtle hover/lift and pressed effects. They have translated unavailable labels/tooltips, `aria-disabled`, `type="button"` and no authentication handlers. Do not confuse visual feedback with working OAuth. A future real Kakao Login flow must follow its distinct [official symbol/label guidelines](https://developers.kakao.com/docs/en/kakaologin/design-guide); the current preview uses the requested KakaoTalk icon. No explicit license text accompanied the supplied component; no independent component-license certification is claimed.
+
 ## Responsive behaviour
 
 [Device detection](../../libs/hooks/useDeviceDetect.ts) subscribes to `(max-width: 760px)` and has a desktop server snapshot. Tablets generally retain desktop React branches with CSS adjustments. [Storefront tablet styles](../../scss/pc/shared/_storefront.scss) and [checkout styles](../../scss/pc/checkout/_checkout.scss) include intermediate widths; MUI `sx` also has responsive values.

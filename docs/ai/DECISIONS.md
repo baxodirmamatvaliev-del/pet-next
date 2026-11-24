@@ -70,3 +70,20 @@ Entries D-001 through D-007 describe existing source observed on 2026-11-24; the
 - Decision: extend [AGENTS.md](../../AGENTS.md) after its unchanged managed Next.js block. Preserve [CLAUDE.md](../../CLAUDE.md) and all existing guides. Keep policy concise, evidence in focused references, and historical discrepancies in [FRONTEND_CONTEXT.md](FRONTEND_CONTEXT.md#documentation-conflicts).
 - Consequence: backend instructions are read-only integration references, not frontend package-manager policy. Explicit task restrictions override normal implementation checks. Documentation-only bootstrap restrictions apply to the recorded task, not all future work.
 - Verification: managed-block/CLAUDE and existing-guide preservation, local links/anchors, inventories, scripts and documentation-only Git diff. No application tests/build/browser/API/database verification was performed. See [COMPLETED_TASKS.md](COMPLETED_TASKS.md).
+
+## D-009 — Adapt the supplied sign-in design within the existing account flow
+
+**Status:** User-authorized UI integration, 2026-11-24.
+
+- Evidence: [join page](../../pages/account/join.tsx), [account styles](../../scss/pc/account/_join.scss), [UI reference](UI_UX_RULES.md#account-form-design).
+- Decision: retain MUI/SCSS and real nickname login/signup handlers while adapting the supplied minimal gradient/focus/hover design. Reuse PetNest branding, video, seasonal effects and existing icon capabilities; Google/KakaoTalk/Apple remain unavailable provider previews.
+- Consequence: no Tailwind/shadcn/Lucide dependency, new authentication endpoint or demo-success handler is added. Labels remain localized, and password-manager semantics and visibility controls work with the existing fields. The supplied email validation and forgot-password action do not become invented backend features.
+- Verification: existing regression suites, changed-file lint, typecheck, isolated production build and mocked Playwright interaction/appearance checks. These do not establish live provider/account authentication.
+
+## D-010 — Keep the compact account form and inactive brand previews
+
+**Status:** User-authorized refinement, 2026-11-24.
+
+- Evidence: [account page](../../pages/account/join.tsx), [styles](../../scss/pc/account/_join.scss), [current UI reference](UI_UX_RULES.md#account-form-design).
+- Decision: use a 420px logo/heading/form card without welcome/decorative copy. Preserve native autofill with a theme-colored paint override and use a small CSS mode animation. Provider previews stay outside the form, visually responsive but without OAuth handlers.
+- Consequence: existing authentication, parent-owned input state, locale/theme support and video/seasonal effects remain intact. No new packages, session layer or backend contract is introduced. Real provider integration still requires separate authorization.

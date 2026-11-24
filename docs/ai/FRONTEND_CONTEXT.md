@@ -63,7 +63,8 @@ Frontend development defaults to port 3000; no live listener was checked. Backen
 | Four locales and light/dark themes | Implemented with documented localization limits |
 | Liquid Glass interactive test card, water/3D/glass effects | Implemented visual demo, not external payment collection |
 | Internal payment record and admin confirmation | Implemented, not an external charge |
-| Kakao/email login | UI placeholders plus historical implementation/setup proposals |
+| Kakao/Google/Apple login | Unavailable preview buttons on the redesigned account page; no provider authentication |
+| Email login | Historical implementation/setup proposals; no active account-page email flow |
 | Google/Apple/other provider auth, real card/Kakao charge, refunds/webhooks | No implementation found; no approved integration inferred |
 | SSR product data, sitemap/structured data, browser checkout regression suite | Not found in the inspected implementation |
 

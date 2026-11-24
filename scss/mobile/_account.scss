@@ -1,37 +1,14 @@
 @media (max-width: 760px) {
 	.join-page {
 		min-height: calc(100svh - 80px);
-		justify-content: center;
 		padding: 28px 16px;
 
 		.join-background-video {
 			object-position: 62% center;
 		}
-		.join-card {
-			min-height: auto;
-			border-radius: 16px;
-		}
 
 		.join-form {
-			min-width: 0;
-			padding: 24px 22px;
-			.join-social {
-				grid-template-columns: minmax(0, 1fr);
-			}
-			.join-switch,
-			.join-fields {
-				min-width: 0;
-				width: 100%;
-			}
-
-			.join-heading,
-			.join-session {
-				margin-top: 20px;
-				h1 {
-					font-size: 31px;
-				}
-			}
+			padding: 28px 24px;
 		}
-
 	}
 }

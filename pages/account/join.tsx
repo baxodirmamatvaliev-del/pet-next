@@ -1,9 +1,14 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useReactiveVar } from '@apollo/client';
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import AppleIcon from '@mui/icons-material/Apple';
+import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import { Box, Button, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
 import { NextPage } from 'next';
@@ -29,6 +34,7 @@ const Join: NextPage = () => {
 	/** STATES **/
 	const [input, setInput] = useState<AccountInput>({ nick: '', password: '', phone: '' });
 	const [loginView, setLoginView] = useState(true);
+	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const user = useReactiveVar(userVar);
 	const authReady = useReactiveVar(authReadyVar);
@@ -49,6 +55,7 @@ const Join: NextPage = () => {
 	/** HANDLERS **/
 	const viewChangeHandler = (state: boolean) => {
 		setLoginView(state);
+		setShowPassword(false);
 	};
 
 	const inputChangeHandler = (name: keyof AccountInput, value: string) => {
@@ -114,18 +121,15 @@ const Join: NextPage = () => {
 	const joinForm = (
 		<Stack className="join-form">
 			<Stack direction="row" className="join-brand">
-				<PetsRoundedIcon />
-				<Stack>
-					<Typography component="strong">PetNest</Typography>
-					<Typography component="small">Korea</Typography>
-				</Stack>
+				<PetsRoundedIcon aria-hidden="true" />
+				<Typography component="strong">PetNest</Typography>
 			</Stack>
 
-			{user?.sub ? (
+			{!authReady ? (
+				<Typography className="join-loading" role="status">{t('ui.pleaseWait')}</Typography>
+			) : user?.sub ? (
 				<Stack className="join-session">
-					<Typography component="span">{t('nav.accountSection')}</Typography>
 					<Typography component="h1">{t('ui.youAreSignedIn')}</Typography>
-					<Typography>{t('ui.yourPetnestSessionIsActiveAndReadyFor')}</Typography>
 					<Button
 						variant="contained"
 						startIcon={<LogoutRoundedIcon />}
@@ -139,80 +143,126 @@ const Join: NextPage = () => {
 				</Stack>
 			) : (
 				<>
-					<Box className="join-heading">
-						<Typography component="span">{t('ui.welcomeToPetnest')}</Typography>
-						<Typography component="h1">
-							{loginView ? t('ui.loginGreeting') : t('ui.createYourAccount')}
-						</Typography>
-						<Typography>
-							{loginView
-								? t('ui.loginToManageYourCartFavoritesAndOrders')
-								: t('ui.joinPetnestAndMakeShoppingForYourPet')}
-						</Typography>
-					</Box>
-
-					<Stack direction="row" className="join-switch">
-						<Button className={loginView ? 'active' : ''} onClick={() => viewChangeHandler(true)}>
-							{t('nav.login')}
-						</Button>
-						<Button className={!loginView ? 'active' : ''} onClick={() => viewChangeHandler(false)}>
-							{t('ui.signUp')}
-						</Button>
-					</Stack>
-
-					<Stack className="join-social">
-						<Button type="button" className="join-social-kakao" startIcon={<span className="join-kakao-symbol" aria-hidden="true" />} aria-disabled="true" aria-describedby="social-login-notice">
-							{t('ui.continueWithKakao')}
-						</Button>
-						<Button type="button" className="join-social-email" startIcon={<span className="join-email-symbol" aria-hidden="true" />} aria-disabled="true" aria-describedby="social-login-notice">
-							{t('ui.continueWithEmail')}
-						</Button>
-						<Typography id="social-login-notice" className="join-social-notice">{t('ui.socialLoginComingSoon')}</Typography>
-					</Stack>
-					<Box className="join-divider"><span>{t('ui.or')}</span></Box>
-					<Stack
-						component="form"
-						className="join-fields"
-						onSubmit={loginView ? loginHandler : signupHandler}
-					>
-						<TextField
-							label={t('ui.nickname')}
-							placeholder={t('ui.enterYourNickname')}
-							value={input.nick}
-							onChange={(event) => inputChangeHandler('nick', event.target.value)}
-							required
-							fullWidth
-						/>
-						<TextField
-							label={t('ui.password')}
-							placeholder={t('ui.atLeast8Characters')}
-							type="password"
-							value={input.password}
-							onChange={(event) => inputChangeHandler('password', event.target.value)}
-							slotProps={{ htmlInput: { minLength: 8 } }}
-							required
-							fullWidth
-						/>
-						{!loginView && (
+					<Stack className="join-panel" key={loginView ? 'login' : 'signup'}>
+						<Typography className="join-heading" component="h1">{t(loginView ? 'nav.login' : 'ui.signUp')}</Typography>
+						<Stack
+							component="form"
+							className="join-fields"
+							onSubmit={loginView ? loginHandler : signupHandler}
+						>
 							<TextField
-								label={t('ui.phoneNumber')}
-								placeholder="010-0000-0000"
-								type="tel"
-								value={input.phone}
-								onChange={(event) => inputChangeHandler('phone', event.target.value)}
+								id="join-nickname"
+								name="username"
+								autoComplete="username"
+								label={t('ui.nickname')}
+								placeholder={t('ui.enterYourNickname')}
+								value={input.nick}
+								onChange={(event) => inputChangeHandler('nick', event.target.value)}
+								disabled={loading}
+								slotProps={{
+									input: {
+										startAdornment: <InputAdornment position="start"><PersonOutlineRoundedIcon /></InputAdornment>,
+									},
+								}}
 								required
 								fullWidth
 							/>
-						)}
-						<Button
-							type="submit"
-							variant="contained"
-							endIcon={<ArrowForwardRoundedIcon />}
-							disabled={isSubmitDisabled}
-						>
-							{loading ? t('ui.pleaseWait') : loginView ? t('nav.login') : t('ui.createAccount')}
-						</Button>
+							<TextField
+								id="join-password"
+								name="password"
+								autoComplete={loginView ? 'current-password' : 'new-password'}
+								label={t('ui.password')}
+								placeholder={t('ui.atLeast8Characters')}
+								type={showPassword ? 'text' : 'password'}
+								value={input.password}
+								onChange={(event) => inputChangeHandler('password', event.target.value)}
+								disabled={loading}
+								slotProps={{
+									htmlInput: { minLength: 8 },
+									input: {
+										startAdornment: <InputAdornment position="start"><LockOutlinedIcon /></InputAdornment>,
+										endAdornment: (
+											<InputAdornment position="end">
+												<IconButton
+													type="button"
+													aria-label={t(showPassword ? 'auth.hidePassword' : 'auth.showPassword')}
+													aria-pressed={showPassword}
+													disabled={loading}
+													onClick={() => setShowPassword((visible) => !visible)}
+												>
+													{showPassword ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
+												</IconButton>
+											</InputAdornment>
+										),
+									},
+								}}
+								required
+								fullWidth
+							/>
+							{!loginView && (
+								<TextField
+									id="join-phone"
+									name="tel"
+									autoComplete="tel"
+									label={t('ui.phoneNumber')}
+									placeholder="010-0000-0000"
+									type="tel"
+									value={input.phone}
+									onChange={(event) => inputChangeHandler('phone', event.target.value)}
+									disabled={loading}
+									slotProps={{
+										input: {
+											startAdornment: <InputAdornment position="start"><LocalPhoneOutlinedIcon /></InputAdornment>,
+										},
+									}}
+									required
+									fullWidth
+								/>
+							)}
+							<Button
+								className="join-submit"
+								type="submit"
+								variant="contained"
+								disabled={isSubmitDisabled}
+								aria-busy={loading}
+							>
+								{loading ? t('ui.pleaseWait') : t(loginView ? 'nav.login' : 'ui.signUp')}
+							</Button>
+						</Stack>
+						<Stack direction="row" className="join-social">
+							<Button
+								type="button"
+								disableRipple
+								aria-disabled="true"
+								aria-label={t('auth.socialUnavailable', { provider: 'Google' })}
+								title={t('auth.socialUnavailable', { provider: 'Google' })}
+							>
+								<Box component="img" src="/icons/google.svg" alt="" width={24} height={24} />
+							</Button>
+							<Button
+								type="button"
+								disableRipple
+								className="join-social-kakao"
+								aria-disabled="true"
+								aria-label={t('auth.socialUnavailable', { provider: 'KakaoTalk' })}
+								title={t('auth.socialUnavailable', { provider: 'KakaoTalk' })}
+							>
+								<Box component="img" src="/icons/kakaotalk.svg" alt="" width={28} height={28} />
+							</Button>
+							<Button
+								type="button"
+								disableRipple
+								aria-disabled="true"
+								aria-label={t('auth.socialUnavailable', { provider: 'Apple' })}
+								title={t('auth.socialUnavailable', { provider: 'Apple' })}
+							>
+								<AppleIcon aria-hidden="true" />
+							</Button>
+						</Stack>
 					</Stack>
+					<Button className="join-switch" type="button" onClick={() => viewChangeHandler(!loginView)} disabled={loading}>
+						{t(loginView ? 'ui.signUp' : 'nav.login')}
+					</Button>
 				</>
 			)}
 		</Stack>

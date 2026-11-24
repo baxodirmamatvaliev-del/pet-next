@@ -7,8 +7,8 @@
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	min-height: max(780px, calc(100svh - 110px));
-	padding: 56px clamp(28px, 7vw, 120px);
+	min-height: max(640px, calc(100svh - 110px));
+	padding: 48px 24px;
 	background: $primary-dark;
 
 	.join-background-video {
@@ -25,201 +25,250 @@
 	}
 
 	.join-card {
-		color: var(--pet-ink);
 		width: 100%;
-		max-width: 560px;
-		border: 1px solid $border;
+		max-width: 420px;
+		border: 1px solid var(--pet-border);
 		border-radius: 24px;
-		background: rgb(var(--pet-surface-rgb) / 94%);
+		background: rgb(var(--pet-surface-rgb) / 97%);
+		color: var(--pet-ink);
 		backdrop-filter: blur(18px);
-		box-shadow: 0 24px 70px rgb(61 38 31 / 22%), inset 0 1px 0 rgb(255 255 255 / 10%);
+		box-shadow: 0 20px 60px rgb(0 0 0 / 14%);
 	}
 
 	.join-form {
-		justify-content: center;
-		padding: 24px 32px;
+		min-width: 0;
+		padding: 32px;
+
 		.join-brand {
 			align-items: center;
+			justify-content: center;
 			gap: 10px;
-			color: $primary;
-			> svg {
-				font-size: 38px;
-				transform: rotate(-10deg);
-			}
+			color: var(--pet-primary);
 
-			> div {
-				line-height: 1;
+			svg {
+				font-size: 30px;
 			}
 
 			strong {
 				font-family: Georgia, 'Times New Roman', serif;
-				font-size: 24px;
+				font-size: 26px;
+				line-height: 1;
 			}
+		}
 
-			small {
-				margin-top: 4px;
-				font-size: 9px;
-				font-weight: 800;
-				letter-spacing: 0.22em;
-				text-transform: uppercase;
-			}
+		.join-panel {
+			animation: join-mode-in 220ms ease-out;
 		}
 
 		.join-heading,
-		.join-session {
-			margin-top: 18px;
-			> span {
-				color: $secondary;
-				font-size: 11px;
-				font-weight: 800;
-				letter-spacing: 0.11em;
-			}
-
-			h1 {
-				margin-top: 10px;
-				font-family: Georgia, 'Times New Roman', serif;
-				font-size: 38px;
-				line-height: 1.15;
-			}
-
-			> p {
-				max-width: 450px;
-				margin-top: 12px;
-				color: $muted;
-				font-size: 14px;
-				line-height: 1.7;
-			}
-		}
-
-		.join-switch {
-			gap: 5px;
-			margin-top: 18px;
-			padding: 5px;
-			border-radius: 10px;
-			background: $sage;
-			.MuiButton-root {
-				flex: 1;
-				color: $muted;
-				font-size: 13px;
-				font-weight: 700;
-				&.active {
-					background: var(--pet-surface);
-					color: $primary;
-					box-shadow: 0 3px 12px rgb(var(--pet-primary-rgb) / 10%);
-				}
-			}
-		}
-
-		.join-social {
-			display: grid;
-			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-			gap: 10px;
-			margin-top: 16px;
-			.MuiButton-root {
-				min-height: 46px;
-				border-radius: 10px;
-				font-size: 13px;
-				font-weight: 700;
-				text-transform: none;
-			}
-			.join-social-kakao {
-				color: #191919;
-				background: #fee500;
-				&:hover { background: #fee500; }
-				.join-kakao-symbol {
-					display: block;
-					width: 28px;
-					height: 28px;
-					background: url('/icons/kakaotalk.svg') center / contain no-repeat;
-				}
-			}
-			.join-email-symbol {
-				display: block;
-				width: 28px;
-				height: 28px;
-				background: url('/icons/gmail-multicolor.png') center / contain no-repeat;
-			}
-			.join-social-email {
-				color: var(--pet-ink);
-				border: 1px solid var(--pet-border);
-				background: var(--pet-surface-muted);
-				&:hover { background: var(--pet-sage); }
-			}
-			.join-social-notice {
-				grid-column: 1 / -1;
-				color: var(--pet-muted);
-				font-size: 12px;
-				text-align: center;
-			}
-		}
-
-		.join-divider {
-			display: flex;
-			align-items: center;
-			gap: 12px;
-			margin-top: 18px;
-			color: var(--pet-muted);
-			font-size: 12px;
-			&::before,
-			&::after {
-				content: '';
-				flex: 1;
-				height: 1px;
-				background: var(--pet-border);
-			}
+		.join-session h1 {
+			margin-top: 24px;
+			font-size: 24px;
+			font-weight: 600;
+			line-height: 1.3;
+			text-align: center;
 		}
 
 		.join-fields {
-			gap: 16px;
-			margin-top: 16px;
+			gap: 20px;
+			margin-top: 28px;
+
 			.MuiOutlinedInput-root {
+				--join-input-bg: var(--pet-surface-muted);
+				min-height: 52px;
+				border-radius: 12px;
+				background: var(--join-input-bg);
 				color: var(--pet-ink);
-				background: var(--pet-surface-muted);
+				transition: background-color 220ms ease, box-shadow 220ms ease;
+
+				input {
+					padding-block: 14px;
+					border-radius: inherit;
+					font-size: 16px;
+					caret-color: var(--pet-ink);
+
+					// Mask the browser's autofill paint while retaining password-manager support.
+					&:is(:autofill, :-webkit-autofill) {
+						-webkit-text-fill-color: var(--pet-ink);
+						-webkit-box-shadow: 0 0 0 100px var(--join-input-bg) inset;
+						box-shadow: 0 0 0 100px var(--join-input-bg) inset;
+					}
+				}
+
 				fieldset {
 					border-color: var(--pet-border);
+					transition: border-color 220ms ease;
 				}
-				&:hover fieldset,
-				&.Mui-focused fieldset {
-					border-color: var(--pet-primary);
+
+				&:hover {
+					box-shadow: 0 2px 8px rgb(var(--pet-primary-rgb) / 7%);
+
+					fieldset {
+						border-color: var(--pet-border-strong);
+					}
+				}
+
+				&.Mui-focused {
+					--join-input-bg: var(--pet-surface);
+					box-shadow: 0 0 0 3px rgb(var(--pet-primary-rgb) / 16%);
+
+					fieldset {
+						border-color: var(--pet-primary);
+					}
+
+					.MuiInputAdornment-root {
+						color: var(--pet-primary);
+					}
+				}
+			}
+
+			.MuiInputAdornment-root {
+				color: var(--pet-muted);
+				transition: color 220ms ease;
+
+				svg {
+					font-size: 20px;
+				}
+
+				.MuiIconButton-root {
+					width: 44px;
+					height: 44px;
+					margin-inline-end: -6px;
+					color: inherit;
 				}
 			}
 
 			.MuiInputLabel-root {
 				color: var(--pet-muted);
+				transition: color 220ms ease;
+
 				&.Mui-focused {
 					color: var(--pet-primary);
 				}
 			}
+		}
 
-			> .MuiButton-root {
-				min-height: 52px;
-				margin-top: 6px;
-				border-radius: 10px;
-				font-size: 14px;
-				font-weight: 800;
-				color: var(--pet-on-dark);
-				background: var(--pet-primary-fill);
+		.join-submit.MuiButton-root {
+			min-height: 50px;
+			margin-top: 4px;
+			border-radius: 12px;
+			background: var(--pet-primary-fill);
+			color: var(--pet-on-dark);
+			font-size: 15px;
+			font-weight: 600;
+			box-shadow: 0 3px 10px rgb(var(--pet-primary-rgb) / 12%);
+			transition: background-color 220ms ease, box-shadow 220ms ease;
+
+			&:hover {
+				background: var(--pet-primary-hover);
+				box-shadow: 0 5px 14px rgb(var(--pet-primary-rgb) / 18%);
+			}
+
+			&.Mui-disabled {
+				background: var(--pet-surface-muted);
+				color: var(--pet-text-disabled);
+				box-shadow: none;
+			}
+		}
+
+		.join-social {
+			gap: 12px;
+			margin-top: 16px;
+
+			.MuiButton-root {
+				flex: 1;
+				min-width: 0;
+				height: 46px;
+				border: 1px solid var(--pet-border);
+				border-radius: 12px;
+				background: var(--pet-surface);
+				color: var(--pet-ink);
+				cursor: not-allowed;
+				transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+
 				&:hover {
-					background: var(--pet-primary-hover);
-				}
-				&.Mui-disabled {
-					color: var(--pet-text-disabled);
+					border-color: var(--pet-border-strong);
 					background: var(--pet-surface-muted);
+					box-shadow: 0 3px 8px rgb(0 0 0 / 8%);
+					transform: translateY(-1px);
+				}
+
+				&:active {
+					box-shadow: none;
+					transform: scale(0.97);
+				}
+
+				svg {
+					font-size: 26px;
 				}
 			}
+
+			.join-social-kakao,
+			.join-social-kakao:hover {
+				border-color: #fee500;
+				background: #fee500;
+				color: #191919;
+			}
+		}
+
+		.join-switch.MuiButton-root {
+			align-self: center;
+			min-height: 44px;
+			margin-top: 12px;
+			padding-inline: 12px;
+			font-size: 13px;
+			text-decoration: underline;
+			text-underline-offset: 4px;
+			transition: background-color 220ms ease, color 220ms ease;
+		}
+
+		.MuiButton-root:focus-visible,
+		.MuiIconButton-root:focus-visible {
+			outline: 2px solid var(--pet-primary);
+			outline-offset: 3px;
+		}
+
+		.join-loading {
+			margin-block: 36px;
+			color: var(--pet-muted);
+			text-align: center;
 		}
 
 		.join-session {
-			gap: 12px;
+			gap: 16px;
+
 			> .MuiButton-root {
 				min-height: 50px;
-				border-radius: 10px;
-				font-weight: 700;
-				&:first-of-type {
-					margin-top: 22px;
-				}
+				border-radius: 12px;
 			}
 		}
 	}
+}
 
+@keyframes join-mode-in {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.join-page .join-form .join-panel {
+		animation: none;
+	}
+
+	.join-page .join-form .join-fields .MuiOutlinedInput-root,
+	.join-page .join-form .join-fields fieldset,
+	.join-page .join-form .join-fields .MuiInputAdornment-root,
+	.join-page .join-form .join-fields .MuiInputLabel-root,
+	.join-page .join-form .join-social .MuiButton-root,
+	.join-page .join-form .join-submit.MuiButton-root,
+	.join-page .join-form .join-switch.MuiButton-root {
+		transition: none;
+	}
 }
