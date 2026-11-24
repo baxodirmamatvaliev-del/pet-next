@@ -1,6 +1,8 @@
 @media (max-width: 760px) {
 	.checkout-page {
-		padding-block: 28px 45px;
+		margin-block: 16px 32px;
+		padding: 24px 16px;
+		border-radius: 20px;
 		.checkout-page__heading h1 {
 			font-size: 30px;
 		}
@@ -13,6 +15,12 @@
 		.checkout-content {
 			grid-template-columns: minmax(0, 1fr);
 			gap: 24px;
+		}
+
+		.checkout-form,
+		.checkout-summary {
+			grid-column: auto;
+			grid-row: auto;
 		}
 
 		.checkout-section {
@@ -33,6 +41,7 @@
 
 		.checkout-summary {
 			position: static;
+			padding: 20px;
 		}
 
 		.checkout-success {

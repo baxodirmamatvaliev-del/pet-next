@@ -1,18 +1,27 @@
 @use '../../variables' as *;
 
 .checkout-page {
-	padding-block: 42px 70px;
+	--checkout-accent: #1767bd;
+	--checkout-ink: #102644;
+	--checkout-muted: #526981;
+	--checkout-border: rgb(115 151 184 / 30%);
+	margin-block: 32px 60px;
+	padding: 36px;
+	border-radius: 28px;
+	background:
+		radial-gradient(ellipse at top right, #eefaff, transparent 65%), #dcebf5;
+	color: var(--checkout-ink);
 	.checkout-page__heading {
 		padding-bottom: 28px;
-		border-bottom: 1px solid $border;
+		border-bottom: 1px solid var(--checkout-border);
 		p {
 			margin-bottom: 12px;
-			color: $muted;
+			color: var(--checkout-muted);
 			font-size: 12px;
 		}
 
 		h1 {
-			font-family: Georgia, 'Times New Roman', serif;
+			font-family: inherit;
 			font-size: 38px;
 		}
 	}
@@ -51,26 +60,48 @@
 
 	.checkout-content {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 380px;
+		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
 		align-items: start;
 		gap: 36px;
 		padding-top: 30px;
 	}
 
 	.checkout-form {
+		min-width: 0;
+		grid-column: 2;
+		grid-row: 1;
 		gap: 20px;
 		> .MuiButton-root {
 			min-height: 52px;
+			border: 1px solid rgb(255 255 255 / 80%);
+			border-radius: 28px;
+			background: var(--checkout-accent);
+			color: #fff;
+			box-shadow: 0 8px 24px rgb(30 80 130 / 18%);
 			font-size: 13px;
 			font-weight: 800;
+			&:hover {
+				background: #11549e;
+			}
+			&.Mui-disabled {
+				background: rgb(82 105 129 / 12%);
+				color: var(--checkout-muted);
+				box-shadow: none;
+			}
 		}
+	}
+
+	.checkout-section,
+	.checkout-summary {
+		backdrop-filter: blur(16px);
 	}
 
 	.checkout-section {
 		padding: 28px;
-		border: 1px solid $border;
-		border-radius: 14px;
-		background: var(--pet-surface);
+		border: 1px solid rgb(255 255 255 / 85%);
+		border-radius: 24px;
+		background: rgb(244 252 255 / 82%);
+		box-shadow: 0 14px 32px rgb(30 65 100 / 10%);
 		.checkout-section__title {
 			align-items: flex-start;
 			gap: 14px;
@@ -81,8 +112,8 @@
 				flex: 0 0 30px;
 				place-items: center;
 				border-radius: 50%;
-				background: $primary-fill;
-				color: var(--pet-on-dark);
+				background: var(--checkout-accent);
+				color: #fff;
 				font-size: 12px;
 				font-weight: 800;
 			}
@@ -93,7 +124,7 @@
 
 			p {
 				margin-top: 5px;
-				color: $muted;
+				color: var(--checkout-muted);
 				font-size: 12px;
 			}
 		}
@@ -113,10 +144,21 @@
 			}
 
 			.MuiInputBase-root {
+				border-radius: 16px;
+				background: rgb(255 255 255 / 38%);
+				color: var(--checkout-ink);
 				font-size: 13px;
+				fieldset {
+					border-color: var(--checkout-border);
+				}
+				&.Mui-focused fieldset {
+					border-color: var(--checkout-accent);
+					box-shadow: 0 0 0 4px rgb(23 103 189 / 12%);
+				}
 			}
 
 			.MuiInputLabel-root {
+				color: var(--checkout-muted);
 				font-size: 13px;
 			}
 		}
@@ -135,11 +177,15 @@
 				min-height: 76px;
 				margin: 0;
 				padding: 12px;
-				border: 1px solid $border;
+				border: 1px solid var(--checkout-border);
 				border-radius: 10px;
 				&:has(.Mui-checked) {
-					border-color: $primary;
-					background: $sage;
+					border-color: var(--checkout-accent);
+					background: rgb(23 103 189 / 8%);
+				}
+
+				.MuiRadio-root {
+					color: var(--checkout-accent);
 				}
 
 				.MuiFormControlLabel-label {
@@ -150,7 +196,7 @@
 					align-items: center;
 					gap: 10px;
 					> svg {
-						color: $primary;
+						color: var(--checkout-accent);
 					}
 
 					> b {
@@ -170,7 +216,7 @@
 
 					p {
 						margin-top: 3px;
-						color: $muted;
+						color: var(--checkout-muted);
 						font-size: 10px;
 					}
 				}
@@ -179,15 +225,19 @@
 	}
 
 	.checkout-summary {
+		min-width: 0;
+		grid-column: 1;
+		grid-row: 1;
 		position: sticky;
 		top: 20px;
 		gap: 17px;
 		padding: 26px;
-		border: 1px solid $border;
-		border-radius: 14px;
-		background: $cream;
+		border: 1px solid rgb(255 255 255 / 85%);
+		border-radius: 24px;
+		background: rgb(244 252 255 / 70%);
+		box-shadow: 0 14px 32px rgb(30 65 100 / 10%);
 		h2 {
-			font-family: Georgia, 'Times New Roman', serif;
+			font-family: inherit;
 			font-size: 23px;
 		}
 
@@ -227,7 +277,7 @@
 
 				p {
 					margin-top: 4px;
-					color: $muted;
+					color: var(--checkout-muted);
 					font-size: 10px;
 				}
 			}
@@ -237,7 +287,9 @@
 			}
 		}
 
-		> .MuiStack-root:not(.checkout-summary__items):not(.checkout-summary__secure) {
+		> .MuiStack-root:not(.checkout-summary__items):not(
+				.checkout-summary__secure
+			) {
 			justify-content: space-between;
 			p {
 				font-size: 13px;
@@ -245,7 +297,7 @@
 		}
 
 		.checkout-summary__free {
-			color: $primary;
+			color: var(--checkout-accent);
 			font-weight: 700;
 		}
 
@@ -258,7 +310,7 @@
 			align-items: center;
 			justify-content: center;
 			gap: 7px;
-			color: $muted;
+			color: var(--checkout-muted);
 			svg {
 				font-size: 14px;
 			}
@@ -333,5 +385,49 @@
 			margin-top: 26px;
 			padding-inline: 28px;
 		}
+	}
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+	.checkout-page {
+		padding: 24px;
+		.checkout-content {
+			gap: 24px;
+		}
+		.checkout-section .payment-methods .MuiRadioGroup-root {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+	.checkout-page {
+		.checkout-content {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.checkout-summary,
+		.checkout-form {
+			grid-column: auto;
+			grid-row: auto;
+			position: static;
+		}
+	}
+}
+
+[data-mui-color-scheme='dark'] .checkout-page {
+	--checkout-accent: #87c6ff;
+	--checkout-ink: #eff7ff;
+	--checkout-muted: #b4c7dd;
+	--checkout-border: rgb(157 192 224 / 30%);
+	background:
+		radial-gradient(ellipse at top right, #1d3b56, transparent 65%), #112435;
+	.checkout-section,
+	.checkout-summary {
+		background: rgb(20 42 61 / 82%);
+	}
+	.checkout-section
+		.payment-methods
+		.MuiFormControlLabel-root:has(.Mui-checked) {
+		background: rgb(135 198 255 / 12%);
 	}
 }

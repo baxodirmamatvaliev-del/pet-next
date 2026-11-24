@@ -27,6 +27,9 @@ import Link from 'next/link';
 import { userVar } from '../../apollo/store';
 import { CREATE_ORDER, CREATE_PAYMENT } from '../../apollo/user/mutation';
 import { GET_MEMBER, GET_MY_CART } from '../../apollo/user/query';
+import CheckoutCard from '../../libs/components/checkout/CheckoutCard';
+import { DemoCardProvider } from '../../libs/components/checkout/DemoCard';
+import LiquidGlassCheckout from '../../libs/components/checkout/LiquidGlassCheckout';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
@@ -56,6 +59,7 @@ const CheckoutPage: NextPage = () => {
 
 	/** STATES **/
 	const [orderInput, setOrderInput] = useState<CreateOrderInput>(initialOrderInput);
+	const [cardFlipped, setCardFlipped] = useState(false);
 	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.CARD);
 	const [cart, setCart] = useState<Cart | null>(null);
 	const [order, setOrder] = useState<Order | null>(null);
@@ -213,65 +217,62 @@ const CheckoutPage: NextPage = () => {
 							<Button component={Link} href="/cart" variant="contained">{t('ui.returnToCart')}</Button>
 						</Stack>
 					) : (
-						<Stack className="checkout-content checkout-content--mobile">
-							<Stack className="checkout-summary">
-								<Typography component="h2">{t('ui.orderSummary')}</Typography>
-								<Stack className="checkout-summary__items">
-									{cart.cartItems.map((cartItem) => {
-										const product = cartItem.productData;
-										const imagePath = product?.productImages[0]
-											? `${REACT_APP_API_URL}/${product.productImages[0]}`
-											: '/img/banner/home-hero.png';
+						<DemoCardProvider>
+							<Stack className="checkout-content checkout-content--mobile">
+								<Stack className="checkout-summary">
+									<CheckoutCard flipped={cardFlipped} processing={isCheckoutLoading} onFlipChange={setCardFlipped} />
+									<Typography component="h2">{t('ui.orderSummary')}</Typography>
+									<Stack className="checkout-summary__items">
+										{cart.cartItems.map((cartItem) => {
+											const product = cartItem.productData;
+											const imagePath = product?.productImages[0]
+												? `${REACT_APP_API_URL}/${product.productImages[0]}`
+												: '/img/banner/home-hero.png';
 
-										return (
-											<Stack direction="row" className="checkout-summary__item" key={`${cartItem.productId}-${cartItem.sku}`}>
-												<Box className="checkout-summary__image">
-													<Image src={imagePath} alt={product?.productName ?? t('common.petProduct')} fill sizes="70px" unoptimized />
-												</Box>
-												<Box>
-													<Typography component="strong">{product?.productName}</Typography>
-													<Typography>{t('ui.quantity')} {cartItem.quantity}</Typography>
-												</Box>
-												<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
-												</Stack>
-										);
-									})}
-								</Stack>
-								<Stack direction="row" className="checkout-summary__total">
-									<Typography>{t('ui.total')}</Typography><Typography>₩{formatterStr(cart.totalAmount)}</Typography>
-								</Stack>
-							</Stack>
-							<Stack component="form" className="checkout-form" onSubmit={checkoutHandler}>
-								<Box className="checkout-section">
-									<Stack direction="row" className="checkout-section__title">
-										<Typography component="span">1</Typography>
-										<Typography component="h2">{t('ui.deliveryInformation')}</Typography>
+											return (
+												<Stack direction="row" className="checkout-summary__item" key={`${cartItem.productId}-${cartItem.sku}`}>
+													<Box className="checkout-summary__image">
+														<Image src={imagePath} alt={product?.productName ?? t('common.petProduct')} fill sizes="70px" unoptimized />
+													</Box>
+													<Box>
+														<Typography component="strong">{product?.productName}</Typography>
+														<Typography>{t('ui.quantity')} {cartItem.quantity}</Typography>
+													</Box>
+													<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
+													</Stack>
+											);
+										})}
 									</Stack>
-									<Box className="checkout-fields">
-										<TextField label={t('ui.recipientName')} value={orderInput.recipientName} onChange={(event) => inputChangeHandler('recipientName', event.target.value)} required fullWidth />
-										<TextField label={t('ui.phoneNumber')} type="tel" value={orderInput.recipientPhone} onChange={(event) => inputChangeHandler('recipientPhone', event.target.value)} required fullWidth />
-										<TextField className="checkout-fields__wide" label={t('ui.deliveryAddress')} value={orderInput.deliveryAddress} onChange={(event) => inputChangeHandler('deliveryAddress', event.target.value)} required fullWidth />
-										<TextField className="checkout-fields__wide" label={t('ui.deliveryNoteOptional')} value={orderInput.deliveryNote} onChange={(event) => inputChangeHandler('deliveryNote', event.target.value)} multiline rows={3} fullWidth />
+									<Stack direction="row" className="checkout-summary__total">
+										<Typography>{t('ui.total')}</Typography><Typography>₩{formatterStr(cart.totalAmount)}</Typography>
+									</Stack>
+								</Stack>
+								<Stack component="form" className="checkout-form" onSubmit={checkoutHandler}>
+									<Box className="checkout-section">
+										<Stack direction="row" className="checkout-section__title">
+											<Typography component="span">1</Typography>
+											<Typography component="h2">{t('ui.deliveryInformation')}</Typography>
+										</Stack>
+										<Box className="checkout-fields">
+											<TextField label={t('ui.recipientName')} value={orderInput.recipientName} onChange={(event) => inputChangeHandler('recipientName', event.target.value)} required fullWidth />
+											<TextField label={t('ui.phoneNumber')} type="tel" value={orderInput.recipientPhone} onChange={(event) => inputChangeHandler('recipientPhone', event.target.value)} required fullWidth />
+											<TextField className="checkout-fields__wide" label={t('ui.deliveryAddress')} value={orderInput.deliveryAddress} onChange={(event) => inputChangeHandler('deliveryAddress', event.target.value)} required fullWidth />
+											<TextField className="checkout-fields__wide" label={t('ui.deliveryNoteOptional')} value={orderInput.deliveryNote} onChange={(event) => inputChangeHandler('deliveryNote', event.target.value)} multiline rows={3} fullWidth />
+										</Box>
 									</Box>
-								</Box>
-								<Box className="checkout-section">
-									<Stack direction="row" className="checkout-section__title">
-										<Typography component="span">2</Typography>
-										<Typography component="h2">{t('ui.paymentMethod')}</Typography>
-									</Stack>
-									<Alert className="checkout-section__notice" severity="info">{t('ui.noOnlineChargeIsTakenYetYourPayment')}</Alert>
-									<FormControl className="payment-methods">
-										<RadioGroup value={paymentMethod} onChange={(event) => paymentMethodChangeHandler(event.target.value)}>
-											<FormControlLabel value={PaymentMethod.CARD} control={<Radio />} label={<Stack direction="row"><CreditCardRoundedIcon /><Box><Typography component="strong">{t('ui.cardPreference')}</Typography><Typography>{t('ui.noCardChargeIsMadeYet')}</Typography></Box></Stack>} />
-											<FormControlLabel value={PaymentMethod.KAKAO_PAY} control={<Radio />} label={<Stack direction="row"><Typography component="b">K</Typography><Box><Typography component="strong">{t('ui.kakaoPayPreference')}</Typography><Typography>{t('ui.noKakaoPayChargeIsMadeYet')}</Typography></Box></Stack>} />
-										</RadioGroup>
-									</FormControl>
-								</Box>
-								<Button type="submit" variant="contained" disabled={isSubmitDisabled} startIcon={<LockOutlinedIcon />}>
-									{isCheckoutLoading ? t('ui.processing') : t('message.submitOrder', { amount: formatterStr(cart.totalAmount) })}
-								</Button>
+									<LiquidGlassCheckout cardSelected={paymentMethod === PaymentMethod.CARD} amount={cart.totalAmount} processing={isCheckoutLoading} disabled={isSubmitDisabled} onFlipChange={setCardFlipped}>
+										<Alert className="checkout-section__notice" severity="info">{t('ui.noOnlineChargeIsTakenYetYourPayment')}</Alert>
+										<FormControl className="payment-methods">
+											<RadioGroup aria-label="결제 수단" value={paymentMethod} onChange={(event) => paymentMethodChangeHandler(event.target.value)}>
+												<FormControlLabel value={PaymentMethod.CARD} control={<Radio />} label={<Stack direction="row"><CreditCardRoundedIcon /><Box><Typography component="strong">{t('ui.cardPreference')}</Typography><Typography>{t('ui.noCardChargeIsMadeYet')}</Typography></Box></Stack>} />
+												<FormControlLabel value={PaymentMethod.KAKAO_PAY} control={<Radio />} label={<Stack direction="row"><Typography component="b">K</Typography><Box><Typography component="strong">{t('ui.kakaoPayPreference')}</Typography><Typography>{t('ui.noKakaoPayChargeIsMadeYet')}</Typography></Box></Stack>} />
+											</RadioGroup>
+										</FormControl>
+									</LiquidGlassCheckout>
+
+								</Stack>
 							</Stack>
-						</Stack>
+						</DemoCardProvider>
 					)}
 				</Box>
 			</>
@@ -357,155 +358,144 @@ const CheckoutPage: NextPage = () => {
 							</Button>
 						</Stack>
 					) : (
-						<Box className="checkout-content">
-							<Stack component="form" className="checkout-form" onSubmit={checkoutHandler}>
-								<Box className="checkout-section">
-									<Stack direction="row" className="checkout-section__title">
-										<Typography component="span">1</Typography>
-										<Box>
-											<Typography component="h2">{t('ui.deliveryInformation')}</Typography>
-											<Typography>{t('ui.enterTheDetailsOfThePersonReceivingThe')}</Typography>
+						<DemoCardProvider>
+							<Box className="checkout-content">
+								<Stack component="form" className="checkout-form" onSubmit={checkoutHandler}>
+									<Box className="checkout-section">
+										<Stack direction="row" className="checkout-section__title">
+											<Typography component="span">1</Typography>
+											<Box>
+												<Typography component="h2">{t('ui.deliveryInformation')}</Typography>
+												<Typography>{t('ui.enterTheDetailsOfThePersonReceivingThe')}</Typography>
+											</Box>
+										</Stack>
+										<Box className="checkout-fields">
+											<TextField
+												label={t('ui.recipientName')}
+												value={orderInput.recipientName}
+												onChange={(event) => inputChangeHandler('recipientName', event.target.value)}
+												required
+												fullWidth
+											/>
+											<TextField
+												label={t('ui.phoneNumber')}
+												type="tel"
+												value={orderInput.recipientPhone}
+												onChange={(event) => inputChangeHandler('recipientPhone', event.target.value)}
+												required
+												fullWidth
+											/>
+											<TextField
+												className="checkout-fields__wide"
+												label={t('ui.deliveryAddress')}
+												value={orderInput.deliveryAddress}
+												onChange={(event) => inputChangeHandler('deliveryAddress', event.target.value)}
+												required
+												fullWidth
+											/>
+											<TextField
+												className="checkout-fields__wide"
+												label={t('ui.deliveryNoteOptional')}
+												value={orderInput.deliveryNote}
+												onChange={(event) => inputChangeHandler('deliveryNote', event.target.value)}
+												multiline
+												rows={3}
+												fullWidth
+											/>
 										</Box>
-									</Stack>
-									<Box className="checkout-fields">
-										<TextField
-											label={t('ui.recipientName')}
-											value={orderInput.recipientName}
-											onChange={(event) => inputChangeHandler('recipientName', event.target.value)}
-											required
-											fullWidth
-										/>
-										<TextField
-											label={t('ui.phoneNumber')}
-											type="tel"
-											value={orderInput.recipientPhone}
-											onChange={(event) => inputChangeHandler('recipientPhone', event.target.value)}
-											required
-											fullWidth
-										/>
-										<TextField
-											className="checkout-fields__wide"
-											label={t('ui.deliveryAddress')}
-											value={orderInput.deliveryAddress}
-											onChange={(event) => inputChangeHandler('deliveryAddress', event.target.value)}
-											required
-											fullWidth
-										/>
-										<TextField
-											className="checkout-fields__wide"
-											label={t('ui.deliveryNoteOptional')}
-											value={orderInput.deliveryNote}
-											onChange={(event) => inputChangeHandler('deliveryNote', event.target.value)}
-											multiline
-											rows={3}
-											fullWidth
-										/>
 									</Box>
-								</Box>
 
-								<Box className="checkout-section">
-									<Stack direction="row" className="checkout-section__title">
-										<Typography component="span">2</Typography>
-										<Box>
-											<Typography component="h2">{t('ui.paymentMethod')}</Typography>
-											<Typography>{t('ui.selectHowYouWantToPayForYour')}</Typography>
-										</Box>
+									<LiquidGlassCheckout cardSelected={paymentMethod === PaymentMethod.CARD} amount={cart.totalAmount} processing={isCheckoutLoading} disabled={isSubmitDisabled} onFlipChange={setCardFlipped}>
+										<Alert className="checkout-section__notice" severity="info">{t('ui.noOnlineChargeIsTakenYetYourPayment')}</Alert>
+										<FormControl className="payment-methods">
+											<RadioGroup
+												aria-label="결제 수단"
+												value={paymentMethod}
+												onChange={(event) => paymentMethodChangeHandler(event.target.value)}
+											>
+												<FormControlLabel
+													value={PaymentMethod.CARD}
+													control={<Radio />}
+													label={(
+														<Stack direction="row">
+															<CreditCardRoundedIcon />
+															<Box>
+																<Typography component="strong">{t('ui.cardPreference')}</Typography>
+																<Typography>{t('ui.noCardChargeIsMadeYet')}</Typography>
+															</Box>
+														</Stack>
+													)}
+												/>
+												<FormControlLabel
+													value={PaymentMethod.KAKAO_PAY}
+													control={<Radio />}
+													label={(
+														<Stack direction="row">
+															<Typography component="b">K</Typography>
+															<Box>
+																<Typography component="strong">{t('ui.kakaoPayPreference')}</Typography>
+																<Typography>{t('ui.noKakaoPayChargeIsMadeYet')}</Typography>
+															</Box>
+														</Stack>
+													)}
+												/>
+											</RadioGroup>
+										</FormControl>
+									</LiquidGlassCheckout>
+
+								</Stack>
+
+								<Stack className="checkout-summary">
+									<CheckoutCard flipped={cardFlipped} processing={isCheckoutLoading} onFlipChange={setCardFlipped} />
+									<Typography component="h2">{t('ui.orderSummary')}</Typography>
+									<Stack className="checkout-summary__items">
+										{cart.cartItems.map((cartItem) => {
+											const product = cartItem.productData;
+											const imagePath = product?.productImages[0]
+												? `${REACT_APP_API_URL}/${product.productImages[0]}`
+												: '/img/banner/home-hero.png';
+
+											return (
+												<Stack direction="row" className="checkout-summary__item" key={`${cartItem.productId}-${cartItem.sku}`}>
+													<Box className="checkout-summary__image">
+														<Image
+															src={imagePath}
+															alt={product?.productName ?? t('common.petProduct')}
+															fill
+															sizes="70px"
+															unoptimized
+														/>
+													</Box>
+													<Box>
+														<Typography component="strong">{product?.productName}</Typography>
+														<Typography>{t('ui.quantity')} {cartItem.quantity}</Typography>
+													</Box>
+													<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
+												</Stack>
+											);
+										})}
 									</Stack>
-									<Alert className="checkout-section__notice" severity="info">{t('ui.noOnlineChargeIsTakenYetYourPayment')}</Alert>
-									<FormControl className="payment-methods">
-										<RadioGroup
-											value={paymentMethod}
-											onChange={(event) => paymentMethodChangeHandler(event.target.value)}
-										>
-											<FormControlLabel
-												value={PaymentMethod.CARD}
-												control={<Radio />}
-												label={(
-													<Stack direction="row">
-														<CreditCardRoundedIcon />
-														<Box>
-															<Typography component="strong">{t('ui.cardPreference')}</Typography>
-															<Typography>{t('ui.noCardChargeIsMadeYet')}</Typography>
-														</Box>
-													</Stack>
-												)}
-											/>
-											<FormControlLabel
-												value={PaymentMethod.KAKAO_PAY}
-												control={<Radio />}
-												label={(
-													<Stack direction="row">
-														<Typography component="b">K</Typography>
-														<Box>
-															<Typography component="strong">{t('ui.kakaoPayPreference')}</Typography>
-															<Typography>{t('ui.noKakaoPayChargeIsMadeYet')}</Typography>
-														</Box>
-													</Stack>
-												)}
-											/>
-										</RadioGroup>
-									</FormControl>
-								</Box>
-
-								<Button
-									type="submit"
-									variant="contained"
-									disabled={isSubmitDisabled}
-									startIcon={<LockOutlinedIcon />}
-								>
-									{isCheckoutLoading ? t('ui.processing') : t('message.submitOrder', { amount: formatterStr(cart.totalAmount) })}
-								</Button>
-							</Stack>
-
-							<Stack className="checkout-summary">
-								<Typography component="h2">{t('ui.orderSummary')}</Typography>
-								<Stack className="checkout-summary__items">
-									{cart.cartItems.map((cartItem) => {
-										const product = cartItem.productData;
-										const imagePath = product?.productImages[0]
-											? `${REACT_APP_API_URL}/${product.productImages[0]}`
-											: '/img/banner/home-hero.png';
-
-										return (
-											<Stack direction="row" className="checkout-summary__item" key={`${cartItem.productId}-${cartItem.sku}`}>
-												<Box className="checkout-summary__image">
-													<Image
-														src={imagePath}
-														alt={product?.productName ?? t('common.petProduct')}
-														fill
-														sizes="70px"
-														unoptimized
-													/>
-												</Box>
-												<Box>
-													<Typography component="strong">{product?.productName}</Typography>
-													<Typography>{t('ui.quantity')} {cartItem.quantity}</Typography>
-												</Box>
-												<Typography component="strong">₩{formatterStr(cartItem.subtotal)}</Typography>
-											</Stack>
-										);
-									})}
+									<Divider />
+									<Stack direction="row">
+										<Typography>{t('ui.subtotal')}</Typography>
+										<Typography>₩{formatterStr(cart.totalAmount)}</Typography>
+									</Stack>
+									<Stack direction="row">
+										<Typography>{t('ui.shipping')}</Typography>
+										<Typography className="checkout-summary__free">{t('ui.free')}</Typography>
+									</Stack>
+									<Divider />
+									<Stack direction="row" className="checkout-summary__total">
+										<Typography>{t('ui.total')}</Typography>
+										<Typography>₩{formatterStr(cart.totalAmount)}</Typography>
+									</Stack>
+									<Stack direction="row" className="checkout-summary__secure">
+										<LockOutlinedIcon />
+										<Typography>{t('ui.yourCheckoutInformationIsProtected')}</Typography>
+									</Stack>
 								</Stack>
-								<Divider />
-								<Stack direction="row">
-									<Typography>{t('ui.subtotal')}</Typography>
-									<Typography>₩{formatterStr(cart.totalAmount)}</Typography>
-								</Stack>
-								<Stack direction="row">
-									<Typography>{t('ui.shipping')}</Typography>
-									<Typography className="checkout-summary__free">{t('ui.free')}</Typography>
-								</Stack>
-								<Divider />
-								<Stack direction="row" className="checkout-summary__total">
-									<Typography>{t('ui.total')}</Typography>
-									<Typography>₩{formatterStr(cart.totalAmount)}</Typography>
-								</Stack>
-								<Stack direction="row" className="checkout-summary__secure">
-									<LockOutlinedIcon />
-									<Typography>{t('ui.yourCheckoutInformationIsProtected')}</Typography>
-								</Stack>
-							</Stack>
-						</Box>
+							</Box>
+						</DemoCardProvider>
 					)}
 				</Box>
 			</>

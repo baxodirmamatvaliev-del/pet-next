@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "PetNest Korea 홈" [ref=e7] [cursor=pointer]:
+          - /url: /ko
+          - generic [ref=e14]:
+            - strong [ref=e15]: PetNest
+            - generic [ref=e16]: Korea
+        - navigation "상품 카테고리" [ref=e17]:
+          - generic [ref=e18]:
+            - link "전체 상품" [ref=e19] [cursor=pointer]:
+              - /url: /ko/product
+            - link "강아지" [ref=e20] [cursor=pointer]:
+              - /url: /ko/product?category=DOG
+            - link "고양이" [ref=e21] [cursor=pointer]:
+              - /url: /ko/product?category=CAT
+            - link "신상품" [ref=e22] [cursor=pointer]:
+              - /url: /ko/product?sort=createdAt
+            - link "베스트 상품" [ref=e23] [cursor=pointer]:
+              - /url: /ko/product?sort=productSold
+            - link "에이전트" [ref=e24] [cursor=pointer]:
+              - /url: /ko/agent
+            - link "커뮤니티" [ref=e25] [cursor=pointer]:
+              - /url: /ko/pet
+            - link "고객센터" [ref=e26] [cursor=pointer]:
+              - /url: /ko/cs
+        - navigation "계정 메뉴" [ref=e27]:
+          - button "다크 모드로 전환" [ref=e28] [cursor=pointer]
+          - generic [ref=e31]:
+            - combobox "언어" [ref=e32] [cursor=pointer]:
+              - img "한국어" [ref=e33]: 🇰🇷
+            - textbox [aria-hidden]: ko
+            - group [aria-hidden]
+          - link "찜 목록" [ref=e34] [cursor=pointer]:
+            - /url: /ko/mypage?category=myFavorites
+          - link "로그인" [ref=e38] [cursor=pointer]:
+            - /url: /ko/account/join
+          - link "장바구니" [ref=e42] [cursor=pointer]:
+            - /url: /ko/cart
+            - generic [ref=e46]: "0"
+    - main [ref=e48]:
+      - generic [ref=e49]:
+        - paragraph [ref=e50]: 홈 / 장바구니 / 주문하기
+        - heading "주문하기" [level=1] [ref=e51]
+      - generic [ref=e52]:
+        - heading "계속하려면 로그인하세요" [level=2] [ref=e55]
+        - paragraph [ref=e56]: 안전한 주문을 위해 로그인이 필요합니다.
+        - link "로그인 또는 회원가입" [ref=e57] [cursor=pointer]:
+          - /url: /ko/account/join?referrer=/checkout
+    - button "채팅 열기" [ref=e58] [cursor=pointer]
+    - contentinfo [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e73]:
+            - strong [ref=e74]: PetNest
+            - generic [ref=e75]: Korea
+          - paragraph [ref=e76]: 반려동물이 좋아하는 모든 것.반려동물과 가족이 함께 행복하게.
+        - generic [ref=e77]:
+          - strong [ref=e78]: 쇼핑
+          - link "강아지" [ref=e79] [cursor=pointer]:
+            - /url: /ko/product?category=DOG
+          - link "고양이" [ref=e80] [cursor=pointer]:
+            - /url: /ko/product?category=CAT
+          - link "베스트 상품" [ref=e81] [cursor=pointer]:
+            - /url: /ko/product?sort=productSold
+        - generic [ref=e82]:
+          - strong [ref=e83]: 내 계정
+          - link "내 주문" [ref=e84] [cursor=pointer]:
+            - /url: /ko/mypage?category=myOrders
+          - link "찜 목록" [ref=e85] [cursor=pointer]:
+            - /url: /ko/mypage?category=myFavorites
+          - link "내 프로필" [ref=e86] [cursor=pointer]:
+            - /url: /ko/mypage?category=myProfile
+        - generic [ref=e87]:
+          - strong [ref=e88]: 둘러보기
+          - link "커뮤니티" [ref=e89] [cursor=pointer]:
+            - /url: /ko/pet
+          - link "에이전트" [ref=e90] [cursor=pointer]:
+            - /url: /ko/agent
+          - link "고객센터" [ref=e91] [cursor=pointer]:
+            - /url: /ko/cs
+          - link "게시글 작성" [ref=e92] [cursor=pointer]:
+            - /url: /ko/pet/create
+      - generic [ref=e93]: © 2026 PetNest Korea. 모든 권리 보유.
+  - alert [ref=e94]
