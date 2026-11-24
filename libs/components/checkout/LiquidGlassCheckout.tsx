@@ -22,7 +22,7 @@ interface LiquidGlassCheckoutProps {
 	children: React.ReactNode;
 }
 
-// Unnamed, non-autofill fields: test input is never part of FormData or mutations.
+// Unnamed test fields avoid payment autofill hints and stay out of FormData/mutations.
 const demoFields: {
 	id: DemoCardField;
 	label: string;
@@ -38,7 +38,7 @@ const demoFields: {
 		label: '카드 소유자 · 테스트',
 		placeholder: 'PETNEST TEST',
 	},
-	{ id: 'expiry', label: '유효기간', placeholder: 'MM/YY' },
+	{ id: 'expiry', label: '유효기간 · 테스트', placeholder: 'MM/YY' },
 	{ id: 'cvc', label: '보안 코드 · 테스트', placeholder: '123' },
 ];
 
@@ -63,13 +63,30 @@ export default function LiquidGlassCheckout({
 		Partial<Record<DemoCardField, boolean>>
 	>({});
 	const errors = React.useMemo(() => demoCardErrors(card), [card]);
-	const valid = Object.values(errors).every((error) => !error);
 	React.useEffect(() => {
 		for (const field of demoFields)
 			inputs.current[field.id]?.setCustomValidity(
-				cardSelected ? errors[field.id] : '',
+				cardSelected && touched[field.id] ? errors[field.id] : '',
 			);
-	}, [errors, cardSelected]);
+	}, [errors, cardSelected, touched]);
+	React.useEffect(() => {
+		const form = panelRef.current?.closest('form');
+		if (!form) return;
+		// Native required checks run first. Also guard non-empty, unblurred fields
+		// before the parent form can create an order (including requestSubmit()).
+		const validateSubmit = (event: SubmitEvent) => {
+			if (!cardSelected) return;
+			const invalidField = demoFields.find((field) => errors[field.id]);
+			if (!invalidField) return;
+			event.preventDefault();
+			event.stopPropagation();
+			for (const field of demoFields)
+				inputs.current[field.id]?.setCustomValidity(errors[field.id]);
+			inputs.current[invalidField.id]?.reportValidity();
+		};
+		form.addEventListener('submit', validateSubmit, true);
+		return () => form.removeEventListener('submit', validateSubmit, true);
+	}, [cardSelected, errors]);
 	const edit = (
 		field: DemoCardField,
 		event: React.ChangeEvent<HTMLInputElement>,
@@ -169,14 +186,15 @@ export default function LiquidGlassCheckout({
 				입력하지 마세요. 실제 결제는 지원하지 않습니다.
 			</Typography>
 			<div className="lc-fields">
-				{demoFields.map((field) => {
-					const error = touched[field.id] ? errors[field.id] : '';
+				{demoFields.map((field, index) => {
+					const error = cardSelected && touched[field.id] ? errors[field.id] : '';
+					const inputId = `${uid}-demo-${index}`;
 					return (
 						<div
 							key={field.id}
 							className={`lc-field ${field.id === 'number' || field.id === 'holder' ? 'lc-wide' : ''}`}
 						>
-							<label htmlFor={`${uid}-${field.id}`}>{field.label}</label>
+							<label htmlFor={inputId}>{field.label}</label>
 							<div
 								className="lc-box"
 								data-invalid={!!error}
@@ -185,7 +203,7 @@ export default function LiquidGlassCheckout({
 								}}
 							>
 								<input
-									id={`${uid}-${field.id}`}
+									id={inputId}
 									ref={(element) => {
 										if (element) inputs.current[field.id] = element;
 										else delete inputs.current[field.id];
@@ -206,12 +224,10 @@ export default function LiquidGlassCheckout({
 									disabled={processing}
 									aria-invalid={!!error}
 									aria-describedby={`${uid}-demo${error ? ` ${uid}-${field.id}-error` : ''}`}
-									onInvalid={() =>
-										setTouched((previous) => ({
-											...previous,
-											[field.id]: true,
-										}))
-									}
+									onInvalid={(event) => {
+										event.currentTarget.setCustomValidity(cardSelected ? errors[field.id] : '');
+										setTouched({ number: true, holder: true, expiry: true, cvc: true });
+									}}
 									onFocus={() => {
 										setFocus(field.id);
 										onFlipChange(field.id === 'cvc');
@@ -243,7 +259,7 @@ export default function LiquidGlassCheckout({
 				ref={payRef}
 				type="submit"
 				className="lc-pay"
-				disabled={disabled || (cardSelected && !valid)}
+				disabled={disabled}
 				startIcon={<LockOutlinedIcon />}
 				aria-busy={processing}
 			>

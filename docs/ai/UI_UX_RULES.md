@@ -46,6 +46,8 @@ Keep these related files coherent:
 
 Preserve water shaders, spring-based 3D interaction, ripples, water levels, processing effects, glass/hover/focus treatment and live preview. CVC focus flips to the back; blur flips back; an accessible explicit flip control remains. Preserve test warnings and dynamic KRW totals.
 
+Test-field errors appear after blur or a submit attempt and clear as soon as that value is valid. Do not set custom validity errors on untouched fields at mount. Keep native required checks enabled; the component also intercepts invalid non-empty submissions before the parent order handler. Once delivery information is ready, submit remains available to reveal errors. Switching to a non-card preference clears test-field validation. Keep these inputs unnamed, with neutral demo IDs and `autocomplete="off"`, without `cc-*` autofill hints; browser heuristics may still ignore autocomplete preferences. Do not disable browser security checks to suppress warnings.
+
 Do not replace animation with static approximations or add Three.js/GSAP/Framer Motion solely to reproduce existing capabilities. Preserve CSS/WebGL fallback, context loss/restoration, reduced-motion checks, page visibility/intersection handling, device-pixel-ratio bounds and cleanup of RAFs, observers, listeners and GPU objects. Check unmount/remount and breakpoint resizing for retained resources. Security limits of the test fields are in [SECURITY_RULES.md](SECURITY_RULES.md#test-checkout-and-payment).
 
 ## Other motion and media

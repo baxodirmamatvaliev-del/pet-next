@@ -90,3 +90,13 @@ Record actual completed work, dates, scope, changed files, executed/skipped veri
 **Limits:** Authentication responses were mocked. No OAuth, live database/account verification or production access occurred. No commits, pushes or deployment.
 
 **Suggested commit:** `refactor(auth): refine compact account forms`
+
+## 2026-11-24 — Delay test checkout validation feedback
+
+- Updated `libs/components/checkout/LiquidGlassCheckout.tsx`: custom validity waits for blur or submit; inline errors clear immediately on valid input. Submit now reveals validation errors instead of staying disabled for invalid test details. Native required checks remain active; a cleaned-up capture listener also blocks invalid non-empty/unblurred submissions before the order handler. Non-card preferences do not require test details.
+- Kept test-only warnings, added the test marker to the expiry label, and used neutral demo input IDs without payment autofill tokens. Inputs remain unnamed with autocomplete off. No browser security settings, validation rules, animations, styles, dependencies, backend or GraphQL contracts changed.
+- Updated `UI_UX_RULES.md` with the validation timing and autofill boundaries.
+- Verification executed: `yarn typecheck`, scoped ESLint and all 25 existing tests passed. Playwright checks passed at 390/768/1440px in light/dark themes: initial neutral fields, individual blur errors, immediate corrections, submit/keyboard errors, native `requestSubmit()` blocking, formatting, CVC flip, Luhn/expiry/AMEX rules and payment-method switching. A valid synthetic checkout reached the mocked order handler once, with delivery fields only and no card number/CVC. Reduced-motion submission was checked.
+- Limits: GraphQL responses were intercepted and WebSockets blocked; no database writes, live payment/provider verification or production access. Browser checks used clear-and-type pauses for the existing RAF caret formatter. No production build was run for this focused change. No commit, push or deployment.
+
+**Suggested commit:** `fix(checkout): delay test card validation feedback`
