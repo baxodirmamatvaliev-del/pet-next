@@ -100,3 +100,24 @@ Record actual completed work, dates, scope, changed files, executed/skipped veri
 - Limits: GraphQL responses were intercepted and WebSockets blocked; no database writes, live payment/provider verification or production access. Browser checks used clear-and-type pauses for the existing RAF caret formatter. No production build was run for this focused change. No commit, push or deployment.
 
 **Suggested commit:** `fix(checkout): delay test card validation feedback`
+
+## 2026-11-24 — Replace the agent grid with Team Lanyard Rail
+
+**Changes:**
+
+- `libs/components/agent/TeamLanyardRail.tsx` and its SCSS module adapt the supplied 21st.dev component without Tailwind or new dependencies. Retained the original geometry, seeded barcode/QR, stitched ribbon and metal/plastic/glare materials, spring solver, pendulum/collision/reel calculations, pointer gestures and keyboard interactions. Updated ref synchronization/named recursive callback for React lint compatibility, and used existing Next Image/Link capabilities.
+- Added a native horizontal viewport for full-sized 124px badges and touch scrolling; short lists cap their rail width. Back faces show public counters and usable profile/contact link targets. Autoplay stops after interaction; reduced motion and cleanup remain.
+- `pages/agent/index.tsx` maps real `getAgents` data, preserves query/filter/sort/pagination/retry behavior and existing profile category/recipient URLs, and hides self-inquiry. Removed marketing intro copy, obsolete `AgentCard.tsx` and grid/card rules from desktop/mobile agent SCSS. No hiring CTA was introduced.
+- Added four translated rail hints/labels in each locale. Updated architecture/UI references and D-011. Supplied palette values/license text were absent; scoped neutral/chart fallbacks and source attribution are documented rather than claimed as independently certified.
+
+**Verification actually executed:**
+
+- `yarn typecheck`, scoped ESLint and all 25 existing tests passed. Isolated production `yarn build` passed, generating 108 localized pages with existing dependencies and synthetic endpoints; the running dev server's output was preserved.
+- Compared retained pure geometry/material-seed helpers, paint/snap/kick callbacks, pointer handlers and time-step simulation with the supplied source. Physics math remained identical; recursive callback naming changed for lint compatibility.
+- Playwright with intercepted GraphQL verified missing/failed portraits, real-field mapping, 124px badge dimensions, 42px reel extension/rebound, horizontal drag/return, flip/Escape/focus retention, arrow/Home/End navigation and scrolling, filters/sort/pagination, six-record final pages and self-contact exclusion.
+- Light/dark checks at 390/768/1024/1440px passed without page overflow; one public chat instance remained. CDP touch input scrolled the rail and tugged a badge. Reduced-motion flips, 24-agent lists, empty/error/retry states, autoplay/stop behavior and four locale layouts passed. Short-list checks covered 1/2/3/24 agents without enlarging badges.
+- Profile navigation retained `category=products`; guest inquiry navigation retained its recipient and showed the existing login gate. Desktop/back/mobile-dark screenshots were inspected. Documentation links and final diff checks passed.
+
+**Limits:** Backend/API/auth responses were mocked and non-HMR sockets blocked; deliberate failed-image/query fixtures produced expected console errors. No production/data writes, real account verification, backend changes, package installs, commits, pushes or deployment.
+
+**Suggested commit:** `feat(agent): replace cards with animated lanyard rail`

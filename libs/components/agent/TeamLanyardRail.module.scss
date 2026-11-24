@@ -1,0 +1,687 @@
+// Scoped equivalents of the supplied rail's Tailwind styles; no global utility layer.
+.root {
+	--color-background: #fff;
+	--color-foreground: #18181b;
+	--color-muted-foreground: #71717a;
+	--color-muted: #f4f4f5;
+	--color-card: #fff;
+	--color-border: #e4e4e7;
+	--color-ring: #a1a1aa;
+	position: relative;
+	isolation: isolate;
+	width: 100%;
+	margin-inline: auto;
+	overflow: hidden;
+	background: var(--color-background);
+	color: var(--color-foreground);
+	line-height: 1.5;
+
+	*, *::before, *::after {
+		box-sizing: border-box;
+	}
+
+	button {
+		border: 0;
+		background: transparent;
+		color: inherit;
+		font: inherit;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	button:focus-visible, a:focus-visible {
+		outline: 2px solid var(--color-ring);
+		outline-offset: 4px;
+	}
+}
+
+:global([data-mui-color-scheme='dark']) .root {
+	--color-background: #09090b;
+	--color-foreground: #fafafa;
+	--color-muted-foreground: #a1a1aa;
+	--color-muted: #27272a;
+	--color-card: #18181b;
+	--color-border: #ffffff1a;
+	--color-ring: #71717a;
+
+	.glare {
+		opacity: 0.35;
+	}
+
+	.strapShadow {
+		background: rgb(0 0 0 / 45%);
+	}
+
+	.cardShadow {
+		background: rgb(0 0 0 / 70%);
+	}
+}
+
+.tone1 {
+	color: oklch(0.646 0.222 41.116);
+}
+
+.tone2 {
+	color: oklch(0.6 0.118 184.704);
+}
+
+.tone3 {
+	color: oklch(0.398 0.07 227.392);
+}
+
+.tone4 {
+	color: oklch(0.828 0.189 84.429);
+}
+
+.tone5 {
+	color: oklch(0.769 0.188 70.08);
+}
+
+.viewport {
+	width: 100%;
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-muted-foreground) transparent;
+}
+
+.stage {
+	position: relative;
+	width: 100%;
+	margin-top: 16px;
+	touch-action: pan-x pan-y;
+	user-select: none;
+}
+
+.backdrop {
+	position: absolute;
+	inset: 0;
+	z-index: -10;
+	pointer-events: none;
+}
+
+.rail {
+	position: absolute;
+	inset-inline: 0;
+	z-index: 0;
+	pointer-events: none;
+}
+
+.railShadow {
+	position: absolute;
+	inset-inline: 0;
+	height: 12px;
+	border-radius: 9999px;
+	background: color-mix(in oklab, var(--color-foreground) 10%, transparent);
+	filter: blur(5px);
+}
+
+.railBody, .railTexture {
+	position: absolute;
+	inset: 0;
+	border-radius: 9999px;
+}
+
+.railTexture {
+	opacity: 0.4;
+	mix-blend-mode: overlay;
+}
+
+.railMount {
+	position: absolute;
+	top: 50%;
+	width: 16px;
+	height: 28px;
+	border-radius: 3px;
+	transform: translateY(-50%);
+}
+
+.topScrew, .bottomScrew {
+	position: absolute;
+	left: 50%;
+	width: 4px;
+	height: 4px;
+	border-radius: 9999px;
+	background: color-mix(in oklab, var(--color-foreground) 35%, transparent);
+	transform: translateX(-50%);
+}
+
+.topScrew {
+	top: 4px;
+}
+
+.bottomScrew {
+	bottom: 4px;
+}
+
+.slot {
+	position: absolute;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+}
+
+.roundPart, .part, .crimp, .strapShadow, .strapRing, .cord, .clip, .clipHighlight {
+	position: absolute;
+	display: block;
+}
+
+.roundPart {
+	border-radius: 9999px;
+}
+
+.crimp {
+	border-radius: 2px;
+}
+
+.stretch {
+	position: absolute;
+	inset: 0;
+	display: block;
+}
+
+.strapShadow {
+	background: rgb(0 0 0 / 15%);
+	filter: blur(2px);
+}
+
+.stitches {
+	position: absolute;
+	inset-block: 0;
+	left: 1.5px;
+	right: 1.5px;
+	display: block;
+	border-inline: 1px dashed rgb(255 255 255 / 35%);
+}
+
+.strapEnd {
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	display: block;
+	background: rgb(0 0 0 / 25%);
+}
+
+.crossStitch {
+	position: absolute;
+	inset-inline: 2px;
+	display: block;
+	border-top: 1px dashed rgb(255 255 255 / 45%);
+}
+
+.strapRing {
+	overflow: visible;
+}
+
+.reelRim {
+	position: absolute;
+	inset: 14%;
+	display: block;
+	border: 1px solid rgb(255 255 255 / 20%);
+	border-radius: 9999px;
+}
+
+.reelHub {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	display: block;
+	width: 32%;
+	height: 32%;
+	border-radius: 9999px;
+	transform: translate(-50%, -50%);
+}
+
+.cord {
+	width: 1.5px;
+	background: color-mix(in oklab, var(--color-foreground) 60%, transparent);
+}
+
+.hang {
+	position: absolute;
+	left: 0;
+	display: block;
+}
+
+.cardShadow {
+	position: absolute;
+	inset: 0;
+	display: block;
+	border-radius: 10px;
+	background: rgb(0 0 0 / 25%);
+}
+
+.badge {
+	position: absolute;
+	left: 0;
+	padding: 0;
+	border-radius: 0.85em;
+	text-align: left;
+	cursor: pointer;
+	pointer-events: auto;
+	// Horizontal swipes scroll; vertical tugs stay with the original reel physics.
+	touch-action: pan-x;
+}
+
+.flip {
+	position: absolute;
+	inset: 0;
+	display: block;
+	transform-style: preserve-3d;
+}
+
+.front, .back {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	border-radius: 0.85em;
+	background: var(--color-card);
+	color: var(--color-foreground);
+	backface-visibility: hidden;
+}
+
+.front {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-inline: 0.8em;
+	padding-bottom: 0.7em;
+}
+
+.band {
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	display: block;
+	height: 2.15em;
+}
+
+.tall {
+	height: 4.3em;
+}
+
+.bandEdge {
+	position: absolute;
+	inset-inline: 0;
+	bottom: 0;
+	height: 1px;
+	background: rgb(0 0 0 / 15%);
+}
+
+.hole {
+	position: absolute;
+	left: 50%;
+	top: 0.72em;
+	display: block;
+	height: 0.56em;
+	width: 2.7em;
+	border-radius: 9999px;
+	background: var(--color-background);
+	transform: translateX(-50%);
+}
+
+.portraitFrame {
+	position: relative;
+	display: block;
+	flex-shrink: 0;
+	width: 5.3em;
+	height: 5.3em;
+	margin-top: 2.05em;
+	padding: 0.2em;
+	border-radius: 9999px;
+	background: var(--color-card);
+}
+
+.portrait {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 9999px;
+	background: var(--color-muted);
+}
+
+.silhouette {
+	width: 100%;
+	height: 100%;
+	color: color-mix(in oklab, var(--color-muted-foreground) 60%, transparent);
+}
+
+.image {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	user-select: none;
+	pointer-events: none;
+}
+
+.name, .role, .team, .backName, .backRole {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.name {
+	margin-top: 0.55em;
+	font-size: 1.08em;
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: -0.025em;
+	text-align: center;
+}
+
+.role {
+	margin-top: 0.15em;
+	font-size: 0.8em;
+	line-height: 1.375;
+	color: var(--color-muted-foreground);
+	text-align: center;
+}
+
+.team {
+	margin-top: 0.5em;
+	font-size: 0.6em;
+	font-weight: 500;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--color-muted-foreground);
+	text-align: center;
+}
+
+.barcode {
+	display: block;
+	width: 100%;
+	margin-top: auto;
+	padding-top: 0.5em;
+	border-top: 1px dashed var(--color-border);
+}
+
+.bars {
+	display: block;
+	width: 100%;
+	height: 1.6em;
+	color: color-mix(in oklab, var(--color-foreground) 80%, transparent);
+}
+
+.digits {
+	display: block;
+	margin-top: 0.25em;
+	font-family: monospace;
+	font-size: 0.52em;
+	letter-spacing: 0.32em;
+	color: var(--color-muted-foreground);
+	text-align: center;
+}
+
+.backHeading {
+	position: absolute;
+	left: 0.85em;
+	right: 3.1em;
+	top: 2.6em;
+	display: block;
+}
+
+.backName {
+	font-size: 0.95em;
+	font-weight: 600;
+	line-height: 1.25;
+}
+
+.backRole {
+	font-size: 0.72em;
+	line-height: 1.375;
+	color: var(--color-muted-foreground);
+}
+
+.stats {
+	position: absolute;
+	inset-inline: 0.85em;
+	top: 5.4em;
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5em;
+
+	> span {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	strong {
+		font-size: 1.1em;
+		line-height: 1.2;
+		font-variant-numeric: tabular-nums;
+	}
+
+	span span {
+		font-size: 0.7em;
+		color: var(--color-muted-foreground);
+	}
+}
+
+.qr {
+	position: absolute;
+	top: 2.6em;
+	right: 0.8em;
+	width: 1.8em;
+	height: 1.8em;
+	color: var(--color-foreground);
+}
+
+.drawnLinks, .links {
+	position: absolute;
+	bottom: 0.65em;
+	inset-inline: 0.6em;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0.15em;
+}
+
+.drawnLinks, .linksLayer {
+	transition: opacity 150ms;
+}
+
+.linkRow {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.3em;
+	min-height: 44px;
+	padding: 0.14em 0.3em;
+	border-radius: 0.4em;
+	background: color-mix(in oklab, var(--color-muted) 65%, transparent);
+	color: var(--color-foreground);
+	font-size: 0.78em;
+	font-weight: 500;
+	line-height: 1.25;
+}
+
+.linkIcon {
+	flex-shrink: 0;
+	width: 1.05em;
+	height: 1.05em;
+}
+
+.link {
+	pointer-events: auto;
+
+	&:hover { background: var(--color-muted); }
+}
+
+.linksLayer {
+	position: absolute;
+	left: 0;
+	pointer-events: none;
+}
+
+.cardEdge {
+	position: absolute;
+	inset-block: 0.85em;
+	display: block;
+	width: 2px;
+}
+
+.glare {
+	position: absolute;
+	inset-block: 0;
+	left: -50%;
+	display: block;
+	width: 200%;
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+.shade {
+	position: absolute;
+	inset: 0;
+	display: block;
+	background: #000;
+	pointer-events: none;
+}
+
+.clip {
+	pointer-events: none;
+}
+
+.clipStem, .clipHole {
+	position: absolute;
+	left: 50%;
+	display: block;
+	transform: translateX(-50%);
+}
+
+.clipStem {
+	border-radius: 0 0 2px 2px;
+}
+
+.clipBody {
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	display: block;
+}
+
+.clipHighlight {
+	background: rgb(255 255 255 / 50%);
+}
+
+.clipHole {
+	border-radius: 9999px;
+	background: var(--color-background);
+}
+
+.heading {
+	position: relative;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	padding: 28px 24px 0;
+	text-align: center;
+}
+
+.eyebrow {
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.28em;
+	color: var(--color-muted-foreground);
+}
+
+.title {
+	font-size: 24px;
+	font-weight: 500;
+	letter-spacing: -0.025em;
+	text-wrap: balance;
+}
+
+.footer {
+	position: relative;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 24px 16px;
+	text-align: center;
+}
+
+.caption {
+	min-height: 2.6rem;
+}
+
+.captionName {
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.hint {
+	margin-top: 2px;
+	font-size: 13px;
+	color: var(--color-muted-foreground);
+}
+
+.dots {
+	position: relative;
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+	gap: 6px;
+	margin-top: 4px;
+}
+
+.root .dot {
+	height: 6px;
+	width: 6px;
+	border-radius: 9999px;
+	background: color-mix(in oklab, var(--color-foreground) 25%, transparent);
+	transition: width 300ms, background-color 300ms;
+}
+
+.root .currentDot {
+	width: 24px;
+
+	background: var(--color-foreground);
+}
+
+.fadeLeft, .fadeRight {
+	position: absolute;
+	inset-block: 0;
+	z-index: 50;
+	width: 48px;
+	pointer-events: none;
+}
+
+.fadeLeft {
+	left: 0;
+
+	background: linear-gradient(to right, var(--color-background) 25%, transparent);
+}
+
+.fadeRight {
+	right: 0;
+	background: linear-gradient(to left, var(--color-background) 25%, transparent);
+}
+
+@media (min-width: 768px) {
+	.title {
+		font-size: 30px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.drawnLinks, .linksLayer, .root .dot {
+		transition: none;
+	}
+}

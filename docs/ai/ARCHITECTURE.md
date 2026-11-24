@@ -48,7 +48,7 @@ Evidence: [Next configuration](../../next.config.ts), [product detail](../../pag
 
 `LayoutHome`, `LayoutBasic` and `LayoutFull` are HOCs around `StorefrontLayout`. The shared shell owns Top, Footer, exactly one public Chat and mobile bottom navigation. `LayoutAdmin` independently waits for session/member information and gates its UI on ADMIN membership; server authorization remains authoritative.
 
-Existing reusable components include ProductCard, PetCard, AgentCard, CardCarousel, ListingError, ThemeToggle and LanguageSwitcher. Domain folders group homepage, product, pet, mypage, cs, admin and checkout components. Preserve these structures rather than creating a competing layout system.
+Existing reusable components include ProductCard, PetCard, [TeamLanyardRail](../../libs/components/agent/TeamLanyardRail.tsx), CardCarousel, ListingError, ThemeToggle and LanguageSwitcher. The agent listing maps public `getAgents` fields into compact animated badges; the old AgentCard/grid implementation was removed. Domain folders group homepage, product, pet, agent, mypage, cs, admin and checkout components. Preserve these structures rather than creating a competing layout system.
 
 Evidence: [LayoutBasic](../../libs/components/layout/LayoutBasic.tsx), [LayoutHome](../../libs/components/layout/LayoutHome.tsx), [LayoutFull](../../libs/components/layout/LayoutFull.tsx), [CardCarousel](../../libs/components/homepage/CardCarousel.tsx), [ListingError](../../libs/components/common/ListingError.tsx).
 

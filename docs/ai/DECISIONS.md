@@ -87,3 +87,12 @@ Entries D-001 through D-007 describe existing source observed on 2026-11-24; the
 - Evidence: [account page](../../pages/account/join.tsx), [styles](../../scss/pc/account/_join.scss), [current UI reference](UI_UX_RULES.md#account-form-design).
 - Decision: use a 420px logo/heading/form card without welcome/decorative copy. Preserve native autofill with a theme-colored paint override and use a small CSS mode animation. Provider previews stay outside the form, visually responsive but without OAuth handlers.
 - Consequence: existing authentication, parent-owned input state, locale/theme support and video/seasonal effects remain intact. No new packages, session layer or backend contract is introduced. Real provider integration still requires separate authorization.
+
+## D-011 — Adapt the supplied lanyard physics to the agent listing
+
+**Status:** User-authorized replacement, 2026-11-24.
+
+- Evidence: [agent page](../../pages/agent/index.tsx), [TeamLanyardRail](../../libs/components/agent/TeamLanyardRail.tsx), [scoped materials/styles](../../libs/components/agent/TeamLanyardRail.module.scss).
+- Decision: retain the supplied Team Lanyard Rail simulation, procedural textures and compact badge geometry rather than installing a physics/UI framework. Convert utility styling to SCSS modules. Use a native horizontal viewport for dynamic agent counts, including touch scrolling, while retaining badge dragging, vertical reel tugs and spring flips.
+- Integration: map only existing public `getAgents` fields; preserve filters/pagination and profile/product-category and support-recipient links. Hide self-inquiry and retain support-page authentication. Localize hints and actions using existing dictionaries.
+- Consequence: remove the obsolete AgentCard and its grid/card styles. Keep marketing/demo hiring content off the page. No backend, GraphQL operation, dependency, lockfile or global theme change. Upstream palette values/license were not supplied; scoped fallback tokens and source attribution are documented in the UI reference.

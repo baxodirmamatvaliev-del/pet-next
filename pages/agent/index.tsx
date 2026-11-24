@@ -1,5 +1,5 @@
 import { FormEvent, useMemo, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {
 	Alert,
@@ -19,7 +19,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { GET_AGENTS } from '../../apollo/user/query';
-import AgentCard from '../../libs/components/common/AgentCard';
+import { userVar } from '../../apollo/store';
+import TeamLanyardRail from '../../libs/components/agent/TeamLanyardRail';
+import { REACT_APP_API_URL } from '../../libs/config';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Direction } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
@@ -41,6 +43,7 @@ const AgentList: NextPage = () => {
 	const { t } = useTranslation();
 	const router = useRouter();
 	const device = useDeviceDetect();
+	const user = useReactiveVar(userVar);
 
 	/** STATES **/
 	const [agents, setAgents] = useState<Member[]>([]);
@@ -109,6 +112,18 @@ const AgentList: NextPage = () => {
 
 	/** COMPUTED VALUES **/
 	const totalPages = Math.ceil(total / searchFilter.limit);
+	const lanyardItems = useMemo(() => agents.map((agent) => ({
+		id: agent._id,
+		name: agent.memberNick,
+		role: `PetNest ${t('ui.seller')}`,
+		image: agent.memberImage ? `${REACT_APP_API_URL}/${agent.memberImage}` : '',
+		followers: agent.memberFollowers,
+		likes: agent.memberLikes,
+		links: [
+			{ label: t('ui.viewProfile'), href: `/member/detail?id=${encodeURIComponent(agent._id)}&category=products` },
+			...(user?.sub !== agent._id ? [{ label: t('ui.contactAgent'), href: `/cs?tab=ask&recipient=${encodeURIComponent(agent._id)}` }] : []),
+		],
+	})), [agents, t, user?.sub]);
 	const content = (
 		<>
 			<Stack direction="row" className="agent-page__toolbar">
@@ -145,11 +160,20 @@ const AgentList: NextPage = () => {
 					<CircularProgress />
 				</Stack>
 			) : agents.length ? (
-				<Box className="agent-page__grid">
-					{agents.map((agent) => (
-						<AgentCard agent={agent} key={agent._id} />
-					))}
-				</Box>
+				<TeamLanyardRail
+					key={JSON.stringify(searchFilter)}
+					items={lanyardItems}
+					autoplay
+					aria-label={t('ui.seller')}
+					caption={t('agentRail.hint')}
+					labels={{
+						flip: t('agentRail.flip'),
+						back: t('agentRail.back'),
+						show: t('agentRail.show'),
+						followers: t('ui.followers'),
+						likes: t('ui.likes'),
+					}}
+				/>
 			) : (
 				<Typography className="agent-page__state">{t('ui.noAgentsFound')}</Typography>
 			)}
@@ -165,13 +189,7 @@ const AgentList: NextPage = () => {
 					<title>{t('ui.petnestAgentsPetnestKorea')}</title>
 				</Head>
 				<Box component="main" className="agent-page agent-page--mobile container">
-					<Typography component="span" className="agent-page__eyebrow">
-						{t('ui.petnestCommunity')}
-					</Typography>
-					<Typography component="h1">{t('ui.meetOurAgents')}</Typography>
-					<Typography component="p" className="agent-page__intro">
-						{t('ui.findAnAgentExploreTheirProductsOrContact')}
-					</Typography>
+					<Typography component="h1">{t('ui.seller')}</Typography>
 					{content}
 				</Box>
 			</>
@@ -184,13 +202,7 @@ const AgentList: NextPage = () => {
 					<title>{t('ui.petnestAgentsPetnestKorea')}</title>
 				</Head>
 				<Box component="main" className="agent-page agent-page--pc container">
-					<Typography component="span" className="agent-page__eyebrow">
-						{t('ui.petnestCommunity')}
-					</Typography>
-					<Typography component="h1">{t('ui.meetOurAgents')}</Typography>
-					<Typography component="p" className="agent-page__intro">
-						{t('ui.findAnAgentExploreTheirProductsOrContact')}
-					</Typography>
+					<Typography component="h1">{t('ui.seller')}</Typography>
 					{content}
 				</Box>
 			</>

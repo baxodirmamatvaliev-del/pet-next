@@ -52,6 +52,12 @@ Do not replace animation with static approximations or add Three.js/GSAP/Framer 
 
 ## Other motion and media
 
+The [agent lanyard rail](../../libs/components/agent/TeamLanyardRail.tsx) adapts the user-supplied 21st.dev Team Lanyard Rail with [scoped SCSS](../../libs/components/agent/TeamLanyardRail.module.scss), without Tailwind or physics dependencies. Preserve its 124px maximum badge width, 96/62 aspect ratio, procedural stripes/stitches/metal/QR/barcode/glare, pendulum coupling, neighbor collisions, reel rebound, pointer drag, hover impulses, spring flips, autoplay stop-on-interaction and reduced-motion/cleanup behavior. The native horizontal viewport retains full-sized badges for long lists and touch swipes; vertical badge tugs use the original physics. Keep keyboard navigation, Escape/focus restoration and visible back-face link hit targets.
+
+[The agent page](../../pages/agent/index.tsx) retains search/sort/pagination/error handling and maps real public portraits, nicknames and counters. The silhouette handles missing/failed portraits; short result sets cap the rail width without enlarging badges. Profile links retain the products category; inquiry links retain the recipient ID and self-contact exclusion, with authentication enforced by the existing support flow. Translate labels/hints in all four dictionaries. Do not restore the demo hiring CTA/marketing copy or the old rectangular grid.
+
+The supplied source references theme/chart tokens without concrete palette values or license text. Scoped neutral/standard chart-token fallbacks preserve its material approach without changing PetNest's global palette; source attribution is retained. No independent upstream palette or license certification is claimed.
+
 - [_app](../../pages/_app.tsx): falling leaves on non-admin routes, with reduced-motion support.
 - [account page](../../pages/account/join.tsx): muted looping background video at half speed; motion preference pauses playback.
 - [CardCarousel](../../libs/components/homepage/CardCarousel.tsx): horizontal snap scrolling, previous/next controls and reduced-motion-aware movement.
