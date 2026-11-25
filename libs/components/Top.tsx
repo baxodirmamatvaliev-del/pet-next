@@ -92,7 +92,6 @@ const Top = () => {
 				<Link href="/product?category=CAT">{t('nav.cats')}</Link>
 				<Link href="/product?sort=createdAt">{t('nav.new')}</Link>
 				<Link href="/product?sort=productSold">{t('nav.best')}</Link>
-				<Link href="/agent">{t('nav.agents')}</Link>
 				<Link href="/pet">{t('nav.community')}</Link>
 				<Link href="/cs">{t('nav.help')}</Link>
 			</Stack>

@@ -973,8 +973,6 @@ export function TeamLanyardRail({
       className={`${styles.root} ${className ?? ""}`}
       style={{ maxWidth: Math.max(360, count * MAX_W * RAIL_PITCH_MAX + 80), ...rest.style }}
     >
-      <div aria-hidden="true" className={styles.backdrop} style={{ background: "radial-gradient(closest-side at 50% 46%, color-mix(in oklab, var(--color-foreground) 7%, transparent), transparent)" }} />
-      <div aria-hidden="true" className={styles.backdrop} style={{ background: "radial-gradient(color-mix(in oklab, var(--color-foreground) 8%, transparent) 1px, transparent 1.3px) 0 0 / 18px 18px", maskImage: "radial-gradient(closest-side at 50% 50%, black 55%, transparent)", WebkitMaskImage: "radial-gradient(closest-side at 50% 50%, black 55%, transparent)" }} />
       {(eyebrow || heading) && (
         <header className={styles.heading}>
           {eyebrow && <p className={styles.eyebrow}>{eyebrow}</p>}

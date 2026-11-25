@@ -96,3 +96,7 @@ Entries D-001 through D-007 describe existing source observed on 2026-11-24; the
 - Decision: retain the supplied Team Lanyard Rail simulation, procedural textures and compact badge geometry rather than installing a physics/UI framework. Convert utility styling to SCSS modules. Use a native horizontal viewport for dynamic agent counts, including touch scrolling, while retaining badge dragging, vertical reel tugs and spring flips.
 - Integration: map only existing public `getAgents` fields; preserve filters/pagination and profile/product-category and support-recipient links. Hide self-inquiry and retain support-page authentication. Localize hints and actions using existing dictionaries.
 - Consequence: remove the obsolete AgentCard and its grid/card styles. Keep marketing/demo hiring content off the page. No backend, GraphQL operation, dependency, lockfile or global theme change. Upstream palette values/license were not supplied; scoped fallback tokens and source attribution are documented in the UI reference.
+
+## 2026-11-25 — Homepage seller rail
+
+The seller discovery rail now belongs to the homepage between Community and Healing/Video. The shared physics component is reused with transparent presentation; the homepage requests the nine newest agents without page controls. `/agent` uses a permanent locale-aware server redirect to `#agents`; footer links address that anchor directly. GraphQL contracts and member profile/inquiry routes are preserved.

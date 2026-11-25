@@ -12,7 +12,7 @@
 	width: 100%;
 	margin-inline: auto;
 	overflow: hidden;
-	background: var(--color-background);
+	background: transparent;
 	color: var(--color-foreground);
 	line-height: 1.5;
 
@@ -95,12 +95,6 @@
 	user-select: none;
 }
 
-.backdrop {
-	position: absolute;
-	inset: 0;
-	z-index: -10;
-	pointer-events: none;
-}
 
 .rail {
 	position: absolute;

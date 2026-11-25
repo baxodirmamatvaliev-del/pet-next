@@ -121,3 +121,11 @@ Record actual completed work, dates, scope, changed files, executed/skipped veri
 **Limits:** Backend/API/auth responses were mocked and non-HMR sockets blocked; deliberate failed-image/query fixtures produced expected console errors. No production/data writes, real account verification, backend changes, package installs, commits, pushes or deployment.
 
 **Suggested commit:** `feat(agent): replace cards with animated lanyard rail`
+
+## 2026-11-25 — Move seller lanyard rail to homepage
+
+- Added `libs/components/homepage/Agents.tsx` between Community and Healing/Video, reusing `TeamLanyardRail` and the existing `GET_AGENTS` query (nine newest sellers). Preserved localized labels, portrait fallback, counters, profile products links, recipient inquiry links and self-contact exclusion. Loading, empty and retry states remain; page search/sort/pagination are removed.
+- Kept rail simulation and interactions intact; removed only its surface/background decorations. Added compact homepage spacing and the translated `ui.seller` heading (`판매자` in Korean).
+- Replaced `/agent` with a permanent server redirect to the locale homepage `#agents` section. Removed desktop/mobile menu entries; updated both footer links. Deleted unused standalone-page SCSS and its imports. Shared operations, profile routes and backend source are unchanged.
+- Verification: `yarn typecheck` passed after implementation and final layout adjustment; targeted ESLint passed on all changed TS/TSX files; `yarn test` passed all 25 tests; `git diff --check` passed. Repository-wide lint was stopped after it did not finish promptly; no full-lint pass is claimed. Production build was not run.
+- Playwright against the running local frontend/backend displayed five real agent badges, Korean seller heading, locale-aware profile/inquiry URLs and a transparent rail. Verified no page overflow at 390/768/1024/1440px, Enter flip/link reveal, Escape, ArrowDown tug transform, pointer pull visually, light/dark card styling and all four locale redirects with an old query string. Reviewed desktop light/dark and mobile screenshots. No inquiry was submitted and no signed-in self-contact flow was exercised; those handlers/mappings are preserved from source.

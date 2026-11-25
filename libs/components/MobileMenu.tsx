@@ -135,10 +135,6 @@ const MobileMenu = (props: MobileMenuProps) => {
 					<ListItemIcon><GroupsOutlinedIcon /></ListItemIcon>
 					<ListItemText primary={t('nav.community')} />
 				</ListItemButton>
-				<ListItemButton component={Link} href="/agent" onClick={closeHandler}>
-					<ListItemIcon><StorefrontOutlinedIcon /></ListItemIcon>
-					<ListItemText primary={t('nav.agents')} />
-				</ListItemButton>
 				<ListItemButton component={Link} href="/cs" onClick={closeHandler}>
 					<ListItemIcon><SupportAgentOutlinedIcon /></ListItemIcon>
 					<ListItemText primary={t('nav.help')} />

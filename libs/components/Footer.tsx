@@ -32,7 +32,7 @@ const Footer = () => {
 					<Stack className="footer-links">
 						<Typography component="strong">{t('ui.explore')}</Typography>
 						<Link href="/pet">{t('nav.community')}</Link>
-						<Link href="/agent">{t('nav.agents')}</Link>
+						<Link href="/#agents">{t('ui.seller')}</Link>
 						<Link href="/cs">{t('nav.help')}</Link>
 						<Link href="/pet/create">{t('ui.createListing')}</Link>
 						<Link href="/mypage?category=myOrders">{t('ui.myOrders')}</Link>
@@ -74,7 +74,7 @@ const Footer = () => {
 					<Stack className="footer-links">
 						<Typography component="strong">{t('ui.explore')}</Typography>
 						<Link href="/pet">{t('nav.community')}</Link>
-						<Link href="/agent">{t('nav.agents')}</Link>
+						<Link href="/#agents">{t('ui.seller')}</Link>
 						<Link href="/cs">{t('nav.help')}</Link>
 						<Link href="/pet/create">{t('ui.createListing')}</Link>
 					</Stack>

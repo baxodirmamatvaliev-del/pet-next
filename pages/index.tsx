@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import { Stack } from '@mui/material';
 
+import Agents from '../libs/components/homepage/Agents';
 import BestSellers from '../libs/components/homepage/BestSellers';
 import Benefits from '../libs/components/homepage/Benefits';
 import CategoryNavigation from '../libs/components/homepage/CategoryNavigation';
@@ -19,6 +20,7 @@ const Home: NextPage = () => {
 			<CategoryNavigation />
 			<BestSellers />
 			<CommunityPets />
+			<Agents />
 			<PetVideo />
 			<Benefits />
 		</Stack>

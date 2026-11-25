@@ -251,7 +251,7 @@ Quyidagi ro‘yxat manbadan chiqarildi. Har bir operatsiya uchun uni ishlatadiga
 | `GET_MY_INQUIRIES` (GetMyInquiries) | query | `libs/components/cs/MyInquiries.tsx` |
 | `GET_ASSIGNED_INQUIRIES` (GetAssignedInquiries) | query | `libs/components/cs/InquiryInbox.tsx` |
 | `GET_MY_NOTIFICATIONS` (GetMyNotifications) | query | `libs/components/NotificationBell.tsx` |
-| `GET_AGENTS` (GetAgents) | query | `pages/agent/index.tsx` |
+| `GET_AGENTS` (GetAgents) | query | `libs/components/homepage/Agents.tsx` |
 | `GET_MEMBER` (GetMember) | query | `libs/components/layout/LayoutAdmin.tsx`, `libs/components/product/CreateProduct.tsx`, `libs/components/mypage/MyProfile.tsx`, `libs/components/mypage/MyMenu.tsx`, `pages/cs/index.tsx`, `pages/member/detail.tsx`, `pages/product/detail.tsx`, `pages/checkout/index.tsx` |
 | `GET_MEMBER_FOLLOWERS` (GetMemberFollowers) | query | `libs/components/mypage/MyFollows.tsx` |
 | `GET_MEMBER_FOLLOWINGS` (GetMemberFollowings) | query | `libs/components/mypage/MyFollows.tsx` |
