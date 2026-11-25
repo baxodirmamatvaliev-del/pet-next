@@ -143,3 +143,38 @@ Record actual completed work, dates, scope, changed files, executed/skipped veri
 **Production smoke:** The built standalone server rendered both WebGL navbars, synchronized product/category routes and mobile home navigation, and showed one navbar with no overflow or uncaught JavaScript errors in the tested flow.
 
 **Limits:** Safe-area CSS expressions were reviewed and zero-inset geometry checked; this Chromium build lacks nonzero safe-area emulation, so a physical notched-device check is not claimed. Browser checks use Chromium/touch emulation, not physical devices or Safari. The supplied component contained attribution but no separate license text; no independent license certification is claimed.
+
+## 2026-11-25 — Replace category cards with an infinite category marquee
+
+The user chose catalog categories instead of brand logos after a read-only public local GraphQL check found 15 products without identifiable brands and no brand field in the source contracts. Added `CategoryMarquee.tsx` and scoped SCSS; the homepage now displays DOG, CAT, FOOD, TOY, BED, HARNESS, ACCESSORY and OTHER, all supported enums present in the catalog. Uses existing MUI icons and typed localized labels; links preserve the existing serialized `ProductsInquiry` category/type filters. No backend, new dependency, brand field, third-party logo or extra catalog request was added to the application.
+
+Removed the replaced `CategoryNavigation` component and only its obsolete card styles. The new transparent strip has two equal scrolling groups, edge fades, hover scaling/pause, translated pause/resume controls, keyboard access, static scrollable reduced motion, and intersection/document visibility pause with cleanup. Spacing is 12px above on desktop/tablet, 4px on mobile and 24px before the adjacent Best Sellers section. Other sections, Hero media/wave, header Corgis, leaves, navigation and shopping handlers remain.
+
+Verification: `yarn typecheck`, targeted ESLint, all 28 existing tests and `yarn build` passed; the build used explicit local API URLs and generated 104 static locale pages. `git diff --check` passed. Playwright verified leftward movement, hover and manual pause/resume, identical group widths and zero coordinate difference across the loop boundary, focus/static keyboard access, reduced-motion duplicate hiding, eight labels and locale-aware links in EN/KO/UZ/RU, no horizontal page overflow at 375/393/430/768/1024/1440px, and light/dark appearance. Clicking Food opened a real local catalog page with the Food filter checked. Browser screenshots were reviewed. Initial intermediate compilation/test failures were corrected before these passing checks. Full repository lint was not run; no physical-device or Safari test is claimed.
+
+Production UI smoke ran on temporary port 3010 because 3000 was already occupied: touch selected the CAT filter, offscreen animation paused, and RU/UZ layouts fit at 375/768/1440px. Existing backend CORS excludes port 3010, so this smoke verifies UI/navigation only; live catalog filtering was verified earlier on the allowed port 3000. Backend configuration was not changed.
+
+## 2026-11-25 — Remove the homepage marquee
+
+At the user's request, removed the marquee component/module, homepage import/render, its pause/resume translations in all four dictionaries, and all marquee animation/observer logic. The previous category cards remain removed. Added a scoped Hero-to-Best-Sellers adjacent selector with 24px spacing at desktop/tablet/mobile widths; no placeholder remains. Updated the current UI reference and recorded the superseding decision; prior task entries remain historical. Other homepage sections, animations, navigation, and backend code are unchanged.
+
+Verification: `yarn typecheck`, targeted ESLint and all three `yarn test:i18n` tests passed; `git diff --check` passed. Playwright confirmed Best Sellers directly follows Hero with a 24px gap, no marquee/cards or horizontal overflow at 393/768/1024/1440px, unchanged remaining section order and an active Liquid Glass navbar. Desktop/mobile screenshots were reviewed. No production build or full test suite was run for this focused removal.
+
+## 2026-11-25 — Add Pet Care Tips using the supplied photographs
+
+Added `libs/components/homepage/PetCareTips.tsx` and its scoped SCSS module, immediately below Hero and before Best Sellers. Four rounded, subtly shadowed cards use the requested topics/categories and matching 4:3 cover images. Desktop uses four columns, tablet/mobile two. Each translated read-more button opens one shared MUI Dialog containing an introduction and three practical general-care steps. Supports focus trapping/restoration, Escape/backdrop/button dismissal, dark mode, translated descriptive alt text and reduced motion for card/dialog transitions. New content is translated in EN/KO/UZ/RU. Removed only the now-obsolete direct Hero-to-Best-Sellers spacing rule. Existing category-card/marquee removals and other user changes are preserved; no backend or dependency changes.
+
+All four user URLs downloaded successfully as JPEGs into `public/img/pet-care/`, with original response bytes retained and no further re-encoding:
+
+| Input | Local filename | Dimensions |
+| --- | --- | --- |
+| 1 | `daily-walk.jpg` | 3024×4032 |
+| 2 | `cat-hydration.jpg` | 640×830 |
+| 3 | `healthy-eating.jpg` | 640×853 |
+| 4 | `play-time.jpg` | 480×640 |
+
+The fourth source is a smaller thumbnail; it remains the supplied image, not a substitute. All are served locally with `next/image` in unoptimized mode to retain downloaded quality; there are no external image requests from this component. No clinical diagnosis, treatment or individualized nutrition calculation is implemented.
+
+Verification: `yarn typecheck`, targeted ESLint, all three `yarn test:i18n` tests and `git diff --check` passed. Playwright verified four columns at 1440px, two columns at 1024/768/375/393/430px, all images loading locally with consistent cover proportions, no horizontal overflow, all four dialogs with correct content, focus trap/restoration, Escape/backdrop/Close dismissal, real touch-emulated modal opening/closing, dark surfaces, reduced card motion, and translated headings/dialog content in all four locales. Reviewed desktop/mobile and dark dialog screenshots. Next's development LCP advisory appeared during scrolled/reloaded checks; no performance improvement is claimed. Physical devices, Safari and full accessibility compliance are not claimed.
+
+Production compilation: `yarn build` passed using explicit local public API endpoints and generated all 104 static locale pages. No production deployment or full repository lint was run.

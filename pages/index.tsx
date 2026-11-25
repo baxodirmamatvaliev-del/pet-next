@@ -4,9 +4,9 @@ import { Stack } from '@mui/material';
 import Agents from '../libs/components/homepage/Agents';
 import BestSellers from '../libs/components/homepage/BestSellers';
 import Benefits from '../libs/components/homepage/Benefits';
-import CategoryNavigation from '../libs/components/homepage/CategoryNavigation';
 import CommunityPets from '../libs/components/homepage/CommunityPets';
 import Hero from '../libs/components/homepage/Hero';
+import PetCareTips from '../libs/components/homepage/PetCareTips';
 import PetVideo from '../libs/components/homepage/PetVideo';
 import withLayoutHome from '../libs/components/layout/LayoutHome';
 import useDeviceDetect from '../libs/hooks/useDeviceDetect';
@@ -17,7 +17,7 @@ const Home: NextPage = () => {
 	return (
 		<Stack component="main" className={`home-page home-page--${device === 'mobile' ? 'mobile' : 'pc'}`}>
 			<Hero />
-			<CategoryNavigation />
+			<PetCareTips />
 			<BestSellers />
 			<CommunityPets />
 			<Agents />

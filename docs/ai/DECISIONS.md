@@ -104,3 +104,15 @@ The seller discovery rail now belongs to the homepage between Community and Heal
 ## 2026-11-25 — Reuse Nimbus Waterline for storefront navigation
 
 Desktop central navigation and the mobile bottom bar share the supplied Waterline shader/physics component adapted to MUI theme tokens, SCSS modules and locale-aware Next links. The existing layout/device branches choose one navbar engine. To retain the liquid travel across the existing page-wrapper remounts, a module-local per-layout index supplies the preceding visual selection. Checkout and navbar share only the extracted WebGL resource-setup utility; no layout migration, backend change or new dependency is introduced.
+
+## 2026-11-25 — Catalog category marquee instead of unverified brands
+
+The user explicitly chose existing catalog categories after inspection of all 15 public local products found no identifiable brand names and source contracts had no brand field. Replace the four homepage category cards with eight supported, localized category/type links and existing MUI icons. Use a CSS-only two-group loop with pause controls, keyboard/static reduced-motion access and visibility cleanup; preserve the listing contract and other homepage sections. No backend, brand field, logo download or dependency is required.
+
+## 2026-11-25 — Remove homepage marquee without restoring category cards
+
+The user superseded the category-marquee decision above: remove the marquee and all unused implementation/translations, retain the removal of the earlier category cards, and place Best Sellers directly after Hero with 24px spacing. Other sections and backend contracts are unchanged.
+
+## 2026-11-25 — Pet Care Tips below Hero
+
+The user requested a new four-card educational section immediately below Hero. Keep the earlier category cards and marquee removed. Use the four supplied photographs in the specified order, store their downloaded JPEG bytes locally and render uniform cover crops. A single existing MUI Dialog displays localized general-care content; no new library or backend integration is needed. This supersedes the earlier direct Hero-to-Best-Sellers spacing rule.

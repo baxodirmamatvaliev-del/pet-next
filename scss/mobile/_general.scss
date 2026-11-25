@@ -85,27 +85,6 @@
 			}
 		}
 
-		.home-categories {
-			margin-top: 90px;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 10px;
-			.category-tile {
-				min-height: 94px;
-				grid-template-columns: 44px minmax(0, 1fr);
-				gap: 10px;
-				padding: 14px;
-				.category-tile__icon {
-					width: 44px;
-					height: 44px;
-				}
-
-				b,
-				small {
-					display: none;
-				}
-			}
-		}
-
 		.best-sellers,
 		.community-pets {
 			margin-top: 46px;
@@ -274,28 +253,6 @@
 
 	.admin-dashboard .admin-dashboard__summary {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-}
-
-@media (max-width: 360px) {
-	.home-page {
-		.home-categories .category-tile {
-			grid-template-columns: 32px minmax(0, 1fr);
-			gap: 8px;
-			padding: 10px;
-			strong {
-				overflow-wrap: anywhere;
-			}
-
-			.category-tile__icon {
-				width: 32px;
-				height: 32px;
-				svg {
-					font-size: 24px;
-				}
-			}
-		}
-
 	}
 }
 
