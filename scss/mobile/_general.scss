@@ -51,11 +51,13 @@
 
 	.home-page {
 		.home-hero {
+			--hero-wave-height: 90px;
+			--hero-background-position: 54% center;
 			min-height: 0;
 			padding: 116px 0 180px;
 
 			&::before {
-				bottom: 89px;
+				background-image: linear-gradient(180deg, rgb(var(--pet-surface-rgb) / 84%), rgb(var(--pet-surface-rgb) / 60%) 52%, rgb(var(--pet-surface-rgb) / 8%) 82%), url('/img/petnest-hero-original.png');
 			}
 
 			.home-hero__content {
@@ -76,12 +78,6 @@
 					padding-inline: 18px;
 					font-size: 13px;
 				}
-			}
-
-			.home-hero__image {
-				width: 210px;
-				right: 6%;
-				bottom: -40px;
 			}
 
 			.home-hero__wave {

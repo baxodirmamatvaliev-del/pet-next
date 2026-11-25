@@ -266,3 +266,54 @@
 		}
 	}
 }
+
+.site-header--pc.site-header--home .header-main {
+	position: relative;
+}
+
+.header-corgi {
+	display: none;
+	position: absolute;
+	top: 0;
+	width: 72px;
+	height: auto;
+	pointer-events: none;
+	user-select: none;
+
+	&--left {
+		left: -80px;
+		animation-delay: -1.2s;
+	}
+
+	&--right {
+		right: -80px;
+		animation-delay: -0.3s;
+	}
+}
+
+// The 1280px header needs 80px of free space on each side.
+@media (min-width: 1440px) {
+	.header-corgi {
+		display: block;
+		animation-name: header-corgi-peek;
+		animation-duration: 6s;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+	}
+}
+
+@keyframes header-corgi-peek {
+	0%, 20%, 100% {
+		transform: translateY(-4px);
+	}
+
+	45%, 65% {
+		transform: translateY(3px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.header-corgi {
+		animation: none;
+	}
+}

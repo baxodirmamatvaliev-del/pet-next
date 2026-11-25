@@ -7,6 +7,7 @@ import PetsRoundedIcon from '@mui/icons-material/PetsRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { Box, IconButton, InputAdornment, OutlinedInput, Stack, Typography } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -139,6 +140,19 @@ const Top = () => {
 		return (
 			<Stack component="header" ref={headerRef} className={`site-header site-header--pc${isHome ? ' site-header--home' : ''}${!showHeaderSearch ? ' site-header--inline' : ''}`}>
 				<Box className="header-main container">
+					{isHome && ['left', 'right'].map(side => (
+						<Image
+							key={side}
+							src="/img/corgi-peeking.png"
+							alt=""
+							aria-hidden="true"
+							width={335}
+							height={236}
+							className={`header-corgi header-corgi--${side}`}
+							draggable={false}
+							unoptimized
+						/>
+					))}
 					<Stack direction="row" component={Link} href="/" className="brand" aria-label={t('nav.home')}>
 						<PetsRoundedIcon className="brand__mark" />
 						<Stack component="span" className="brand__text">
