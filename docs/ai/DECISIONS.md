@@ -100,3 +100,7 @@ Entries D-001 through D-007 describe existing source observed on 2026-11-24; the
 ## 2026-11-25 — Homepage seller rail
 
 The seller discovery rail now belongs to the homepage between Community and Healing/Video. The shared physics component is reused with transparent presentation; the homepage requests the nine newest agents without page controls. `/agent` uses a permanent locale-aware server redirect to `#agents`; footer links address that anchor directly. GraphQL contracts and member profile/inquiry routes are preserved.
+
+## 2026-11-25 — Reuse Nimbus Waterline for storefront navigation
+
+Desktop central navigation and the mobile bottom bar share the supplied Waterline shader/physics component adapted to MUI theme tokens, SCSS modules and locale-aware Next links. The existing layout/device branches choose one navbar engine. To retain the liquid travel across the existing page-wrapper remounts, a module-local per-layout index supplies the preceding visual selection. Checkout and navbar share only the extracted WebGL resource-setup utility; no layout migration, backend change or new dependency is introduced.

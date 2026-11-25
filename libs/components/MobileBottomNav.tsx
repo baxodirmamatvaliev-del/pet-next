@@ -4,8 +4,8 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
-import { Box } from '@mui/material';
-import Link from 'next/link';
+import { LiquidNavbar } from './navigation/LiquidGlassNavbar';
+import type { NimbusFx } from './navigation/LiquidGlassNavbar';
 import { useRouter } from 'next/router';
 
 import { cartCountVar, userVar } from '../../apollo/store';
@@ -68,29 +68,31 @@ const MobileBottomNav = () => {
 		},
 	];
 
+	const effects: NimbusFx[] = ['glow', 'spin', 'pop', 'drop', 'wave'];
+
 	/** RENDER **/
 	return (
-		<Box component="nav" className="mobile-bottom-nav" aria-label={t('nav.shoppingActions')}>
-			{items.map(({ id, href, label, icon: Icon, active }) => (
-				<Link
-					key={id}
-					href={href}
-					className={`mobile-bottom-nav__item${active ? ' is-active' : ''}`}
-					aria-current={active ? 'page' : undefined}
-					aria-label={id === 'cart' ? `${label}, ${t('nav.itemCount', { count: cartCount })}` : label}
-				>
-					<span className="mobile-bottom-nav__icon">
-						<Icon aria-hidden="true" />
-						{id === 'cart' && cartCount > 0 && (
-							<span className="mobile-bottom-nav__badge" aria-hidden="true">
-								{cartBadge}
-							</span>
-						)}
-					</span>
-					<span className="mobile-bottom-nav__label">{label}</span>
-				</Link>
-			))}
-		</Box>
+		<div className="mobile-bottom-nav">
+			<LiquidNavbar
+				layout="mobile"
+				label={t('nav.shoppingActions')}
+				active={items.findIndex(item => item.active)}
+				items={items.map(({ id, href, label, icon: Icon }, index) => ({
+					href,
+					label,
+					ariaLabel: id === 'cart' ? `${label}, ${t('nav.itemCount', { count: cartCount })}` : label,
+					fx: effects[index],
+					icon: (
+						<span className="mobile-bottom-nav__icon">
+							<Icon aria-hidden="true" />
+							{id === 'cart' && cartCount > 0 && (
+								<span className="mobile-bottom-nav__badge" aria-hidden="true">{cartBadge}</span>
+							)}
+						</span>
+					),
+				}))}
+			/>
+		</div>
 	);
 };
 

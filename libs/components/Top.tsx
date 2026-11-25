@@ -15,6 +15,8 @@ import { GET_MY_CART } from '../../apollo/user/query';
 import { T } from '../types/common';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import MobileMenu from './MobileMenu';
+import { LiquidNavbar } from './navigation/LiquidGlassNavbar';
+import { desktopNavigationActive } from './navigation/activeNavigation';
 import NotificationBell from './NotificationBell';
 import ThemeToggle from './ThemeToggle';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -85,16 +87,21 @@ const Top = () => {
 	};
 
 	const categoryNavigation = (
-		<Box component="nav" className={!showHeaderSearch ? 'header-inline-nav' : 'category-nav'} aria-label={t('nav.categories')}>
-			<Stack direction="row" className={!showHeaderSearch ? 'header-inline-nav__inner' : 'container category-nav__inner'}>
-				<Link href="/product">{t('nav.products')}</Link>
-				<Link href="/product?category=DOG">{t('nav.dogs')}</Link>
-				<Link href="/product?category=CAT">{t('nav.cats')}</Link>
-				<Link href="/product?sort=createdAt">{t('nav.new')}</Link>
-				<Link href="/product?sort=productSold">{t('nav.best')}</Link>
-				<Link href="/pet">{t('nav.community')}</Link>
-				<Link href="/cs">{t('nav.help')}</Link>
-			</Stack>
+		<Box className={`header-liquid-nav${showHeaderSearch ? ' header-liquid-nav--below' : ''}`}>
+			<LiquidNavbar
+				layout="desktop"
+				label={t('nav.categories')}
+				active={desktopNavigationActive(router.pathname, router.query)}
+				items={[
+					{ label: t('nav.products'), href: '/product' },
+					{ label: t('nav.dogs'), href: '/product?category=DOG' },
+					{ label: t('nav.cats'), href: '/product?category=CAT' },
+					{ label: t('nav.new'), href: '/product?sort=createdAt' },
+					{ label: t('nav.best'), href: '/product?sort=productSold' },
+					{ label: t('nav.community'), href: '/pet' },
+					{ label: t('nav.help'), href: '/cs' },
+				]}
+			/>
 		</Box>
 	);
 
@@ -139,7 +146,8 @@ const Top = () => {
 							<Typography component="small">Korea</Typography>
 						</Stack>
 					</Stack>
-					{!showHeaderSearch ? categoryNavigation : (
+					{categoryNavigation}
+					{showHeaderSearch && (
 						<Box component="form" className="header-search-form" onSubmit={searchHandler}>
 							<OutlinedInput
 								key={typeof router.query.text === 'string' ? router.query.text : 'empty-search'}
@@ -176,7 +184,6 @@ const Top = () => {
 						</Stack>
 					</Stack>
 				</Box>
-				{showHeaderSearch && categoryNavigation}
 			</Stack>
 		);
 	}

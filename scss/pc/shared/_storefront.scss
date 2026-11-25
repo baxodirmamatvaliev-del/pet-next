@@ -1,23 +1,5 @@
 @use '../../variables' as *;
 
-.category-nav {
-	border-block: 1px solid $border;
-	.category-nav__inner {
-		height: 48px;
-		display: flex;
-		align-items: center;
-		gap: 42px;
-		font-size: 14px;
-		font-weight: 700;
-		overflow-x: auto;
-		white-space: nowrap;
-	}
-
-	a:hover {
-		color: $secondary;
-	}
-}
-
 .mobile-menu {
 	display: none;
 	background: transparent;

@@ -68,3 +68,7 @@ Evidence: [Apollo client](../../apollo/client.ts), [reactive store](../../apollo
 [TypeScript configuration](../../tsconfig.json) enables strict checking, ES2017 target, bundler resolution, isolated modules, incremental metadata and `@/*` paths. Relative imports remain common. Interfaces/enums and the broad optional result interface `T` are handwritten; no GraphQL client code-generation setup was found.
 
 Function components, hooks, `Handler` suffixes and STATES/APOLLO REQUESTS/HANDLERS sections are common. Application code often uses tabs/single quotes; tests/config files vary. No root Prettier configuration was found. Follow nearby code and the [SCSS guide](../../scss/README.md); do not reformat unrelated files. [ESLint](../../eslint.config.mjs) uses Next core-web-vitals and TypeScript rules.
+
+## Liquid navigation implementation
+
+`libs/components/navigation/` contains the shared Nimbus Waterline navbar and desktop active-route projection. `Top` mounts its desktop presentation and `MobileBottomNav` its mobile presentation through the existing 760px layout branches. Their shader is independent from checkout; only `libs/components/common/waterGL.ts` is shared for context/resource setup. The layout wrappers remain unchanged. See [UI/UX rules](UI_UX_RULES.md#liquid-glass-navigation) for animation lifecycle and [completed work](COMPLETED_TASKS.md) for actual verification.
